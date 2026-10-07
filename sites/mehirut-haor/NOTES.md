@@ -7,10 +7,12 @@ Zap customer 80240748 (from the brief title; not confirmed as the Dapei Zahav cu
 |---|---|---|
 | name | מהירות האור שליחויות | brief |
 | display phone | 072-2599648 (Zap tracking number) | brief + user confirmed 2026-10-07 |
-| WhatsApp | 050-6785822 | brief "טלפון לאתר" (Shiran) — assumption: used as WhatsApp, to confirm |
+| WhatsApp | 055-9686670 | Dapei Zahav listing https://www.d.co.il/80240748/49050/ (WhatsApp button). Brief's 050-6785822 is the contact person's mobile, not on the listing |
 | lead email | shirana221@gmail.com | brief |
 | public email | shirana221@gmail.com | brief |
-| address | בר אילן 23, חיפה | brief (GMB not provided — verify byte for byte) |
+| address | בר אילן 23, חיפה | brief; d.co.il shows "בר אילן 23, קריית חיים חיפה" |
+| Dapei Zahav id | 80240748 | d.co.il listing matches name + address + phone 072-2599648 (researched 2026-10-07) |
+| Google Maps | https://maps.google.com/?cid=16400963226497574796 · geo 32.833149,35.069494 | linked from the d.co.il listing |
 | hours | א׳–ה׳ 08:00–18:00, ו׳ 08:00–13:00 | brief |
 | years | למעלה מ-30 שנה (no founding year) | brief |
 | couriers / fleet | עשרות שליחים, עשרות רכבים (קטנועים ורכבים מסחריים) | brief; "עשרות" confirmed by user |
@@ -37,9 +39,15 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 | hero/van/checks/sameday/parcels/legal/fleet.webp | Weave Nano Banana 1K, AI, no people/text (24.5 credits approved) | hero, cards, splits |
 
 ## Gaps
-- Zap privacy PDF · Dapei Zahav customer-id · Google Business link · final domain (old mehiruthaor.co.il returns 403)
+- Zap privacy PDF: Zap's own is https://img.zapgroup.co.il/PrivacyPolicy.pdf; the per-client pattern could not be verified from the sandbox (zap.dbusiness.co blocks bots) → placeholder page stays
+- Final domain: assumed mehiruthaor.co.il (old site 403; Wayback snapshot 2022-12-14 exists but archive.org is blocked from the sandbox)
+- No registered company (בע"מ / ח.פ.) found → none shown
 - Higher-res / vector logo · real photos of fleet and team
 - Tracking system is plain http on a bare IP (browser "not secure"); opens in a new tab
+
+## Research log (2026-10-07)
+- d.co.il: id 80240748 confirmed, hours match the brief, services list matches; reviews come from the official Zap widget (no rating text on the site itself).
+- Google Maps CID + geo from the d.co.il page. Facebook link matches the brief.
 
 ## Keyword map (no Ahrefs; volume unknown)
 | page | keyword | H1 |

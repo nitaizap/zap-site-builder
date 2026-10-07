@@ -10,7 +10,7 @@
   "schema_type": "ProfessionalService",
   "phone_display": "072-2599648",
   "phone_e164": "+972722599648",
-  "whatsapp_e164": "+972506785822",
+  "whatsapp_e164": "+972559686670",
   "whatsapp_text": "שלום, אשמח להזמין שליחות",
   "email_leads": "shirana221@gmail.com",
   "email_public": "shirana221@gmail.com",
@@ -32,72 +32,56 @@
    "כל הארץ"
   ],
   "facebook": "https://www.facebook.com/מהירות-האור-1482628425325474",
-  "author_name": "מהירות האור שליחויות"
+  "author_name": "מהירות האור שליחויות",
+  "dpz_customer_id": "80240748",
+  "gmb_url": "https://maps.google.com/?cid=16400963226497574796",
+  "geo": {
+   "lat": 32.833149,
+   "lng": 35.069494
+  }
  },
  "standards": {
   "privacy_url": "",
   "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
  },
  "design": {
-  "preset": "bold",
-  "hero": "split",
+  "preset": "signature",
+  "hero": "image",
   "header": "light",
+  "motion": "lively",
   "colors": {
-   "primary": "#c8161d",
+   "primary": "#d7141c",
    "primary_ink": "#ffffff",
-   "accent": "#fef102",
-   "accent_ink": "#231f20",
-   "ink": "#1d1a1b",
-   "text": "#3b3537",
-   "muted": "#5f5a5c",
+   "accent": "#ffe600",
+   "accent_ink": "#141213",
+   "ink": "#141213",
+   "text": "#3a3536",
+   "muted": "#5d5859",
    "bg": "#ffffff",
-   "surface": "#fffbe0",
-   "line": "#ece3b8",
-   "dark": "#1d1a1b",
-   "dark_ink": "#f4f1e8"
+   "surface": "#f6f4ec",
+   "line": "#e6e1d3",
+   "dark": "#121011",
+   "dark_ink": "#f2efe6"
   },
   "fonts": {
-   "heading": "Secular One",
+   "heading": "Rubik",
    "body": "Heebo"
   },
-  "radius": 10,
-  "custom_css": "",
-  "motion": "lively"
+  "radius": 14,
+  "custom_css": ""
  },
  "directions": {
   "a": {
-   "label": "צהוב-אדום נמרץ, כמו הלוגו",
-   "preset": "bold",
-   "hero": "split"
+   "label": "לילה ומהירות: תמונה מלאה, צהוב על שחור",
+   "hero": "image"
   },
   "b": {
-   "label": "כביש ומהירות: תמונה מלאה ותעשייתי",
-   "preset": "industrial",
-   "hero": "image",
-   "colors": {
-    "surface": "#f5f4f0",
-    "line": "#e2dfd6"
-   },
-   "fonts": {
-    "heading": "Suez One",
-    "body": "Assistant"
-   },
-   "radius": 2
+   "label": "מסגרת צהובה: תמונה ממוסגרת על רקע כהה",
+   "hero": "split"
   },
   "c": {
-   "label": "נקי ומשרדי, לעסקים ומוסדות",
-   "preset": "clean",
-   "hero": "centered",
-   "colors": {
-    "primary": "#b3141a",
-    "surface": "#f6f6f4",
-    "line": "#e6e4df"
-   },
-   "fonts": {
-    "heading": "Rubik",
-    "body": "Assistant"
-   },
-   "radius": 14
+   "label": "הצהרה: כותרת ענקית במרכז ותמונה רחבה",
+   "hero": "centered"
   }
  },
  "form": {
@@ -153,6 +137,11 @@
   "fleet": {
    "src": "assets/fleet.webp",
    "alt": "שורת קטנועי שליחויות חונים זה לצד זה",
+   "ai": true
+  },
+  "heronight": {
+   "src": "assets/heronight.webp",
+   "alt": "קטנוע שליחויות חונה בלילה ליד כביש בחיפה, אורות תנועה חולפים",
    "ai": true
   }
  },
@@ -261,35 +250,39 @@
       "קטנועים ורכבים מסחריים",
       "מעקב אחר המשלוח בכל רגע"
      ],
-     "image": "hero"
+     "image": "heronight",
+     "video": "heroloop"
     },
     {
      "type": "trust",
      "items": [
       {
-       "value": "30+ שנה",
-       "label": "של שליחויות והפצה"
+       "value": "30+",
+       "label": "שנות ניסיון בשליחויות"
       },
       {
-       "value": "עשרות שליחים",
-       "label": "מיומנים ואדיבים"
+       "value": "עשרות",
+       "label": "שליחים מיומנים ואדיבים"
       },
       {
-       "value": "חיפה והצפון",
-       "label": "ומשם לכל הארץ"
+       "value": "ארצי",
+       "label": "מחיפה והצפון לכל יעד"
       },
       {
-       "value": "מעקב אונליין",
-       "label": "לכל הזמנה"
+       "value": "אונליין",
+       "label": "מעקב אחר כל משלוח"
       }
      ]
     },
     {
-     "type": "road",
+     "type": "marquee",
      "items": [
       "בכל זמן",
       "ובכל מקום",
-      "במהירות האור"
+      "במהירות האור",
+      "אמינות",
+      "אחריות",
+      "ניסיון"
      ]
     },
     {
@@ -301,7 +294,8 @@
      "cta": {
       "label": "קצת עלינו",
       "href": "page:אודות"
-     }
+     },
+     "eyebrow": "מי אנחנו"
     },
     {
      "type": "cards",
@@ -342,7 +336,24 @@
      "more": {
       "label": "כל שירותי השליחויות",
       "href": "page:שירותי-שליחויות"
-     }
+     },
+     "layout": "bento",
+     "eyebrow": "השירותים שלנו"
+    },
+    {
+     "type": "road",
+     "items": [
+      "קטנועים",
+      "רכבים מסחריים",
+      "מעקב בזמן אמת"
+     ],
+     "bg": "dark",
+     "vehicles": [
+      "scooter",
+      "van",
+      "scooter",
+      "truck"
+     ]
     },
     {
      "type": "features",
@@ -369,7 +380,14 @@
      "cta": {
       "label": "מעקב משלוחים והזמנות",
       "href": "http://37.46.35.200/Baldar/Login.aspx?ReturnUrl=%2fbaldar"
-     }
+     },
+     "bg": "dark",
+     "eyebrow": "למה מהירות האור"
+    },
+    {
+     "type": "reviews",
+     "eyebrow": "לקוחות מספרים",
+     "title": "מה אומרים עלינו בדפי זהב"
     },
     {
      "type": "faq",
@@ -395,7 +413,8 @@
        "q": "איך מזמינים שליח?",
        "a": "מתקשרים ל-072-2599648 או משאירים פרטים בטופס, ונחזור אליכם עם הצעת מחיר."
       }
-     ]
+     ],
+     "eyebrow": "שאלות ותשובות"
     },
     {
      "type": "cta",
@@ -462,7 +481,8 @@
        "href": "page:שירותי-שליחויות/שליחויות-משפטיות",
        "image": "legal"
       }
-     ]
+     ],
+     "layout": "bento"
     },
     {
      "type": "split",
@@ -514,7 +534,8 @@
        "text": "למעלה מ-30 שנות ניסיון בשליחויות והפצה.",
        "icon": "award"
       }
-     ]
+     ],
+     "bg": "dark"
     },
     {
      "type": "cta",
@@ -890,5 +911,11 @@
     }
    ]
   }
- ]
+ ],
+ "videos": {
+  "heroloop": {
+   "src": "assets/heroloop.mp4",
+   "ai": true
+  }
+ }
 }

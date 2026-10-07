@@ -141,13 +141,22 @@ def sec_head(ctx, s, tag="h2"):
 
 # ---------- sections ----------
 
+def _h1_markup(t):
+    """'keyword — brand' -> two spans so presets can set the brand on its own line/colour. Text is unchanged."""
+    a, sep, b = t.partition(" — ")
+    if not sep:
+        return html.escape(t, quote=False)
+    return (f'<span class="zs-h1__k">{html.escape(a, quote=False)}</span>'
+            f'<span class="zs-h1__sep"> — </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
+
+
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
     is_home = ctx.page_key == ""
     txt = C(ctx, "zs-hero__text", [
         W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
-        heading(ctx, s["title"], "h1", "zs-hero__title"),
+        heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title"),
         text(ctx, s.get("lead"), "zs-hero__lead"),
         buttons(ctx, s.get("cta"), s.get("cta2")),
         text(ctx, checks(s.get("points", [])), "zs-hero__points") if s.get("points") else None,
@@ -180,7 +189,8 @@ def cards(ctx, s):
                 text(ctx, it.get("text"), "zs-card__text"),
             ]),
         ]))
-    return section(ctx, s, f"zs-cards{' zs-cards--linked' if any(i.get('href') for i in s['items']) else ''}", [
+    lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""
+    return section(ctx, s, f"zs-cards{lay}{' zs-cards--linked' if any(i.get('href') for i in s['items']) else ''}", [
         *sec_head(ctx, s),
         C(ctx, f"zs-grid zs-grid--{n}", items),
         buttons(ctx, s.get("more")),
@@ -283,6 +293,15 @@ def quote(ctx, s):
     return section(ctx, s, "zs-quote", [text(ctx, body)])
 
 
+def marquee(ctx, s):
+    """Big slogan ticker. Decorative (aria-hidden); the same words must also appear as real text elsewhere."""
+    items = s.get("items") or []
+    one = "".join(f'<span class="zs-mq__i">{html.escape(i, quote=False)}</span><span class="zs-mq__dot"></span>' for i in items)
+    track = f'<div class="zs-mq__track">{one * 4}</div>'
+    body = f'<div class="zs-mq" aria-hidden="true">{track}{track}</div>'
+    return section(ctx, {**s, "bg": s.get("bg", "accent")}, "zs-marquee", [W(ctx, "html", {"html": body}, "zs-mq__w")])
+
+
 def road(ctx, s):
     """Decorative traffic lane: vehicle icons drive across (CSS only; still under prefers-reduced-motion).
     Optional short `items` labels sit above the lane. Fits delivery, transport, moving, towing clients."""
@@ -295,7 +314,7 @@ def road(ctx, s):
 
 
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote, road)}
+                                     logos, posts, contact, reviews, video, quote, road, marquee)}
 
 
 def render_page(ctx, sections):
@@ -305,7 +324,7 @@ def render_page(ctx, sections):
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
             s = {**s, "bg": "surface" if plain_i % 2 else None}
             plain_i += 1

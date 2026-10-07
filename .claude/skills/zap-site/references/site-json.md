@@ -43,7 +43,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ## design
 
 ```json
-{ "preset": "clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
+{ "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
   "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "custom_css": "" }
 ```
@@ -66,14 +66,14 @@ Every page with sections needs exactly one `hero` (it carries the H1).
 
 ## Sections (all optional fields can be omitted)
 
-Common: `title` (H2), `eyebrow` (small line above), `intro`, `bg` (`surface|dark|primary`; default
+Common: `title` (H2), `eyebrow` (small line above), `intro`, `bg` (`surface|dark|primary|accent`; default
 alternates plain/surface automatically), `anchor` (id for in-page links).
 
 | type | fields |
 |---|---|
 | `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `video` (key in `videos`; needs `image` as poster/mobile) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings) |
-| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag` |
+| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`, `layout: "bento"` (photo tiles, first one large, numbered; needs images) |
 | `features` | `items: [{title, text, icon}]`, `columns`, `cta` |
 | `steps` | `items: [{title, text}]` – numbered process, 3–4 items |
 | `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `cta`, `cta2` |
@@ -87,6 +87,7 @@ alternates plain/surface automatically), `anchor` (id for in-page links).
 | `reviews` | renders only when `business.dpz_customer_id` exists |
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |
+| `marquee` | `items` [4–8 short slogan words] – big scrolling ticker on the accent colour (decorative, aria-hidden; the words must also exist as real text). `bg` default `accent` |
 | `road` | `vehicles` [icon names, default scooter/van/truck], `items` [2–4 short labels above the lane] – decorative animated lane for delivery/transport/moving clients; static under reduced motion |
 
 Icons: check, shield, clock, phone, wrench, tools, home, building, users, user, award, truck, droplet,

@@ -3,13 +3,35 @@
 The look is tokens + a preset + a hero layout, applied to fixed, tested markup. That is why three
 directions cost one build, and why the chosen one is exactly what ships.
 
+## The bar: premium, not template
+
+The user compares our output with the best human designers in the team. "Clean and correct" reads as
+bland. Every site must have, measured by eye on the preview before the gate:
+
+- **One strong idea from the brand**, carried everywhere: for a courier it is speed (italic black type,
+  light trails, a moving road, a ticker); for a law office it is gravity (serif, hairlines, stillness).
+- **Display typography**: H1 at 5rem+ on desktop, weight 800–900, tight leading; the brand half of the
+  H1 on its own line in the accent colour (the `keyword — brand` H1 does this automatically).
+- **A cinematic hero**: a full-bleed photo shot for the brand's mood (night, golden hour, macro), 2K, and
+  where the budget allows a 2–4 s silent video loop (Veo image-to-video, then check every frame for
+  people, text and logos; trim and crossfade with ffmpeg rather than reroll).
+- **Rhythm with contrast**: dark ↔ light ↔ accent bands, never five white sections in a row; one
+  accent band (marquee / CTA) per page.
+- **Photo tiles, not boxed cards**, for services with images (`layout: "bento"`).
+- **Details**: accent dashes on eyebrows, arrow buttons, numbered tiles, grain on dark, a wordmark in the
+  footer, plus/minus FAQ, image wipe-ins, word-by-word H1 entrance.
+- **Brand colours exactly from the logo** (sample the pixels), with a darker primary only if contrast needs it.
+
+Start from `preset: signature` with `motion: lively`, then tune. Use the calmer presets only when the
+client's audience calls for it (medical, legal, finance).
+
 ## Make three directions that are actually different
 
 Vary what changes how the site feels, not just the colour:
 
 | lever | options |
 |---|---|
-| preset | `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
+| preset | `signature` (premium default: dark full-bleed hero, display type, brand-part of H1 in accent italic, stat bar, marquee, bento tiles, image wipe-ins, grain, footer wordmark) · `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
 | hero | `split` (text + framed photo) · `image` (full-bleed photo with scrim – needs a strong photo) · `centered` (statement + wide photo band) |
 | header | `light` · `dark` (needs `logo_light`, or the logo sits on a white chip) |
 | palette | light base + deep accent · dark base + one bright accent · warm neutral + muted accent |

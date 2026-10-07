@@ -46,6 +46,7 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
       </ul>
     </div>
   </div>
+  <div class="zs-footer__mark" aria-hidden="true"><?php echo esc_html($name); ?></div>
   <div class="zs-footer__bar">
     <div class="zs-wrap zs-footer__bar-in">
       <p>© <?php echo esc_html(date('Y') . ' ' . $name); ?> — כל הזכויות שמורות<?php if (zs_opt('footer.ai_images_note')) echo ' · ' . esc_html(zs_opt('footer.ai_images_note')); ?></p>

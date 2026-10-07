@@ -90,6 +90,7 @@ add_action('wp_head', function () {
     foreach ([zs_opt('design.fonts.heading', 'Rubik'), zs_opt('design.fonts.body', 'Assistant')] as $f) {
         $s = zs_font_slug($f);
         foreach (glob("$dir/fonts/$s/$s-hebrew-*.woff2") ?: [] as $file) {
+            if (str_contains($file, "-italic")) continue;
             $u = "$uri/fonts/$s/" . basename($file);
             if (isset($done[$u])) continue;
             $done[$u] = 1;

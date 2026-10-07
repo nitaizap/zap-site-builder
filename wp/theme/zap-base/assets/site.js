@@ -60,6 +60,25 @@
     root.classList.add('zs-motion');
   }
 
+  /* ---------- H1 words: wrapped for a staggered entrance (text and order unchanged) ---------- */
+  if (motion) {
+    var h1 = document.querySelector('.zs-hero__title .elementor-heading-title');
+    if (h1 && !h1.querySelector('.zs-w')) {
+      var wi = 0, walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (n) {
+        if (n.parentElement.closest('.zs-h1__sep')) return;
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var sp = document.createElement('span'); sp.className = 'zs-w'; sp.style.setProperty('--w', wi++); sp.textContent = part; frag.appendChild(sp);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    }
+  }
+
   /* ---------- trust-strip counters: pure numbers only (15+, 98%, 1,200), never years ---------- */
   function count(el) {
     if (!motion || !el.matches('.zs-trust__list li')) return;

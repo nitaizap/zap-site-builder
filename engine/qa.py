@@ -90,7 +90,7 @@ MEASURE_JS = r"""
   const low = new Map();
   q('h1,h2,h3,h4,p,li,a,span,strong,label,button').filter(vis).forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
-    if (el.closest('.zs-hero__media, .zs-form__hp')) return;
+    if (el.closest('.zs-hero__media, .zs-form__hp, [aria-hidden="true"]')) return;   // decorative text (marquee, wordmark) is hidden from AT
     const bg = bgOf(el); if (!bg) return;
     const s = getComputedStyle(el), fg = rgb(s.color); if (!fg) return;
     const a = fg.length > 3 ? fg[3] : 1; const mix = [0, 1, 2].map(i => fg[i] * a + bg[i] * (1 - a));
@@ -168,7 +168,9 @@ def screenshots(site, paths, directions=False):
                 f = out_dir / f"{name}-{vp}.png"
                 # full_page capture drops off-screen images in Chromium; a viewport as tall as the page doesn't
                 page.set_viewport_size({"width": w, "height": page.evaluate("document.documentElement.scrollHeight")})
-                page.wait_for_timeout(600)
+                # finish scroll reveals / entrances so the shot shows the settled page
+                page.evaluate("document.querySelectorAll('.zs-reveal').forEach(e => e.classList.add('is-in'))")
+                page.wait_for_timeout(1600)
                 page.screenshot(path=str(f))
                 page.set_viewport_size({"width": w, "height": h})
                 files.append(f)

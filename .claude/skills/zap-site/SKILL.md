@@ -45,11 +45,12 @@ Continuing a site: read `sites/<slug>/NOTES.md` and `site.json`, run `bin/zs bui
 
 ## 1 · Intake — read `references/intake.md`
 
-Extract every fact from the brief and its attachments (open every image; filenames lie). Research the
-business: old site, Google, Dapei Zahav (d.co.il), Facebook. Record sources in `sites/<slug>/NOTES.md`.
-Then send **one** message with everything missing (privacy PDF, Dapei Zahav customer-id, display phone vs
-WhatsApp vs lead email, contradictions in the brief, photos). Do not stop to wait for answers that do not
-block the plan: continue with what is known and mark gaps in NOTES.md. Phone and lead email do block.
+Extract every fact from the brief and its attachments (open every image; filenames lie). Then **research
+the gaps yourself before asking**: Dapei Zahav (customer-id, hours, WhatsApp, Maps CID + geo), the old site
+or its Wayback copy, Google, Facebook (table in `references/intake.md`; run it as a background agent).
+Record sources in `sites/<slug>/NOTES.md`. Send **one** message with only what research could not settle,
+each item with what you found. Do not stop to wait for answers that do not block the plan. Phone and lead
+email do block.
 
 ## 2 · Plan — read `references/keywords.md`, `references/content-seo.md`, `references/design.md`
 

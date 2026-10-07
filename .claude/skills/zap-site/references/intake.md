@@ -32,26 +32,34 @@ Build `sites/<slug>/NOTES.md`:
 ## Keyword map  (step 2)
 ```
 
-## Research the business (read-only)
+## Research the business yourself — before asking anything (read-only)
 
-- The client's existing site: services, wording, real photos you may reuse (product shots, the team, the
-  premises, certificates). Prefer the brief where they disagree; the brief wins ("תיצמד לאפיון").
-- Google: the business name + city. Use what the search results show; never solve CAPTCHAs or scrape Maps.
-- Dapei Zahav: `https://www.d.co.il/SearchResults?query=<name>` is JS-rendered; if you cannot read it,
-  ask for the customer-id. A match must agree on legal name, street address and phone, or it is not a match.
-- Facebook / Instagram: only for facts and the visual tone, not for copying photos without permission.
+The default is: **find it, cite it, then ask only what research could not settle.** Run this as a
+background agent while you plan, and record every result with its URL in NOTES.md.
+
+| item | where | how (verified 2026-10-07) |
+|---|---|---|
+| Dapei Zahav customer-id | `https://www.d.co.il/<id>/` — the brief's "לקוח NNNNNNNN" is usually it | curl gets a WAF "Request Rejected"; read it with **WebFetch**. A match must agree on name + street + phone. The listing also gives hours, service tags, WhatsApp, website, Facebook, Google Maps link |
+| Google Business / Maps | the d.co.il page links `maps.google.com/?cid=…` and carries `geo:lat,lng` | use the CID URL as `gmb_url`, the coordinates as `geo`. Never scrape Maps |
+| WhatsApp | d.co.il WhatsApp button, Facebook page | prefer a number the client published over a guess from the brief |
+| old site content + photos | live site; if down, Wayback: `http://archive.org/wayback/available?url=<domain>` | archive.org pages may be blocked from the sandbox; if so, note the snapshot URL as a gap |
+| legal name / ח.פ. | search "<name> בע\"מ ח.פ." | show nothing legal unless found with a source |
+| privacy PDF | Zap provides per client | if not in the brief: placeholder page (automatic) + launch checklist |
+| final domain | brief → old site domain | assume the old domain, say so |
+| Facebook / Instagram | links from the listing | facts and visual tone only, no photo copying |
+
+Facts from the client's own public listings (d.co.il, their site, their GMB) count as sourced. A
+contradiction between the brief and a listing is shown to the user, not resolved silently.
 
 ## The one message of questions
 
-Ask everything at once, numbered, in the user's language. Typical list:
+Only what research could not answer, numbered, in the user's language, each with what you already
+found ("d.co.il shows WhatsApp 055-…, use it?"). Typical leftovers:
 
 1. מספר תצוגה (מספר מעקב של זאפ) מול וואטסאפ מול מייל ללידים — לאשר את שלושתם
 2. קובץ מדיניות פרטיות (PDF) מזאפ — עד שמגיע יש עמוד זמני
-3. customer-id בדפי זהב — בלעדיו אין בלוק ביקורות
-4. קישור לכרטיס Google Business
-5. תמונות אמיתיות (עבודות, צוות, מקום) — אם אין, נשתמש בתמונות אווירה
-6. כל סתירה שמצאת באפיון (שנות ותק, שירותים, אזורים)
-7. הדומיין הסופי (לחבילה)
+3. תמונות אמיתיות (עבודות, צוות, מקום) — אם אין, נשתמש בתמונות AI
+4. כל סתירה שמצאת בין האפיון למקורות (שנות ותק, שירותים, אזורים, טלפונים)
 
 Blocking: display phone and lead email (the validator requires them). Everything else: continue, note the
 gap, and the launch checklist will carry it.
