@@ -20,6 +20,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 | `logo` | `assets/logo.png` (PNG/WebP, transparent; not SVG). `logo_light`: optional light version for dark headers |
 | `og_image` | image key for social sharing; default `__logo` |
 | `images` | `{ key: { "src": "assets/x.jpg", "alt": "what it shows", "ai": true?, "decorative": true? } }` |
+| `videos` | `{ key: { "src": "assets/hero-loop.mp4", "ai": true? } }` – hero loops only: mp4/webm, ≤ 6 MB, 4–8 s, no audio |
 | `nav` | `[{ "label", "href", "children": [...] }]` – primary menu |
 | `footer_nav` | flat list – the footer services column |
 | `categories` | `[{ "slug", "name", "description" (140–160 chars, it is the meta description) }]` |
@@ -44,7 +45,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ```json
 { "preset": "clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
-  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "custom_css": "" }
+  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "custom_css": "" }
 ```
 
 Fonts available (self-hosted): Heebo, Assistant, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew,
@@ -70,7 +71,7 @@ alternates plain/surface automatically), `anchor` (id for in-page links).
 
 | type | fields |
 |---|---|
-| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image` |
+| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `video` (key in `videos`; needs `image` as poster/mobile) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings) |
 | `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag` |
 | `features` | `items: [{title, text, icon}]`, `columns`, `cta` |

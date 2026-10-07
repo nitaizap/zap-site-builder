@@ -471,6 +471,33 @@ body .e-con.zs-contact__info { --row-gap: 18px; }
 .zs-p-industrial .e-con.zs-card { border-width: 0 0 3px; border-color: var(--c-accent); box-shadow: var(--shadow-sm); }
 .zs-p-industrial .e-con.zs-step::before { border-radius: 4px; }
 
+/* ===================== motion layer (body.zs-m-{none|subtle|lively}) ===================== */
+/* Hidden states apply only once site.js has run (html.zs-motion): bots, QA and no-JS see everything. */
+.zs-motion .zs-reveal { opacity: 0; transform: translate3d(0, 18px, 0); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--zs-i, 0) * 70ms); }
+.zs-motion .zs-m-lively .zs-reveal { transform: translate3d(0, 32px, 0) scale(.985); transition-duration: .9s; }
+.zs-motion .zs-reveal.is-in { opacity: 1; transform: none; }
+/* hero entrance: CSS only, plays immediately on load */
+@keyframes zs-rise { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
+body:not(.zs-m-none) .zs-hero__text > .elementor-element { animation: zs-rise .8s var(--ease) both; }
+body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(2) { animation-delay: .08s; }
+body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(3) { animation-delay: .16s; }
+body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(4) { animation-delay: .24s; }
+body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(n+5) { animation-delay: .32s; }
+.zs-m-lively .zs-hero__img img { transform: scale(1.06); will-change: transform; }
+.zs-feature__icon .zs-svg, .zs-card__icon .zs-svg { transition: transform .35s var(--ease); }
+.zs-m-lively .e-con.zs-feature:hover .zs-feature__icon .zs-svg, .zs-m-lively .e-con.zs-card:hover .zs-card__icon .zs-svg { transform: rotate(-6deg) scale(1.08); }
+body:not(.zs-m-none) .e-con.zs-feature { transition: transform .3s var(--ease); }
+body:not(.zs-m-none) .e-con.zs-feature:hover { transform: translateY(-3px); }
+.zs-m-none .zs-cards--linked .e-con.zs-card:hover, .zs-m-none .zs-postcard:hover, .zs-m-none .zs-b .elementor-button:hover { transform: none; }
+
+/* hero video: over the poster photo, fades in only once it is really playing */
+.zs-hero__media .elementor-element.zs-hero__vid { position: absolute; inset: 0; pointer-events: none; z-index: 1; margin: 0; }
+.zs-hero__vid, .zs-hero__vid .elementor-widget-container { height: 100%; }
+video.zs-hero__video { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s var(--ease); display: block; }
+video.zs-hero__video.is-playing { opacity: 1; }
+.zs-hv-split .zs-hero__vid, .zs-hv-centered .zs-hero__vid { border-radius: var(--r-lg); overflow: hidden; }
+.zs-hv-image .zs-hero--img .zs-hero__media::after { z-index: 2; }
+
 /* ===================== motion & print ===================== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

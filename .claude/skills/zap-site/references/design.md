@@ -15,6 +15,7 @@ Vary what changes how the site feels, not just the colour:
 | palette | light base + deep accent · dark base + one bright accent · warm neutral + muted accent |
 | type | pairing below |
 | radius | 2–4 sharp · 8–14 modern · 18–24 soft |
+| motion | `none` · `subtle` (default: soft scroll reveals, hover lifts, hero entrance) · `lively` (bigger reveals, hero parallax, icon play, counters) |
 
 Anchor each one in the brief: the audience's fear and the client's real differentiator. A plumber's
 customer with water through the ceiling wants "fast and capable" (bold/image), a boutique law office wants
@@ -22,6 +23,17 @@ customer with water through the ceiling wants "fast and capable" (bold/image), a
 `label` in Hebrew for each, and recommend one in the gate message with a one-line reason.
 
 If the client's brand colours are given, all three directions use them (vary preset/hero/type instead).
+
+## Motion and video
+
+Motion is built into the theme and measured with everything else; never hand-animate a page.
+`subtle` suits almost everyone; `lively` suits consumer brands, food, events, kids; `none` suits very
+conservative YMYL clients. All of it respects "reduce motion", and content is never hidden from bots.
+Trust-strip values animate as counters only when they are pure numbers (`15+`, `98%`), never years.
+
+A hero **video** (Weave: Veo image-to-video from the approved hero photo, ≈ 90 credits) plays only on
+desktop, muted and looped, over the poster photo; phones and data-saver get the photo. Offer it for
+premium clients or when movement is the product (water, food, fitness); never by default.
 
 ## Colour
 

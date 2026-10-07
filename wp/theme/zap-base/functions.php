@@ -146,6 +146,7 @@ add_filter('body_class', function ($classes) {
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');
+    $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');
     if (($d['header'] ?? 'light') === 'dark' && zs_opt('logo_light_id')) $classes[] = 'zs-has-logo-light';
     if (zs_is_elementor()) $classes[] = 'zs-built';
     return $classes;

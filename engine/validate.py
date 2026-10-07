@@ -28,7 +28,7 @@ def _texts(obj, path=""):
     elif isinstance(obj, dict):
         for k, v in obj.items():
             if k in ("src", "href", "image", "images", "icon", "type", "key", "slug", "anchor", "bg", "category",
-                     "related_page", "featured_image", "youtube_url", "kind", "colors", "fonts", "preset", "hero", "header"):
+                     "related_page", "featured_image", "youtube_url", "kind", "video", "colors", "fonts", "preset", "hero", "header"):
                 continue
             yield from _texts(v, f"{path}.{k}" if path else k)
     elif isinstance(obj, list):
@@ -126,6 +126,21 @@ def validate(d, site_dir):
             E(f"image '{k}' has no ALT text")
         if not (site_dir / im.get("src", "")).exists():
             E(f"image '{k}': file {im.get('src')} not found in the site folder")
+    for k, v in d.get("videos", {}).items():
+        f = site_dir / v.get("src", "")
+        if not f.exists():
+            E(f"video '{k}': file {v.get('src')} not found")
+        elif not str(f).lower().endswith((".mp4", ".webm")):
+            E(f"video '{k}' must be .mp4 or .webm")
+        elif f.stat().st_size > 6 * 1048576:
+            E(f"video '{k}' is {f.stat().st_size // 1048576} MB; keep hero loops under 6 MB (4-8 s, 720p, no audio)")
+    for p in pages:
+        for s in p.get("sections", []):
+            if s.get("type") == "hero" and s.get("video"):
+                if s["video"] not in d.get("videos", {}):
+                    E(f"{p.get('key') or 'home'}: hero video '{s['video']}' is not defined in videos")
+                if not s.get("image"):
+                    E(f"{p.get('key') or 'home'}: a hero video needs an image too (it is the poster and the mobile view)")
     if d.get("logo") and str(d["logo"]).lower().endswith(".svg"):
         E("logo must be PNG/WebP (WordPress rejects SVG uploads); convert it first")
 

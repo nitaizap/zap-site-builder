@@ -58,7 +58,9 @@ shallow depth of field. Photorealistic, natural light, no people, …"
 
 Veo 3.1 image-to-video (`fg6e8647-d90a-4bad-a845-69fdc102a14j`, `duration: "4s"`, `generate_audio: false`,
 `resolution: "720p"`) can animate the approved hero photo into a short loop, ≈ 90 credits. Only with the
-user's explicit go-ahead for that client. (Hero video support in the theme: see the open items in README.)
+user's explicit go-ahead for that client. Download it with `zs fetch-image <slug> heroloop <url> --ext mp4`,
+add `"videos": {"heroloop": {"src": "assets/heroloop.mp4", "ai": true}}` and `"video": "heroloop"` on the hero.
+Over 6 MB the validator stops the build: ask for the 720p, 4 s variant.
 
 ## Do not
 

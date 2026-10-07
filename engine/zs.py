@@ -132,8 +132,8 @@ def cmd_doctor(a):
         line("network: wordpress.org", True)
     except Exception as e:
         line("network: wordpress.org", False, f"{e} (set the environment's network access to Full)")
-    line("gh (for publish)", shutil.which("gh") is not None and subprocess.run(["gh", "auth", "status"], capture_output=True).returncode == 0,
-         "" if shutil.which("gh") else "not installed")
+    gh = shutil.which("gh") is not None and subprocess.run(["gh", "auth", "status"], capture_output=True).returncode == 0
+    print(f"OK   publish route: {'GitHub release (gh)' if gh else 'delivery branch via git push (no gh needed)'}")
     sys.exit(0 if ok else 1)
 
 
