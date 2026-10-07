@@ -57,7 +57,7 @@ block the plan: continue with what is known and mark gaps in NOTES.md. Phone and
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
   `references/site-json.md`, a complete example in `examples/sample-plumber/site.json`.
-- Images: `references/images.md` (client photos > old-site photos > AI atmosphere > none).
+- Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
 ## 3 · Preview — ⏸ the one gate
 

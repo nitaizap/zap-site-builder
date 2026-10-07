@@ -8,6 +8,7 @@
   zs qa <slug>                      measured QA sweep -> sites/<slug>/QA-REPORT.md
   zs doctor                         check php, wp-cli, mariadb, browser, network, gh
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
+  zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
@@ -80,6 +81,18 @@ def cmd_image(a):
     out.parent.mkdir(parents=True, exist_ok=True)
     generate(a.prompt, out, a.size)
     print(f"{out}\nadd to site.json images: \"{a.key}\": {{\"src\": \"assets/{a.key}.png\", \"alt\": \"<what it shows, in Hebrew>\", \"ai\": true}}")
+
+
+def cmd_fetch_image(a):
+    """Download a generated asset (e.g. a Weave run output URL) into sites/<slug>/assets/."""
+    import urllib.request
+    s = Site(a.slug)
+    ext = a.ext or (a.url.split("?")[0].rsplit(".", 1)[-1].lower() if "." in a.url.split("?")[0].rsplit("/", 1)[-1] else "png")
+    out = s.src / "assets" / f"{a.key}.{ext}"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    req = urllib.request.Request(a.url, headers={"User-Agent": "zap-site-builder"})
+    out.write_bytes(urllib.request.urlopen(req, timeout=300).read())
+    print(f"{out} ({out.stat().st_size // 1024} KB)")
 
 
 def cmd_doctor(a):
@@ -159,7 +172,8 @@ def main():
     x = sub.add_parser("qa"); x.add_argument("slug"); x.set_defaults(f=cmd_qa)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
-    x = sub.add_parser("image"); x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
+    x = sub.add_parser("fetch-image"); x.add_argument("slug"); x.add_argument("key"); x.add_argument("url"); x.add_argument("--ext"); x.set_defaults(f=cmd_fetch_image)
+    x = sub.add_parser("image");x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
