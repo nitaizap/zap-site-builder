@@ -484,6 +484,9 @@ body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(3) { animatio
 body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(4) { animation-delay: .24s; }
 body:not(.zs-m-none) .zs-hero__text > .elementor-element:nth-child(n+5) { animation-delay: .32s; }
 .zs-m-lively .zs-hero__img img { transform: scale(1.06); will-change: transform; }
+/* keep the scaled/parallax photo inside its frame (split + centered heroes would otherwise overlap the text) */
+.zs-m-lively .zs-hero__img .elementor-widget-container, .zs-m-lively .zs-hero__img { overflow: hidden; border-radius: var(--r-lg); }
+.zs-hv-image.zs-m-lively .zs-hero__img .elementor-widget-container, .zs-hv-image.zs-m-lively .zs-hero__img { border-radius: 0; }
 .zs-feature__icon .zs-svg, .zs-card__icon .zs-svg { transition: transform .35s var(--ease); }
 .zs-m-lively .e-con.zs-feature:hover .zs-feature__icon .zs-svg, .zs-m-lively .e-con.zs-card:hover .zs-card__icon .zs-svg { transform: rotate(-6deg) scale(1.08); }
 body:not(.zs-m-none) .e-con.zs-feature { transition: transform .3s var(--ease); }

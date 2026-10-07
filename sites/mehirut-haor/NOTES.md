@@ -19,6 +19,7 @@ Zap customer 80240748 (from the brief title; not confirmed as the Dapei Zahav cu
 | facebook | https://www.facebook.com/מהירות-האור-1482628425325474 | brief |
 
 ## Decisions (user, 2026-10-07)
+- design.motion = lively (brief: "אתר חדשני עם אנימציות של רכבים/אופנועים זזים") + `road` section on home.
 - "החברה המובילה בצפון" removed → "חברת שליחויות ותיקה בצפון הארץ".
 - "טכנולוגיית WAP" → "מערכת מעקב אונליין".
 - No food deliveries anywhere on the site (brief).
@@ -56,3 +57,4 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 ## Engine changes made in this session (generic)
 - New section `road` (animated vehicles lane, CSS only, static under reduced motion) + icons `scooter`, `van`.
 - Screenshots: tall viewport instead of full_page (Chromium dropped off-screen images in previews).
+- Motion layer fix: `lively` hero photo is clipped to its frame (it overlapped the text on mobile split/centered heroes).

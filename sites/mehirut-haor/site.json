@@ -61,7 +61,8 @@
    "body": "Heebo"
   },
   "radius": 10,
-  "custom_css": ""
+  "custom_css": "",
+  "motion": "lively"
  },
  "directions": {
   "a": {
