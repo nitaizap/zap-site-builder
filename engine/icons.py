@@ -27,6 +27,8 @@ PATHS = {
     "ruler": '<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
     "money": '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/>',
     "car": '<path d="M3 16v-4l2-5h14l2 5v4z"/><path d="M3 12h18"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/>',
+    "scooter": '<circle cx="5.5" cy="17.5" r="2.3"/><circle cx="18.5" cy="17.5" r="2.3"/><path d="M2 7h6v5H2zM5 12v3M7.8 17.5H14l3-6.5h-2.5M17 11l-1.6-4.5H13"/>',
+    "van": '<path d="M2 6h12l4 4h3.5v6.5H2z"/><path d="M14 6v4h4M2 12h19.5"/><circle cx="6.5" cy="17" r="1.9"/><circle cx="17" cy="17" r="1.9"/>',
     "scale": '<path d="M12 3v18M7 21h10M4 7h16"/><path d="M4 7l-2.5 6a3 3 0 0 0 5 0zM20 7l-2.5 6a3 3 0 0 0 5 0z"/>',
     "medical": '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/>',
     "star-badge": '<circle cx="12" cy="12" r="9"/><path d="M12 7.5l1.3 2.8 3 .3-2.3 2 .7 3-2.7-1.6-2.7 1.6.7-3-2.3-2 3-.3z"/>',

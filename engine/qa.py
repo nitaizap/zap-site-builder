@@ -135,7 +135,12 @@ def urls_for(site, data):
 
 
 def _scroll_all(page):
-    page.evaluate("""async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); } window.scrollTo(0, 0); }""")
+    # Lazy images: scroll through, then force every <img> eager and wait until all have decoded,
+    # so full-page screenshots never show empty cards.
+    page.evaluate("""async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
+      document.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
+      await Promise.all([...document.images].map(i => i.complete ? null : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 4000); })));
+      window.scrollTo(0, 0); }""")
     page.wait_for_timeout(250)
 
 
@@ -161,7 +166,11 @@ def screenshots(site, paths, directions=False):
                 page.goto(url, wait_until="networkidle")
                 _scroll_all(page)
                 f = out_dir / f"{name}-{vp}.png"
-                page.screenshot(path=str(f), full_page=True)
+                # full_page capture drops off-screen images in Chromium; a viewport as tall as the page doesn't
+                page.set_viewport_size({"width": w, "height": page.evaluate("document.documentElement.scrollHeight")})
+                page.wait_for_timeout(600)
+                page.screenshot(path=str(f))
+                page.set_viewport_size({"width": w, "height": h})
                 files.append(f)
             ctx.close()
         b.close()

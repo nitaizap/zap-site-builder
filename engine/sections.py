@@ -278,8 +278,19 @@ def quote(ctx, s):
     return section(ctx, s, "zs-quote", [text(ctx, body)])
 
 
+def road(ctx, s):
+    """Decorative traffic lane: vehicle icons drive across (CSS only; still under prefers-reduced-motion).
+    Optional short `items` labels sit above the lane. Fits delivery, transport, moving, towing clients."""
+    kinds = s.get("vehicles") or ["scooter", "van", "truck"]
+    vs = "".join(f'<span class="zs-road__v" style="--i:{i};--n:{len(kinds)}">{icon_svg(k)}</span>' for i, k in enumerate(kinds))
+    labels = "".join(f"<li>{html.escape(i, quote=False)}</li>" for i in s.get("items", []))
+    body = (f'<ul class="zs-road__labels">{labels}</ul>' if labels else "") + \
+           f'<div class="zs-road__lane" aria-hidden="true">{vs}</div>'
+    return section(ctx, s, "zs-road", [*sec_head(ctx, s), W(ctx, "html", {"html": body}, "zs-road__w")])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote)}
+                                     logos, posts, contact, reviews, video, quote, road)}
 
 
 def render_page(ctx, sections):

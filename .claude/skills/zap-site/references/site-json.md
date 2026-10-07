@@ -86,10 +86,11 @@ alternates plain/surface automatically), `anchor` (id for in-page links).
 | `reviews` | renders only when `business.dpz_customer_id` exists |
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |
+| `road` | `vehicles` [icon names, default scooter/van/truck], `items` [2–4 short labels above the lane] – decorative animated lane for delivery/transport/moving clients; static under reduced motion |
 
 Icons: check, shield, clock, phone, wrench, tools, home, building, users, user, award, truck, droplet,
 bolt, leaf, heart, chat, map, calendar, search, document, lock, sparkle, ruler, money, car, scale, medical,
-star-badge, thumb, target, globe.
+star-badge, thumb, target, globe, scooter, van.
 
 ## posts[]
 
