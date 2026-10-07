@@ -46,6 +46,39 @@ customer with water through the ceiling wants "fast and capable" (bold/image), a
 
 If the client's brand colours are given, all three directions use them (vary preset/hero/type instead).
 
+## The finish — what makes it look high-end (read before writing site.json)
+
+Benchmark: the best Zap builds look editorial and confident, not templated (see `benchmark.md`).
+The engine does most of it by default; your copy and choices must use it:
+
+- **Headlines carry the design.** Short, strong, two-line H1/H2s. In `site.json` use `\n` where the
+  meaning breaks, `*word*` to put the brand or key phrase in the accent colour, and end statements with a
+  period (it renders as an accent dot): `"חברת שליחויות בחיפה\nוהצפון — *מהירות האור*."`. Use it on
+  the hero and 2–3 section titles per page, not on every heading.
+- **An eyebrow on every section** (`eyebrow`: 1–3 words: "השירותים", "מי אנחנו", "הצעד הבא").
+- **Asymmetric section heads**: give sections a real 1–2 sentence `intro`; it sits beside the title.
+- **A home-page rhythm, never the same block twice in a row**: cinematic hero → stat band (`trust`, 3–4
+  verifiable facts with short values: "30+ שנה", "24/7", "עשרות שליחים") → `marquee` of services or
+  areas → `split` with a `badge` → overlay `cards` (every card with a photo) → `features` or `steps` →
+  `faq` → `cta` (brand colour). The light lead-form band and the dark footer follow automatically, so
+  the page ends brand colour → light → dark; never stack three dark blocks.
+- **Preset**: `signature` (sharp, hairlines, one accent, editorial-industrial) is the strongest default for
+  B2B, trades, logistics, legal and industry. Make it one of the three directions every time.
+- **Hero**: `image` (cinematic, ~90% of the screen, text over a deep gradient) whenever you have a strong
+  photo; `split` when the photo is small or busy. Render an image hero at 2K.
+- **Type**: headings in a heavy grotesk (Heebo or Rubik, weight 800) for modern brands, Frank Ruhl Libre
+  for legal/heritage; one family for body. Display faces (Secular One, Suez One) only for playful brands.
+- **Colour**: one accent for eyebrows, accent words, the dot, numerals and the primary button; everything
+  else is ink, white, a near-white surface and one dark.
+- **Image art direction** (Weave prompts): one consistent look per site, e.g. "cinematic editorial
+  photograph, golden hour or dramatic overcast light, deep shadows, rich contrast, shallow depth of
+  field, 35mm", with the brand colours as subtle accents in the scene. Avoid flat midday stock looks,
+  white studio shots and clutter. Hero 2K, cards 1K, the same light in every image.
+- **Details**: a badge with a real number on the split photo, numbered overlay cards and ↖ arrows
+  (automatic), image wipes and counters (`motion: lively` for consumer brands, `subtle` otherwise).
+- Before the gate, compare your home page with the benchmark; if a section still looks like a default
+  template block, rewrite its copy or change its type.
+
 ## Motion and video
 
 Motion is built into the theme and measured with everything else; never hand-animate a page.

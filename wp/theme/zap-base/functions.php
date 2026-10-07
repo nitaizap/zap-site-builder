@@ -79,6 +79,7 @@ add_action('wp_enqueue_scripts', function () {
     }
     wp_enqueue_style('zs-main', "$uri/assets/main.css", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/main.css"));
     wp_add_inline_style('zs-main', zs_tokens_css());
+    wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 

@@ -1,0 +1,149 @@
+/* =========================================================================
+   Zap Base — FINISH LAYER (loaded after main.css)
+   Lifts every preset to the finish of the best Zap builds: editorial type scale, cinematic heroes,
+   stat bands, image-first cards, asymmetric section heads, hairlines and numerals, one accent.
+   The `signature` preset styles itself in main.css; the look rules below skip it on purpose,
+   only the shared fixes and opt-in components apply to every preset.
+   ========================================================================= */
+
+/* ---------- shared: every preset ---------- */
+.zs-hl, .zs-dot { color: var(--c-primary); }
+.zs-bg-primary .zs-hl, .zs-bg-primary .zs-dot, .zs-bg-dark .zs-hl, .zs-bg-dark .zs-dot,
+.zs-hv-image .zs-hero--img .zs-hl, .zs-hv-image .zs-hero--img .zs-dot { color: var(--c-accent); }
+
+/* asymmetric section heads (markup: .zs-head > .zs-head__main + intro) */
+body .e-con.zs-head { --row-gap: 0px; margin-bottom: clamp(28px, 3.5vw, 52px); }
+.elementor .e-con.zs-head--split { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 18px clamp(28px, 6vw, 96px); align-items: end; }
+.zs-head .zs-sec__title { margin: 0; }
+.zs-head--split .zs-sec__intro { margin: 0; padding-bottom: .3em; font-size: 1.1rem; line-height: 1.75; }
+.zs-sec .zs-head + .zs-grid, .zs-sec .zs-head + .zs-steps__list { margin-top: 0; }
+.zs-sec .zs-head + .elementor-element .zs-postgrid, .zs-sec .zs-head + .zs-faq__list .elementor-toggle { margin-top: 0; }
+@media (max-width: 900px) { .elementor .e-con.zs-head--split { grid-template-columns: 1fr; } }
+
+/* Elementor's `.elementor img { height:auto }` (0,1,1) beats single-class rules: photos that must FILL a frame
+   need 0,2,1 or they stop at their natural height on tall phones (Yovel's trap #2). */
+.elementor .zs-hero__img img { height: 100%; }
+.elementor .zs-cards--overlay .zs-card__img, .elementor .zs-cards--overlay .zs-card__img img { height: 100%; }
+
+/* inside a brand-colour band --c-ink turns white, so a white button needs a fixed dark label */
+.zs-bg-primary .zs-b-primary .elementor-button { background: #fff; color: #141414; }
+.zs-bg-primary .zs-b-primary .elementor-button:hover { background: var(--c-accent); color: var(--c-accent-ink); }
+
+/* overlay cards (automatic when every card has a photo and no `layout` is set): the photo is the card */
+.zs-cards--overlay .zs-grid { counter-reset: zs-card; }
+body .zs-cards--overlay .e-con.zs-card { counter-increment: zs-card; border: 0; border-radius: var(--r); min-height: clamp(340px, 30vw, 440px); justify-content: flex-end; background: var(--c-dark); isolation: isolate; box-shadow: none; }
+.zs-cards--overlay .zs-card__img { position: absolute; inset: 0; z-index: -2; margin: 0; }
+.zs-cards--overlay .zs-card__img img { width: 100%; aspect-ratio: auto; object-fit: cover; }
+body .zs-cards--overlay .e-con.zs-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgb(6 9 15 / .92) 0%, rgb(6 9 15 / .55) 45%, rgb(6 9 15 / .05) 80%); }
+body .zs-cards--overlay .e-con.zs-card::before { content: counter(zs-card, decimal-leading-zero) " /"; position: absolute; top: 20px; inset-inline-start: 22px; font-size: .8rem; font-weight: 700; letter-spacing: .14em; color: rgb(255 255 255 / .85); z-index: 1; }
+body .zs-cards--overlay .e-con.zs-card__body { --padding-top: 0px; --padding-bottom: 26px; --padding-left: 24px; --padding-right: 24px; flex-grow: 0; }
+.zs-cards--overlay .zs-card__title .elementor-heading-title, .zs-cards--overlay .zs-card__title a { color: #fff; font-size: clamp(1.3rem, 1.1rem + .6vw, 1.7rem); }
+.zs-cards--overlay .zs-card__text { color: rgb(255 255 255 / .86); font-size: .98rem; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .45s var(--ease), opacity .35s var(--ease); }
+.zs-cards--overlay .e-con.zs-card:hover .zs-card__text, .zs-cards--overlay .e-con.zs-card:focus-within .zs-card__text { max-height: 8em; opacity: 1; }
+@media (hover: none) { .zs-cards--overlay .zs-card__text { max-height: none; opacity: 1; } }
+.zs-cards--overlay.zs-cards--linked .e-con.zs-card__body::after { color: var(--c-accent); content: "↖"; font-size: 1.35rem; }
+.zs-cards--overlay .e-con.zs-card:hover .zs-card__img img { transform: scale(1.06); }
+.zs-cards--overlay.zs-cards--linked .e-con.zs-card:hover { transform: none; box-shadow: none; }
+
+/* split: image shapes + a floating badge with a real number */
+.zs-shape-arch .zs-split__img img { border-radius: 999px 999px var(--r) var(--r); box-shadow: none; }
+.zs-shape-square .zs-split__img img { border-radius: 0; }
+.zs-split__media { position: relative; }
+.zs-split__media .elementor-element.zs-badge-w { position: absolute; inset-block-end: 28px; inset-inline-start: -24px; z-index: 2; width: auto; }
+.zs-badge { display: grid; gap: 4px; background: var(--c-dark); color: #fff; padding: 18px 22px; border-radius: var(--r-sm); box-shadow: var(--shadow-lg); min-width: 170px; }
+.zs-badge strong { font-family: var(--f-head); font-size: 1.6rem; line-height: 1; }
+.zs-badge span { font-size: .9rem; color: rgb(255 255 255 / .82); }
+@media (max-width: 900px) { .zs-split__media .elementor-element.zs-badge-w { inset-inline-start: 12px; inset-block-end: 12px; } }
+
+/* gallery: mosaic when there are 5+ images */
+.zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) { grid-column: span 2; grid-row: span 2; }
+.elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) img { aspect-ratio: auto; height: 100%; }
+
+/* header utility bar (header.topbar, default on) */
+.zs-topbar { background: var(--c-dark); color: color-mix(in srgb, var(--c-dark-ink) 86%, transparent); font-size: .86rem; }
+.zs-topbar__in { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 38px; }
+.zs-topbar ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; }
+.zs-topbar a { color: inherit; text-decoration: none; }
+.zs-topbar a:hover { color: #fff; }
+.zs-topbar a[href^="tel:"] { direction: ltr; unicode-bidi: isolate; }
+@media (max-width: 1024px) { .zs-topbar { display: none; } }
+
+/* image wipe on split photos (only with motion on; content is never hidden without JS) */
+.zs-motion .zs-split__media.zs-reveal img { clip-path: inset(0 0 0 100%); transition: clip-path 1.1s var(--ease) .1s; }
+.zs-motion .zs-split__media.zs-reveal.is-in img { clip-path: inset(0 0 0 0); }
+
+/* ---------- the look: every preset except signature ---------- */
+body:not(.zs-p-signature) {
+  --fs-h1: clamp(2.45rem, 1.15rem + 4.6vw, 5.1rem);
+  --fs-h1-page: clamp(2.1rem, 1.25rem + 3vw, 3.7rem);
+  --fs-h2: clamp(1.95rem, 1.2rem + 2.5vw, 3.35rem);
+  --fs-h3: clamp(1.2rem, 1.08rem + .45vw, 1.45rem);
+  --lh-head: 1.06;
+  --w-head: 800;
+  --fs-body: 1.075rem;
+
+  & h1, & h2, & .elementor .elementor-heading-title { letter-spacing: -.022em; }
+
+  /* eyebrow: short accent rule + tracked label */
+  & .zs-eyebrow .elementor-heading-title { display: inline-flex; align-items: center; gap: 12px; font-size: .86rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-primary); }
+  & .zs-eyebrow .elementor-heading-title::before { content: ""; width: 28px; height: 2px; background: currentColor; flex: none; }
+  & .zs-eyebrow { margin-bottom: 14px; }
+
+  /* buttons: crisper, with a directional arrow on primary actions */
+  & .zs-b .elementor-button, & .zs-btn { min-height: 54px; padding: .75em 1.65em; letter-spacing: .01em; }
+  & .zs-b-primary .elementor-button-text::after { content: "↖"; display: inline-block; margin-inline-start: .55em; transition: transform .25s var(--ease); }
+  & .zs-b-primary .elementor-button:hover .elementor-button-text::after { transform: translate(-3px, -3px); }
+  & .zs-b-tel .elementor-button-text::after, & .zs-b-wa .elementor-button-text::after { content: none; }
+
+  /* hero: bigger, quieter, more confident */
+  & .zs-hero__title .elementor-heading-title { font-size: var(--fs-h1); line-height: 1.02; letter-spacing: -.03em; }
+  & .zs-hero--page .zs-hero__title .elementor-heading-title { font-size: var(--fs-h1-page); line-height: 1.06; }
+  & .zs-hero__lead { font-size: clamp(1.1rem, 1rem + .45vw, 1.35rem); max-width: 54ch; }
+  & .e-con.zs-hero__text { --row-gap: 22px; }
+  &.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 4.6; }
+  &.zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { inset: auto -16px -16px auto; width: 46%; height: 46%; border-radius: var(--r-lg); background: var(--c-accent); opacity: 1; }
+
+  /* image hero = cinematic: near full-screen, text anchored low, deep gradient from the text side */
+  &.zs-hv-image .e-con.zs-hero--home.zs-hero--img { min-height: clamp(560px, 88vh, 940px); }
+  &.zs-hv-image .zs-hero--home.zs-hero--img > .e-con-inner { justify-content: flex-end; }
+  &.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(270deg, rgb(6 9 15 / .9) 0%, rgb(6 9 15 / .62) 42%, rgb(6 9 15 / .15) 80%), linear-gradient(0deg, rgb(6 9 15 / .55), transparent 45%); }
+  &.zs-hv-image .zs-hero--img .e-con.zs-hero__text { max-width: 780px; }
+
+  /* trust → stat band: full-bleed bar, big numerals, hairline dividers */
+  & .e-con.zs-trust--band { --padding-top: 0px; --padding-bottom: 0px; background: var(--c-dark); }
+  & .zs-trust--band .zs-trust__list { transform: none; margin: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; padding: clamp(26px, 3vw, 40px) 0; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 22px 0; }
+  & .zs-trust--band .zs-trust__list li { border-inline-start: 1px solid rgb(255 255 255 / .14); padding-inline: clamp(16px, 2.4vw, 32px); gap: 6px; }
+  & .zs-trust--band .zs-trust__list li:first-child { border-inline-start: 0; padding-inline-start: 0; }
+  & .zs-trust--band .zs-trust__list strong { font-size: clamp(1.6rem, 1.15rem + 1.6vw, 2.6rem); font-weight: 800; line-height: 1.05; color: #fff; letter-spacing: -.02em; }
+  & .zs-trust--band .zs-trust__list strong::after { content: ""; display: block; width: 22px; height: 3px; margin-top: 12px; background: var(--c-accent); }
+  & .zs-trust--band .zs-trust__list span { color: color-mix(in srgb, var(--c-dark-ink) 80%, transparent); font-size: .95rem; }
+
+  /* features & steps: hairlines and numerals instead of floating boxes */
+  & .e-con.zs-feature { border-top: 1px solid var(--c-line); padding-top: 22px; }
+  & .zs-feature__icon .zs-svg { width: 44px; height: 44px; padding: 9px; border-radius: var(--r-sm); }
+  & .zs-step__title .elementor-heading-title, & .zs-feature__title .elementor-heading-title { font-size: 1.22rem; }
+  & .e-con.zs-step { border-top: 1px solid var(--c-line); padding-top: 72px; }
+  & .e-con.zs-step::before { top: 22px; width: auto; height: auto; background: none; color: var(--c-primary); font-size: 2.1rem; font-weight: 800; line-height: 1; border-radius: 0; border: 0; content: counter(zs-step, decimal-leading-zero); }
+  & .e-con.zs-step::after { display: none; }
+  & .zs-bg-dark .e-con.zs-step::before, &.zs-p-bold .e-con.zs-step::before { color: var(--c-accent); }
+
+  & .zs-split__img img { aspect-ratio: 4 / 4.4; }
+
+  /* CTA band: a bigger statement */
+  & .zs-cta .zs-sec__title .elementor-heading-title { font-size: clamp(2rem, 1.2rem + 3vw, 3.6rem); }
+  & .e-con.zs-cta { --padding-top: clamp(56px, 7vw, 112px); --padding-bottom: clamp(56px, 7vw, 112px); }
+
+  /* lead band light: the page ends brand-colour CTA -> light form -> dark footer (never three dark blocks) */
+  & .zs-leadband { background: var(--c-surface); color: var(--c-text); }
+  & .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 14%, transparent), transparent); opacity: 1; }
+  & .zs-leadband h2, & .zs-leadband__or a { color: var(--c-ink); }
+  & .zs-leadband .zs-form { background: var(--c-bg); padding: clamp(20px, 3vw, 34px); border-radius: var(--r-lg); box-shadow: var(--shadow); color: var(--c-ink); }
+  & .zs-leadband .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }
+  & .zs-leadband .zs-form__submit:hover { background: color-mix(in srgb, var(--c-primary) 86%, #000); color: var(--c-primary-ink); }
+
+  & .zs-footer__name { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.2rem); letter-spacing: -.02em; }
+}
+@media (max-width: 640px) {
+  body:not(.zs-p-signature) .zs-trust--band .zs-trust__list { grid-template-columns: 1fr 1fr; }
+  body:not(.zs-p-signature) .zs-trust--band .zs-trust__list li:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+}

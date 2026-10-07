@@ -14,7 +14,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 | `directions` | `{ "a": {...}, "b": {...}, "c": {...} }` partial `design` overrides for the gate preview; each has a `label` |
 | `form` | `title`, `text`, `button`, `thanks` – the footer lead form |
 | `footer` | `about` (one sentence), `links_title`, optional `ai_images_note` |
-| `header` | `cta_label` (mobile menu button text) |
+| `header` | `cta_label` (mobile menu button), `topbar` (default true: dark utility bar with hours/email/phone), `topbar_text` (short line: areas + years) |
 | `content` | `disclaimer` (YMYL; shown under posts) |
 | `smtp` | normally omit (Zap relay defaults). `test_to`: internal address that receives staging test leads |
 | `logo` | `assets/logo.png` (PNG/WebP, transparent; not SVG). `logo_light`: optional light version for dark headers |
@@ -66,17 +66,19 @@ Every page with sections needs exactly one `hero` (it carries the H1).
 
 ## Sections (all optional fields can be omitted)
 
-Common: `title` (H2), `eyebrow` (small line above), `intro`, `bg` (`surface|dark|primary|accent`; default
-alternates plain/surface automatically), `anchor` (id for in-page links).
+Common: `title` (H2; `*word*` = accent colour, `
+` = line break, a final `.` = accent dot), `eyebrow`
+(tracked label with a rule), `intro` (sits beside the title; `head: "stack"` stacks them), `bg`
+(`surface|dark|primary|accent`; default alternates plain/surface), `anchor` (id for in-page links).
 
 | type | fields |
 |---|---|
 | `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `video` (key in `videos`; needs `image` as poster/mobile) |
-| `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings) |
-| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`, `layout: "bento"` (photo tiles, first one large, numbered; needs images) |
+| `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings); `style`: `band` (default, full-width stat bar) or `card` |
+| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
 | `features` | `items: [{title, text, icon}]`, `columns`, `cta` |
 | `steps` | `items: [{title, text}]` – numbered process, 3–4 items |
-| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `cta`, `cta2` |
+| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2` |
 | `prose` | `html` – long text; `<h2>/<h3>` become separate editable headings; lists, tables, links ok |
 | `faq` | `items: [{q, a}]` – 3+; also emitted as FAQPage schema (counts always match) |
 | `cta` | `title`, `text`, `cta` (default: השאירו פרטים → footer form), `cta2` (default: phone) |

@@ -85,7 +85,7 @@ def validate(d, site_dir):
                 if kw in kw_owner:
                     E(f"keyword cannibalisation: '{kw}' is owned by both {kw_owner[kw]} and {name}")
                 kw_owner[kw] = name
-                h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", ""))
+                h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", "")).replace("*", "").replace(chr(10), " ")
                 core = kw.split()[0] if kw else ""
                 if core and core not in h1:
                     W(f"{name}: H1 '{h1}' does not contain the keyword '{kw}'")

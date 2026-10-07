@@ -67,15 +67,25 @@ def W(ctx, wtype, settings, classes=""):
     return {"id": ctx.uid(), "elType": "widget", "widgetType": wtype, "settings": s, "elements": []}
 
 
-def heading(ctx, text, tag="h2", classes="", link=None):
+def heading(ctx, text, tag="h2", classes="", link=None, raw=False):
     if not text:
         return None
     if tag == "h1":
         ctx.h1_count += 1
-    s = {"title": text, "header_size": tag}
+    s = {"title": text if raw else rich(text), "header_size": tag}
     if link:
         s["link"] = {"url": ctx.href(link), "is_external": "", "nofollow": ""}
     return W(ctx, "heading", s, classes)
+
+
+def rich(t):
+    """Headline markup: *word* = accent colour, a final '.' = accent dot, a newline = a line break."""
+    t = html.escape(str(t), quote=False)
+    t = re.sub(r"\*(.+?)\*", r'<span class="zs-hl">\1</span>', t)
+    t = t.replace(chr(10), '<br class="zs-br">')
+    if t.endswith("."):
+        t = t[:-1] + '<span class="zs-dot">.</span>'
+    return t
 
 
 def text(ctx, body, classes=""):
@@ -134,9 +144,15 @@ def section(ctx, s, classes, children):
 
 
 def sec_head(ctx, s, tag="h2"):
-    return [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
-            heading(ctx, s.get("title"), tag, "zs-sec__title"),
-            text(ctx, s.get("intro"), "zs-sec__intro")]
+    """Section header. With a title and an intro it is asymmetric by default (big title on one side,
+    the intro on the other) - `head: "stack"` keeps them stacked."""
+    eb = heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow")
+    ti = heading(ctx, s.get("title"), tag, "zs-sec__title")
+    it = text(ctx, s.get("intro"), "zs-sec__intro")
+    if not (eb or ti or it):
+        return []
+    split = bool(ti and it) and s.get("head", "split") == "split"
+    return [C(ctx, "zs-head" + (" zs-head--split" if split else ""), [C(ctx, "zs-head__main", [eb, ti]), it])]
 
 
 # ---------- sections ----------
@@ -156,7 +172,8 @@ def hero(ctx, s):
     txt = C(ctx, "zs-hero__text", [
         W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
-        heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title"),
+        (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
+         else heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title", raw=True)),
         text(ctx, s.get("lead"), "zs-hero__lead"),
         buttons(ctx, s.get("cta"), s.get("cta2")),
         text(ctx, checks(s.get("points", [])), "zs-hero__points") if s.get("points") else None,
@@ -174,7 +191,8 @@ def hero(ctx, s):
 def trust(ctx, s):
     lis = "".join(f'<li><strong>{html.escape(i["value"])}</strong><span>{html.escape(i.get("label", ""))}</span></li>'
                   for i in s["items"])
-    return section(ctx, s, "zs-trust", [text(ctx, f'<ul class="zs-trust__list">{lis}</ul>')])
+    style = s.get("style", "band")          # band: full-width stat bar with big numerals · card: floating card
+    return section(ctx, s, f"zs-trust zs-trust--{style}", [text(ctx, f'<ul class="zs-trust__list">{lis}</ul>')])
 
 
 def cards(ctx, s):
@@ -190,7 +208,9 @@ def cards(ctx, s):
             ]),
         ]))
     lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""
-    return section(ctx, s, f"zs-cards{lay}{' zs-cards--linked' if any(i.get('href') for i in s['items']) else ''}", [
+    style = s.get("style") or ("overlay" if not lay and all(i.get("image") for i in s["items"]) else "classic")
+    linked = " zs-cards--linked" if any(i.get("href") for i in s["items"]) else ""
+    return section(ctx, s, f"zs-cards zs-cards--{style}{lay}{linked}", [
         *sec_head(ctx, s),
         C(ctx, f"zs-grid zs-grid--{n}", items),
         buttons(ctx, s.get("more")),
@@ -218,7 +238,14 @@ def split(ctx, s):
     txt = C(ctx, "zs-split__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                     heading(ctx, s["title"], "h2", "zs-sec__title"),
                                     text(ctx, body), buttons(ctx, s.get("cta"), s.get("cta2"))])
-    media = C(ctx, "zs-split__media", [image(ctx, s.get("image"), "zs-split__img", "large")]) if s.get("image") else None
+    badge = None
+    if s.get("badge"):
+        bd = s["badge"]
+        badge = W(ctx, "html", {"html": f'<div class="zs-badge"><strong>{html.escape(bd.get("title", ""))}</strong>'
+                                        f'<span>{html.escape(bd.get("text", ""))}</span></div>'}, "zs-badge-w")
+    shape = s.get("image_shape", "")
+    media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
+              [image(ctx, s.get("image"), "zs-split__img", "large"), badge]) if s.get("image") else None
     rev = " zs-split--rev" if s.get("image_side") == "end" else ""
     return section(ctx, s, f"zs-split{rev}{'' if media else ' zs-split--noimg'}", [txt, media])
 
@@ -249,7 +276,8 @@ def faq(ctx, s):
 
 def cta(ctx, s):
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
-        C(ctx, "zs-cta__text", [heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
+        C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
+                                heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
                 s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"})),
     ])
@@ -324,7 +352,7 @@ def render_page(ctx, sections):
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta", "marquee") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee", "trust") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
             s = {**s, "bg": "surface" if plain_i % 2 else None}
             plain_i += 1
