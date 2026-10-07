@@ -46,6 +46,9 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 - Tracking system is plain http on a bare IP (browser "not secure"); opens in a new tab
 
 ## Research log (2026-10-07)
+- Old site (via the other session's `zs grab`, Wayback): 2nd phone 04-8040404 — NOT used (brief gives 072-2599648 as display, and it is not on d.co.il); business YouTube video QhidydOUNoM ("מהירות האור שליחויות בכל הארץ", the company's own channel, verified by oEmbed) → about page.
+- From this session's sandbox archive.org is blocked, so `zs grab` returns nothing here.
+- Reviews: widget loads, Zap reviews API answers 500 for staging hosts → section stays hidden until the widget shows real reviews (live domain).
 - d.co.il: id 80240748 confirmed, hours match the brief, services list matches; reviews come from the official Zap widget (no rating text on the site itself).
 - Google Maps CID + geo from the d.co.il page. Facebook link matches the brief.
 
@@ -61,6 +64,10 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 | …/שליחויות-משפטיות/ | שליחויות משפטיות | שליחויות משפטיות ברחבי הארץ |
 | /אודות/ | חברת שליחויות בצפון | אודות מהירות האור שליחויות — חברת שליחויות בצפון |
 | /צור-קשר/ | צור קשר מהירות האור שליחויות | צור קשר — מהירות האור שליחויות |
+
+## Design decisions (benchmark pass)
+- Direction A (signature, full-bleed night hero + Veo loop). Shape language: sharp (radius 2), hairlines, ↖ arrows.
+- Rhythm: dark hero+stats+marquee → light split → bento → light road+features → FAQ → red CTA → light lead band → dark footer.
 
 ## Engine changes made in this session (generic)
 - New section `road` (animated vehicles lane, CSS only, static under reduced motion) + icons `scooter`, `van`.

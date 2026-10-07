@@ -79,6 +79,20 @@
     }
   }
 
+  /* ---------- reviews: show the section only while the widget shows real reviews ----------
+     The Dapei Zahav widget first paints a "טוען חוות דעת..." frame and empties itself if its API fails
+     (it does on staging hosts), so judge the settled content, not the first paint. */
+  var rv = document.querySelector('.zs-reviews-sec');
+  if (rv) {
+    var tries = 0, t = setInterval(function () {
+      var w = rv.querySelector('zap-reviews');
+      var txt = w ? ((w.shadowRoot ? w.shadowRoot.textContent : '') + ' ' + w.textContent).replace(/\s+/g, ' ').trim() : '';
+      var real = txt.length > 80 && !/טוען/.test(txt);
+      rv.classList.toggle('zs-has-reviews', real);
+      if (++tries > 50) clearInterval(t);
+    }, 300);
+  }
+
   /* ---------- trust-strip counters: pure numbers only (15+, 98%, 1,200), never years ---------- */
   function count(el) {
     if (!motion || !el.matches('.zs-trust__list li')) return;

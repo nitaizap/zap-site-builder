@@ -69,7 +69,8 @@ bin/zs preview <slug>                   # → sites/<slug>/preview/PREVIEW.md (3
 git add sites/<slug> && git commit -m "<slug>: plan + preview" && git push -u origin site/<slug>
 ```
 
-Look at the preview images yourself first (Read them); fix anything ugly before the user sees it.
+Want to click through it? `bin/zs static <slug>` → `dist/<slug>-preview.zip` (open index.html, no server;
+Windows-safe names; the form and Dapei Zahav reviews only work live). Look at the preview images yourself first (Read them); fix anything ugly before the user sees it.
 Then send the user, in one message:
 - link: `https://github.com/<owner>/<repo>/blob/site/<slug>/sites/<slug>/preview/PREVIEW.md`
 - the page tree with each page's keyword and H1 (short table)

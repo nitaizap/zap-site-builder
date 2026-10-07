@@ -724,3 +724,45 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 .zs-p-signature .zs-prose ul li { position: relative; padding-inline-start: 26px; margin: 0; }
 .zs-p-signature .zs-prose ul li::before { content: ""; position: absolute; inset-inline-start: 0; top: .62em; width: 10px; height: 10px; border-radius: 2px; background: var(--c-accent); box-shadow: 2px 2px 0 var(--c-ink); }
 .zs-p-signature .zs-prose ol li::marker { color: var(--c-primary); font-weight: 800; }
+
+/* ===================== signature refinements (benchmark pass) ===================== */
+/* one shape language: everything follows the radius token (set radius 0–4 for sharp, 12+ for soft) */
+.zs-p-signature .zs-b .elementor-button, .zs-p-signature .zs-btn, .zs-p-signature .zs-header__cta { border-radius: var(--r-sm); }
+.zs-p-signature .zs-b-primary:not(.zs-b-tel):not(.zs-b-wa) .elementor-button::after,
+.zs-p-signature .zs-b-ghost:not(.zs-b-tel):not(.zs-b-wa) .elementor-button::after { content: "↖"; width: auto; height: auto; margin-inline-end: 0; background: none; border-radius: 0; font-weight: 700; }
+.zs-p-signature .zs-b .elementor-button:hover::after { transform: translate(-3px, -3px); }
+[dir="ltr"] .zs-p-signature .zs-b .elementor-button::after { content: "↗"; }
+.zs-cards--bento .e-con.zs-card--img::after { border-radius: 0; background: none; color: #fff; padding: 0; font-style: normal; font-weight: 700; font-size: .8rem; letter-spacing: .14em; content: counter(zs-tile, decimal-leading-zero) " /"; }
+.zs-cards--bento.zs-cards--linked .zs-card--img .e-con.zs-card__body::after { border-radius: var(--r-sm); content: "↖"; }
+.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon { border-radius: var(--r-sm); }
+.zs-p-signature .e-con.zs-split__media::before, .zs-p-signature .zs-split--rev .e-con.zs-split__media::before { transform: none; }
+.zs-p-signature .zs-badge { background: var(--c-accent); color: var(--c-accent-ink); box-shadow: none; border-radius: var(--r-sm); }
+.zs-p-signature .zs-badge strong { font-size: clamp(2rem, 1.4rem + 1.6vw, 2.8rem); font-weight: 900; font-style: italic; letter-spacing: -.03em; }
+.zs-p-signature .zs-badge span { color: color-mix(in srgb, var(--c-accent-ink) 82%, transparent); }
+.zs-p-signature .zs-split__media .elementor-element.zs-badge-w { inset-inline-start: auto; inset-inline-end: 22px; inset-block-end: 22px; z-index: 5; }
+.zs-p-signature .zs-split__media .zs-split__img { position: relative; z-index: 1; }
+@media (max-width: 900px) { .zs-p-signature .zs-split__media .elementor-element.zs-badge-w { inset-inline-end: 12px; inset-block-end: 12px; } }
+
+/* page end: brand CTA -> LIGHT lead band -> dark footer */
+.zs-p-signature .zs-leadband { background: var(--c-surface); color: var(--c-text); }
+.zs-p-signature .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-accent) 55%, transparent), transparent); opacity: .5; }
+.zs-p-signature .zs-leadband::after { display: none; }
+.zs-p-signature .zs-leadband h2, .zs-p-signature .zs-leadband__or a { color: var(--c-ink); }
+.zs-p-signature .zs-leadband .zs-form { background: var(--c-bg); padding: clamp(20px, 3vw, 34px); border: 1px solid var(--c-line); border-radius: var(--r-sm); color: var(--c-ink); }
+.zs-p-signature .zs-leadband .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }
+.zs-p-signature .zs-leadband .zs-form__submit:hover { background: color-mix(in srgb, var(--c-primary) 86%, #000); color: var(--c-primary-ink); }
+.zs-p-signature .zs-field input, .zs-p-signature .zs-field textarea { border-radius: var(--r-sm); }
+
+/* road + features on the same ground read as one section: no double padding between them */
+body .e-con.zs-road.zs-bg-surface + .e-con.zs-features.zs-bg-surface,
+body .e-con.zs-road.zs-bg-dark + .e-con.zs-features.zs-bg-dark { --padding-top: clamp(16px, 2vw, 28px); }
+body .e-con.zs-road { --padding-bottom: clamp(12px, 1.6vw, 24px); }
+
+/* reviews: shown only once the Dapei Zahav widget has really rendered reviews (site.js), never as an empty block */
+body .e-con.zs-reviews-sec:not(.zs-has-reviews) { display: none !important; }
+/* signature hero on phones: keep the subject in frame, lighter scrim at the top, less dead space */
+@media (max-width: 767px) {
+  .zs-p-signature .e-con.zs-hero--home { min-height: 0; --padding-top: 72px; --padding-bottom: 96px; }
+  .zs-p-signature.zs-hv-image .zs-hero--img .zs-hero__img img { object-position: 22% 60%; }
+  .zs-p-signature.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(0deg, rgb(10 9 9 / .94) 0%, rgb(10 9 9 / .78) 45%, rgb(10 9 9 / .42) 100%); }
+}

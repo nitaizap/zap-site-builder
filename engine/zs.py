@@ -10,6 +10,7 @@
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
   zs grab <slug> <url>              research the client's old site (Wayback fallback) -> sites/<slug>/research/
   zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
+  zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
@@ -82,6 +83,14 @@ def cmd_image(a):
     out.parent.mkdir(parents=True, exist_ok=True)
     generate(a.prompt, out, a.size)
     print(f"{out}\nadd to site.json images: \"{a.key}\": {{\"src\": \"assets/{a.key}.png\", \"alt\": \"<what it shows, in Hebrew>\", \"ai\": true}}")
+
+
+def cmd_static(a):
+    from static import export
+    s = Site(a.slug)
+    s.serve()
+    z, n = export(s)
+    print(f"{n} pages -> {z}")
 
 
 def cmd_grab(a):
@@ -178,6 +187,7 @@ def main():
     x = sub.add_parser("qa"); x.add_argument("slug"); x.set_defaults(f=cmd_qa)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
+    x = sub.add_parser("static"); x.add_argument("slug"); x.set_defaults(f=cmd_static)
     x = sub.add_parser("grab"); x.add_argument("slug"); x.add_argument("url"); x.add_argument("--pages", type=int, default=25); x.set_defaults(f=cmd_grab)
     x = sub.add_parser("fetch-image"); x.add_argument("slug"); x.add_argument("key"); x.add_argument("url"); x.add_argument("--ext"); x.set_defaults(f=cmd_fetch_image)
     x = sub.add_parser("image");x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
