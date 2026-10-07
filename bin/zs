@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Thin wrapper so the skill can call `bin/zs <command>` on any machine.
+export MSYS_NO_PATHCONV=1  # Git Bash on Windows: keep "/" arguments as URL paths
+export PYTHONIOENCODING=utf-8 PYTHONUTF8=1
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && (pwd -W 2>/dev/null || pwd))"
+if command -v python3 >/dev/null 2>&1 && python3 -c 'import PIL' 2>/dev/null; then py=python3
+elif command -v py >/dev/null 2>&1; then py="py"
+else py=python; fi
+exec $py "$here/engine/zs.py" "$@"
