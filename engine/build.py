@@ -99,6 +99,13 @@ def build(site, only=None):
         prepared.append({"key": key, "file": str(out_file), "alt": im.get("alt", ""),
                          "title": im.get("title", ""), "ai": bool(im.get("ai")),
                          "hash": hashlib.sha1(out_file.read_bytes()).hexdigest()})
+    # Videos (hero loops) are imported as they are: the engine never re-encodes video.
+    for key, v in data.get("videos", {}).items():
+        src = site_dir / v["src"]
+        if not src.exists():
+            raise SystemExit(f"video '{key}': file not found: {src}")
+        prepared.append({"key": key, "file": str(src), "alt": "", "title": v.get("title", ""), "ai": bool(v.get("ai")),
+                         "hash": hashlib.sha1(src.read_bytes()).hexdigest()})
     media = json.loads(run_php(site, "media", {"items": prepared}).splitlines()[-1])
     log.append(f"media: {len(media)} items")
     if "__logo_light" in media:

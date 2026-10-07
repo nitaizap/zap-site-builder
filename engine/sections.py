@@ -152,7 +152,12 @@ def hero(ctx, s):
         buttons(ctx, s.get("cta"), s.get("cta2")),
         text(ctx, checks(s.get("points", [])), "zs-hero__points") if s.get("points") else None,
     ])
-    media = C(ctx, "zs-hero__media", [image(ctx, s.get("image"), "zs-hero__img", "full", eager=True)]) if s.get("image") else None
+    vid = None
+    if s.get("video"):
+        v = ctx.img(s["video"])        # videos share the media map
+        vid = W(ctx, "html", {"html": f'<video class="zs-hero__video" data-src="{v["url"]}" muted loop playsinline '
+                                       f'preload="none" aria-hidden="true" tabindex="-1"></video>'}, "zs-hero__vid")
+    media = C(ctx, "zs-hero__media", [image(ctx, s.get("image"), "zs-hero__img", "full", eager=True), vid]) if s.get("image") else None
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}", [txt, media])
 

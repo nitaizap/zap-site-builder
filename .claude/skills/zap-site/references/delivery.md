@@ -31,9 +31,12 @@ bin/zs package <slug> --domain https://client.co.il
 bin/zs publish <slug>
 ```
 
-Uploads the zip (+ sha256) as a GitHub release asset `<slug>-<yyyymmdd>` on this repo and prints the
-link. With `ZS_SHAREPOINT_FLOW_URL` set on the environment it also posts the zip to the Power Automate
-flow that stores it in SharePoint; a SharePoint failure never hides the GitHub link.
+Prints a download link. In cloud sessions (no `gh`) it pushes a branch `delivery/<slug>-<yyyymmdd>`
+that holds only the zip, its sha256 and a README; the link is
+`https://github.com/<owner>/<repo>/raw/delivery/<slug>-<date>/<zip>` (opens for anyone logged in to GitHub
+with access to the repo). Where `gh` is logged in it makes a GitHub release instead. With
+`ZS_SHAREPOINT_FLOW_URL` set it also posts the zip to the Power Automate flow; a SharePoint failure never
+hides the GitHub link. Delivery branches are never force-pushed; a second delivery the same day gets `-2`.
 
 The GitHub link needs a GitHub login with access to the repo. If the server person has none, the
 SharePoint route (or the user forwarding the file) is the way.
