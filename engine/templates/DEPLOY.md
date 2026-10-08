@@ -25,6 +25,13 @@
 4. `wp user update zapadmin --user_pass='<סיסמה חדשה>'`
 5. `wp rewrite flush && wp elementor flush-css`
 
+## robots.txt וכותרות אבטחה
+
+- התוסף Zap Site כותב קובץ `robots.txt` אמיתי ומעדכן אותו לבד כשהדומיין או מצב האינדוקס משתנים
+  (גם ב-nginx/uPress, שם robots.txt וירטואלי של וורדפרס לא עובד). לא לכתוב robots.txt ידנית.
+- כותרות אבטחה נשלחות מ-`wp-config.php`, כך שגם עמודים מהקאש מקבלים אותן.
+- WP Rocket (או קאש אחר) לא כלול בחבילה: להתקין לפי הנוהל של השרת ולהריץ בדיקה אנונימית.
+
 ## nginx
 
 ה-`.htaccess` חוסם PHP בתיקיית uploads ואת xmlrpc רק ב-Apache. ב-nginx להוסיף:

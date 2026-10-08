@@ -74,7 +74,7 @@ def _copy_wp(src: Path, dst: Path):
         dirs[:] = [d for d in dirs if f"{rel}/{d}".lstrip("./") not in SKIP_DIRS]
         for f in files:
             r = f"{rel}/{f}".lstrip("./")
-            if r == "wp-config.php" or r in SKIP_DIRS:
+            if r in ("wp-config.php", "robots.txt") or r in SKIP_DIRS:
                 continue
             out = dst / r
             out.parent.mkdir(parents=True, exist_ok=True)
