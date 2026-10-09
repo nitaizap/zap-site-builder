@@ -73,3 +73,10 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 - New section `road` (animated vehicles lane, CSS only, static under reduced motion) + icons `scooter`, `van`.
 - Screenshots: tall viewport instead of full_page (Chromium dropped off-screen images in previews).
 - Motion layer fix: `lively` hero photo is clipped to its frame (it overlapped the text on mobile split/centered heroes).
+
+## Delivery (2026-10-09)
+- `zs package mehirut-haor --domain https://mehiruthaor.co.il` → dist/mehirut-haor-20261009.zip (63.6 MB). Domain assumed = old site's; `deploy.sh --url` moves it.
+- Install test: unzip + deploy.sh as a site user (`--owner`) into an empty docroot + empty DB, with `--url` to a test host:
+  17 internal pages 200 with one H1, no leftover URLs, robots.txt + sitemap 200, admin login page, form → lead saved
+  (test copy forced to staging so no client mail; test lead deleted).
+- Found and fixed: deploy.sh run as root without --owner failed halfway (wp-cli refuses root) → now refuses before copying.

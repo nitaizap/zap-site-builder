@@ -24,6 +24,10 @@ done
 [ -n "$DOCROOT" ] && [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] || { sed -n '4,9p' "$0"; exit 1; }
 command -v wp >/dev/null || { echo "wp-cli not found (https://wp-cli.org)"; exit 1; }
 
+if [ "$(id -u)" = 0 ] && [ -z "$OWNER" ]; then
+  echo "refusing: running as root — pass --owner <the site's unix user> (CloudPanel: the site user), nothing was changed"; exit 1
+fi
+if [ -n "$OWNER" ] && [ "$(id -u)" = 0 ] && ! command -v sudo >/dev/null; then echo "refusing: --owner needs sudo on this server"; exit 1; fi
 if [ -e "$DOCROOT/wp-config.php" ]; then echo "refusing: $DOCROOT already has a WordPress"; exit 1; fi
 mkdir -p "$DOCROOT"
 echo "→ copying files to $DOCROOT"
