@@ -123,6 +123,8 @@ def cmd_push(a):
         other = r.eval_php("$o = get_option('zap_site'); echo is_array($o) ? ($o['business']['name'] ?? '') : '';").strip()
         if other and other != data["business"]["name"] and not a.force:
             die(f"this site already holds '{other}', not '{data['business']['name']}'. Wrong site? (--force to overwrite)")
+        if not other:   # remember the base's own front page: the only page the first push may move to draft
+            r.eval_php("update_option('zs_prev_front', (int) get_option('page_on_front')); echo 1;")
         if not a.no_backup:
             print("backup:", r.backup())
         # staging lock: leads are saved but never mailed to the real client, search engines stay out
@@ -132,7 +134,7 @@ def cmd_push(a):
             # first push into a fresh base clone: the base's own placeholder pages/posts (not built from site.json)
             # go to draft so they are not live next to the client's site. Later pushes never touch unknown pages.
             moved = r.eval_php("$m = []; foreach (get_posts(['post_type'=>['page','post'],'post_status'=>'publish','numberposts'=>-1]) as $p) {"
-                               " if (!get_post_meta($p->ID, '_zs_key', true) && get_post_type($p) === 'page' || ($p->post_type === 'post' && $p->post_name === 'hello-world')) {"
+                               " $front = (int) get_option('zs_prev_front'); if (($p->ID === $front && !get_post_meta($p->ID, '_zs_key', true)) || in_array($p->post_name, ['sample-page', 'hello-world'], true)) {"
                                " wp_update_post(['ID'=>$p->ID,'post_status'=>'draft']); $m[] = $p->ID . ' ' . $p->post_title; } } echo implode(' | ', $m);").strip()
             if moved:
                 print("base placeholders moved to draft:", moved)
