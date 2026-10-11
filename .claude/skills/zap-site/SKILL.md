@@ -124,7 +124,8 @@ direction, say which and why in one line, and continue without waiting.
    need a scrolled screenshot, not just a full-page one.
 6. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
    and its content, components, prohibitions such as "no food deliveries", delivery) → ✅ / ➖ with the
-   reason / ⏳ open. Grep site.json for every prohibited word. Example: `sites/mehirut-haor/BRIEF-CHECK.md`.
+   reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
+   site.json". Grep site.json for every prohibited word. Example: `examples/mehirut-haor/BRIEF-CHECK.md`.
 7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
 
 ## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)

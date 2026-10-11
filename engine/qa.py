@@ -3,6 +3,7 @@
 Writes work/<slug>/QA-REPORT.md and returns True when there are no errors.
 Screenshots (zs shots) are for the human sign-off only.
 """
+import html
 import json
 import re
 import time
@@ -140,6 +141,9 @@ def _scroll_all(page):
     page.evaluate("""async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
       document.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
       await Promise.all([...document.images].map(i => i.complete ? null : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 4000); })));
+      // one re-fetch for images that failed on a network drop; a truly broken image stays broken
+      await Promise.all([...document.images].filter(i => i.complete && i.currentSrc && !i.naturalWidth).map(i => new Promise(r => {
+        i.onload = i.onerror = r; setTimeout(r, 5000); i.removeAttribute('srcset'); i.src = i.currentSrc + (i.currentSrc.includes('?') ? '&' : '?') + 'zsretry=1'; })));
       window.scrollTo(0, 0); }""")
     page.wait_for_timeout(250)
 
@@ -277,6 +281,11 @@ def run_qa(site):
             for u in urls:
                 console.clear()
                 resp = page.goto(u, wait_until="networkidle")
+                for _ in range(2):     # a gateway hiccup (proxy / host) is retried, a real error stays
+                    if resp is None or resp.status not in (502, 503, 504):
+                        break
+                    page.wait_for_timeout(3000)
+                    resp = page.goto(u, wait_until="networkidle")
                 _scroll_all(page)
                 m = page.evaluate(MEASURE_JS)
                 if resp.status != 200:
@@ -292,11 +301,14 @@ def run_qa(site):
                 page.goto(site.url + "/", wait_until="networkidle")
                 page.click(".zs-burger")
                 page.wait_for_timeout(450)
-                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'")
+                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
+                                       # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
+                                       " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
+                                       " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
                 page.keyboard.press("Escape")
                 page.wait_for_timeout(350)
                 closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
-                extra.append(("mobile menu opens / Escape closes", opened and closed))
+                extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
                 if not (opened and closed):
                     errors += 1
                 ok_msg, saved, mailed = test_form(page, site)
@@ -318,6 +330,28 @@ def run_qa(site):
         parts = list(ex.map(lambda kv: one_viewport(kv[0], *kv[1]), VIEWPORTS.items()))
     for r_, l_, x_, e_, w_ in parts:      # desktop first, then mobile, as before
         rows += r_; links |= l_; extra += x_; errors += e_; warns += w_
+
+    # every social profile in site.json must be a visible link on the site (the footer renders them)
+    home_html = None
+    for attempt in range(4):        # network drops happen; the check must not be skipped silently
+        try:
+            home_html = urllib.request.urlopen(site.url + "/", timeout=30).read().decode("utf-8", "replace")
+            break
+        except Exception:
+            time.sleep(3)
+    if home_html is None and any((data["business"].get(n) or "").strip() for n in ("facebook", "instagram", "linkedin", "youtube", "tiktok")):
+        extra.append(("social links: home page could not be fetched to check them", False))
+        errors += 1
+    if home_html is not None:
+        for net in ("facebook", "instagram", "linkedin", "youtube", "tiktok"):
+            u = (data["business"].get(net) or "").strip()
+            if not u:
+                continue
+            forms = {u, urllib.parse.quote(u, safe=":/?=&%#"), html.escape(u), html.escape(urllib.parse.quote(u, safe=":/?=&%#"))}
+            shown = any(f'href="{f}"' in home_html for f in forms)
+            extra.append((f"{net} link shown on the site", shown))
+            if not shown:
+                errors += 1
 
     bad_links = check_links(links)
     errors += len(bad_links)
