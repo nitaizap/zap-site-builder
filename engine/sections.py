@@ -10,7 +10,7 @@ import hashlib
 import html
 import re
 
-from icons import icon_svg
+from icons import fa_icon, icon_svg
 
 
 class Ctx:
@@ -202,7 +202,7 @@ def cards(ctx, s):
         items.append(C(ctx, "zs-card" + (" zs-card--img" if it.get("image") else ""), [
             image(ctx, it.get("image"), "zs-card__img", "zs-card"),
             C(ctx, "zs-card__body", [
-                W(ctx, "html", {"html": icon_svg(it["icon"])}, "zs-card__icon") if it.get("icon") and not it.get("image") else None,
+                W(ctx, "icon", {"selected_icon": fa_icon(it["icon"])}, "zs-card__icon") if it.get("icon") and not it.get("image") else None,
                 heading(ctx, it["title"], s.get("item_tag", "h3"), "zs-card__title", link=it.get("href")),
                 text(ctx, it.get("text"), "zs-card__text"),
             ]),
@@ -220,7 +220,7 @@ def cards(ctx, s):
 def features(ctx, s):
     n = s.get("columns", 4 if len(s["items"]) % 4 == 0 else 3)
     items = [C(ctx, "zs-feature", [
-        W(ctx, "html", {"html": icon_svg(it.get("icon", "check"))}, "zs-feature__icon"),
+        W(ctx, "icon", {"selected_icon": fa_icon(it.get("icon", "check"))}, "zs-feature__icon"),
         heading(ctx, it["title"], "h3", "zs-feature__title"),
         text(ctx, it.get("text"), "zs-feature__text"),
     ]) for it in s["items"]]
@@ -241,8 +241,8 @@ def split(ctx, s):
     badge = None
     if s.get("badge"):
         bd = s["badge"]
-        badge = W(ctx, "html", {"html": f'<div class="zs-badge"><strong>{html.escape(bd.get("title", ""))}</strong>'
-                                        f'<span>{html.escape(bd.get("text", ""))}</span></div>'}, "zs-badge-w")
+        badge = C(ctx, "zs-badge-w zs-badge", [heading(ctx, bd.get("title", ""), "p", "zs-badge__value", raw=False),
+                                               text(ctx, bd.get("text", ""), "zs-badge__label")])
     shape = s.get("image_shape", "")
     media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
               [image(ctx, s.get("image"), "zs-split__img", "large"), badge]) if s.get("image") else None
@@ -360,3 +360,72 @@ def render_page(ctx, sections):
         if el:
             out.append(el)
     return out
+
+
+# ---------- site templates: header + footer as editable Elementor documents ----------
+# Native widgets for everything a client edits (logo, phone button, texts, titles); shortcodes only for the
+# parts that are behaviour or Zap standards (menu + burger, contact list, lead form, legal line, Zap logo).
+
+def header_template(ctx):
+    d = ctx.site
+    b, h = d["business"], d.get("header", {})
+    els = []
+    if h.get("topbar", True):
+        els.append(C(ctx, "zs-topbar", [
+            C(ctx, "zs-wrap zs-topbar__in", [
+                heading(ctx, h.get("topbar_text") or d.get("site", {}).get("tagline", ""), "p", "zs-topbar__text"),
+                W(ctx, "shortcode", {"shortcode": "[zap_topbar_meta]"}, "zs-topbar__meta"),
+            ]),
+        ], inner=False))
+    logo = ctx.media.get("__logo")
+    brand = (W(ctx, "image", {"image": {"url": logo["url"], "id": logo["id"], "alt": b["name"], "source": "library"},
+                              "image_size": "full", "link_to": "custom",
+                              "link": {"url": "/", "is_external": "", "nofollow": ""}}, "zs-brand")
+             if logo else heading(ctx, b["name"], "p", "zs-brand zs-brand__name", link="page:"))
+    tel = button(ctx, {"label": b.get("phone_display", ""), "href": "tel"}, "primary")
+    if tel:
+        tel["settings"]["_css_classes"] += " zs-header__cta"
+    els.append(C(ctx, "zs-header", [
+        C(ctx, "zs-wrap zs-header__in", [brand, W(ctx, "shortcode", {"shortcode": "[zap_nav]"}, "zs-header__nav"), tel]),
+    ], tag="header", inner=False))
+    return els
+
+
+def footer_template(ctx):
+    d = ctx.site
+    b, f, form = d["business"], d.get("footer", {}), d.get("form", {})
+    lead = C(ctx, "zs-leadband", [
+        C(ctx, "zs-wrap zs-leadband__in", [
+            C(ctx, "zs-leadband__text", [
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "h2", "zs-leadband__title"),
+                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
+                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
+            ]),
+            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form"),
+        ]),
+    ], tag="section", inner=False)
+    lead["settings"]["_element_id"] = "leave-details"
+    cols = C(ctx, "zs-wrap zs-footer__grid", [
+        C(ctx, "zs-footer__col zs-footer__brand", [
+            heading(ctx, b["name"], "p", "zs-footer__name"),
+            text(ctx, f.get("about", "")),
+        ]),
+        C(ctx, "zs-footer__col", [
+            heading(ctx, f.get("links_title", "השירותים שלנו"), "h2", "zs-footer__title"),
+            W(ctx, "shortcode", {"shortcode": '[zap_menu location="footer"]'}),
+        ], tag="nav"),
+        C(ctx, "zs-footer__col", [
+            heading(ctx, "יצירת קשר", "h2", "zs-footer__title"),
+            W(ctx, "shortcode", {"shortcode": "[zap_footer_contact]"}),
+        ]),
+    ])
+    mark = W(ctx, "html", {"html": f'<div class="zs-footer__mark" aria-hidden="true">{html.escape(b["name"])}</div>'}, "zs-footer__mark-w")
+    bar = C(ctx, "zs-footer__bar", [
+        C(ctx, "zs-wrap zs-footer__bar-in", [
+            W(ctx, "shortcode", {"shortcode": "[zap_copyright]"}),
+            W(ctx, "shortcode", {"shortcode": "[zap_legal]"}),
+            W(ctx, "shortcode", {"shortcode": "[zap_group_logo]"}),
+        ]),
+    ])
+    foot = C(ctx, "zs-footer", [cols, mark, bar], tag="footer", inner=False)
+    return [lead, foot]

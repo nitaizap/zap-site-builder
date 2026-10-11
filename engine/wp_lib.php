@@ -289,6 +289,11 @@ function zs_task_finish($p) {
             ['_id' => 'zsbg', 'title' => 'רקע', 'color' => $c['bg'] ?? '#ffffff'],
             ['_id' => 'zssurf', 'title' => 'משטח', 'color' => $c['surface'] ?? '#f4f6fa'],
             ['_id' => 'zsdark', 'title' => 'כהה', 'color' => $c['dark'] ?? '#0b1220'],
+            ['_id' => 'zsdarkink', 'title' => 'טקסט על כהה', 'color' => $c['dark_ink'] ?? '#e8edf6'],
+            ['_id' => 'zsprimaryink', 'title' => 'טקסט על ראשי', 'color' => $c['primary_ink'] ?? '#ffffff'],
+            ['_id' => 'zsaccentink', 'title' => 'טקסט על הדגשה', 'color' => $c['accent_ink'] ?? '#111827'],
+            ['_id' => 'zsmuted', 'title' => 'טקסט משני', 'color' => $c['muted'] ?? '#64748b'],
+            ['_id' => 'zsline', 'title' => 'קווים', 'color' => $c['line'] ?? '#e2e8f0'],
         ];
         $fam = fn($id, $title, $font, $w) => ['_id' => $id, 'title' => $title, 'typography_typography' => 'custom',
                                              'typography_font_family' => $font, 'typography_font_weight' => $w];
@@ -305,4 +310,36 @@ function zs_task_finish($p) {
         update_post_meta($kit_id, '_elementor_page_settings', wp_slash($s));
     }
     echo "finish: menus, logo, yoast, kit\n";
+}
+
+/* ---------------- header / footer templates ----------------
+   Saved as Elementor documents so a person edits them in Elementor like any page. With Elementor Pro they are
+   Theme Builder 'header'/'footer' templates shown site-wide (include/general); without Pro they are plain
+   saved templates that the Zap Base theme renders in the same places. Stable by _zs_key, rebuilt in place. */
+function zs_task_templates($p) {
+    $pro = defined('ELEMENTOR_PRO_VERSION');
+    $out = [];
+    foreach (['header', 'footer'] as $slot) {
+        $type = $pro ? $slot : 'section';
+        $id = zs_find('elementor_library', "__tpl_$slot");
+        if ($id && get_post_meta($id, '_elementor_template_type', true) !== $type) { wp_delete_post($id, true); $id = 0; }
+        if (!$id) {
+            $doc = \Elementor\Plugin::$instance->documents->create($type, [
+                'post_title' => ($slot === 'header' ? 'Header' : 'Footer') . ' — ' . $p['name'], 'post_status' => 'publish']);
+            if (is_wp_error($doc) || !$doc) { fwrite(STDERR, "template create failed: $slot\n"); continue; }
+            $id = $doc->get_main_id();
+            update_post_meta($id, '_zs_key', "__tpl_$slot");
+        }
+        $doc = \Elementor\Plugin::$instance->documents->get($id, false);
+        $doc->save(['elements' => $p[$slot]]);
+        if ($pro) {
+            update_post_meta($id, '_elementor_conditions', ['include/general']);
+        }
+        update_option("zs_tpl_$slot", $id);
+        $out[] = "$slot=$id";
+    }
+    if ($pro && class_exists('\ElementorPro\Modules\ThemeBuilder\Module')) {
+        \ElementorPro\Modules\ThemeBuilder\Module::instance()->get_conditions_manager()->get_cache()->regenerate();
+    }
+    echo 'templates: ' . implode(' ', $out) . ($pro ? ' (Theme Builder)' : ' (saved templates)') . "\n";
 }

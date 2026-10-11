@@ -13,18 +13,12 @@ $cta   = zs_opt('header.cta_label', '');
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="zs-skip" href="#content">דלג לתוכן הראשי</a>
-<?php if (zs_opt('header.topbar', true)) :
-  $tb_text = zs_opt('header.topbar_text', zs_opt('site.tagline'));
-  $email   = zs_opt('business.email_public');
-  $hours   = (array) zs_opt('business.hours', []); ?>
+<?php if (!zs_render_tpl('header')) : ?>
+<?php if (zs_opt('header.topbar', true)) : ?>
 <div class="zs-topbar">
   <div class="zs-wrap zs-topbar__in">
-    <span><?php echo esc_html($tb_text); ?></span>
-    <ul>
-      <?php if ($hours) : ?><li><?php echo esc_html($hours[0]); ?></li><?php endif; ?>
-      <?php if ($email) : ?><li><a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a></li><?php endif; ?>
-      <?php if ($tel) : ?><li><a href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo esc_html($phone); ?></a></li><?php endif; ?>
-    </ul>
+    <span><?php echo esc_html(zs_opt('header.topbar_text', zs_opt('site.tagline'))); ?></span>
+    <?php echo zs_part_topbar_meta(); ?>
   </div>
 </div>
 <?php endif; ?>
@@ -41,22 +35,11 @@ $cta   = zs_opt('header.cta_label', '');
       }
       ?>
     </a>
-    <nav id="zs-nav" class="zs-nav" aria-label="תפריט ראשי">
-      <?php wp_nav_menu([
-          'theme_location' => 'primary',
-          'container'      => false,
-          'menu_class'     => 'zs-menu',
-          'depth'          => 2,
-          'fallback_cb'    => false,
-      ]); ?>
-      <?php if ($tel) : ?>
-      <a class="zs-btn zs-btn--primary zs-nav__cta" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span><?php echo esc_html($cta ?: $phone); ?></span></a>
-      <?php endif; ?>
-    </nav>
+    <?php echo zs_part_nav(); ?>
     <?php if ($tel) : ?>
     <a class="zs-btn zs-btn--primary zs-header__cta" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span><?php echo esc_html($phone); ?></span></a>
     <?php endif; ?>
-    <button class="zs-burger" type="button" aria-expanded="false" aria-controls="zs-nav" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>
   </div>
 </header>
+<?php endif; ?>
 <main id="content" class="zs-main" tabindex="-1">

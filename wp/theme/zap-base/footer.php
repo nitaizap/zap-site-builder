@@ -12,13 +12,14 @@ $a11y    = zs_opt('standards.accessibility_url', 'https://zap.dbusiness.co/js/ac
 $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact';
 ?>
 </main>
+<?php if (!zs_render_tpl('footer')) : ?>
 <?php if (!$is_contact && shortcode_exists('zap_form')) : ?>
 <section class="zs-leadband" id="leave-details" aria-labelledby="zs-leadband-title">
   <div class="zs-wrap zs-leadband__in">
     <div class="zs-leadband__text">
       <h2 id="zs-leadband-title"><?php echo esc_html(zs_opt('form.title', 'השאירו פרטים ונחזור אליכם')); ?></h2>
       <p><?php echo esc_html(zs_opt('form.text', 'ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.')); ?></p>
-      <?php if ($tel) : ?><p class="zs-leadband__or">או התקשרו: <a href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo esc_html($phone); ?></a></p><?php endif; ?>
+      <?php echo zs_part_call_line(); ?>
     </div>
     <?php echo do_shortcode('[zap_form id="footer"]'); ?>
   </div>
@@ -33,33 +34,24 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
     <?php if (has_nav_menu('footer')) : ?>
     <nav class="zs-footer__col" aria-labelledby="zs-f-links">
       <h2 class="zs-footer__title" id="zs-f-links"><?php echo esc_html(zs_opt('footer.links_title', 'השירותים שלנו')); ?></h2>
-      <?php wp_nav_menu(['theme_location' => 'footer', 'container' => false, 'menu_class' => 'zs-footer__links', 'depth' => 1]); ?>
+      <?php echo zs_part_menu('footer'); ?>
     </nav>
     <?php endif; ?>
     <div class="zs-footer__col">
       <h2 class="zs-footer__title">יצירת קשר</h2>
-      <ul class="zs-footer__contact">
-        <?php if ($tel) : ?><li><?php echo zs_icon('phone'); ?><a href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo esc_html($phone); ?></a></li><?php endif; ?>
-        <?php if ($wa) : ?><li><?php echo zs_icon('whatsapp'); ?><a href="<?php echo esc_url(zs_wa_href($wa, $wa_text)); ?>" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li><?php endif; ?>
-        <?php if ($address) : ?><li><?php echo zs_icon('pin'); ?><span><?php echo esc_html($address); ?></span></li><?php endif; ?>
-        <?php foreach ($hours as $h) : ?><li><?php echo zs_icon('clock'); ?><span><?php echo esc_html($h); ?></span></li><?php endforeach; ?>
-      </ul>
+      <?php echo zs_part_footer_contact(); ?>
     </div>
   </div>
   <div class="zs-footer__mark" aria-hidden="true"><?php echo esc_html($name); ?></div>
   <div class="zs-footer__bar">
     <div class="zs-wrap zs-footer__bar-in">
-      <p>© <?php echo esc_html(date('Y') . ' ' . $name); ?> — כל הזכויות שמורות<?php if (zs_opt('footer.ai_images_note')) echo ' · ' . esc_html(zs_opt('footer.ai_images_note')); ?></p>
-      <ul class="zs-footer__legal">
-        <li><a href="<?php echo esc_url($privacy); ?>">מדיניות פרטיות</a></li>
-        <li><a href="<?php echo esc_url($a11y); ?>" target="_blank" rel="noopener">הצהרת נגישות אתר</a></li>
-      </ul>
-      <a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener">
-        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/zap-group.webp'); ?>" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async">
-      </a>
+      <?php echo zs_part_copyright(); ?>
+      <?php echo zs_part_legal(); ?>
+      <?php echo zs_part_group_logo(); ?>
     </div>
   </div>
 </footer>
+<?php endif; ?>
 <?php if ($tel || $wa) : ?>
 <div class="zs-fab" aria-label="יצירת קשר מהירה">
   <?php if ($tel) : ?><a class="zs-fab__call" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span>התקשרו</span></a><?php endif; ?>

@@ -43,3 +43,26 @@ def icon_svg(name):
     return ('<svg class="zs-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" '
             'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
             + p + "</svg>")
+
+
+# Native Elementor icon widgets (Font Awesome 5 free, bundled with Elementor and rendered as inline SVG):
+# the client swaps an icon with Elementor's icon picker instead of editing SVG code.
+FA = {
+    "check": ("fas fa-check", "fa-solid"), "shield": ("fas fa-shield-alt", "fa-solid"), "clock": ("far fa-clock", "fa-regular"),
+    "phone": ("fas fa-phone-alt", "fa-solid"), "wrench": ("fas fa-wrench", "fa-solid"), "tools": ("fas fa-tools", "fa-solid"),
+    "home": ("fas fa-home", "fa-solid"), "building": ("far fa-building", "fa-regular"), "users": ("fas fa-users", "fa-solid"),
+    "user": ("far fa-user", "fa-regular"), "award": ("fas fa-award", "fa-solid"), "truck": ("fas fa-truck", "fa-solid"),
+    "droplet": ("fas fa-tint", "fa-solid"), "bolt": ("fas fa-bolt", "fa-solid"), "leaf": ("fas fa-leaf", "fa-solid"),
+    "heart": ("far fa-heart", "fa-regular"), "chat": ("far fa-comment-dots", "fa-regular"), "map": ("fas fa-map-marker-alt", "fa-solid"),
+    "calendar": ("far fa-calendar-alt", "fa-regular"), "search": ("fas fa-search", "fa-solid"), "document": ("far fa-file-alt", "fa-regular"),
+    "lock": ("fas fa-lock", "fa-solid"), "sparkle": ("fas fa-star", "fa-solid"), "ruler": ("fas fa-ruler-combined", "fa-solid"),
+    "money": ("far fa-money-bill-alt", "fa-regular"), "car": ("fas fa-car", "fa-solid"), "scale": ("fas fa-balance-scale", "fa-solid"),
+    "medical": ("fas fa-briefcase-medical", "fa-solid"), "star-badge": ("fas fa-certificate", "fa-solid"), "thumb": ("far fa-thumbs-up", "fa-regular"),
+    "target": ("fas fa-bullseye", "fa-solid"), "globe": ("fas fa-globe", "fa-solid"), "scooter": ("fas fa-motorcycle", "fa-solid"),
+    "van": ("fas fa-shuttle-van", "fa-solid"),
+}
+
+
+def fa_icon(name):
+    value, lib = FA.get(name, FA["check"])
+    return {"value": value, "library": lib}

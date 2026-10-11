@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 from images import prepare_image
-from sections import Ctx, render_page
+from sections import Ctx, footer_template, header_template, render_page
 from validate import validate
 
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
@@ -129,6 +129,11 @@ def build(site, only=None):
             "noindex": bool(p.get("noindex")),
         })
     log.append(run_php(site, "pages", {"pages": payload}))
+
+    # 3b. header + footer as Elementor templates (Theme Builder header/footer where Elementor Pro runs)
+    tctx = Ctx("__tpl", media, data)
+    log.append(run_php(site, "templates", {"header": header_template(tctx), "footer": footer_template(tctx),
+                                           "name": data["business"]["name"]}))
 
     # 4. blog posts
     posts = []

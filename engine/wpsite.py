@@ -85,12 +85,20 @@ class Site:
         self.wp("language", "core", "install", locale, check=False)
         self.wp("language", "plugin", "install", "--all", locale, check=False)
         self.wp("option", "update", "WPLANG", locale)
+        self.ensure_parent_theme()
         self.wp("theme", "activate", "zap-base")
         self.wp("plugin", "activate", "zap-site")
         self.base_settings()
 
+    def ensure_parent_theme(self):
+        """Zap Base is a child of Hello Elementor (Zap's base theme): the parent must be installed."""
+        if not (self.wp_dir / "wp-content/themes/hello-elementor/style.css").exists():
+            self.wp("theme", "install", "hello-elementor")
+
     def install_code(self):
         """Copy our theme + plugin from the repo (idempotent, run on every build)."""
+        if (self.wp_dir / "wp-load.php").exists():
+            self.ensure_parent_theme()
         for src, dst in ((WP_SRC / "theme" / "zap-base", self.wp_dir / "wp-content/themes/zap-base"),
                          (WP_SRC / "plugin" / "zap-site", self.wp_dir / "wp-content/plugins/zap-site")):
             if dst.exists():

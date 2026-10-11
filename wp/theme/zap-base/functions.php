@@ -61,6 +61,16 @@ add_action('after_setup_theme', function () {
     $GLOBALS['content_width'] = 1200;
 }, 0);
 
+/* ---------- Hello Elementor parent ----------
+   Zap's base installs run Hello Elementor; this theme is its child so the base stays intact and Elementor Pro
+   Theme Builder locations keep working. Hello's own CSS and meta tags are switched off: Zap Base styles
+   everything, and Yoast owns the description (a second one fails QA). */
+add_filter('hello_elementor_enqueue_style', '__return_false');
+add_filter('hello_elementor_enqueue_theme_style', '__return_false');
+add_filter('hello_elementor_header_footer', '__return_false');
+add_filter('hello_elementor_description_meta_tag', '__return_false');
+add_filter('hello_elementor_content_width', fn() => 1200);
+
 /* ---------- assets ---------- */
 
 function zs_font_slug($family) {
@@ -68,8 +78,8 @@ function zs_font_slug($family) {
 }
 
 add_action('wp_enqueue_scripts', function () {
-    $dir = get_template_directory();
-    $uri = get_template_directory_uri();
+    $dir = get_stylesheet_directory();
+    $uri = get_stylesheet_directory_uri();
     $fonts = array_unique(array_filter([zs_opt('design.fonts.heading', 'Rubik'), zs_opt('design.fonts.body', 'Assistant')]));
     foreach ($fonts as $f) {
         $s = zs_font_slug($f);
@@ -85,8 +95,8 @@ add_action('wp_enqueue_scripts', function () {
 
 /** Preload the two font files that paint the first screen. */
 add_action('wp_head', function () {
-    $dir = get_template_directory();
-    $uri = get_template_directory_uri();
+    $dir = get_stylesheet_directory();
+    $uri = get_stylesheet_directory_uri();
     $done = [];
     foreach ([zs_opt('design.fonts.heading', 'Rubik'), zs_opt('design.fonts.body', 'Assistant')] as $f) {
         $s = zs_font_slug($f);
@@ -136,6 +146,22 @@ function zs_tokens_css() {
     $r = (int) ($d['radius'] ?? 14);
     $css .= "--r:{$r}px;--r-sm:" . max(0, round($r * .6)) . 'px;--r-lg:' . round($r * 1.6) . 'px;';
     $css .= '}';
+    // Elementor Site Settings (kit) own the brand values: the build writes them there, and a person who changes a
+    // global colour or font in Elementor changes the whole site. Kit variables live on body (.elementor-kit-N),
+    // so the tokens are re-declared on body; :root keeps the plain values as the fallback. Gate previews
+    // (?zs_dir=) show their own colours, so they skip this layer.
+    if (empty($_GET['zs_dir'])) {
+        $kit = ['primary' => 'primary', 'primary-ink' => 'zsprimaryink', 'accent' => 'accent', 'accent-ink' => 'zsaccentink',
+                'ink' => 'secondary', 'text' => 'text', 'muted' => 'zsmuted', 'bg' => 'zsbg', 'surface' => 'zssurf',
+                'line' => 'zsline', 'dark' => 'zsdark', 'dark-ink' => 'zsdarkink'];
+        $css .= 'body{';
+        foreach ($kit as $k => $id) {
+            $v = $c[str_replace('-', '_', $k)] ?? $c[$k] ?? $map[$k];
+            if (preg_match('/^#[0-9a-fA-F]{3,8}$/', $v)) $css .= "--c-$k:var(--e-global-color-$id,$v);";
+        }
+        $css .= "--f-head:var(--e-global-typography-primary-font-family,'$h'),system-ui,sans-serif;"
+              . "--f-body:var(--e-global-typography-text-font-family,'$b'),system-ui,sans-serif;}";
+    }
     // Per-site escape hatch for the rare client-specific tweak; the shared theme stays untouched.
     if (!empty($d['custom_css']) && is_string($d['custom_css'])) {
         $css .= "\n" . wp_strip_all_tags($d['custom_css']);
@@ -151,6 +177,7 @@ add_filter('body_class', function ($classes) {
     $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');
     if (($d['header'] ?? 'light') === 'dark' && zs_opt('logo_light_id')) $classes[] = 'zs-has-logo-light';
     if (zs_is_elementor()) $classes[] = 'zs-built';
+    if (is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact') $classes[] = 'zs-is-contact';
     return $classes;
 });
 
@@ -185,6 +212,81 @@ function zs_icon($name) {
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     ];
     return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ($p[$name] ?? '') . '</svg>';
+}
+
+
+/* ---------- site parts: shared by the Elementor header/footer templates (as shortcodes) and the PHP fallback ---------- */
+
+function zs_part_topbar_meta() {
+    $tel = zs_opt('business.phone_e164'); $email = zs_opt('business.email_public'); $hours = (array) zs_opt('business.hours', []);
+    $o = '<ul class="zs-topbar__list">';
+    if ($hours) $o .= '<li>' . esc_html($hours[0]) . '</li>';
+    if ($email) $o .= '<li><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></li>';
+    if ($tel)   $o .= '<li><a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></li>';
+    return $o . '</ul>';
+}
+
+function zs_part_nav() {
+    $tel = zs_opt('business.phone_e164'); $cta = zs_opt('header.cta_label', '');
+    $o = '<nav id="zs-nav" class="zs-nav" aria-label="תפריט ראשי">';
+    $o .= wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'zs-menu', 'depth' => 2, 'fallback_cb' => false, 'echo' => false]) ?: '';
+    if ($tel) $o .= '<a class="zs-btn zs-btn--primary zs-nav__cta" href="' . esc_attr(zs_tel_href($tel)) . '">' . zs_icon('phone') . '<span>' . esc_html($cta ?: zs_opt('business.phone_display')) . '</span></a>';
+    $o .= '</nav><button class="zs-burger" type="button" aria-expanded="false" aria-controls="zs-nav" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>';
+    return $o;
+}
+
+function zs_part_menu($location) {
+    return wp_nav_menu(['theme_location' => $location, 'container' => false, 'menu_class' => 'zs-footer__links', 'depth' => 1, 'fallback_cb' => false, 'echo' => false]) ?: '';
+}
+
+function zs_part_footer_contact() {
+    $tel = zs_opt('business.phone_e164'); $wa = zs_opt('business.whatsapp_e164');
+    $wa_text = zs_opt('business.whatsapp_text', 'שלום, הגעתי מהאתר ואשמח לפרטים');
+    $o = '<ul class="zs-footer__contact">';
+    if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></li>';
+    if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
+    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($a) . '</span></li>';
+    foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
+    return $o . '</ul>';
+}
+
+function zs_part_copyright() {
+    $name = zs_opt('business.name', get_bloginfo('name'));
+    $note = zs_opt('footer.ai_images_note');
+    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . ' — כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
+}
+
+function zs_part_legal() {
+    $privacy = zs_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
+    $a11y = zs_opt('standards.accessibility_url', 'https://zap.dbusiness.co/js/accessibility.html');
+    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '">מדיניות פרטיות</a></li>'
+         . '<li><a href="' . esc_url($a11y) . '" target="_blank" rel="noopener">הצהרת נגישות אתר</a></li></ul>';
+}
+
+function zs_part_group_logo() {
+    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'
+         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group.webp') . '" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
+}
+
+function zs_part_call_line() {
+    $tel = zs_opt('business.phone_e164');
+    return $tel ? '<p class="zs-leadband__or">או התקשרו: <a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></p>' : '';
+}
+
+foreach (['topbar_meta', 'nav', 'footer_contact', 'copyright', 'legal', 'group_logo', 'call_line'] as $zs_part) {
+    add_shortcode("zap_$zs_part", fn() => call_user_func("zs_part_$zs_part"));
+}
+add_shortcode('zap_menu', fn($a) => zs_part_menu(shortcode_atts(['location' => 'footer'], $a)['location']));
+
+/** Print the Elementor header/footer template for this slot. Elementor Pro Theme Builder first, then our saved template. */
+function zs_render_tpl($slot) {
+    if (function_exists('elementor_theme_do_location') && elementor_theme_do_location($slot)) return true;
+    $id = (int) get_option("zs_tpl_$slot");
+    if (!$id || !class_exists('\Elementor\Plugin') || get_post_status($id) !== 'publish') return false;
+    $html = \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($id, true);
+    if (!$html) return false;
+    echo '<div class="zs-tpl zs-tpl-' . esc_attr($slot) . '">' . $html . '</div>';
+    return true;
 }
 
 /* ---------- head hygiene ---------- */

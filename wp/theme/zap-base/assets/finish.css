@@ -120,7 +120,7 @@ body:not(.zs-p-signature) {
 
   /* features & steps: hairlines and numerals instead of floating boxes */
   & .e-con.zs-feature { border-top: 1px solid var(--c-line); padding-top: 22px; }
-  & .zs-feature__icon .zs-svg { width: 44px; height: 44px; padding: 9px; border-radius: var(--r-sm); }
+  & .zs-feature__icon :is(.zs-svg, .elementor-icon) { width: 44px; height: 44px; padding: 9px; border-radius: var(--r-sm); }
   & .zs-step__title .elementor-heading-title, & .zs-feature__title .elementor-heading-title { font-size: 1.22rem; }
   & .e-con.zs-step { border-top: 1px solid var(--c-line); padding-top: 72px; }
   & .e-con.zs-step::before { top: 22px; width: auto; height: auto; background: none; color: var(--c-primary); font-size: 2.1rem; font-weight: 800; line-height: 1; border-radius: 0; border: 0; content: counter(zs-step, decimal-leading-zero); }

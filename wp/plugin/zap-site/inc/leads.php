@@ -33,6 +33,8 @@ function zap_form_token_age($token) {
 
 add_shortcode('zap_form', function ($atts) {
     $a = shortcode_atts(['id' => 'main', 'message' => 'yes', 'email' => 'no', 'button' => ''], $atts);
+    // the contact page has its own full form; the site-wide footer form stays out of its markup
+    if ($a['id'] === 'footer' && is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact') return '';
     $uid = 'zf-' . sanitize_key($a['id']);
     $privacy = zap_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
     $button = $a['button'] ?: zap_opt('form.button', 'שליחה');
