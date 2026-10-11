@@ -20,6 +20,22 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 
 Speak to the user in their language (usually Hebrew). Keep messages short; the files carry the detail.
 
+## What to read, when
+
+SKILL.md is the order of work; the depth is in `references/` and in two built examples. Read the file for a step
+before doing the step — every one encodes mistakes already made.
+
+| when | read |
+|---|---|
+| before a new site (once) | `references/playbook.md` — the reference build round by round: what the user rejected, what "high end" means, every pitfall paid for |
+| intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
+| plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
+| design + gate | `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
+| images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
+| deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
+| examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
+| engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
+
 ## Iron rules
 
 1. **Never invent a business fact.** Years, licences, numbers, prices, addresses, staff, results, reviews,
@@ -64,7 +80,8 @@ email do block.
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`, a complete example in `examples/sample-plumber/site.json`.
+  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the
+  structure and finish level, never from a blank file.
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
 ## 3 · Preview — ⏸ the one gate

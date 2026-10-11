@@ -7,7 +7,7 @@ Zap customer 80240748 (from the brief title; not confirmed as the Dapei Zahav cu
 |---|---|---|
 | name | מהירות האור שליחויות | brief |
 | display phone | 072-2599648 (Zap tracking number) | brief + user confirmed 2026-10-07 |
-| WhatsApp | 055-9686670 | Dapei Zahav listing https://www.d.co.il/80240748/49050/ (WhatsApp button). Brief's 050-6785822 is the contact person's mobile, not on the listing |
+| WhatsApp | 055-9686670 | Dapei Zahav listing https://www.d.co.il/80240748/49050/ (WhatsApp button). Brief's the contact's mobile (in the brief) is the contact person's mobile, not on the listing |
 | lead email | shirana221@gmail.com | brief |
 | public email | shirana221@gmail.com | brief |
 | address | בר אילן 23, חיפה | brief; d.co.il shows "בר אילן 23, קריית חיים חיפה" |

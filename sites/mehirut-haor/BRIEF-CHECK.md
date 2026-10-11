@@ -17,7 +17,7 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | brief | on the site |
 |---|---|
 | שם העסק, כתובת בר אילן 23 חיפה | ✅ footer, contact page, schema |
-| טלפון לאתר | ➖ 072-2599648 (Zap tracking number, confirmed by the user 2026-10-07) instead of 050-6785822 |
+| טלפון לאתר | ➖ 072-2599648 (Zap tracking number, confirmed by the user 2026-10-07) instead of the contact's mobile (in the brief) |
 | מייל, שעות א׳–ה׳ 8–18, ו׳ 8–13 | ✅ footer + contact page + schema |
 | פייסבוק | ✅ footer |
 | וואטסאפ / אינסטגרם / לינקדאין / GMB | ➖ empty in the brief; WhatsApp +972559686670 and GMB found in research (NOTES.md); no Instagram/LinkedIn found |
