@@ -140,6 +140,9 @@ def _scroll_all(page):
     page.evaluate("""async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
       document.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
       await Promise.all([...document.images].map(i => i.complete ? null : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 4000); })));
+      // one re-fetch for images that failed on a network drop; a truly broken image stays broken
+      await Promise.all([...document.images].filter(i => i.complete && i.currentSrc && !i.naturalWidth).map(i => new Promise(r => {
+        i.onload = i.onerror = r; setTimeout(r, 5000); i.removeAttribute('srcset'); i.src = i.currentSrc + (i.currentSrc.includes('?') ? '&' : '?') + 'zsretry=1'; })));
       window.scrollTo(0, 0); }""")
     page.wait_for_timeout(250)
 
@@ -277,6 +280,11 @@ def run_qa(site):
             for u in urls:
                 console.clear()
                 resp = page.goto(u, wait_until="networkidle")
+                for _ in range(2):     # a gateway hiccup (proxy / host) is retried, a real error stays
+                    if resp is None or resp.status not in (502, 503, 504):
+                        break
+                    page.wait_for_timeout(3000)
+                    resp = page.goto(u, wait_until="networkidle")
                 _scroll_all(page)
                 m = page.evaluate(MEASURE_JS)
                 if resp.status != 200:
@@ -292,11 +300,14 @@ def run_qa(site):
                 page.goto(site.url + "/", wait_until="networkidle")
                 page.click(".zs-burger")
                 page.wait_for_timeout(450)
-                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'")
+                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
+                                       # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
+                                       " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
+                                       " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
                 page.keyboard.press("Escape")
                 page.wait_for_timeout(350)
                 closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
-                extra.append(("mobile menu opens / Escape closes", opened and closed))
+                extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
                 if not (opened and closed):
                     errors += 1
                 ok_msg, saved, mailed = test_form(page, site)

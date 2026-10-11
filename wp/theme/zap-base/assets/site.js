@@ -19,6 +19,10 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
     nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
     window.matchMedia('(min-width: 1025px)').addEventListener('change', function () { setOpen(false); });
+    // while the menu is open the page behind it must not scroll; touch/wheel outside the menu is ignored
+    var block = function (e) { if (root.classList.contains('zs-nav-open') && !e.target.closest('#zs-nav')) e.preventDefault(); };
+    document.addEventListener('touchmove', block, { passive: false });
+    document.addEventListener('wheel', block, { passive: false });
   }
 
   /* ---------- header state ---------- */
