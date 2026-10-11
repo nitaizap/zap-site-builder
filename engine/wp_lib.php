@@ -353,7 +353,11 @@ function zs_task_templates($p) {
         $out[] = "$slot=$id";
     }
     if ($pro && class_exists('\ElementorPro\Modules\ThemeBuilder\Module')) {
-        \ElementorPro\Modules\ThemeBuilder\Module::instance()->get_conditions_manager()->get_cache()->regenerate();
+        try {   // refresh Pro's display-condition cache; an API change must never fail the whole build
+            \ElementorPro\Modules\ThemeBuilder\Module::instance()->get_conditions_manager()->get_cache()->regenerate();
+        } catch (\Throwable $e) {
+            fwrite(STDERR, 'theme builder cache: ' . $e->getMessage() . "\n");
+        }
     }
     echo 'templates: ' . implode(' ', $out) . ($pro ? ' (Theme Builder)' : ' (saved templates)') . "\n";
 }
