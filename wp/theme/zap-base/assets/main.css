@@ -123,7 +123,8 @@ body .e-con.zs-btns > .elementor-element { width: auto; --container-widget-width
   .zs-nav { position: fixed; inset: var(--header-h) 0 0 0; margin: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 16px var(--gutter) 32px; background: var(--c-bg); overflow-y: auto; transform: translateX(100%); visibility: hidden; transition: transform .3s var(--ease), visibility .3s; }
   .admin-bar .zs-nav { top: calc(var(--header-h) + 46px); }
   .zs-nav-open .zs-nav { transform: none; visibility: visible; }
-  .zs-nav-open body { overflow: hidden; }
+  /* background scroll is blocked in site.js (an overflow lock resets the scroll position under Elementor) */
+  .zs-nav { overscroll-behavior: contain; }
   .zs-menu { flex-direction: column; align-items: stretch; gap: 0; }
   .zs-menu > li { border-bottom: 1px solid var(--c-line); }
   .zs-menu a, .zs-h-dark .zs-menu > li > a { padding: 14px 4px; font-size: 1.1rem; color: var(--c-ink); background: none; }
@@ -957,3 +958,26 @@ body .zs-route__icon .elementor-icon i { font-size: 28px; }
   /* vertical route: the rider runs down the line; the outline keeps it readable over the chips */
   .zs-route__rider { bottom: auto; top: calc(var(--pr, var(--p)) * 100%); }
 }
+
+/* phones/tablets: no frosted header. backdrop-filter makes the header the containing block of the fixed
+   mobile menu, which then gets clipped to the header's height and the page shows through */
+@media (max-width: 1024px) {
+  .zs-header, body .e-con.zs-header { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--c-bg); }
+}
+
+/* phones: calmer, centred rhythm */
+@media (max-width: 767px) {
+  /* buttons: one full-width stack, same width everywhere */
+  .zs-btns, body .e-con.zs-btns { --flex-direction: column; flex-direction: column; --align-items: stretch; align-items: stretch; width: 100%; }
+  .zs-btns .elementor-widget-button, .zs-btns .zs-b { width: 100%; max-width: none; --container-widget-width: 100%; }
+  .zs-btns .elementor-button { width: 100%; justify-content: center; }
+  /* road: labels as centred chips, scene closer to its neighbours */
+  body .e-con.zs-road { --padding-top: 20px; --padding-bottom: 8px; }
+  .zs-road__labels { gap: 8px; margin-bottom: 16px; font-size: .95rem; }
+  .zs-road__labels li { padding: 7px 14px; border: 1px solid var(--c-line); border-radius: var(--r-sm, 2px); background: var(--c-bg); }
+  .zs-road__labels li + li::before { display: none; }
+  .zs-road__scene { height: 168px; }
+  .zs-road__v { height: 60px; }
+  .zs-road__v:nth-child(odd) { height: 50px; }
+}
+@media (max-width: 767px) { body .e-con.zs-sec:has(+ .e-con.zs-road) { --padding-bottom: 28px; } }
