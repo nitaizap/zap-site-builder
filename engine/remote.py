@@ -160,13 +160,23 @@ class NovamiraSite:
 
     # ---------- transport ----------
     def _post(self, path, body, headers=None, method="POST", timeout=180):
-        req = urllib.request.Request(self.url + path, data=body, method=method,
-                                     headers={"Authorization": self._auth, **(headers or {})})
-        try:
-            with self._open(req, timeout=timeout) as r:
-                return r.status, r.read()
-        except urllib.error.HTTPError as e:
-            return e.code, e.read()
+        """One REST call; dropped connections and gateway hiccups are retried (every build step is idempotent)."""
+        import time
+        for attempt in range(5):
+            req = urllib.request.Request(self.url + path, data=body, method=method,
+                                         headers={"Authorization": self._auth, **(headers or {})})
+            try:
+                with self._open(req, timeout=timeout) as r:
+                    return r.status, r.read()
+            except urllib.error.HTTPError as e:
+                if e.code in (502, 503, 504) and attempt < 4:
+                    time.sleep(2 * 2 ** attempt)
+                    continue
+                return e.code, e.read()
+            except (urllib.error.URLError, ConnectionError, TimeoutError, OSError):
+                if attempt == 4:
+                    raise
+                time.sleep(2 * 2 ** attempt)
 
     def ability(self, name, inp, timeout=180):
         st, raw = self._post(f"/wp-json/novamira/v1/abilities/{name}/run",
@@ -272,12 +282,21 @@ class NovamiraSite:
         return link["path"]
 
     def _post_url(self, url, body, headers, method="PUT"):
-        req = urllib.request.Request(url, data=body, method=method, headers=headers)   # the upload token is the auth
-        try:
-            with self._open(req, timeout=600) as r:
-                return r.status, r.read()
-        except urllib.error.HTTPError as e:
-            return e.code, e.read()
+        import time
+        for attempt in range(5):
+            req = urllib.request.Request(url, data=body, method=method, headers=headers)   # the upload token is the auth
+            try:
+                with self._open(req, timeout=600) as r:
+                    return r.status, r.read()
+            except urllib.error.HTTPError as e:
+                if e.code in (502, 503, 504) and attempt < 4:
+                    time.sleep(2 * 2 ** attempt)
+                    continue
+                return e.code, e.read()
+            except (urllib.error.URLError, ConnectionError, TimeoutError, OSError):
+                if attempt == 4:
+                    raise
+                time.sleep(2 * 2 ** attempt)
 
     def install_code(self):
         """Our child theme + plugin onto the server (replaced in place), and the stack they need. Idempotent."""
