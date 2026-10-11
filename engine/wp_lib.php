@@ -83,6 +83,19 @@ function zs_task_media($p) {
     echo wp_json_encode($map, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
 }
 
+/* ---------------- what the server already holds (push skips unchanged media and pages) ---------------- */
+function zs_task_state($p) {
+    $out = ['media' => [], 'pages' => []];
+    foreach (get_posts(['post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => -1, 'meta_key' => '_zs_key']) as $a) {
+        $out['media'][get_post_meta($a->ID, '_zs_key', true)] = ['hash' => get_post_meta($a->ID, '_zs_hash', true), 'id' => $a->ID,
+            'url' => wp_get_attachment_url($a->ID)];
+    }
+    foreach (get_posts(['post_type' => ['page', 'post'], 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => '_zs_key']) as $q) {
+        $out['pages'][get_post_meta($q->ID, '_zs_key', true)] = get_post_status($q->ID) === 'publish' ? get_post_meta($q->ID, '_zs_phash', true) : '';
+    }
+    echo wp_json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+}
+
 /* ---------------- pages ---------------- */
 function zs_yoast_meta($seo, $noindex = false) {
     $m = [];
@@ -120,6 +133,7 @@ function zs_task_pages($p) {
         if ($id) { $arr['ID'] = $id; wp_update_post($arr); $updated++; }
         else     { $id = wp_insert_post($arr); $made++; }
         $ids[$pg['key']] = $id;
+        if (!empty($pg['phash'])) update_post_meta($id, '_zs_phash', $pg['phash']);   // lets a later push skip it when unchanged
 
         if (!empty($pg['image'])) set_post_thumbnail($id, (int) $pg['image']);
         else delete_post_thumbnail($id);

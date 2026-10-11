@@ -115,11 +115,21 @@ def build(site, only=None):
         prepared.append({"key": key, "file": str(src), "alt": "", "title": v.get("title", ""), "ai": bool(v.get("ai")),
                          "hash": hashlib.sha1(src.read_bytes()).hexdigest()})
     remote = getattr(site, "remote", False)
+    # a repeat push skips what the server already holds: media with the same file hash, pages with the same payload
+    state = {"media": {}, "pages": {}}
+    if remote and not getattr(site, "full", False):
+        state = json.loads(run_php(site, "state", {}).splitlines()[-1])
+        state["media"] = state["media"] or {}
+        state["pages"] = state["pages"] or {}
+    same = [it for it in prepared if (state["media"].get(it["key"]) or {}).get("hash") == it["hash"]]
+    todo = [it for it in prepared if it not in same]
     if remote:   # files travel to the server first; small batches keep every call under Novamira's 30 s limit
-        for it in prepared:
+        for it in todo:
             it["file"] = site.put(it["file"])
     media = {}
-    for batch in chunks(prepared, 2 if remote else len(prepared) or 1):
+    if same:     # unchanged: one call refreshes alt texts, no upload
+        media.update(json.loads(run_php(site, "media", {"items": same}).splitlines()[-1]))
+    for batch in chunks(todo, 2 if remote else len(todo) or 1) if todo else []:
         media.update(json.loads(run_php(site, "media", {"items": batch}).splitlines()[-1]))
     log.append(f"media: {len(media)} items")
     if "__logo_light" in media:
@@ -142,7 +152,12 @@ def build(site, only=None):
             "seo": p.get("seo", {}), "image": media.get(p.get("featured_image") or "", {}).get("id"),
             "noindex": bool(p.get("noindex")),
         })
-    for batch in chunks(payload, 1 if remote else len(payload) or 1):   # parents first, so children find them
+    for x in payload:
+        x["phash"] = hashlib.sha1(json.dumps(x, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    send = [x for x in payload if state["pages"].get(x["key"] or "__home") != x["phash"]]   # wp_lib stores home as "__home"
+    if len(send) < len(payload):
+        log.append(f"pages: {len(payload) - len(send)} unchanged, skipped")
+    for batch in chunks(send, 1 if remote else len(send) or 1) if send else []:   # parents first, so children find them
         log.append(run_php(site, "pages", {"pages": batch, "all_keys": [x["key"] for x in payload]}).strip())
 
     # 3b. header + footer as Elementor templates (Theme Builder header/footer where Elementor Pro runs)

@@ -50,7 +50,7 @@ bin/zs qa <slug> --site https://<client>.ussl.co.il         # full QA on the pus
 
 What `zs push` does, in order:
 1. checks the connection (WP/PHP/Elementor/Pro/theme) and refuses a site that already holds another business;
-2. **backs up the database to this machine** (`work/<slug>@<host>/backup-*.sql.gz`) — Novamira has no rollback;
+2. **backs up the database to this machine** (`work/<slug>@<host>/backup-*.sql.gz`, restore-tested) — Novamira has no rollback;
 3. sets the **staging lock** (`zs_staging_lock`): leads are saved but never mailed to the real client, noindex;
 4. installs our child theme (Zap Base, parent Hello Elementor — Zap's base theme stays) and the Zap Site plugin,
    and anything missing (Elementor, Yoast, Ally);
@@ -62,7 +62,9 @@ What `zs push` does, in order:
 Pushing again is safe: everything is matched by key and updated in place (same page and template IDs).
 **Ask for the Elementor editor to be closed** during a push — an open editor's save overwrites the push.
 
-A push takes ~5 minutes and a live QA ~8 (both batched through 30 s calls); run them in the background.
+A first push takes ~3–5 minutes; a repeat push ~1 minute, because code, media and pages the server already holds
+(same fingerprint) are skipped (`--full` resends everything, `ZS_TRACE=1` times every call). The backup is a few
+calls (~20 s, as many tables per call as fit in 15 s). Live QA ~1–2 minutes.
 After every push: `zs qa --site` (0 errors) **and** `zs shots <slug> all --site <url>` — the server can render
 differently from the local build (Elementor there outputs font icons `<i class="fas …">` where the local
 build has inline SVG; the host adds an accessibility toolbar; caches). Look at the shots, desktop and mobile.

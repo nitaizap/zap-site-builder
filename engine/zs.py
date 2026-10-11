@@ -115,6 +115,7 @@ def cmd_push(a):
     from build import build, load_site
     from remote import NovamiraError
     r = _remote(a)
+    r.full = a.full      # --full: resend code, files and pages even if the server already has them
     live = not any(r.host == h.lstrip(".") or r.host.endswith(h) for h in STAGING_HOSTS)
     if live and not a.live:
         die(f"{r.host} is not a staging host. Push to staging first; a live domain needs --live and the user's explicit go-ahead.")
@@ -263,7 +264,7 @@ def main():
     x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
     x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.set_defaults(f=cmd_connect)
     x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")
-    x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
+    x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--full", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
     x = sub.add_parser("static"); x.add_argument("slug"); x.set_defaults(f=cmd_static)

@@ -122,9 +122,10 @@ bin/zs shots <slug> all --site https://<client>.ussl.co.il   # LOOK at the pushe
 git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
 ```
 
-- **Timing**: a push takes ~5 min (Novamira runs 30 s per call, so the engine batches: backup, code,
-  media in pairs, one page per call) and a live QA ~8 min. Run them in the background and tell the user
-  up front; don't go silent.
+- **Timing**: a repeat push takes ~1 min: it skips the theme/plugin, media and pages the server already has
+  (fingerprints stored on the server), so a revision re-sends only what changed; the first push to a site
+  takes ~3–5 min. The backup runs every time (~20 s). Live QA takes ~1–2 min (viewports and link checks run
+  in parallel). `--full` resends everything; `ZS_TRACE=1` prints the time of every server call.
 - **The pushed site can render differently from the local build**: e.g. the server's Elementor outputs
   font icons (`<i class="fas …">`) where the local build outputs SVG; caches; host plugins (a11y toolbar).
   That is why `zs shots --site` is part of delivery, and why theme CSS must handle both icon forms.

@@ -217,26 +217,24 @@ def preview(site):
 
 
 def check_links(links):
-    bad = []
-    for u in sorted(links):
-        req = urllib.request.Request(u, method="GET")
-        opener = urllib.request.build_opener(NoRedirect)
-        try:
-            r = opener.open(req, timeout=20)
-            code = r.status
-        except urllib.error.HTTPError as e:
-            code = e.code
-        except Exception as e:
-            code = str(e)[:40]
-            try:   # one retry for dropped connections (remote hosts)
+    from concurrent.futures import ThreadPoolExecutor
+
+    def one(u):
+        code = None
+        for attempt in range(2):   # one retry for dropped connections (remote hosts)
+            try:
                 code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"), timeout=20).status
-            except urllib.error.HTTPError as e2:
-                code = e2.code
-            except Exception:
-                pass
-        if code != 200:
-            bad.append((urllib.parse.unquote(u), code))
-    return bad
+                break
+            except urllib.error.HTTPError as e:
+                code = e.code
+                break
+            except Exception as e:
+                code = str(e)[:40]
+        return u, code
+
+    with ThreadPoolExecutor(8) as ex:
+        res = list(ex.map(one, sorted(links)))
+    return [(urllib.parse.unquote(u), c) for u, c in res if c != 200]
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -268,9 +266,10 @@ def run_qa(site):
     urls = urls_for(site, data)
     rows, links, errors, warns = [], set(), 0, 0
     extra = []
-    with sync_playwright() as pw:
-        b = _launch(pw)
-        for vp, (w, h) in VIEWPORTS.items():
+    def one_viewport(vp, w, h):
+        rows, links, extra, errors, warns = [], set(), [], 0, 0
+        with sync_playwright() as pw:
+            b = _launch(pw)
             ctx = b.new_context(viewport={"width": w, "height": h}, locale="he-IL")
             page = ctx.new_page()
             console = []
@@ -311,7 +310,14 @@ def run_qa(site):
                 if r404.status != 404:
                     errors += 1
             ctx.close()
-        b.close()
+            b.close()
+        return rows, links, extra, errors, warns
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(len(VIEWPORTS)) as ex:
+        parts = list(ex.map(lambda kv: one_viewport(kv[0], *kv[1]), VIEWPORTS.items()))
+    for r_, l_, x_, e_, w_ in parts:      # desktop first, then mobile, as before
+        rows += r_; links |= l_; extra += x_; errors += e_; warns += w_
 
     bad_links = check_links(links)
     errors += len(bad_links)

@@ -13,12 +13,15 @@ Credentials are never printed, logged or committed. Lookup order:
   a JSON file {"user":..., "app_password":...} passed explicitly (local tests only)
 """
 import base64
+import hashlib
 import json
 import os
 import re
 import secrets
 import shutil
+import sys
 import tempfile
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -179,6 +182,16 @@ class NovamiraSite:
                 time.sleep(2 * 2 ** attempt)
 
     def ability(self, name, inp, timeout=180):
+        if os.environ.get("ZS_TRACE"):      # timing per server call: ZS_TRACE=1 zs push ...
+            t0 = time.time()
+            try:
+                return self._ability(name, inp, timeout)
+            finally:
+                what = (inp.get("code") or inp.get("filename") or inp.get("command") or "")[:90].replace("\n", " ") if isinstance(inp, dict) else ""
+                sys.stderr.write(f"[trace] {time.time() - t0:6.1f}s {name.split('/')[-1]:22} {what}\n")
+        return self._ability(name, inp, timeout)
+
+    def _ability(self, name, inp, timeout=180):
         st, raw = self._post(f"/wp-json/novamira/v1/abilities/{name}/run",
                              json.dumps({"input": inp}, ensure_ascii=False).encode("utf-8"),
                              {"Content-Type": "application/json"}, timeout=timeout)
@@ -189,7 +202,7 @@ class NovamiraSite:
         if st == 401 and self.cred_source == "oauth" and not getattr(self, "_refreshed", False):
             self._refreshed = True
             self._auth = "Bearer " + self._oauth_token(force_refresh=True)
-            return self.ability(name, inp, timeout)
+            return self._ability(name, inp, timeout)
         if st == 401:
             raise NovamiraError("401: the credential was refused (wrong user/application password, or a security plugin blocks REST auth)")
         if st == 403 and isinstance(data, dict) and data.get("code") == "novamira_disabled":
@@ -279,10 +292,13 @@ class NovamiraSite:
         dest = f"{self._tmp}/{name or local.name}"
         link = self.ability("novamira/create-upload-link", {"path": dest, "overwrite": True, "create_directories": True,
                                                              "expires_in": 900, "max_bytes": max(1024, local.stat().st_size + 1024)})
+        t0 = time.time()
         st, raw = self._post_url(link["upload_url"], local.read_bytes(), {link.get("token_header", "X-Novamira-Upload-Token"): link["upload_token"],
                                                                           "Content-Type": "application/octet-stream"}, method=link.get("method", "PUT"))
         if st >= 300:
             raise NovamiraError(f"upload of {local.name} failed: HTTP {st} {raw[:200]!r}")
+        if os.environ.get("ZS_TRACE"):
+            sys.stderr.write(f"[trace] {time.time() - t0:6.1f}s {'PUT':22} {local.name} {local.stat().st_size // 1024} KB\n")
         self._uploaded[key] = link["path"]
         return link["path"]
 
@@ -306,8 +322,23 @@ class NovamiraSite:
     def install_code(self):
         """Our child theme + plugin onto the server (replaced in place), and the stack they need. Idempotent."""
         tmp = Path(tempfile.mkdtemp(dir=self.dir))
+        srcs = (("themes", WP_SRC / "theme" / "zap-base"), ("plugins", WP_SRC / "plugin" / "zap-site"))
+        # a repeat push skips code the server already runs: one fingerprint per folder, stored as an option
+        sums = {}
+        for kind, src in srcs:
+            h = hashlib.sha1()
+            for f in sorted(x for x in src.rglob("*") if x.is_file()):
+                h.update(f.relative_to(src).as_posix().encode()); h.update(f.read_bytes())
+            sums[src.name] = h.hexdigest()
+        names = json.dumps(list(sums))
+        have_sums = {} if getattr(self, "full", False) else json.loads(self.eval_php(
+            f"$o = []; foreach (json_decode({json.dumps(names)}, true) as $n) {{ $d = get_option('zs_code_' . $n, '');"
+            " $o[$n] = (is_dir(WP_CONTENT_DIR . '/themes/' . $n) || is_dir(WP_CONTENT_DIR . '/plugins/' . $n)) ? $d : ''; }"
+            " echo wp_json_encode($o);").strip().splitlines()[-1] or "{}")
         try:
-            for kind, src in (("themes", WP_SRC / "theme" / "zap-base"), ("plugins", WP_SRC / "plugin" / "zap-site")):
+            for kind, src in srcs:
+                if have_sums.get(src.name) == sums[src.name]:
+                    continue
                 z = tmp / f"{src.name}.zip"
                 with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
                     for f in src.rglob("*"):
@@ -322,6 +353,7 @@ $dir = $dest . '/{src.name}';
 if (is_dir($dir)) {{ global $wp_filesystem; $wp_filesystem->delete($dir, true); }}
 $r = unzip_file({json.dumps(remote_zip)}, $dest);
 if (is_wp_error($r)) throw new Exception('unzip {src.name}: ' . $r->get_error_message());
+update_option('zs_code_{src.name}', '{sums[src.name]}', false);
 echo '{src.name} installed';
 """)
         finally:
@@ -336,26 +368,31 @@ echo '{src.name} installed';
         self.wp("plugin", "activate", "zap-site")
 
     def backup(self):
-        """Full SQL dump of the server's database, built in PHP (no WP-CLI needed) table by table, page by page so
-        every call stays far under the 30 s limit, and saved on THIS machine before anything is written."""
-        import gzip, time
+        """Full SQL dump of the server's database, built in PHP (no WP-CLI needed) and saved on THIS machine before
+        anything is written. Each call dumps as many tables/rows as fit in ~15 s (a 30 s limit per call), so a
+        typical Zap site takes 2-4 calls instead of two per table."""
+        import gzip
         tables = json.loads(self.eval_php("global $wpdb; echo wp_json_encode($wpdb->get_col('SHOW TABLES'));").strip().splitlines()[-1])
+        tb64 = base64.b64encode(json.dumps(tables).encode()).decode()
         out = self.dir / f"backup-{time.strftime('%Y%m%d-%H%M%S')}.sql.gz"
+        ti, off = 0, 0
         with gzip.open(out, "wt", encoding="utf-8") as fh:
             fh.write("SET NAMES utf8mb4;\nSET FOREIGN_KEY_CHECKS=0;\n")
-            for t in tables:
-                head = json.loads(self.eval_php(
-                    f"global $wpdb; $c = $wpdb->get_row('SHOW CREATE TABLE `{t}`', ARRAY_N); "
-                    f"echo wp_json_encode(['create'=>$c[1], 'rows'=>(int) $wpdb->get_var('SELECT COUNT(*) FROM `{t}`')]);").strip().splitlines()[-1])
-                fh.write(f"\nDROP TABLE IF EXISTS `{t}`;\n{head['create']};\n")
-                page = 1500
-                for off in range(0, head["rows"], page):
-                    chunk = self.eval_php(
-                        f"global $wpdb; $rows = $wpdb->get_results('SELECT * FROM `{t}` LIMIT {page} OFFSET {off}', ARRAY_A); $o = '';"
-                        "foreach ($rows as $r) { $v = array_map(fn($x) => $x === null ? 'NULL' : \"'\" . $wpdb->remove_placeholder_escape($wpdb->_real_escape($x)) . \"'\", array_values($r));"
-                        f" $o .= 'INSERT INTO `{t}` VALUES (' . implode(',', $v) . \");\\n\"; }}"
-                        "echo base64_encode(gzencode($o, 6));")
-                    fh.write(gzip.decompress(base64.b64decode(chunk.strip())).decode("utf-8"))
+            while ti < len(tables):
+                r = json.loads(self.eval_php(
+                    f"global $wpdb; $T = json_decode(base64_decode('{tb64}'), true); $ti = {ti}; $off = {off}; $t0 = microtime(true); $o = '';"
+                    "while ($ti < count($T)) { $t = $T[$ti];"
+                    "  if ($off === 0) { $c = $wpdb->get_row('SHOW CREATE TABLE `' . $t . '`', ARRAY_N); $o .= \"\\nDROP TABLE IF EXISTS `$t`;\\n\" . $c[1] . \";\\n\"; }"
+                    "  $rows = $wpdb->get_results('SELECT * FROM `' . $t . '` LIMIT 1500 OFFSET ' . $off, ARRAY_A);"
+                    "  foreach ($rows as $r) { $v = array_map(fn($x) => $x === null ? 'NULL' : \"'\" . $wpdb->remove_placeholder_escape($wpdb->_real_escape($x)) . \"'\", array_values($r));"
+                    "    $o .= 'INSERT INTO `' . $t . '` VALUES (' . implode(',', $v) . \");\\n\"; }"
+                    "  if (count($rows) < 1500) { $ti++; $off = 0; } else { $off += 1500; }"
+                    "  if (microtime(true) - $t0 > 15 || strlen($o) > 6000000) break; }"
+                    "echo wp_json_encode(['d' => base64_encode(gzencode($o, 6)), 'ti' => $ti, 'off' => $off]);").strip().splitlines()[-1])
+                fh.write(gzip.decompress(base64.b64decode(r["d"])).decode("utf-8"))
+                if (r["ti"], r["off"]) == (ti, off):
+                    raise NovamiraError(f"backup made no progress at table {tables[ti]}")
+                ti, off = r["ti"], r["off"]
             fh.write("\nSET FOREIGN_KEY_CHECKS=1;\n")
         return out
 
