@@ -43,7 +43,7 @@ MEASURE_JS = r"""
   // overflow, bounded by the <html> box (RTL puts the scrollbar on the left)
   const hw = document.documentElement.getBoundingClientRect().width;
   const over = [];
-  q('body *').forEach(el => { if (el.closest('.zs-nav, .zs-skip, .zs-form__hp, script, style, svg, iframe')) return;
+  q('body *').forEach(el => { if (el.closest('.zs-nav, .zs-skip, .zs-form__hp, script, style, svg, iframe, [id^="pojo-a11y"], [class*="pojo-a11y"], #ea11y-root')) return;   // Zap's accessibility toolbar: closed panel off-screen by design
     const s = getComputedStyle(el); if (s.position === 'fixed' || !vis(el)) return;
     const r = el.getBoundingClientRect(); if (r.right > hw + 1.5 || r.left < -1.5) {
       let p = el.parentElement, clipped = false;
@@ -55,7 +55,7 @@ MEASURE_JS = r"""
   // tiny text
   const tiny = new Set(); const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   while (tw.nextNode()) { const n = tw.currentNode; if (!n.textContent.trim()) continue; const el = n.parentElement;
-    if (!el || el.closest('.zs-form__hp, script, style') || !vis(el)) continue;
+    if (!el || el.closest('.zs-form__hp, script, style, [id^="pojo-a11y"], [class*="pojo-a11y"], #ea11y-root') || !vis(el)) continue;
     const fs = parseFloat(getComputedStyle(el).fontSize); if (fs < 13.4) tiny.add(`${fs}px "${n.textContent.trim().slice(0, 24)}"`); }
   if (tiny.size) E(`text under 13.4px: ${[...tiny].slice(0, 3).join('; ')}`);
   // images
@@ -127,7 +127,7 @@ def urls_for(site, data):
     """Every public URL, read from WordPress itself so the crawl matches what was really built."""
     out = site.eval_php(
         "$u = [];"
-        "foreach (get_posts(['post_type'=>['page','post'],'post_status'=>'publish','numberposts'=>-1]) as $p) $u[] = get_permalink($p);"
+        "foreach (get_posts(['post_type'=>['page','post'],'post_status'=>'publish','numberposts'=>-1,'meta_key'=>'_zs_key']) as $p) $u[] = get_permalink($p);"   # only what the build owns (not plugin pages on a client server)
         "foreach (get_terms(['taxonomy'=>'category','hide_empty'=>true]) as $t) $u[] = get_term_link($t);"
         "echo implode(\"\\n\", $u);")
     urls = [u.strip() for u in out.splitlines() if u.strip().startswith("http")]
@@ -219,6 +219,12 @@ def check_links(links):
             code = e.code
         except Exception as e:
             code = str(e)[:40]
+            try:   # one retry for dropped connections (remote hosts)
+                code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"), timeout=20).status
+            except urllib.error.HTTPError as e2:
+                code = e2.code
+            except Exception:
+                pass
         if code != 200:
             bad.append((urllib.parse.unquote(u), code))
     return bad

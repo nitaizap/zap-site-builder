@@ -229,7 +229,12 @@ class NovamiraSite:
             ("rewrite", "flush"): "flush_rewrite_rules(true); echo 'ok';",
             ("elementor", "flush-css"): "if (class_exists('\\Elementor\\Plugin')) \\Elementor\\Plugin::$instance->files_manager->clear_cache(); echo 'ok';",
             ("cache", "flush"): "wp_cache_flush(); echo 'ok';",
-            ("yoast", "index"): "echo 'skipped (Yoast builds indexables on first view)';",
+            # Yoast caches URLs/meta in its indexables table; drop the post/home/term rows so they rebuild on the
+            # next view with the final permalinks (a page that became the front page otherwise keeps /home/).
+            ("yoast", "index"): "global $wpdb; $t = $wpdb->prefix . 'yoast_indexable'; if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $t)) === $t) {"
+                                " $wpdb->query(\"DELETE FROM $t WHERE object_type IN ('post','home-page','term','system-page')\");"
+                                " $h = $wpdb->prefix . 'yoast_indexable_hierarchy'; if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $h)) === $h) $wpdb->query(\"DELETE FROM $h\"); }"
+                                " wp_cache_flush(); echo 'yoast indexables reset';",
         }.get(tuple(a[:2]))
         if php is None and a[:2] == ["post", "list"] and "--format=count" in a:
             t = next((x.split("=", 1)[1] for x in a if x.startswith("--post_type=")), "post")
