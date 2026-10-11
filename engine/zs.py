@@ -10,6 +10,7 @@
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
   zs grab <slug> <url>              research the client's old site (Wayback fallback) -> sites/<slug>/research/
   zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
+  zs connect --site https://x       one-time approval in wp-admin (Novamira OAuth device flow), no password
   zs push <slug> --site https://x   build straight into a WordPress that runs Novamira (staging first)
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
@@ -95,6 +96,15 @@ def _remote(a):
         return NovamiraSite(a.slug, a.site, cred_file=a.cred_file)
     except NovamiraError as e:
         die(str(e))
+
+
+def cmd_connect(a):
+    from remote import connect, NovamiraError
+    try:
+        f = connect(a.site, say=lambda m: print(m, flush=True))
+    except NovamiraError as e:
+        die(str(e))
+    print(f"connected: token stored for this machine only ({f.name}, not committed). Next: zs push <slug> --site {a.site}")
 
 
 def cmd_push(a):
@@ -245,6 +255,7 @@ def main():
     x = sub.add_parser("stop"); x.add_argument("slug"); x.set_defaults(f=cmd_stop)
     x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*"); x.add_argument("--directions", action="store_true"); x.set_defaults(f=cmd_shots)
     x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
+    x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.set_defaults(f=cmd_connect)
     x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")
     x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)

@@ -14,7 +14,19 @@ run the same build that `zs build` runs locally, on the real server. The free pl
 Runner: `POST <site>/wp-json/novamira/v1/abilities/<ability>/run {"input": {...}}`, authenticated as an
 administrator with a WordPress **Application Password**.
 
-## One-time setup (done once on Zap's BASE site, inherited by every clone)
+## Connecting (no passwords)
+
+```bash
+bin/zs connect --site https://<client>.ussl.co.il
+```
+
+Prints a wp-admin link and a short code. Someone logged in to that site as an administrator opens the link,
+enters the code and clicks **Authorize** (Novamira's OAuth device flow). The token is stored for this machine
+only (`work/novamira-tokens/<host>.json`, chmod 600, never committed) and refreshes itself; `zs push` and
+`zs qa --site` use it automatically. Revoke any time: Novamira → Manage Connections. If AI Abilities are off,
+switch them on first (Novamira → Configuration).
+
+## Alternative: one-time setup on Zap's BASE site (inherited by every clone, zero clicks per site)
 
 1. On the base site: Novamira → Configuration → **Enable AI Abilities**. They are locked to the site's host
    name; a clone keeps them on when the cloning tool search-replaces the domain (the lock is a stored host

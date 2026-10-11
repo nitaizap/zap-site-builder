@@ -34,6 +34,66 @@ class NovamiraError(RuntimeError):
     pass
 
 
+TOKENS = WORK / "novamira-tokens"   # OAuth tokens from `zs connect` (work/ is never committed); chmod 600
+DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code"
+
+
+def _token_file(host):
+    return TOKENS / f"{re.sub(r'[^a-z0-9.-]', '-', host)}.json"
+
+
+def _form_post(url, fields, local):
+    op = urllib.request.build_opener(urllib.request.ProxyHandler({}) if local else urllib.request.ProxyHandler())
+    req = urllib.request.Request(url, data=urllib.parse.urlencode(fields).encode(), method="POST",
+                                 headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"})
+    try:
+        with op.open(req, timeout=60) as r:
+            return r.status, json.loads(r.read() or b"{}")
+    except urllib.error.HTTPError as e:
+        try:
+            return e.code, json.loads(e.read() or b"{}")
+        except ValueError:
+            return e.code, {}
+
+
+def connect(url, wait=900, say=print):
+    """OAuth device flow: an administrator approves this machine once in wp-admin; no password is ever typed here."""
+    import time
+    url = url.rstrip("/")
+    host = urllib.parse.urlsplit(url).hostname or ""
+    local = host in LOCAL_HOSTS
+    base = url + "/wp-json/novamira/v1/oauth"
+    op = urllib.request.build_opener(urllib.request.ProxyHandler({}) if local else urllib.request.ProxyHandler())
+    reg = urllib.request.Request(base + "/register", method="POST", headers={"Content-Type": "application/json"},
+                                 data=json.dumps({"client_name": "Zap site builder (Claude Code)", "grant_types": [DEVICE_GRANT],
+                                                  "redirect_uris": [], "token_endpoint_auth_method": "none"}).encode())
+    try:
+        client_id = json.loads(op.open(reg, timeout=60).read())["client_id"]
+    except urllib.error.HTTPError as e:
+        raise NovamiraError(f"client registration refused: HTTP {e.code} {e.read()[:200]!r}")
+    st, dev = _form_post(base + "/device", {"client_id": client_id, "scope": "mcp"}, local)
+    if st != 200:
+        raise NovamiraError(f"device authorization refused: HTTP {st} {dev}")
+    say(f"APPROVE: open {dev['verification_uri']} (logged in as an administrator) and enter the code  {dev['user_code']}")
+    deadline, interval = time.time() + min(wait, dev.get("expires_in", 900)), max(2, int(dev.get("interval", 5)))
+    while time.time() < deadline:
+        time.sleep(interval)
+        st, tok = _form_post(base + "/token", {"grant_type": DEVICE_GRANT, "device_code": dev["device_code"], "client_id": client_id}, local)
+        if st == 200 and tok.get("access_token"):
+            TOKENS.mkdir(parents=True, exist_ok=True)
+            f = _token_file(host)
+            f.write_text(json.dumps({"client_id": client_id, "access_token": tok["access_token"],
+                                     "refresh_token": tok.get("refresh_token", ""), "expires_at": time.time() + int(tok.get("expires_in", 3600))}))
+            f.chmod(0o600)
+            return f
+        err = tok.get("error", "")
+        if err == "slow_down":
+            interval += 5
+        elif err not in ("authorization_pending", ""):
+            raise NovamiraError(f"device flow ended: {err} {tok.get('error_description', '')}")
+    raise NovamiraError("not approved in time; run zs connect again")
+
+
 def find_credential(url, cred_file=None):
     host = urllib.parse.urlsplit(url).hostname or ""
     for name in ("ZS_NOVAMIRA_" + re.sub(r"[^A-Z0-9]", "_", host.upper()), "ZS_NOVAMIRA"):
@@ -44,6 +104,8 @@ def find_credential(url, cred_file=None):
     if cred_file:
         d = json.loads(Path(cred_file).read_text(encoding="utf-8"))
         return d["user"], d["app_password"], "file"
+    if _token_file(host).exists():
+        return None, None, "oauth"
     return None
 
 
@@ -63,14 +125,34 @@ class NovamiraSite:
         cred = find_credential(self.url, cred_file)
         if not cred:
             raise NovamiraError(
-                f"no Novamira credential for {self.host}. Set ZS_NOVAMIRA (or ZS_NOVAMIRA_<HOST>) to "
-                "'user:application-password' in the environment's secrets; see references/novamira.md")
+                f"no Novamira credential for {self.host}. Run: zs connect --site {self.url}  (an administrator approves "
+                "once in wp-admin), or set ZS_NOVAMIRA='user:application-password' in the environment's secrets")
         user, pw, self.cred_source = cred
-        self._auth = "Basic " + base64.b64encode(f"{user}:{pw}".encode()).decode()
         local = self.host in LOCAL_HOSTS
+        self._local = local
+        if self.cred_source == "oauth":
+            self._auth = "Bearer " + self._oauth_token()
+        else:
+            self._auth = "Basic " + base64.b64encode(f"{user}:{pw}".encode()).decode()
         self._open = urllib.request.build_opener(urllib.request.ProxyHandler({}) if local else urllib.request.ProxyHandler()).open
         self._tmp = "wp-content/zs-push/" + secrets.token_hex(6)   # per run, removed by cleanup()
         self._uploaded = {}
+
+    def _oauth_token(self, force_refresh=False):
+        import time
+        f = _token_file(self.host)
+        d = json.loads(f.read_text())
+        if force_refresh or time.time() > d.get("expires_at", 0) - 120:
+            if not d.get("refresh_token"):
+                raise NovamiraError("the Novamira token expired; run: zs connect --site " + self.url)
+            st, tok = _form_post(self.url + "/wp-json/novamira/v1/oauth/token", {"grant_type": "refresh_token",
+                                 "refresh_token": d["refresh_token"], "client_id": d["client_id"]}, self.host in LOCAL_HOSTS)
+            if st != 200 or not tok.get("access_token"):
+                raise NovamiraError("token refresh refused; run: zs connect --site " + self.url)
+            d.update(access_token=tok["access_token"], refresh_token=tok.get("refresh_token", d["refresh_token"]),
+                     expires_at=time.time() + int(tok.get("expires_in", 3600)))
+            f.write_text(json.dumps(d)); f.chmod(0o600)
+        return d["access_token"]
 
     # ---------- transport ----------
     def _post(self, path, body, headers=None, method="POST", timeout=180):
@@ -90,6 +172,10 @@ class NovamiraSite:
             data = json.loads(raw.decode("utf-8", "replace"))
         except ValueError:
             raise NovamiraError(f"{name}: HTTP {st}, not JSON: {raw[:200]!r}")
+        if st == 401 and self.cred_source == "oauth" and not getattr(self, "_refreshed", False):
+            self._refreshed = True
+            self._auth = "Bearer " + self._oauth_token(force_refresh=True)
+            return self.ability(name, inp, timeout)
         if st == 401:
             raise NovamiraError("401: the credential was refused (wrong user/application password, or a security plugin blocks REST auth)")
         if st == 403 and isinstance(data, dict) and data.get("code") == "novamira_disabled":

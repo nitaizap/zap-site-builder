@@ -99,13 +99,14 @@ direction, say which and why in one line, and continue without waiting.
 **The client site runs Novamira** (Zap's staging `*.ussl.co.il` clones do): push the build into it.
 
 ```bash
+bin/zs connect --site https://<client>.ussl.co.il          # once per site: an admin approves a code in wp-admin
 bin/zs push <slug> --site https://<client>.ussl.co.il    # backup → code → content; staging lock on
 bin/zs qa <slug> --site https://<client>.ussl.co.il      # 0 errors on the pushed site itself
 git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
 ```
 
-Needs the `ZS_NOVAMIRA` secret (one-time setup on Zap's base site, see the reference). If it is missing, say
-so in one line, do everything else, and offer the zip. A live (non-staging) domain needs `--live` and the
+Needs a connection: `zs connect` (run it in the background, give the user the link + code in one line, wait), or
+the `ZS_NOVAMIRA` secret from the one-time base-site setup. Without either, say so, do everything else, offer the zip. A live (non-staging) domain needs `--live` and the
 user's explicit go-ahead. What a person edits afterwards — pages, header/footer templates, Site Settings
 colours/fonts — is all in Elementor; list it in the reply.
 
