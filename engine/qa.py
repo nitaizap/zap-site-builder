@@ -3,6 +3,7 @@
 Writes work/<slug>/QA-REPORT.md and returns True when there are no errors.
 Screenshots (zs shots) are for the human sign-off only.
 """
+import html
 import json
 import re
 import time
@@ -329,6 +330,28 @@ def run_qa(site):
         parts = list(ex.map(lambda kv: one_viewport(kv[0], *kv[1]), VIEWPORTS.items()))
     for r_, l_, x_, e_, w_ in parts:      # desktop first, then mobile, as before
         rows += r_; links |= l_; extra += x_; errors += e_; warns += w_
+
+    # every social profile in site.json must be a visible link on the site (the footer renders them)
+    home_html = None
+    for attempt in range(4):        # network drops happen; the check must not be skipped silently
+        try:
+            home_html = urllib.request.urlopen(site.url + "/", timeout=30).read().decode("utf-8", "replace")
+            break
+        except Exception:
+            time.sleep(3)
+    if home_html is None and any((data["business"].get(n) or "").strip() for n in ("facebook", "instagram", "linkedin", "youtube", "tiktok")):
+        extra.append(("social links: home page could not be fetched to check them", False))
+        errors += 1
+    if home_html is not None:
+        for net in ("facebook", "instagram", "linkedin", "youtube", "tiktok"):
+            u = (data["business"].get(net) or "").strip()
+            if not u:
+                continue
+            forms = {u, urllib.parse.quote(u, safe=":/?=&%#"), html.escape(u), html.escape(urllib.parse.quote(u, safe=":/?=&%#"))}
+            shown = any(f'href="{f}"' in home_html for f in forms)
+            extra.append((f"{net} link shown on the site", shown))
+            if not shown:
+                errors += 1
 
     bad_links = check_links(links)
     errors += len(bad_links)

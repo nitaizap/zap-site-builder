@@ -210,6 +210,11 @@ function zs_icon($name) {
         'mail' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
         'pin' => '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        'facebook' => '<path d="M14 21v-7h3l.5-3.5H14V8.6c0-1 .4-1.6 1.7-1.6h1.9V3.9c-.4 0-1.6-.2-2.9-.2-2.7 0-4.2 1.6-4.2 4.4v2.4H7.5V14h3v7"/>',
+        'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.2 6.8h.01"/>',
+        'linkedin' => '<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M8 10.5V16M8 7.8v.01M11.5 16v-5.5M11.5 13c0-1.5 1-2.6 2.4-2.6s2.1 1 2.1 2.6V16"/>',
+        'youtube' => '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5v5l4.3-2.5z"/>',
+        'tiktok' => '<path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.3 4 4.5 4"/>',
     ];
     return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ($p[$name] ?? '') . '</svg>';
 }
@@ -247,7 +252,32 @@ function zs_part_footer_contact() {
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
     if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($a) . '</span></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
-    return $o . '</ul>';
+    return $o . '</ul>' . zs_part_social();
+}
+
+/** Solid brand marks (recognisable at 20 px; the outline set is for UI icons). */
+function zs_social_icon($k) {
+    $p = [
+        'facebook'  => '<path d="M13.6 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.6 1.6-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.4v3.2h2.8v8z"/>',
+        'instagram' => '<path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm4.9-8.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zM12 4.6c2.4 0 2.7 0 3.6.1 2.4.1 3.6 1.3 3.7 3.7v7.2c-.1 2.4-1.2 3.6-3.7 3.7H8.4c-2.4-.1-3.6-1.3-3.7-3.7V8.4C4.8 6 5.9 4.8 8.4 4.7h3.6zM12 3c-2.4 0-2.8 0-3.7.1C5 3.2 3.2 5 3.1 8.3 3 9.2 3 9.6 3 12s0 2.8.1 3.7c.1 3.3 1.9 5.1 5.2 5.2H15.7c3.3-.1 5.1-1.9 5.2-5.2.1-.9.1-1.3.1-3.7s0-2.8-.1-3.7C20.8 5 19 3.2 15.7 3.1 14.8 3 14.4 3 12 3z"/>',
+        'linkedin'  => '<path d="M6.9 8.6H3.6V20h3.3zM5.2 3.5a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8zM20.4 13.6c0-3.1-1.7-5.2-4.4-5.2-1.5 0-2.5.8-3 1.6V8.6H9.8V20h3.3v-5.9c0-1.6.6-2.8 2.1-2.8s2 1.2 2 2.8V20h3.3z"/>',
+        'youtube'   => '<path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>',
+        'tiktok'    => '<path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-1.8-2.5V9.7a5.7 5.7 0 1 0 4.9 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/>',
+    ];
+    return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false">' . ($p[$k] ?? '') . '</svg>';
+}
+
+/** The business's social profiles (business.facebook / instagram / linkedin / youtube / tiktok) as icon links. */
+function zs_part_social() {
+    $nets = ['facebook' => 'פייסבוק', 'instagram' => 'אינסטגרם', 'linkedin' => 'לינקדאין', 'youtube' => 'יוטיוב', 'tiktok' => 'טיקטוק'];
+    $o = '';
+    foreach ($nets as $k => $label) {
+        $u = trim((string) zs_opt('business.' . $k, ''));
+        if ($u === '' || !preg_match('#^https?://#i', $u)) continue;
+        $o .= '<li><a class="zs-social__' . $k . '" href="' . esc_url($u) . '" target="_blank" rel="noopener" aria-label="'
+            . esc_attr($label . ' (נפתח בחלון חדש)') . '">' . zs_social_icon($k) . '</a></li>';
+    }
+    return $o ? '<ul class="zs-social">' . $o . '</ul>' : '';
 }
 
 function zs_part_copyright() {
@@ -273,7 +303,7 @@ function zs_part_call_line() {
     return $tel ? '<p class="zs-leadband__or">או התקשרו: <a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></p>' : '';
 }
 
-foreach (['topbar_meta', 'nav', 'footer_contact', 'copyright', 'legal', 'group_logo', 'call_line'] as $zs_part) {
+foreach (['topbar_meta', 'nav', 'footer_contact', 'social', 'copyright', 'legal', 'group_logo', 'call_line'] as $zs_part) {
     add_shortcode("zap_$zs_part", fn() => call_user_func("zs_part_$zs_part"));
 }
 add_shortcode('zap_menu', fn($a) => zs_part_menu(shortcode_atts(['location' => 'footer'], $a)['location']));
