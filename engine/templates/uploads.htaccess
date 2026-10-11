@@ -1,0 +1,4 @@
+# No PHP from the uploads folder (Apache). On nginx add the rule from DEPLOY.md.
+<FilesMatch "\.(php|phtml|php\d|phar)$">
+  Require all denied
+</FilesMatch>
