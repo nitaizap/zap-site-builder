@@ -24,6 +24,7 @@ new site, and again before the gate and before delivery.
 | 13 | "QA the inner pages on mobile" | the home page got all the attention | `zs shots <slug> all --mobile`; inner heroes got the ride too |
 | 14 | "make it quicker for next clients" | push ~6 min, live QA ~8 min | skip unchanged code/media/pages, batched backup, parallel QA → ~1 min each |
 | 15 | phone screenshots: road block off-centre, "the menu goes behind the page" | the header's `backdrop-filter` made it the containing block of the fixed menu (clipped to 67 px); a `body{overflow:hidden}` scroll lock shoved the sticky header up under Elementor | no blur ≤1024 px, JS scroll block instead of an overflow lock, full-width button stacks and centred chips on phones; QA now checks the open menu covers the screen. Never put `filter`/`backdrop-filter`/`transform` on an ancestor of a fixed element |
+| 16 | "why is their Facebook not there? it is in the brief" | the URL was in site.json but only used in schema; BRIEF-CHECK said ✅ without looking at the page | footer + contact page render `business.facebook/instagram/linkedin/youtube/tiktok` as solid icon links; QA fails when a profile in site.json is not a link on the site. **A BRIEF-CHECK ✅ means seen on the rendered page, never "it is in site.json"** |
 
 ## What "high end" concretely means here (the bar the user accepted)
 

@@ -60,7 +60,7 @@ add_shortcode('zap_nap', function () {
     if (!empty($b['email_public'])) $o .= '<li>' . zs_icon('mail') . '<a href="mailto:' . esc_attr($b['email_public']) . '">' . esc_html($b['email_public']) . '</a></li>';
     if (!empty($b['address'])) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($b['address']) . '</span></li>';
     foreach ((array) ($b['hours'] ?? []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
-    return $o . '</ul>';
+    return $o . '</ul>' . (function_exists('zs_part_social') ? zs_part_social() : '');
 });
 
 add_shortcode('zap_breadcrumbs', function () {
