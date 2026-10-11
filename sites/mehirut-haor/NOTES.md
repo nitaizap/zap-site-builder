@@ -80,3 +80,9 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
   17 internal pages 200 with one H1, no leftover URLs, robots.txt + sitemap 200, admin login page, form → lead saved
   (test copy forced to staging so no client mail; test lead deleted).
 - Found and fixed: deploy.sh run as root without --owner failed halfway (wp-cli refuses root) → now refuses before copying.
+
+## Novamira push (2026-10-11)
+- Real staging: https://mehiruthaor.ussl.co.il — Zap base clone (Hello Elementor, Elementor + Pro, Yoast, Ally, Novamira 401 = installed).
+- Push tested end to end on a local Zap-base replica (tools/novamira-replica.py): backup, code, 10 pages, header/footer
+  templates, kit; base placeholders drafted; update push idempotent; `zs qa --site` 0 errors; Elementor editor opens.
+- Waiting on: `ZS_NOVAMIRA` secret (integration user on the base site / this site) → `bin/zs push mehirut-haor --site https://mehiruthaor.ussl.co.il`.

@@ -10,6 +10,7 @@
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
   zs grab <slug> <url>              research the client's old site (Wayback fallback) -> sites/<slug>/research/
   zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
+  zs push <slug> --site https://x   build straight into a WordPress that runs Novamira (staging first)
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
@@ -85,6 +86,62 @@ def cmd_image(a):
     print(f"{out}\nadd to site.json images: \"{a.key}\": {{\"src\": \"assets/{a.key}.png\", \"alt\": \"<what it shows, in Hebrew>\", \"ai\": true}}")
 
 
+STAGING_HOSTS = (".ussl.co.il", ".zapsites.co.il", "127.0.0.1", "localhost")
+
+
+def _remote(a):
+    from remote import NovamiraSite, NovamiraError
+    try:
+        return NovamiraSite(a.slug, a.site, cred_file=a.cred_file)
+    except NovamiraError as e:
+        die(str(e))
+
+
+def cmd_push(a):
+    """Build site.json directly into a client WordPress through Novamira: backup -> code -> content -> cleanup."""
+    from build import build, load_site
+    from remote import NovamiraError
+    r = _remote(a)
+    live = not any(r.host == h.lstrip(".") or r.host.endswith(h) for h in STAGING_HOSTS)
+    if live and not a.live:
+        die(f"{r.host} is not a staging host. Push to staging first; a live domain needs --live and the user's explicit go-ahead.")
+    try:
+        facts = r.check()
+        print(f"connected: {facts['home']} · WP {facts['wp']} · PHP {facts['php']} · Elementor {facts['elementor']}"
+              f"{' + Pro ' + facts['elementor_pro'] if facts.get('elementor_pro') else ''} · theme {facts['theme']} · env {facts['env']}")
+        data = load_site(r.src)
+        other = r.eval_php("$o = get_option('zap_site'); echo is_array($o) ? ($o['business']['name'] ?? '') : '';").strip()
+        if other and other != data["business"]["name"] and not a.force:
+            die(f"this site already holds '{other}', not '{data['business']['name']}'. Wrong site? (--force to overwrite)")
+        if not a.no_backup:
+            print("backup:", r.backup())
+        # staging lock: leads are saved but never mailed to the real client, search engines stay out
+        r.eval_php(f"update_option('zs_staging_lock', {0 if a.live else 1}); echo 1;")
+        build(r)
+        if not other:
+            # first push into a fresh base clone: the base's own placeholder pages/posts (not built from site.json)
+            # go to draft so they are not live next to the client's site. Later pushes never touch unknown pages.
+            moved = r.eval_php("$m = []; foreach (get_posts(['post_type'=>['page','post'],'post_status'=>'publish','numberposts'=>-1]) as $p) {"
+                               " if (!get_post_meta($p->ID, '_zs_key', true) && get_post_type($p) === 'page' || ($p->post_type === 'post' && $p->post_name === 'hello-world')) {"
+                               " wp_update_post(['ID'=>$p->ID,'post_status'=>'draft']); $m[] = $p->ID . ' ' . $p->post_title; } } echo implode(' | ', $m);").strip()
+            if moved:
+                print("base placeholders moved to draft:", moved)
+        if not a.live:
+            r.eval_php("update_option('blog_public', 0); echo 1;")
+        home = r.eval_php("echo (int) get_option('page_on_front');").strip()
+        print(f"\nsite:      {r.url}/")
+        print(f"edit home: {r.url}/wp-admin/post.php?post={home}&action=elementor")
+        print(f"header/footer: {r.url}/wp-admin/edit.php?post_type=elementor_library")
+        print(f"Novamira:  {r.url}/wp-admin/admin.php?page=novamira-connect")
+    except NovamiraError as e:
+        die(str(e))
+    finally:
+        try:
+            r.cleanup()
+        except Exception:
+            pass
+
+
 def cmd_static(a):
     from static import export
     s = Site(a.slug)
@@ -154,8 +211,11 @@ def cmd_doctor(a):
 
 def cmd_qa(a):
     from qa import run_qa
-    s = Site(a.slug)
-    s.serve()
+    if getattr(a, "site", None):
+        s = _remote(a)       # QA the pushed site itself -> sites/<slug>/QA-REPORT-live.md
+    else:
+        s = Site(a.slug)
+        s.serve()
     ok = run_qa(s)
     sys.exit(0 if ok else 2)
 
@@ -184,7 +244,9 @@ def main():
     x = sub.add_parser("serve"); x.add_argument("slug"); x.set_defaults(f=cmd_serve)
     x = sub.add_parser("stop"); x.add_argument("slug"); x.set_defaults(f=cmd_stop)
     x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*"); x.add_argument("--directions", action="store_true"); x.set_defaults(f=cmd_shots)
-    x = sub.add_parser("qa"); x.add_argument("slug"); x.set_defaults(f=cmd_qa)
+    x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
+    x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")
+    x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
     x = sub.add_parser("static"); x.add_argument("slug"); x.set_defaults(f=cmd_static)

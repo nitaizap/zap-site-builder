@@ -34,7 +34,7 @@ MEASURE_JS = r"""
   out.info.noindex = noindex;
   if (location.pathname.includes('/category/')) E('URL contains /category/');
   const md = q('meta[name="description"]'); if (md.length !== 1 && !noindex) E(`meta description count ${md.length}`);
-  else { const l = md[0].content.length; out.info.desc = l; if (l < 100 || l > 170) W(`meta description length ${l}`); }
+  else if (md.length) { const l = md[0].content.length; out.info.desc = l; if (l < 100 || l > 170) W(`meta description length ${l}`); }
   if (!q('link[rel="canonical"]').length && !document.querySelector('meta[name="robots"][content*="noindex"]')) W('no canonical');
   if (!q('meta[property="og:image"]').length) W('no og:image');
   // heading order
@@ -313,7 +313,7 @@ def run_qa(site):
         lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | {det} |")
     if bad_links:
         lines += ["", "## Links that are not 200", ""] + [f"- {c} {u}" for u, c in bad_links]
-    (site.src / "QA-REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (site.src / getattr(site, "qa_report", "QA-REPORT.md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines[:9 + len(extra)]))
     for vp, path, m in rows:
         for e in m["err"]:

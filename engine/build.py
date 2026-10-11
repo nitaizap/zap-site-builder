@@ -37,13 +37,21 @@ def run_php(site, task, payload):
     """Call a function in wp_lib.php inside WordPress with a JSON payload."""
     f = site.dir / f"_payload_{task}.json"
     f.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    code = (f"require {json.dumps(str(PHP_LIB))};\n"
-            f"zs_task_{task}(json_decode(file_get_contents({json.dumps(str(f))}), true));\n")
+    remote = getattr(site, "remote", False)
+    # a remote site (Novamira) gets the library and the payload uploaded first; paths are then server paths
+    lib = site.put(PHP_LIB, name="zs-lib.txt") if remote else str(PHP_LIB)   # .php uploads are refused (sandbox); require() reads any name
+    data_path = site.put(f, name=f"_payload_{task}_{hashlib.sha1(f.read_bytes()).hexdigest()[:10]}.json") if remote else str(f)
+    code = (f"require_once {json.dumps(lib)};\n"
+            f"zs_task_{task}(json_decode(file_get_contents({json.dumps(data_path)}), true));\n")
     try:
         return site.eval_php(code)
     finally:
         if not os.environ.get("ZS_KEEP_PAYLOADS"):
             f.unlink(missing_ok=True)
+
+
+def chunks(items, n):
+    return [items[i:i + n] for i in range(0, len(items), n)] or [[]]
 
 
 def build(site, only=None):
@@ -106,7 +114,13 @@ def build(site, only=None):
             raise SystemExit(f"video '{key}': file not found: {src}")
         prepared.append({"key": key, "file": str(src), "alt": "", "title": v.get("title", ""), "ai": bool(v.get("ai")),
                          "hash": hashlib.sha1(src.read_bytes()).hexdigest()})
-    media = json.loads(run_php(site, "media", {"items": prepared}).splitlines()[-1])
+    remote = getattr(site, "remote", False)
+    if remote:   # files travel to the server first; small batches keep every call under Novamira's 30 s limit
+        for it in prepared:
+            it["file"] = site.put(it["file"])
+    media = {}
+    for batch in chunks(prepared, 2 if remote else len(prepared) or 1):
+        media.update(json.loads(run_php(site, "media", {"items": batch}).splitlines()[-1]))
     log.append(f"media: {len(media)} items")
     if "__logo_light" in media:
         run_php(site, "set_option", {"key": "logo_light_id", "value": media["__logo_light"]["id"]})
@@ -128,7 +142,8 @@ def build(site, only=None):
             "seo": p.get("seo", {}), "image": media.get(p.get("featured_image") or "", {}).get("id"),
             "noindex": bool(p.get("noindex")),
         })
-    log.append(run_php(site, "pages", {"pages": payload}))
+    for batch in chunks(payload, 1 if remote else len(payload) or 1):   # parents first, so children find them
+        log.append(run_php(site, "pages", {"pages": batch, "all_keys": [x["key"] for x in payload]}).strip())
 
     # 3b. header + footer as Elementor templates (Theme Builder header/footer where Elementor Pro runs)
     tctx = Ctx("__tpl", media, data)

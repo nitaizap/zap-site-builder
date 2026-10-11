@@ -1,11 +1,11 @@
 ---
 name: zap-site
-description: Build a complete Hebrew client website for Zap Group from a brief, end to end - research, keyword map, copy, design directions, WordPress + Elementor build, measured QA - and deliver one upload-ready zip (WordPress files + SQL + deploy script) with a download link. Use when someone pastes a client brief, a spec board, a client name with a domain or old site, or says "בנה אתר", "אתר חדש ללקוח", "תקים אתר", "build a site", or asks to continue, revise or re-package a site under sites/<slug>/.
+description: Build a complete Hebrew client website for Zap Group from a brief, end to end - research, keyword map, copy, design directions, WordPress + Elementor build, measured QA - and deliver it live into the client's WordPress through Novamira (editable in Elementor, header/footer included), or as an upload-ready zip (WordPress files + SQL + deploy script) with a download link. Use when someone pastes a client brief, a spec board, a client name with a domain or old site, or says "בנה אתר", "אתר חדש ללקוח", "תקים אתר", "build a site", or asks to continue, revise or re-package a site under sites/<slug>/.
 ---
 
 # Zap site builder
 
-One brief in, one zip out. Claude writes the **content and decisions** (`sites/<slug>/site.json`); the
+One brief in, one live site out (pushed through Novamira into the client's WordPress), or one zip. Claude writes the **content and decisions** (`sites/<slug>/site.json`); the
 engine (`bin/zs`) turns that into a real WordPress + Elementor site, measures it, and packages it.
 Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where earlier builds broke.
 
@@ -14,7 +14,7 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 2 PLAN        keyword map + sitemap + 3 design directions → site.json (copy-first)
 3 PREVIEW     zs build → zs preview → ⏸ THE ONE GATE: approve sitemap + pick a direction
 4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors
-5 DELIVER     zs package → zs publish → link + launch checklist
+5 DELIVER     zs push → zs qa --site (Novamira sites)  |  zs package → zs publish (zip)
 ```
 
 Speak to the user in their language (usually Hebrew). Keep messages short; the files carry the detail.
@@ -94,16 +94,32 @@ direction, say which and why in one line, and continue without waiting.
    `wp/theme` or `engine/`: fix it there, keep it generic, and mention it in the report.
 4. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
 
-## 5 · Deliver — read `references/delivery.md`
+## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)
+
+**The client site runs Novamira** (Zap's staging `*.ussl.co.il` clones do): push the build into it.
+
+```bash
+bin/zs push <slug> --site https://<client>.ussl.co.il    # backup → code → content; staging lock on
+bin/zs qa <slug> --site https://<client>.ussl.co.il      # 0 errors on the pushed site itself
+git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
+```
+
+Needs the `ZS_NOVAMIRA` secret (one-time setup on Zap's base site, see the reference). If it is missing, say
+so in one line, do everything else, and offer the zip. A live (non-staging) domain needs `--live` and the
+user's explicit go-ahead. What a person edits afterwards — pages, header/footer templates, Site Settings
+colours/fonts — is all in Elementor; list it in the reply.
+
+**No Novamira on the target**: the zip.
 
 ```bash
 bin/zs package <slug> --domain https://<final-domain>     # refuses while QA has errors
-bin/zs publish <slug>                                      # GitHub release (+ SharePoint if configured)
+bin/zs publish <slug>                                      # GitHub release / delivery branch (+ SharePoint if configured)
 git add sites/<slug> && git commit -m "<slug>: delivered" && git push
 ```
 
-Reply with: the download link, what was built (pages, posts, direction), the QA numbers, and the
-human-only blockers from `LAUNCH-CHECKLIST.md`. Never write "everything is ready" while a blocker exists.
+Reply with: the site link (or download link), the Elementor editor link, what was built (pages, posts,
+direction), the QA numbers, and the human-only blockers from `LAUNCH-CHECKLIST.md`. Never write "everything
+is ready" while a blocker exists.
 
 ## Revisions
 

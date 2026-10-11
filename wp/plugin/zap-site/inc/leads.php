@@ -125,7 +125,8 @@ function zap_handle_lead() {
     $to = zap_opt('business.email_leads');
     // Never mail the client from a staging build: leads are saved, mail starts on the live site.
     // An internal address can receive test mail meanwhile (zap_site.smtp.test_to).
-    if (wp_get_environment_type() !== 'production') {
+    // ... and a site pushed to staging by `zs push` carries zs_staging_lock until launch, whatever its environment type
+    if (wp_get_environment_type() !== 'production' || get_option('zs_staging_lock')) {
         $to = zap_opt('smtp.test_to');
         if (!$to) update_post_meta($id, '_zap_mailed', 'staging-skip');
     }

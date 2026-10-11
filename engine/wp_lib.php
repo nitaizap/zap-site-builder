@@ -25,6 +25,18 @@ function zs_find($type, $key) {
 
 /* ---------------- options ---------------- */
 function zs_task_options($p) {
+    // Elementor + site defaults the design relies on. Applied on every build (not only at create time) because a
+    // pushed site starts from Zap's cloned base, where Elementor's default colours/fonts would repaint headings
+    // and buttons.
+    foreach ([
+        'elementor_disable_color_schemes' => 'yes', 'elementor_disable_typography_schemes' => 'yes',
+        'elementor_google_font' => '0', 'elementor_font_display' => 'swap', 'elementor_load_fa4_shim' => '',
+        'elementor_unfiltered_files_upload' => '', 'elementor_onboarded' => '1', 'elementor_tracker_notice' => '1',
+        'elementor_allow_tracking' => 'no', 'default_comment_status' => 'closed', 'default_ping_status' => 'closed',
+        'timezone_string' => 'Asia/Jerusalem', 'date_format' => 'd/m/Y', 'wpseo_titles_sep' => 'sc-pipe',
+    ] as $k => $v) update_option($k, $v);
+    update_option('elementor_cpt_support', ['page', 'post']);
+    if (get_option('permalink_structure') !== '/%postname%/') update_option('permalink_structure', '/%postname%/');
     update_option('zap_site', $p['zap_site']);
     update_option('blogname', $p['title']);
     update_option('blogdescription', $p['tagline'] ?? '');
@@ -130,8 +142,10 @@ function zs_task_pages($p) {
         if ($pg['type'] === 'privacy') update_option('wp_page_for_privacy_policy', $id);
     }
     // Report pages that exist on the site but are no longer in site.json (never auto-deleted).
+    $known = array_values($ids);
+    foreach ($p['all_keys'] ?? [] as $k) { $kid = zs_find('page', $k); if ($kid) $known[] = $kid; }   // batched builds
     $orphans = get_posts(['post_type' => 'page', 'post_status' => 'publish', 'numberposts' => -1, 'fields' => 'ids',
-                          'post__not_in' => array_values($ids) ?: [0]]);
+                          'post__not_in' => $known ?: [0]]);
     echo "pages: $made created, $updated updated" . ($orphans ? ', orphans not in site.json: ' . implode(',', $orphans) : '') . "\n";
 }
 
