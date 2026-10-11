@@ -678,8 +678,8 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 
 /* FAQ toggle on signature: plus / minus instead of the caret */
 .zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon svg { display: none; }
-.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon-closed::before { content: "+"; font: 700 1.4rem/1 var(--f-body); }
-.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon-opened::before { content: "–"; font: 700 1.4rem/1 var(--f-body); }
+.zs-p-signature .zs-faq__list .elementor-toggle span.elementor-toggle-icon-closed::before { content: "+"; font: 700 1.4rem/1 var(--f-body); }
+.zs-p-signature .zs-faq__list .elementor-toggle span.elementor-toggle-icon-opened::before { content: "–"; font: 700 1.4rem/1 var(--f-body); }
 
 /* signature split: the accent slab may not push the page sideways */
 .zs-p-signature .e-con.zs-split { overflow-x: clip; }
@@ -939,3 +939,21 @@ body .e-con.zs-hero > .elementor-element.zs-hero__ride, body .e-con.zs-hero > .e
 body .e-con.zs-hero { position: relative; }
 @media (max-width: 767px) { .zs-progress__v { display: none; } }
 .zs-cards--bento .e-con.zs-card--img::after { text-shadow: 0 1px 8px rgb(0 0 0 / .7); }
+
+/* icon chips: centred whether Elementor renders the icon as inline SVG or as a font <i> (sites differ) */
+body :is(.zs-feature__icon, .zs-card__icon, .zs-route__icon) .elementor-icon { display: inline-grid; place-items: center; }
+body :is(.zs-feature__icon, .zs-card__icon, .zs-route__icon) .elementor-icon i { display: block; width: 1em; height: 1em; line-height: 1; position: relative; font-size: 26px; }
+body .zs-route__icon .elementor-icon i { font-size: 28px; }
+@media (max-width: 767px) { body .zs-route__icon .elementor-icon i { font-size: 24px; } }
+
+/* FAQ toggle (signature): one sign only. + when closed, – when open; Elementor's own caret (svg or font) hidden */
+.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon :is(svg, i) { display: none !important; }
+.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon i::before { content: none; }
+.zs-p-signature .zs-faq__list .elementor-toggle span.elementor-toggle-icon-closed, .zs-p-signature .zs-faq__list .elementor-toggle span.elementor-toggle-icon-opened { line-height: 1; }
+
+/* route rider: rides on top of the stop chips (never across them) and carries a white outline so it reads on red */
+.zs-route__rider { bottom: calc(var(--chip) / 2 + 4px); filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff); }
+@media (max-width: 767px) {
+  /* vertical route: the rider runs down the line; the outline keeps it readable over the chips */
+  .zs-route__rider { bottom: auto; top: calc(var(--pr, var(--p)) * 100%); }
+}

@@ -129,6 +129,13 @@
         var tr = l.querySelector('.zs-route__track');
         if (!tr) return;
         var t = tr.getBoundingClientRect(), vertical = t.height > t.width;
+        if (vertical) {
+          // phones: the rider parks just above the last stop instead of on top of it
+          var ics = l.querySelectorAll('.zs-route__step .elementor-icon'), last = ics[ics.length - 1];
+          var rh = (l.querySelector('.zs-route__rider') || tr).offsetHeight;
+          var stop = last ? (last.getBoundingClientRect().top - rh / 2 - 6 - t.top) / t.height : 1;
+          l.style.setProperty('--pr', Math.min(p, Math.max(0, stop)).toFixed(4));
+        }
         l.querySelectorAll('.zs-route__step').forEach(function (st) {
           var ic = (st.querySelector('.elementor-icon') || st).getBoundingClientRect();
           var f = vertical ? (ic.top + ic.height / 2 - t.top) / t.height
