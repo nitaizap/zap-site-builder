@@ -310,3 +310,15 @@ add_action('wp_enqueue_scripts', function () {
 
 add_filter('excerpt_length', fn() => 24);
 add_filter('excerpt_more', fn() => '…');
+
+/* ---------- scroll progress with a vehicle (design.progress: "scooter" | "van" | "truck") ----------
+   A thin brand bar at the top of the viewport; the vehicle rides its tip while the page scrolls (site.js).
+   Decorative only; the SVG comes from assets/vehicles, the same files the engine's road/route sections use. */
+add_action('wp_footer', function () {
+    $kind = sanitize_key((string) zs_opt('design.progress', ''));
+    if (!$kind || is_admin()) return;
+    $f = get_stylesheet_directory() . '/assets/vehicles/' . $kind . '.svg';
+    if (!is_readable($f)) return;
+    echo '<div class="zs-progress" aria-hidden="true"><span class="zs-progress__bar"></span><span class="zs-progress__v">'
+        . preg_replace('/>\s+</', '><', trim((string) file_get_contents($f))) . '</span></div>';
+}, 5);

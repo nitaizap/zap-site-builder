@@ -45,7 +45,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ```json
 { "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
-  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "custom_css": "" }
+  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "custom_css": "" }
 ```
 
 Fonts available (self-hosted): Heebo, Assistant, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew,
@@ -73,7 +73,7 @@ Common: `title` (H2; `*word*` = accent colour, `
 
 | type | fields |
 |---|---|
-| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `video` (key in `videos`; needs `image` as poster/mobile) |
+| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings); `style`: `band` (default, full-width stat bar) or `card` |
 | `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
 | `features` | `items: [{title, text, icon}]`, `columns`, `cta` |
@@ -90,7 +90,8 @@ Common: `title` (H2; `*word*` = accent colour, `
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |
 | `marquee` | `items` [4–8 short slogan words] – big scrolling ticker on the accent colour (decorative, aria-hidden; the words must also exist as real text). `bg` default `accent` |
-| `road` | `vehicles` [icon names, default scooter/van/truck], `items` [2–4 short labels above the lane] – decorative animated lane for delivery/transport/moving clients; static under reduced motion |
+| `road` | `vehicles` [scooter / van / truck — illustrated SVGs from `wp/theme/zap-base/assets/vehicles/`, other names fall back to the line icon], `items` [2–4 short labels above the scene] – decorative street scene: two lanes of traffic, spinning wheels, skyline drifting behind; for delivery/transport/moving/towing clients; parked under reduced motion |
+| `route` | `items` [3–5 × `icon`, `title`, `text`], optional `vehicle` (default scooter), `cta` – "how it works" as a route: a vehicle rides the track with the scroll, each stop lights up when reached. Steps are native containers (editable); all lit without JS / reduced motion. Steps must describe the client's real process (from the brief) |
 
 Icons: check, shield, clock, phone, wrench, tools, home, building, users, user, award, truck, droplet,
 bolt, leaf, heart, chat, map, calendar, search, document, lock, sparkle, ruler, money, car, scale, medical,

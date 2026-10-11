@@ -1,0 +1,14 @@
+<svg class="zs-vsvg zs-vsvg--van" viewBox="0 0 190 92" width="190" height="92" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <g class="zs-veh__speed" stroke="var(--c-primary,#d7141c)" stroke-width="3" stroke-linecap="round" opacity=".55"><path d="M170 34h18M174 46h14M168 58h20"/></g>
+  <g class="zs-veh__body">
+    <path d="M14 66V40q0-6 4-10l14-16q4-4 10-4h118q8 0 8 8v48z" fill="#fff" stroke="var(--c-ink,#141213)" stroke-width="3"/>
+    <path d="M22 36l12-14q3-3 7-3h16v17z" fill="#cfe3f2" stroke="var(--c-ink,#141213)" stroke-width="2.5"/>
+    <path d="M64 19h26v17H64z" fill="#cfe3f2" stroke="var(--c-ink,#141213)" stroke-width="2.5"/>
+    <path d="M15 46h153v9H15z" fill="var(--c-accent,#ffe600)"/>
+    <path d="M15 55h153v4H15z" fill="var(--c-primary,#d7141c)"/>
+    <path d="M60 36v30" stroke="var(--c-ink,#141213)" stroke-width="2"/>
+    <rect x="12" y="58" width="10" height="6" rx="2" fill="var(--c-ink,#141213)"/>
+  </g>
+  <g class="zs-veh__wheel" style="transform-origin:44px 70px"><circle cx="44" cy="70" r="13" fill="var(--c-ink,#141213)"/><circle cx="44" cy="70" r="6" fill="#d9d9d9"/><path d="M44 64v12M38 70h12" stroke="var(--c-ink,#141213)" stroke-width="2"/></g>
+  <g class="zs-veh__wheel" style="transform-origin:140px 70px"><circle cx="140" cy="70" r="13" fill="var(--c-ink,#141213)"/><circle cx="140" cy="70" r="6" fill="#d9d9d9"/><path d="M140 64v12M134 70h12" stroke="var(--c-ink,#141213)" stroke-width="2"/></g>
+</svg>

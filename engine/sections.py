@@ -10,7 +10,18 @@ import hashlib
 import html
 import re
 
+from env import WP_SRC
 from icons import fa_icon, icon_svg
+
+VEH_DIR = WP_SRC / "theme" / "zap-base" / "assets" / "vehicles"
+
+
+def vehicle_svg(kind):
+    """Illustrated vehicle (theme asset, brand colours via CSS vars); falls back to the line icon."""
+    f = VEH_DIR / f"{kind}.svg"
+    if not f.exists():
+        return icon_svg(kind)
+    return re.sub(r">\s+<", "><", f.read_text(encoding="utf-8").strip())
 
 
 class Ctx:
@@ -184,8 +195,15 @@ def hero(ctx, s):
         vid = W(ctx, "html", {"html": f'<video class="zs-hero__video" data-src="{v["url"]}" muted loop playsinline '
                                        f'preload="none" aria-hidden="true" tabindex="-1"></video>'}, "zs-hero__vid")
     media = C(ctx, "zs-hero__media", [image(ctx, s.get("image"), "zs-hero__img", "full", eager=True), vid]) if s.get("image") else None
+    # `ride: scooter` -> an illustrated vehicle drives along the hero's bottom edge (decorative); with a hero
+    # video it only shows where the video does not play (phones), so the two never compete
+    ride = None
+    if s.get("ride"):
+        ride = W(ctx, "html", {"html": f'<div class="zs-ride" aria-hidden="true"><span class="zs-ride__v">{vehicle_svg(s["ride"])}</span></div>'},
+                 "zs-hero__ride")
     kind = "zs-hero--home" if is_home else "zs-hero--page"
-    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}", [txt, media])
+    vidc = " zs-hero--vid" if vid else ""
+    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}", [txt, media, ride])
 
 
 def trust(ctx, s):
@@ -331,18 +349,40 @@ def marquee(ctx, s):
 
 
 def road(ctx, s):
-    """Decorative traffic lane: vehicle icons drive across (CSS only; still under prefers-reduced-motion).
+    """Decorative street scene: illustrated vehicles drive across (wheels spin, bodies bounce) in front of a
+    slowly drifting skyline. CSS only; parked in place under prefers-reduced-motion.
     Optional short `items` labels sit above the lane. Fits delivery, transport, moving, towing clients."""
     kinds = s.get("vehicles") or ["scooter", "van", "truck"]
-    vs = "".join(f'<span class="zs-road__v" style="--i:{i};--n:{len(kinds)}">{icon_svg(k)}</span>' for i, k in enumerate(kinds))
+    n = len(kinds)
+    vs = "".join(f'<span class="zs-road__v zs-road__v--{k}" style="--i:{i};--n:{n}">{vehicle_svg(k)}</span>'
+                 for i, k in enumerate(kinds))
     labels = "".join(f"<li>{html.escape(i, quote=False)}</li>" for i in s.get("items", []))
+    sky = vehicle_svg("skyline") if (VEH_DIR / "skyline.svg").exists() else ""
     body = (f'<ul class="zs-road__labels">{labels}</ul>' if labels else "") + \
-           f'<div class="zs-road__lane" aria-hidden="true">{vs}</div>'
+           f'<div class="zs-road__scene" aria-hidden="true"><div class="zs-road__sky">{sky}{sky}</div>' \
+           f'<div class="zs-road__lane">{vs}</div></div>'
     return section(ctx, s, "zs-road", [*sec_head(ctx, s), W(ctx, "html", {"html": body}, "zs-road__w")])
 
 
+def route(ctx, s):
+    """'How it works' as a delivery route: a scooter rides the track as the visitor scrolls and each stop
+    lights up when it is reached. Steps are native containers (icon + heading + text, editable in Elementor);
+    only the track is decorative HTML. Without JS or with reduced motion every stop is simply lit."""
+    items = s["items"]
+    rider = f'<span class="zs-route__rider">{vehicle_svg(s.get("vehicle", "scooter"))}</span>'
+    track = W(ctx, "html", {"html": f'<div class="zs-route__track" aria-hidden="true"><span class="zs-route__fill"></span>{rider}</div>'},
+              "zs-route__trackw")
+    stops = [C(ctx, "zs-route__step", [
+        W(ctx, "icon", {"selected_icon": fa_icon(it.get("icon", "check"))}, "zs-route__icon"),
+        heading(ctx, it["title"], "h3", "zs-route__title"),
+        text(ctx, it.get("text"), "zs-route__text"),
+    ]) for it in items]
+    lst = C(ctx, f"zs-route__list zs-route__list--{min(max(len(items), 2), 6)}", [track, *stops])
+    return section(ctx, s, "zs-route", [*sec_head(ctx, s), lst, buttons(ctx, s.get("cta"))])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote, road, marquee)}
+                                     logos, posts, contact, reviews, video, quote, road, route, marquee)}
 
 
 def render_page(ctx, sections):

@@ -113,6 +113,74 @@
     requestAnimationFrame(step);
   }
 
+  /* ---------- route: the rider follows the scroll, each stop lights up when the rider reaches it ---------- */
+  var routes = [].slice.call(document.querySelectorAll('.zs-route__list'));
+  if (routes.length && motion) {
+    routes.forEach(function (l) { l.classList.add('is-live'); });
+    var rTick = false, idleT = null;
+    var updRoutes = function () {
+      rTick = false;
+      var vh = window.innerHeight, ltr = root.getAttribute('dir') === 'ltr';
+      routes.forEach(function (l) {
+        var r = l.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        var p = Math.max(0, Math.min(1, (vh * 0.78 - r.top) / (r.height + vh * 0.18)));
+        l.style.setProperty('--p', p.toFixed(4));
+        var tr = l.querySelector('.zs-route__track');
+        if (!tr) return;
+        var t = tr.getBoundingClientRect(), vertical = t.height > t.width;
+        l.querySelectorAll('.zs-route__step').forEach(function (st) {
+          var ic = (st.querySelector('.elementor-icon') || st).getBoundingClientRect();
+          var f = vertical ? (ic.top + ic.height / 2 - t.top) / t.height
+                : ltr ? (ic.left + ic.width / 2 - t.left) / t.width : (t.right - ic.left - ic.width / 2) / t.width;
+          st.classList.toggle('is-on', p >= Math.min(1, Math.max(0, f)) - 0.01);
+        });
+        l.classList.remove('is-idle');
+      });
+      clearTimeout(idleT);
+      idleT = setTimeout(function () { routes.forEach(function (l) { l.classList.add('is-idle'); }); }, 260);
+    };
+    window.addEventListener('scroll', function () { if (!rTick) { rTick = true; requestAnimationFrame(updRoutes); } }, { passive: true });
+    window.addEventListener('resize', updRoutes);
+    updRoutes();
+  }
+
+  /* ---------- scroll progress vehicle ---------- */
+  var pg = document.querySelector('.zs-progress');
+  if (pg && !reduce) {
+    root.classList.add('zs-js');
+    var pTick = false, pIdle = null;
+    var updProgress = function () {
+      pTick = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      pg.style.setProperty('--sp', max > 0 ? Math.min(1, window.scrollY / max).toFixed(4) : 0);
+    };
+    window.addEventListener('scroll', function () {
+      if (!pTick) { pTick = true; requestAnimationFrame(updProgress); }
+      if (window.scrollY > 40) pg.classList.add('is-moving');
+      clearTimeout(pIdle); pIdle = setTimeout(function () { pg.classList.remove('is-moving'); }, 900);
+    }, { passive: true });
+    updProgress();
+  }
+
+  /* ---------- bento tiles: pointer tilt (fine pointers only) ---------- */
+  if (motion && lively && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    [].forEach.call(document.querySelectorAll('.zs-cards--bento .zs-card--img'), function (c) {
+      c.addEventListener('pointermove', function (e) {
+        var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.classList.add('is-tilting');
+        c.style.setProperty('--ry', ((x - 0.5) * 7).toFixed(2) + 'deg');
+        c.style.setProperty('--rx', ((0.5 - y) * 6).toFixed(2) + 'deg');
+        c.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+        c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      });
+      c.addEventListener('pointerleave', function () {
+        c.classList.remove('is-tilting');
+        c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');
   if (v) {

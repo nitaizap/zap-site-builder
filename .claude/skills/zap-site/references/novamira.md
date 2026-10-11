@@ -70,7 +70,7 @@ Pushing again is safe: everything is matched by key and updated in place (same p
   Menus are edited in Appearance → Menus; the lead form, contact list and legal line are shortcodes.
 - **Brand colours and fonts**: Elementor Site Settings → Global Colors / Global Fonts. The theme reads them, so
   one change restyles the whole site.
-- Decorative only (HTML widgets): the slogan marquee, the moving road, the hero video, the footer wordmark.
+- Decorative only (HTML widgets): the slogan marquee, the road scene, the route track (its steps are editable containers), the hero video/ride, the footer wordmark.
 
 A later `zs push` rewrites what site.json owns (pages, templates, kit). Hand edits made in Elementor are
 overwritten by the next push; after handover, edit in Elementor and stop pushing — or put the change into
