@@ -6,7 +6,7 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 
 | brief | on the site |
 |---|---|
-| סגנון: "אתר חדשני עם אנימציות של רכבים/אופנועים זזים" | ✅ **Home hero**: night-street video loop (desktop); on phones an illustrated scooter drives along the hero's bottom edge. ✅ **Road scene** (home): scooters, a van and a truck in two lanes drive across, wheels spin, bodies bob, speed lines, moving lane marks, skyline drifting behind. ✅ **"איך זה עובד" route**: a scooter rides the route as you scroll and each stop lights up when it is reached. ✅ **Scroll progress**: a brand-colour bar at the top with a scooter riding its tip (desktop/tablet). ✅ Slogan marquee, H1 word-by-word entrance, image wipe-ins, counters, tilt + light sweep on the service tiles. Everything stops under "reduce motion" (accessibility). |
+| סגנון: "אתר חדשני עם אנימציות של רכבים/אופנועים זזים" | ✅ **Home hero**: night-street video loop (desktop); on phones an illustrated scooter drives along the hero's bottom edge. ✅ **Every inner page hero**: the same scooter drives across (design.ride), desktop and phone. ✅ **Road scene** (home): scooters, a van and a truck in two lanes drive across, wheels spin, bodies bob, speed lines, moving lane marks, skyline drifting behind. ✅ **"איך זה עובד" route**: a scooter rides the route as you scroll and each stop lights up when it is reached. ✅ **Scroll progress**: a brand-colour bar at the top with a scooter riding its tip (desktop/tablet). ✅ Slogan marquee, H1 word-by-word entrance, image wipe-ins, counters, tilt + light sweep on the service tiles. Everything stops under "reduce motion" (accessibility). |
 | צבעים: על בסיס הלוגו | ✅ Red #d7141c / yellow #ffe600 / black from the logo; Elementor Global Colors so one change restyles the site |
 | לוגו | ✅ logo.png (keyed from the brief's logo); the original kept as logo-original.jpg |
 | רכיבים: טופס יצירת קשר + מפה | ✅ Contact page: form + Google map; lead form in the footer band on every page (saved in WP; mail goes to shirana221@gmail.com only on production) |
@@ -45,3 +45,4 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | Uploaded to the Zap staging clone through Novamira | ✅ https://mehiruthaor.ussl.co.il (staging lock: no client mail, noindex) |
 | QA | ✅ `zs qa` 0 errors locally and on the live staging site |
 | Launch blockers | ⏳ Zap privacy-policy URL (standards.privacy_url); client domain + `--live` push after approval |
+| About-page video | ⏳ the company's own YouTube video (QhidydOUNoM) shows the old number 04-8040404 in its thumbnail; ask the client whether to keep it |

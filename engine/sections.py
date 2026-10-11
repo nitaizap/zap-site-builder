@@ -198,8 +198,9 @@ def hero(ctx, s):
     # `ride: scooter` -> an illustrated vehicle drives along the hero's bottom edge (decorative); with a hero
     # video it only shows where the video does not play (phones), so the two never compete
     ride = None
-    if s.get("ride"):
-        ride = W(ctx, "html", {"html": f'<div class="zs-ride" aria-hidden="true"><span class="zs-ride__v">{vehicle_svg(s["ride"])}</span></div>'},
+    kind = s.get("ride", (ctx.site.get("design") or {}).get("ride"))   # design.ride = on every page hero
+    if kind:
+        ride = W(ctx, "html", {"html": f'<div class="zs-ride" aria-hidden="true"><span class="zs-ride__v">{vehicle_svg(kind)}</span></div>'},
                  "zs-hero__ride")
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""

@@ -95,7 +95,7 @@ premium clients or when movement is the product (water, food, fitness); never by
 | feature | site.json | what moves |
 |---|---|---|
 | hero video loop | `hero.video` (+ `image` poster) | 2–4 s silent loop, desktop only |
-| hero ride | `hero.ride: "scooter"\|"van"\|"truck"` | a vehicle drives along the hero's bottom edge; with a video only on phones |
+| hero ride | `hero.ride: "scooter"\|"van"\|"truck"`, or `design.ride` for every page hero | a vehicle drives along the hero's bottom edge; with a video only on phones |
 | road scene | section `road` (`vehicles`, `items`) | two lanes of illustrated vehicles, spinning wheels, moving lane marks, drifting skyline |
 | route ("how it works") | section `route` (`items` with `icon`) | a vehicle rides the track with the scroll, stops light up; steps are editable containers |
 | scroll progress | `design.progress: "scooter"` | brand bar at the top with the vehicle on its tip (desktop/tablet) |

@@ -69,7 +69,8 @@
   },
   "radius": 2,
   "custom_css": "",
-  "progress": "scooter"
+  "progress": "scooter",
+  "ride": "scooter"
  },
  "form": {
   "title": "צריכים שליח? השאירו פרטים",
