@@ -54,6 +54,8 @@ def _form_post(url, fields, local):
             return e.code, json.loads(e.read() or b"{}")
         except ValueError:
             return e.code, {}
+    except (urllib.error.URLError, OSError, TimeoutError) as e:   # dropped connection: the caller retries
+        return 0, {"error": "network", "error_description": str(e)[:120]}
 
 
 def connect(url, wait=900, say=print):
@@ -89,6 +91,8 @@ def connect(url, wait=900, say=print):
         err = tok.get("error", "")
         if err == "slow_down":
             interval += 5
+        elif err == "network":
+            continue                                   # transient reset/timeout while waiting: keep polling
         elif err not in ("authorization_pending", ""):
             raise NovamiraError(f"device flow ended: {err} {tok.get('error_description', '')}")
     raise NovamiraError("not approved in time; run zs connect again")
