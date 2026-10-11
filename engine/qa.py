@@ -144,14 +144,21 @@ def _scroll_all(page):
     page.wait_for_timeout(250)
 
 
-def screenshots(site, paths, directions=False):
+def screenshots(site, paths, directions=False, mobile_only=False):
+    """Full-page shots, desktop + mobile (or mobile only). paths ["all"] = every page the build owns.
+    Works on the local build and on a pushed site (zs shots --site): the server can render differently
+    (icon font vs SVG, caching, plugins), so look at the pushed site too, not only at the local one."""
     from playwright.sync_api import sync_playwright
     data = load_site(site.src)
     out_dir = site.dir / "shots"
     out_dir.mkdir(exist_ok=True)
     jobs = []
-    for p in paths:
-        name = re.sub(r"[^a-z0-9]+", "-", urllib.parse.quote(p).lower()).strip("-") or "home"
+    if paths == ["all"]:
+        paths = [urllib.parse.unquote(urllib.parse.urlsplit(u).path) or "/" for u in urls_for(site, data)]
+    for i, p in enumerate(paths):
+        # Hebrew paths percent-encode to unreadable names: number them, keep any latin part
+        tail = re.sub(r"[^a-z0-9]+", "-", p.lower()).strip("-")
+        name = "home" if p.strip("/") == "" else f"p{i:02d}" + (f"-{tail[:30]}" if tail else "")
         jobs.append((name, site.url + urllib.parse.quote(p)))
     if directions:
         for k in data.get("directions", {}):
@@ -160,6 +167,8 @@ def screenshots(site, paths, directions=False):
     with sync_playwright() as pw:
         b = _launch(pw)
         for vp, (w, h) in VIEWPORTS.items():
+            if mobile_only and vp != "mobile":
+                continue
             ctx = b.new_context(viewport={"width": w, "height": h}, device_scale_factor=1, locale="he-IL")
             page = ctx.new_page()
             for name, url in jobs:

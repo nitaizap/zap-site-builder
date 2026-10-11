@@ -6,9 +6,9 @@ run the same build that `zs build` runs locally, on the real server. The free pl
 
 | ability | used for |
 |---|---|
-| `novamira/execute-php` | every build step (PHP inside WordPress, 30 s per call → the engine batches) |
-| `novamira/run-wp-cli` | plugins/themes, flushes, db export for the backup |
-| `novamira/create-upload-link` | media, theme/plugin zips, build payloads (a temp PUT URL; `.php` uploads are refused) |
+| `novamira/execute-php` | every build step **and** everything WP-CLI would do (flushes, plugin/theme install and activate, Yoast index reset, the database backup) — PHP inside WordPress, 30 s per call → the engine batches |
+| `novamira/run-wp-cli` | fallback only: Zap's hosts have no WP-CLI binary (the ability returns 500/502 there) |
+| `novamira/create-upload-link` | media, theme/plugin zips, build payloads (a temp PUT URL; `.php` uploads are refused, so code goes up as `.txt`) |
 | `novamira/create-admin-access-link` | one-time admin login for checking the Elementor editor |
 
 Runner: `POST <site>/wp-json/novamira/v1/abilities/<ability>/run {"input": {...}}`, authenticated as an
@@ -62,6 +62,15 @@ What `zs push` does, in order:
 Pushing again is safe: everything is matched by key and updated in place (same page and template IDs).
 **Ask for the Elementor editor to be closed** during a push — an open editor's save overwrites the push.
 
+A push takes ~5 minutes and a live QA ~8 (both batched through 30 s calls); run them in the background.
+After every push: `zs qa --site` (0 errors) **and** `zs shots <slug> all --site <url>` — the server can render
+differently from the local build (Elementor there outputs font icons `<i class="fas …">` where the local
+build has inline SVG; the host adds an accessibility toolbar; caches). Look at the shots, desktop and mobile.
+
+Why the user may see "nothing moving": the Elementor editor canvas does not run the scroll scripts; their
+OS has "reduce motion" on (the site parks all motion then); or a cached page. Check the front end yourself
+(a Playwright "element is not stable" on a vehicle is proof it moves) before answering.
+
 ## What a person can edit afterwards (in Elementor)
 
 - Every page: containers with native widgets (heading, text, image, button, icon, accordion, video).
@@ -85,6 +94,9 @@ site.json first.
 | HTML instead of JSON | Novamira not active, or permalinks/REST broken on the site |
 | `php_sandbox_required` | a `.php` file upload; the engine uploads code as `.txt`/zip — report it as an engine bug |
 | WAF/CDN blocks | the host blocks server-to-server requests; Novamira's Troubleshoot page has a ready email for the host |
+| one `502` / connection reset mid-push or mid-QA | transient; the transport retries 5×; re-run QA once and check the page with curl |
+| breadcrumb links to an old page (/home/) | stale Yoast indexables; the push resets them — re-push |
+| a base-site page went to draft | the first push drafts only the previous front page + WP sample content; restore it in Pages → Drafts |
 
 Local test bench: `tools/novamira-replica.py` builds a Zap-base replica (Hello Elementor + Elementor + Novamira)
 on `http://127.0.0.1:8790` with an integration user, then `zs push <slug> --site http://127.0.0.1:8790

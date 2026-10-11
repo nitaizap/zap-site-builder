@@ -65,9 +65,12 @@ def cmd_stop(a):
 
 def cmd_shots(a):
     from qa import screenshots
-    s = Site(a.slug)
-    s.serve()
-    for f in screenshots(s, a.paths or ["/"], directions=a.directions):
+    if getattr(a, "site", None):
+        s = _remote(a)       # the pushed site itself -> work/<slug>@<host>/shots/
+    else:
+        s = Site(a.slug)
+        s.serve()
+    for f in screenshots(s, a.paths or ["/"], directions=a.directions, mobile_only=a.mobile):
         print(f)
 
 
@@ -255,7 +258,8 @@ def main():
     x = sub.add_parser("build"); x.add_argument("slug"); x.set_defaults(f=cmd_build)
     x = sub.add_parser("serve"); x.add_argument("slug"); x.set_defaults(f=cmd_serve)
     x = sub.add_parser("stop"); x.add_argument("slug"); x.set_defaults(f=cmd_stop)
-    x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*"); x.add_argument("--directions", action="store_true"); x.set_defaults(f=cmd_shots)
+    x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*", help='"/", "/<page>/" or "all"')
+    x.add_argument("--directions", action="store_true"); x.add_argument("--mobile", action="store_true"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_shots)
     x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
     x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.set_defaults(f=cmd_connect)
     x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")

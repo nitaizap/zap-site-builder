@@ -90,6 +90,38 @@ A hero **video** (Weave: Veo image-to-video from the approved hero photo, ≈ 90
 desktop, muted and looped, over the poster photo; phones and data-saver get the photo. Offer it for
 premium clients or when movement is the product (water, food, fitness); never by default.
 
+### The motion catalogue (all generic, all in site.json)
+
+| feature | site.json | what moves |
+|---|---|---|
+| hero video loop | `hero.video` (+ `image` poster) | 2–4 s silent loop, desktop only |
+| hero ride | `hero.ride: "scooter"\|"van"\|"truck"` | a vehicle drives along the hero's bottom edge; with a video only on phones |
+| road scene | section `road` (`vehicles`, `items`) | two lanes of illustrated vehicles, spinning wheels, moving lane marks, drifting skyline |
+| route ("how it works") | section `route` (`items` with `icon`) | a vehicle rides the track with the scroll, stops light up; steps are editable containers |
+| scroll progress | `design.progress: "scooter"` | brand bar at the top with the vehicle on its tip (desktop/tablet) |
+| slogan ticker | section `marquee` | big italic words scrolling on an accent band |
+| bento tilt | `cards.layout: "bento"` + `motion: lively` | tiles tilt + light sweep under the mouse |
+| entrances | `motion: lively` | H1 word-by-word, image wipe-ins, counters, reveals |
+
+Vehicle art lives in `wp/theme/zap-base/assets/vehicles/*.svg` (brand colours via CSS variables, wheels
+spin around their own centres). A new client type that needs other moving art (a tow truck, a bicycle, a
+boat) gets a new SVG there in the same structure (`zs-veh__body`, `zs-veh__wheel` with its own
+`transform-origin`, `zs-veh__speed`), never a one-off animation.
+
+### Brief words → features
+
+| the brief says | build at least |
+|---|---|
+| "אנימציות", "תנועה", "דינמי", "חדשני" | `motion: lively` + one moving signature element in the first screen on desktop **and** phone |
+| vehicles / scooters / delivery / transport / moving / towing | `hero.ride`, `road`, `route` for the process, `design.progress` |
+| "וידאו" / movement is the product | `hero.video` (Veo), plus `ride` or `marquee` for phones |
+| "צבעים על בסיס הלוגו" | sample the logo pixels into `colors`; Elementor Global Colors carry them |
+| "אינטראקטיבי" | bento tilt, route on scroll, FAQ, counters; never auto-playing sound or popups |
+
+Rules: motion is decorative (aria-hidden), never carries information, parks under "reduce motion", and
+must not cover text or controls at 390 px. Verify each moving element with a scrolled screenshot on the
+pushed site; a full-page shot does not show scroll-driven states.
+
 ## Colour
 
 - `primary` carries buttons and links: contrast with `primary_ink` must be ≥ 4.5:1 (white text needs a

@@ -14,7 +14,8 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 2 PLAN        keyword map + sitemap + 3 design directions → site.json (copy-first)
 3 PREVIEW     zs build → zs preview → ⏸ THE ONE GATE: approve sitemap + pick a direction
 4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors
-5 DELIVER     zs push → zs qa --site (Novamira sites)  |  zs package → zs publish (zip)
+              → mobile pass on every page → BRIEF-CHECK.md (every line of the brief, incl. style demands)
+5 DELIVER     zs push → zs qa --site → zs shots --site (Novamira sites)  |  zs package → zs publish (zip)
 ```
 
 Speak to the user in their language (usually Hebrew). Keep messages short; the files carry the detail.
@@ -28,10 +29,16 @@ Speak to the user in their language (usually Hebrew). Keep messages short; the f
    are for correctness. Never report a page as finished from a screenshot or from memory.
 3. **One keyword owns one page.** The H1 is that keyword in natural Hebrew; home and about carry the brand
    name in the H1 too. The validator stops cannibalisation.
-4. **One site per session, one branch per site** (`site/<slug>`). Several sites = several sessions in
-   parallel. Never mix two clients in one conversation.
+4. **One site per session, one branch per site** (`site/<slug>`, or the branch the session was given).
+   Several sites = several sessions in parallel. Never mix two clients in one conversation.
 5. **Everything durable lives in `sites/<slug>/`** and is committed. `work/` and `dist/` are disposable:
    `zs build` recreates the WordPress from `site.json` on any machine.
+6. **The brief's style line is a requirement, not a mood.** "אנימציות של רכבים זזים", "צבעים על בסיס
+   הלוגו", "אתר חדשני" each map to concrete features (`references/design.md` → *Brief words → features*)
+   and get a row in `BRIEF-CHECK.md`. A demand you can't meet is said out loud, never dropped silently.
+7. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
+   a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
+   this site locally **and on the pushed site**.
 
 ## 0 · Start
 
@@ -92,7 +99,16 @@ direction, say which and why in one line, and continue without waiting.
    Fix content problems in `site.json`. Fix a visual problem for this client only with
    `design.custom_css` (small, scoped). A problem that would hit every client is a bug in
    `wp/theme` or `engine/`: fix it there, keep it generic, and mention it in the report.
-4. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
+4. **Mobile pass on every page**, not only the home page: `bin/zs shots <slug> all --mobile`, then Read
+   each shot (390 px). Look for: wrapped buttons, icons off-centre in their chips, decorative elements
+   covering text or each other, horizontal scroll, tiny tap targets, empty bands, the fab hiding content.
+5. **Motion check**: everything the brief asks to move must move on desktop *and* phone (the hero video
+   is desktop-only, so phones need their own movement: `hero.ride`, `road`, `route`). Scroll-driven parts
+   need a scrolled screenshot, not just a full-page one.
+6. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
+   and its content, components, prohibitions such as "no food deliveries", delivery) → ✅ / ➖ with the
+   reason / ⏳ open. Grep site.json for every prohibited word. Example: `sites/mehirut-haor/BRIEF-CHECK.md`.
+7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
 
 ## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)
 
@@ -102,8 +118,22 @@ direction, say which and why in one line, and continue without waiting.
 bin/zs connect --site https://<client>.ussl.co.il          # once per site: an admin approves a code in wp-admin
 bin/zs push <slug> --site https://<client>.ussl.co.il    # backup → code → content; staging lock on
 bin/zs qa <slug> --site https://<client>.ussl.co.il      # 0 errors on the pushed site itself
+bin/zs shots <slug> all --site https://<client>.ussl.co.il   # LOOK at the pushed site, desktop + mobile
 git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
 ```
+
+- **Timing**: a push takes ~5 min (Novamira runs 30 s per call, so the engine batches: backup, code,
+  media in pairs, one page per call) and a live QA ~8 min. Run them in the background and tell the user
+  up front; don't go silent.
+- **The pushed site can render differently from the local build**: e.g. the server's Elementor outputs
+  font icons (`<i class="fas …">`) where the local build outputs SVG; caches; host plugins (a11y toolbar).
+  That is why `zs shots --site` is part of delivery, and why theme CSS must handle both icon forms.
+- **A single `HTTP 502` / "upstream request failed" in the live QA** is the network, not the site: check the
+  page with curl and re-run the QA once. A second failure is real.
+- **"It looks static in Novamira/Elementor"**: the Elementor editor is an editing canvas; scroll-driven
+  effects (route rider, progress bar, reveals) run only on the real page. Also check the viewer's OS
+  "reduce motion" setting (Windows: Animation effects) — the site parks all motion then, by design — and
+  cache (open in a private window). Verify yourself on the front end before answering.
 
 Needs a connection: `zs connect` (run it in the background, give the user the link + code in one line, wait), or
 the `ZS_NOVAMIRA` secret from the one-time base-site setup. Without either, say so, do everything else, offer the zip. A live (non-staging) domain needs `--live` and the
@@ -124,9 +154,21 @@ is ready" while a blocker exists.
 
 ## Revisions
 
-Client notes → edit `site.json` (or `custom_css`) → `zs build` → `zs qa` → `zs package` → `zs publish`.
-Same branch, same session if it is still open; otherwise start from `git checkout site/<slug>`.
-Ask for all notes of a round in one message.
+Client notes → edit `site.json` (or `custom_css`, or the theme when it is generic) → `zs build` → `zs qa`
+→ then the same delivery as before: `zs push` → `zs qa --site` → `zs shots --site` (Novamira), or
+`zs package` → `zs publish` (zip). Same branch, same session if it is still open; otherwise start from
+`git checkout site/<slug>`. Ask for all notes of a round in one message.
+
+Notes arriving as screenshots: find the element, reproduce it (`zs shots`, or a scrolled Playwright shot
+for motion), fix, and show the before/after on the pushed site in the reply. Hand edits made in Elementor
+by the client are overwritten by the next push: once the client edits, stop pushing or move their change
+into site.json first.
+
+## Skill, plugin or workflow?
+
+This stays a repo skill: it is inseparable from the engine and theme in this repo, and every site session
+starts here. Package it as a plugin only when it must run outside this repo. Use a multi-agent workflow
+only for parallel independent work (e.g. several sites, one session each), never inside one site.
 
 ## When the engine can't do something
 
