@@ -194,7 +194,12 @@ def hero(ctx, s):
         v = ctx.img(s["video"])        # videos share the media map
         vid = W(ctx, "html", {"html": f'<video class="zs-hero__video" data-src="{v["url"]}" muted loop playsinline '
                                        f'preload="none" aria-hidden="true" tabindex="-1"></video>'}, "zs-hero__vid")
-    media = C(ctx, "zs-hero__media", [image(ctx, s.get("image"), "zs-hero__img", "full", eager=True), vid]) if s.get("image") else None
+    # `images: [k1, k2, k3]` -> a crossfading slider (each slide is a normal image widget, swappable in Elementor);
+    # the first slide doubles as the poster/LCP image. `image` alone = one still photo.
+    keys = s.get("images") or ([s["image"]] if s.get("image") else [])
+    slides = [image(ctx, k, "zs-hero__img" + (" zs-hero__slide" if len(keys) > 1 else ""), "full", eager=(i == 0))
+              for i, k in enumerate(keys)]
+    media = C(ctx, "zs-hero__media" + (" zs-hero__slider" if len(keys) > 1 else ""), [*slides, vid]) if keys else None
     # `ride: scooter` -> an illustrated vehicle drives along the hero's bottom edge (decorative); with a hero
     # video it only shows where the video does not play (phones), so the two never compete
     ride = None
@@ -204,7 +209,8 @@ def hero(ctx, s):
                  "zs-hero__ride")
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
-    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}", [txt, media, ride])
+    slc = " zs-hero--slides zs-pausable" if len(keys) > 1 else ""
+    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [txt, media, ride])
 
 
 def trust(ctx, s):
@@ -345,7 +351,7 @@ def marquee(ctx, s):
     items = s.get("items") or []
     one = "".join(f'<span class="zs-mq__i">{html.escape(i, quote=False)}</span><span class="zs-mq__dot"></span>' for i in items)
     track = f'<div class="zs-mq__track">{one * 4}</div>'
-    body = f'<div class="zs-mq" aria-hidden="true">{track}{track}</div>'
+    body = f'<div class="zs-mq-wrap zs-pausable"><div class="zs-mq" aria-hidden="true">{track}{track}</div></div>'
     return section(ctx, {**s, "bg": s.get("bg", "accent")}, "zs-marquee", [W(ctx, "html", {"html": body}, "zs-mq__w")])
 
 
@@ -360,8 +366,8 @@ def road(ctx, s):
     labels = "".join(f"<li>{html.escape(i, quote=False)}</li>" for i in s.get("items", []))
     sky = vehicle_svg("skyline") if (VEH_DIR / "skyline.svg").exists() else ""
     body = (f'<ul class="zs-road__labels">{labels}</ul>' if labels else "") + \
-           f'<div class="zs-road__scene" aria-hidden="true"><div class="zs-road__sky">{sky}{sky}</div>' \
-           f'<div class="zs-road__lane">{vs}</div></div>'
+           f'<div class="zs-road__scene zs-pausable"><div class="zs-road__sky" aria-hidden="true">{sky}{sky}</div>' \
+           f'<div class="zs-road__lane" aria-hidden="true">{vs}</div></div>'
     return section(ctx, s, "zs-road", [*sec_head(ctx, s), W(ctx, "html", {"html": body}, "zs-road__w")])
 
 

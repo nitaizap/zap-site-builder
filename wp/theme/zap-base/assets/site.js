@@ -192,6 +192,41 @@
     });
   }
 
+  /* ---------- hero slider: 2-3 photos crossfade (first one stays put under reduced motion) ---------- */
+  [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
+    var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
+    if (slides.length < 2) return;
+    slides[0].classList.add('is-on');
+    sl.classList.add('is-ready');
+    if (!motion) return;
+    var i = 0, host = sl.closest('.zs-hero') || sl;
+    setInterval(function () {
+      if (host.classList.contains('is-paused') || document.hidden) return;
+      slides[i].classList.remove('is-on');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-on');
+    }, 6000);
+  });
+
+  /* ---------- pause button for everything that moves on its own for more than 5 s (WCAG 2.2.2) ---------- */
+  if (motion) {
+    [].forEach.call(document.querySelectorAll('.zs-pausable'), function (el) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'zs-pause';
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'עצירת התנועה');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path class="zs-pause__p" d="M7 5h3v14H7zM14 5h3v14h-3z"/><path class="zs-pause__r" d="M8 5l11 7-11 7z"/></svg>';
+      btn.addEventListener('click', function () {
+        var on = !el.classList.contains('is-paused');
+        el.classList.toggle('is-paused', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.setAttribute('aria-label', on ? 'הפעלת התנועה' : 'עצירת התנועה');
+      });
+      (el.querySelector('.zs-hero__media') || el).appendChild(btn);
+    });
+  }
+
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');
   if (v) {

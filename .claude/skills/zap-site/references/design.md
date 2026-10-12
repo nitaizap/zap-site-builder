@@ -37,6 +37,7 @@ Vary what changes how the site feels, not just the colour:
 | palette | light base + deep accent · dark base + one bright accent · warm neutral + muted accent |
 | type | pairing below |
 | radius | 2–4 sharp · 8–14 modern · 18–24 soft |
+| tone | default (the preset's own dark/light rhythm) · `light` (no dark grounds at all: ivory/stone sections, light hero split with the photo slider, light CTA and footer; pair with a serif heading font and a deep, desaturated primary for "luxury") |
 | motion | `none` · `subtle` (default: soft scroll reveals, hover lifts, hero entrance) · `lively` (bigger reveals, hero parallax, icon play, counters) |
 
 Anchor each one in the brief: the audience's fear and the client's real differentiator. A plumber's
@@ -116,7 +117,10 @@ boat) gets a new SVG there in the same structure (`zs-veh__body`, `zs-veh__wheel
 | vehicles / scooters / delivery / transport / moving / towing | `hero.ride`, `road`, `route` for the process, `design.progress` |
 | "וידאו" / movement is the product | `hero.video` (Veo), plus `ride` or `marquee` for phones |
 | "צבעים על בסיס הלוגו" | sample the logo pixels into `colors`; Elementor Global Colors carry them |
+| "יוקרתי", "פחות צבעים", "בלי רקע שחור", "שלא ייראה כמו האתר הישן" | `tone: light`, serif headings (Frank Ruhl Libre), primary = a deeper, desaturated logo colour, the logo's second colour replaced by a muted metal (brass/champagne), hero `images` slider with bright editorial daylight photos |
 | "אינטראקטיבי" | bento tilt, route on scroll, FAQ, counters; never auto-playing sound or popups |
+
+Everything that moves on its own longer than 5 s (hero slider, road, marquee) gets a pause button automatically (`.zs-pausable`, WCAG 2.2.2). A visitor whose OS has animations off (common on managed work PCs and Remote Desktop) sees everything parked — that is correct, not a bug.
 
 Rules: motion is decorative (aria-hidden), never carries information, parks under "reduce motion", and
 must not cover text or controls at 390 px. Verify each moving element with a scrolled screenshot on the

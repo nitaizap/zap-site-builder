@@ -225,7 +225,9 @@ def check_links(links):
 
     def one(u):
         code = None
-        for attempt in range(2):   # one retry for dropped connections (remote hosts)
+        for attempt in range(3):   # retries for dropped connections (remote hosts / proxies)
+            if attempt:
+                time.sleep(2 * attempt)
             try:
                 code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"), timeout=20).status
                 break
