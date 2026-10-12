@@ -50,27 +50,28 @@
   "header": "light",
   "motion": "lively",
   "colors": {
-   "primary": "#d7141c",
+   "primary": "#8c1d22",
    "primary_ink": "#ffffff",
-   "accent": "#ffe600",
-   "accent_ink": "#141213",
-   "ink": "#141213",
-   "text": "#3a3536",
-   "muted": "#5d5859",
-   "bg": "#ffffff",
-   "surface": "#f6f4ec",
-   "line": "#e6e1d3",
-   "dark": "#121011",
-   "dark_ink": "#f2efe6"
+   "accent": "#a8875a",
+   "accent_ink": "#1f1b18",
+   "ink": "#1f1b18",
+   "text": "#45403b",
+   "muted": "#6b645c",
+   "bg": "#fbf9f5",
+   "surface": "#f3efe7",
+   "line": "#e2dbcf",
+   "dark": "#2b2724",
+   "dark_ink": "#f3efe7"
   },
   "fonts": {
-   "heading": "Rubik",
+   "heading": "Frank Ruhl Libre",
    "body": "Heebo"
   },
   "radius": 2,
   "custom_css": "",
   "progress": "scooter",
-  "ride": "scooter"
+  "ride": "scooter",
+  "tone": "light"
  },
  "form": {
   "title": "צריכים שליח? השאירו פרטים",
@@ -128,9 +129,19 @@
    "alt": "שורת קטנועי שליחויות חונים זה לצד זה",
    "ai": true
   },
-  "heronight": {
-   "src": "assets/heronight.webp",
-   "alt": "קטנוע שליחויות חונה בלילה ליד כביש בחיפה, אורות תנועה חולפים",
+  "heroa": {
+   "src": "assets/heroa.webp",
+   "alt": "קטנוע שליחויות חונה ברחוב אבן מואר בחיפה",
+   "ai": true
+  },
+  "herob": {
+   "src": "assets/herob.webp",
+   "alt": "חבילות ומעטפות עטופות על דלפק קבלה במשרד",
+   "ai": true
+  },
+  "heroc": {
+   "src": "assets/heroc.webp",
+   "alt": "רכב מסחרי לבן בדרך בכרמל מעל מפרץ חיפה",
    "ai": true
   }
  },
@@ -239,9 +250,13 @@
       "קטנועים ורכבים מסחריים",
       "מעקב אחר המשלוח בכל רגע"
      ],
-     "image": "heronight",
-     "video": "heroloop",
-     "ride": "scooter"
+     "image": "heroa",
+     "ride": "scooter",
+     "images": [
+      "heroa",
+      "herob",
+      "heroc"
+     ]
     },
     {
      "type": "trust",
@@ -945,11 +960,5 @@
     }
    ]
   }
- ],
- "videos": {
-  "heroloop": {
-   "src": "assets/heroloop.mp4",
-   "ai": true
-  }
- }
+ ]
 }

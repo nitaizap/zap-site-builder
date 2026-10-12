@@ -2,7 +2,7 @@
 
 - Pages × viewports checked: **20** (10 URLs × 2)
 - Internal links tested: **18**, not 200: **0**
-- Errors: **0** · Warnings: **6**
+- Errors: **0** · Warnings: **5**
 
 - ✅ 404 page returns HTTP 404
 - ✅ mobile menu opens full-screen on top / Escape closes
@@ -11,23 +11,23 @@
 
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
-| desktop | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 1 | 632 | console: Failed to load resource: the server responded with a status of 502 (Bad Gateway) |
-| desktop | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 615 |  |
-| desktop | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 606 |  |
-| desktop | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 603 |  |
-| desktop | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 634 |  |
-| desktop | /מדיניות-פרטיות/ | 0 | 1 | 562 | meta description length 73 |
-| desktop | /צור-קשר/ | 0 | 0 | 536 |  |
-| desktop | /אודות/ | 0 | 1 | 904 | console: Failed to load resource: the server responded with a status of 502 (Bad Gateway) |
-| desktop | /שירותי-שליחויות/ | 0 | 1 | 1003 | console: Failed to load resource: the server responded with a status of 502 (Bad Gateway) |
-| desktop | / | 0 | 0 | 1499 |  |
-| mobile | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 594 |  |
-| mobile | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 574 |  |
-| mobile | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 572 |  |
-| mobile | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 571 |  |
-| mobile | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 593 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 1 | 551 | meta description length 73 |
-| mobile | /צור-קשר/ | 0 | 0 | 526 |  |
-| mobile | /אודות/ | 0 | 1 | 850 | console: Failed to load resource: the server responded with a status of 502 (Bad Gateway) |
-| mobile | /שירותי-שליחויות/ | 0 | 0 | 947 |  |
-| mobile | / | 0 | 0 | 971 |  |
+| desktop | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 3 | 597 | console: Refused to apply style from 'https://mehiruthaor.ussl.co.il/wp-content/plugins/elementor/assets/css/; console: Failed to load resource: the server responded with a status of 502 (Bad Gateway); console: Refused to execute script from 'https://mehiruthaor.ussl.co.il/wp-content/plugins/element |
+| desktop | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 593 |  |
+| desktop | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 583 |  |
+| desktop | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 580 |  |
+| desktop | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 611 |  |
+| desktop | /מדיניות-פרטיות/ | 0 | 1 | 539 | meta description length 73 |
+| desktop | /צור-קשר/ | 0 | 0 | 513 |  |
+| desktop | /אודות/ | 0 | 0 | 881 |  |
+| desktop | /שירותי-שליחויות/ | 0 | 0 | 980 |  |
+| desktop | / | 0 | 0 | 1228 |  |
+| mobile | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 570 |  |
+| mobile | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 551 |  |
+| mobile | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 549 |  |
+| mobile | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 548 |  |
+| mobile | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 570 |  |
+| mobile | /מדיניות-פרטיות/ | 0 | 1 | 528 | meta description length 73 |
+| mobile | /צור-קשר/ | 0 | 0 | 503 |  |
+| mobile | /אודות/ | 0 | 0 | 826 |  |
+| mobile | /שירותי-שליחויות/ | 0 | 0 | 924 |  |
+| mobile | / | 0 | 0 | 1010 |  |
