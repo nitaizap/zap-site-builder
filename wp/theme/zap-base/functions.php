@@ -172,6 +172,7 @@ function zs_tokens_css() {
 add_filter('body_class', function ($classes) {
     $d = zs_design();
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
+    if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');
     $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');
