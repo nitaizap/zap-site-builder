@@ -144,7 +144,7 @@ body .e-con.zs-sec > .e-con-inner { gap: 0; }
 body .zs-bg-surface.e-con { background: var(--c-surface); }
 body .zs-bg-dark.e-con { background: var(--c-dark); --c-ink: #fff; --c-text: var(--c-dark-ink); --c-muted: color-mix(in srgb, var(--c-dark-ink) 70%, transparent); --c-line: rgb(255 255 255 / .12); }
 body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-primary-ink); --c-text: var(--c-primary-ink); --c-muted: color-mix(in srgb, var(--c-primary-ink) 82%, transparent); --c-line: rgb(255 255 255 / .2); }
-.zs-bg-dark .zs-b-ghost .elementor-button, .zs-bg-primary .zs-b-ghost .elementor-button { color: #fff; border-color: rgb(255 255 255 / .45); }
+.zs-bg-dark .zs-b-ghost .elementor-button, .zs-bg-primary .zs-b-ghost .elementor-button { color: #fff; border-color: #fff; }
 .zs-bg-dark .zs-b-ghost .elementor-button:hover, .zs-bg-primary .zs-b-ghost .elementor-button:hover { border-color: #fff; background: rgb(255 255 255 / .08); color: #fff; }
 .zs-bg-primary .zs-b-primary .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); box-shadow: none; }
 
@@ -199,7 +199,7 @@ body .zs-hero--home.e-con { background: radial-gradient(1200px 500px at 85% -10%
 .zs-hv-image .zs-hero--img .zs-hero__media .elementor-widget-image, .zs-hv-image .zs-hero--img .zs-hero__media .elementor-widget-container { height: 100%; }
 .zs-hv-image .zs-hero--img .zs-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(270deg, rgb(8 12 20 / .84) 0%, rgb(8 12 20 / .64) 45%, rgb(8 12 20 / .24) 100%); }
 .zs-hv-image .zs-hero--img .e-con.zs-hero__text { max-width: 640px; }
-.zs-hv-image .zs-hero--img .zs-b-ghost .elementor-button { color: #fff; border-color: rgb(255 255 255 / .5); }
+.zs-hv-image .zs-hero--img .zs-b-ghost .elementor-button { color: #fff; border-color: #fff; }
 .zs-hv-image .zs-hero--img .zs-checks li::before { background-color: rgb(255 255 255 / .92); }
 .zs-hv-image .zs-hero--img .zs-crumbs, .zs-hv-image .zs-hero--img .zs-crumbs a, .zs-hv-image .zs-hero--img .zs-crumbs .breadcrumb_last { color: rgb(255 255 255 / .85); }
 .zs-hv-image .zs-hero--img .zs-eyebrow .elementor-heading-title { color: var(--c-accent); }
@@ -576,7 +576,7 @@ body:not(.zs-p-signature) .zs-h1__sep { position: static; width: auto; height: a
 @keyframes zs-streak { from { -webkit-mask-position: 120% 0; mask-position: 120% 0; } to { -webkit-mask-position: -120% 0; mask-position: -120% 0; } }
 .zs-p-signature.zs-m-none .e-con.zs-hero::after { animation: none; }
 @media (prefers-reduced-motion: reduce) { .zs-p-signature .e-con.zs-hero::after { animation: none; } }
-.zs-p-signature .zs-hero .zs-b-ghost .elementor-button { color: #fff; border-color: rgb(255 255 255 / .5); }
+.zs-p-signature .zs-hero .zs-b-ghost .elementor-button { color: #fff; border-color: #fff; }
 .zs-p-signature .zs-hero .zs-b-ghost .elementor-button:hover { background: rgb(255 255 255 / .1); border-color: #fff; color: #fff; }
 .zs-p-signature .zs-hero .zs-checks li::before { background-color: var(--c-accent); }
 .zs-p-signature .zs-hero .zs-crumbs, .zs-p-signature .zs-hero .zs-crumbs a, .zs-p-signature .zs-hero .zs-crumbs .breadcrumb_last { color: rgb(255 255 255 / .85); }
@@ -1001,7 +1001,7 @@ body.zs-tone-light :is(.e-con.zs-hero, .zs-bg-dark.e-con, .zs-bg-primary.e-con, 
   --c-ink: var(--zs-ink); --c-text: var(--zs-text); --c-muted: var(--zs-muted); --c-line: var(--zs-line); color: var(--zs-text); }
 body.zs-tone-light .zs-bg-dark.e-con, body.zs-tone-light .zs-bg-primary.e-con, body.zs-tone-light .zs-bg-accent.e-con { background: var(--c-surface); }
 body.zs-tone-light :is(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent) :is(.zs-sec__title, .zs-feature__title, .zs-card__title) .elementor-heading-title { color: var(--zs-ink); }
-body.zs-tone-light :is(.zs-bg-dark, .zs-bg-primary) .zs-b-ghost .elementor-button { color: var(--zs-ink); border-color: var(--zs-line); }
+body.zs-tone-light :is(.zs-bg-dark, .zs-bg-primary) .zs-b-ghost .elementor-button { color: var(--zs-ink); border-color: currentColor; }
 body.zs-tone-light .zs-bg-dark.e-con::after, body.zs-tone-light .zs-footer::after, body.zs-tone-light .zs-leadband::after { display: none; }
 
 /* type: serif headings sit lighter and looser than a grotesk */
@@ -1137,3 +1137,14 @@ body.zs-tone-light .zs-eyebrow .elementor-heading-title, body.zs-tone-light.zs-p
 /* accent words + full stop: deep primary on light grounds (the brass accent is too light for type) */
 body.zs-tone-light .elementor-heading-title .zs-hl, body.zs-tone-light .elementor-heading-title .zs-dot,
 body.zs-tone-light :is(.zs-bg-primary, .zs-bg-dark, .zs-cta, .zs-bg-accent) .elementor-heading-title :is(.zs-hl, .zs-dot) { color: var(--c-primary); font-style: normal; }
+
+/* visibility floor (WCAG 1.4.11): every control and outline separates at least 3:1 from what is behind it.
+   currentColor-based, so it holds on light and dark grounds alike. */
+body .zs-b-ghost .elementor-button, body.zs-tone-light .zs-hero .zs-b-ghost .elementor-button, body.zs-tone-light .zs-cta .zs-b-ghost .elementor-button,
+body.zs-tone-light .zs-b-ghost .elementor-button { border: 1.5px solid currentColor; }
+body .zs-b-ghost .elementor-button:hover { border-color: currentColor; }
+body :is(.zs-field, .zs-form) :is(input:not([type=checkbox]):not([type=hidden]), textarea, select) { border: 1px solid color-mix(in srgb, var(--c-ink) 55%, transparent); }
+body :is(.zs-field, .zs-form) :is(input, textarea, select):focus { border-color: var(--c-primary); outline: 2px solid color-mix(in srgb, var(--c-primary) 35%, transparent); outline-offset: 1px; }
+body .zs-form input[type=checkbox] { accent-color: var(--c-primary); width: 18px; height: 18px; }
+.zs-pause { border: 1.5px solid color-mix(in srgb, var(--zs-ink, var(--c-ink)) 60%, transparent); background: var(--c-bg); opacity: .92; }
+body .zs-social a { border: 1.5px solid color-mix(in srgb, currentColor 62%, transparent); }

@@ -128,6 +128,8 @@ pushed site; a full-page shot does not show scroll-driven states.
 
 ## Colour
 
+- **Nothing may blend in**: QA fails text below WCAG AA, and any control, outline or icon below 3:1 against what is behind it. Pick accent colours that clear 3:1 on *every* ground they appear on (ivory, surface, stone), not just on white.
+
 - `primary` carries buttons and links: contrast with `primary_ink` must be ≥ 4.5:1 (white text needs a
   dark enough primary). `accent` is for highlights; `accent_ink` sits on it.
 - `ink` (headings) near-black tinted toward the primary; `text` slightly lighter; `muted` must still be
