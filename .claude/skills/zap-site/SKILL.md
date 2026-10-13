@@ -119,6 +119,9 @@ direction, say which and why in one line, and continue without waiting.
 4. **Mobile pass on every page**, not only the home page: `bin/zs shots <slug> all --mobile`, then Read
    each shot (390 px). Look for: wrapped buttons, icons off-centre in their chips, decorative elements
    covering text or each other, horizontal scroll, tiny tap targets, empty bands, the fab hiding content.
+   **Above the fold** (a Zap standard): the H1, the lead and both hero buttons show without scrolling on a
+   short laptop and a small phone; `zs qa` fails it at 1280×620 and 360×640. Don't fix it per site with
+   fixed pixel sizes: the theme sizes the home hero by screen height.
 5. **Motion check**: everything the brief asks to move must move on desktop *and* phone (the hero video
    is desktop-only, so phones need their own movement: `hero.ride`, `road`, `route`). Scroll-driven parts
    need a scrolled screenshot, not just a full-page one.
