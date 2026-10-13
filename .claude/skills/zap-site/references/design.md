@@ -143,6 +143,7 @@ pushed site; a full-page shot does not show scroll-driven states.
 | modern, approachable | Rubik / Assistant · Heebo / Heebo |
 | corporate, precise | IBM Plex Sans Hebrew / Heebo · Noto Sans Hebrew / Assistant |
 | authority, editorial | Frank Ruhl Libre / Assistant · Noto Serif Hebrew / Heebo |
+| luxury, distinctive (when "it looks like every other / AI site") | Bellefair / Miriam Libre · Bona Nova / Alef · David Libre / Miriam Libre — Rubik, Heebo and Frank Ruhl are what every template uses |
 | bold, punchy | Secular One / Heebo · Suez One / Assistant |
 | friendly, soft | Varela Round / Assistant · Fredoka / Heebo |
 

@@ -130,7 +130,17 @@ MEASURE_JS = r"""
     if (!c) return; const r = cr(flat(c, bg.slice(0, 3)), bg.slice(0, 3));
     if (r < 3) dim.set(el.className.toString().split(' ').find(x => x.startsWith('zs-') || x.startsWith('elementor')) || el.tagName, r.toFixed(2));
   });
-  if (dim.size) E(`icon too faint (${dim.size}): ${[...dim].slice(0, 4).map(([t, r]) => `${t} ${r}`).join('; ')}`);
+
+  // decorative display text (wordmark, ticker) is hidden from screen readers but must still be visible: 3:1,
+  // judged on its outline colour when the fill is transparent
+  q('.zs-footer__mark, .zs-mq__i').filter(vis).forEach(el => {
+    const bg = bgOf(el); if (!bg) return;
+    const s = getComputedStyle(el); let c = rgb(s.color);
+    if (!c || (c.length > 3 && c[3] < .05)) c = parseFloat(s.webkitTextStrokeWidth) > 0 ? rgb(s.webkitTextStrokeColor) : null;
+    if (!c) return; const r = cr(flat(c, bg.slice(0, 3)), bg.slice(0, 3));
+    if (r < 3) dim.set(el.className.toString().split(' ')[0], r.toFixed(2));
+  });
+  if (dim.size) E(`decorative text or icon too faint (${dim.size}): ${[...dim].slice(0, 4).map(([t, r]) => `${t} ${r}`).join('; ')}`);
   // css or shortcodes leaking as text
   if (/\.(zs|elementor)-[a-z_-]+\s*\{|\[zap_[a-z_]+/.test(txt)) E('CSS or shortcode text visible on the page');
   // accessibility basics

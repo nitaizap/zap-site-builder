@@ -1125,7 +1125,8 @@ body.zs-tone-light .zs-footer__mark { -webkit-text-stroke: 1px color-mix(in srgb
 body.zs-tone-light .e-con.zs-footer__bar, body.zs-tone-light .zs-footer__bar { border-top: 1px solid var(--zs-line); }
 body.zs-tone-light .zs-footer .zs-social a, body.zs-tone-light .elementor-location-footer .zs-social a { color: var(--zs-ink); background: transparent; }
 body.zs-tone-light .zs-footer :is(.zs-ico, svg.zs-ico) { color: var(--c-primary); }
-body.zs-tone-light .zs-footer .zs-footer__zap img { filter: invert(1) brightness(.25); }
+body.zs-tone-light .zs-footer__zap--color { display: inline-flex; align-items: center; gap: 10px; direction: ltr; color: var(--zs-ink); font-size: .95rem; text-decoration: none; }
+body.zs-tone-light .zs-footer__zap--color img { height: 26px; width: auto; filter: none; }
 /* tone light: specificity fixes over the signature preset */
 body.zs-tone-light .zs-hero .zs-b-ghost .elementor-button, body.zs-tone-light .zs-cta .zs-b-ghost .elementor-button { color: var(--zs-ink); border: 1px solid color-mix(in srgb, var(--zs-ink) 35%, transparent); background: transparent; }
 body.zs-tone-light .zs-hero .zs-b-ghost .elementor-button:hover, body.zs-tone-light .zs-cta .zs-b-ghost .elementor-button:hover { border-color: var(--zs-ink); background: color-mix(in srgb, var(--zs-ink) 4%, transparent); color: var(--zs-ink); }
@@ -1148,3 +1149,10 @@ body :is(.zs-field, .zs-form) :is(input, textarea, select):focus { border-color:
 body .zs-form input[type=checkbox] { accent-color: var(--c-primary); width: 18px; height: 18px; }
 .zs-pause { border: 1.5px solid color-mix(in srgb, var(--zs-ink, var(--c-ink)) 60%, transparent); background: var(--c-bg); opacity: .92; }
 body .zs-social a { border: 1.5px solid color-mix(in srgb, currentColor 62%, transparent); }
+
+/* screen-reader-only text */
+.zs-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* single-weight display faces (Bellefair...) are never faux-bolded: the browser uses the real weight */
+body .elementor-heading-title, body h1, body h2, body h3 { font-synthesis-weight: none; }
+/* footer wordmark on a light footer: a clear brand-colour outline, not white on white */
+body.zs-tone-light .zs-footer__mark { -webkit-text-stroke: 1.5px var(--c-primary); color: transparent; opacity: 1; }
