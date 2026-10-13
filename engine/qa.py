@@ -359,6 +359,19 @@ def run_qa(site):
                 extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
                 if not (ok_msg and saved == 1):
                     errors += 1
+            # above the fold: the home hero's buttons are visible without scrolling on a short laptop / small phone
+            # (browser bars deducted; on phones the fixed call bar too)
+            fw, fh = (1280, 620) if vp == "desktop" else (360, 640)
+            page.set_viewport_size({"width": fw, "height": fh})
+            page.goto(site.url + "/", wait_until="networkidle")
+            page.wait_for_timeout(400)
+            fold = page.evaluate("""() => { const bs = [...document.querySelectorAll('.zs-hero--home .zs-btns .elementor-button')].slice(0, 2);
+                const bar = document.querySelector('.zs-fab'); const lim = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect().top : innerHeight;
+                return bs.length ? Math.max(...bs.map(b => b.getBoundingClientRect().bottom)) - lim : null; }""")
+            if fold is not None:
+                extra.append((f"hero buttons above the fold at {fw}×{fh}" + ("" if fold <= 0 else f" — {round(fold)}px below"), fold <= 0))
+                if fold > 0:
+                    errors += 1
             # 404 must be a real 404
             r404 = page.goto(site.url + "/no-such-page-zs/", wait_until="domcontentloaded")
             if vp == "desktop":

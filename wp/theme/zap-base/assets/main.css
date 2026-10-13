@@ -1042,14 +1042,24 @@ body.zs-tone-light .zs-hero__vid { display: none; }
   body.zs-tone-light .zs-hero--page.zs-hero--img .e-con.zs-hero__media { aspect-ratio: 16 / 9; }
 }
 
-/* hero slider: stacked slides crossfade with a slow settle (site.js rotates; first slide alone without JS) */
-.zs-hero__slider { isolation: isolate; }
-body .zs-hero__slider > .elementor-element.zs-hero__slide { position: absolute; inset: 0; margin: 0; width: 100%; max-width: none; opacity: 0; transition: opacity 1.1s ease; z-index: 0; }
-body .zs-hero__slider:not(.is-ready) > .elementor-element.zs-hero__slide:first-child, body .zs-hero__slider > .elementor-element.zs-hero__slide.is-on { opacity: 1; z-index: 1; }
+/* hero slider: the next photo fades in ON TOP of the previous one, which stays fully visible underneath until the
+   fade ends (.is-prev), so the ground never shows through mid-fade. The slow settle runs longer than a slide is
+   shown and keeps running on .is-prev, so no photo ever snaps back in scale. site.js rotates; without JS the
+   first slide stands alone. */
+.zs-hero__slider { isolation: isolate; --zs-fade: 1.6s; }
+body .zs-hero__slider > .elementor-element.zs-hero__slide { position: absolute; inset: 0; margin: 0; width: 100%; max-width: none; opacity: 0; z-index: 0; transition: opacity var(--zs-fade) cubic-bezier(.45, 0, .25, 1); }
+body .zs-hero__slider:not(.is-ready) > .elementor-element.zs-hero__slide:first-child, body .zs-hero__slider > .elementor-element.zs-hero__slide.is-on { opacity: 1; z-index: 2; }
+body .zs-hero__slider > .elementor-element.zs-hero__slide.is-prev { opacity: 1; z-index: 1; transition: none; }
 .zs-hero__slide img { width: 100%; height: 100% !important; object-fit: cover; }
-.zs-motion .zs-hero__slide.is-on img { animation: zs-settle 6s ease-out both; }
-@keyframes zs-settle { from { transform: scale(1.07); } to { transform: scale(1); } }
-.zs-hero.is-paused .zs-hero__slide.is-on img { animation-play-state: paused; }
+.zs-motion .zs-hero__slide:is(.is-on, .is-prev) img { animation: zs-settle calc(var(--zs-iv, 4s) + var(--zs-fade) + 1s) cubic-bezier(.2, .6, .35, 1) both; }
+@keyframes zs-settle { from { transform: scale(1.06); } to { transform: scale(1); } }
+.zs-hero.is-paused .zs-hero__slide:is(.is-on, .is-prev) img { animation-play-state: paused; }
+/* reduced motion: no zoom, but keep the crossfade (an opacity fade is not motion; a hard cut reads as broken) */
+@media (prefers-reduced-motion: reduce) {
+  body .zs-hero__slider > .elementor-element.zs-hero__slide { transition-duration: 1.2s !important; }
+  body .zs-hero__slider > .elementor-element.zs-hero__slide.is-prev { transition-duration: 0s !important; }
+  .zs-hero__slide img { animation: none !important; transform: none !important; }
+}
 
 /* pause button for moving scenes */
 .zs-pausable { position: relative; }
@@ -1173,7 +1183,7 @@ body.zs-tone-light .e-con.zs-sec:not([class*="zs-bg-"]) + .e-con.zs-sec:not([cla
     background: linear-gradient(270deg, rgb(251 249 245 / .96) 0%, rgb(251 249 245 / .9) 34%, rgb(251 249 245 / .35) 58%, rgb(251 249 245 / 0) 74%); }
   [dir="ltr"] body.zs-tone-light.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(90deg, rgb(251 249 245 / .96) 0%, rgb(251 249 245 / .9) 34%, rgb(251 249 245 / .35) 58%, rgb(251 249 245 / 0) 74%); }
   body.zs-tone-light.zs-hv-image .e-con.zs-hero--img .e-con.zs-hero__text { position: relative; z-index: 3; max-width: 620px; }
-  body.zs-tone-light.zs-hv-image .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(3rem, 1.6rem + 3.6vw, 5.4rem); }
+  body.zs-tone-light.zs-hv-image .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: min(clamp(3rem, 1.6rem + 3.6vw, 5.4rem), var(--zs-h1-cap, 99vh)); }
   body.zs-tone-light.zs-hv-image .zs-hero__media > .zs-pause { inset-inline-end: auto; inset-inline-start: 18px; }
   body.zs-tone-light.zs-hv-image .e-con.zs-hero--page.zs-hero--img { min-height: 360px; }
 }
@@ -1217,3 +1227,31 @@ body.zs-tone-light .e-con.zs-sec:is(:not([class*="zs-bg-"]), .zs-bg-plain):not(.
 /* tile description: clamp the paragraph itself to two lines */
 body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__text { display: block; }
 body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__text p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: rgb(255 255 255 / .9); }
+
+/* ===== above the fold (Zap standard): on the home page the H1, the lead and both hero buttons are visible
+   without scrolling, on laptops (1280×620 viewport and up) and on phones (360×640 / 390×664 minus the fixed
+   call bar). Height-aware sizes, not per-site numbers; zs qa checks it. ===== */
+body { --zs-h1-cap: 9.4svh; }
+@media (min-width: 1025px) {
+  body .e-con.zs-hero--home { --padding-top: clamp(24px, 4.5svh, 72px); }
+  body .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: min(var(--fs-h1), var(--zs-h1-cap)); }
+  body .zs-hero--home .e-con.zs-hero__text { --row-gap: clamp(10px, 2svh, 18px); row-gap: clamp(10px, 2svh, 18px); }
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--home { min-height: min(calc(100svh - 116px), 820px); --padding-top: clamp(24px, 4.5svh, 72px); --padding-bottom: clamp(56px, 7svh, 110px); }
+}
+@media (max-width: 767px) {
+  body .e-con.zs-hero--home { --padding-top: 10px; }
+  body .e-con.zs-hero--home > .e-con-inner { --gap: 14px; gap: 14px; }
+  body .zs-hero--home .e-con.zs-hero__media { aspect-ratio: auto !important; height: clamp(104px, 22svh, 230px) !important; }
+  body .zs-hero--home .zs-hero__media img { height: 100% !important; aspect-ratio: auto !important; }
+  body .zs-hero--home .e-con.zs-hero__text { --row-gap: 10px; row-gap: 10px; }
+  body .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(1.7rem, 7.6vw, 2.2rem); line-height: 1.08; }
+  body .zs-hero--home .zs-hero__lead { font-size: 1rem; line-height: 1.5; }
+  /* the two hero buttons side by side (one row), long labels may wrap to two lines */
+  body .zs-hero--home .e-con.zs-btns { --flex-direction: row; flex-direction: row; flex-wrap: nowrap; gap: 8px; }
+  body .zs-hero--home .zs-btns > .elementor-element { flex: 1 1 0; width: auto; min-width: 0; }
+  body .zs-hero--home .zs-btns .elementor-button { min-height: 50px; padding: 8px 10px; font-size: .95rem; line-height: 1.2; white-space: normal; text-align: center; }
+  body .zs-hero--home .zs-btns .elementor-button-icon { display: none; }
+}
+@media (max-width: 767px) and (max-height: 620px) {
+  body .zs-hero--home .zs-eyebrow { display: none; }
+}

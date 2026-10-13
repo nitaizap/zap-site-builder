@@ -211,23 +211,32 @@
   }
   if (motion) [].forEach.call(document.querySelectorAll('.zs-pausable'), addPause);
 
-  /* ---------- hero slider: 2-3 photos crossfade every hero.interval s (default 4) (a plain swap under reduced motion) ---------- */
+  /* ---------- hero slider: 2-3 photos crossfade every hero.interval s (default 4); reduced motion keeps the fade, drops the zoom ---------- */
   [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
     var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
     if (slides.length < 2) return;
     slides[0].classList.add('is-on');
     sl.classList.add('is-ready');
-    // the client asked for rotating photos: they rotate under "reduce motion" too (as a plain swap, no fade or
-    // zoom — the theme's reduced-motion CSS removes those); only motion:"none" keeps the first photo
+    // the client asked for rotating photos: they rotate under "reduce motion" too (a crossfade without the
+    // zoom); only motion:"none" keeps the first photo
     if (body.classList.contains('zs-m-none')) return;
     var i = 0, host = sl.closest('.zs-hero') || sl;
     if (!motion) addPause(host);
+    var iv = (parseInt((sl.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000, prev = null, t = 0;
+    sl.style.setProperty('--zs-iv', iv + 'ms');
     setInterval(function () {
       if (host.classList.contains('is-paused') || document.hidden) return;
-      slides[i].classList.remove('is-on');
+      // the outgoing photo stays opaque underneath (.is-prev) while the next one fades in over it
+      clearTimeout(t);
+      if (prev) prev.classList.remove('is-prev');
+      prev = slides[i];
+      prev.classList.add('is-prev');
+      prev.classList.remove('is-on');
       i = (i + 1) % slides.length;
       slides[i].classList.add('is-on');
-    }, (parseInt((sl.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000);
+      var done = prev;
+      t = setTimeout(function () { done.classList.remove('is-prev'); }, 2000);
+    }, iv);
   });
 
 
