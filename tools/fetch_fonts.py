@@ -27,6 +27,7 @@ FAMILIES = {
     "David Libre": "wght@400;500;700",
     "Alef": "wght@400;700",
     "Bona Nova": "wght@400;700",
+    "Karantina": "wght@300;400;700",
 }
 KEEP = {"hebrew", "latin"}
 
