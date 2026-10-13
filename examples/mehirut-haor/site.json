@@ -42,7 +42,9 @@
  },
  "standards": {
   "privacy_url": "",
-  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
+  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html",
+  "privacy_database": true,
+  "privacy_confirmed": true
  },
  "design": {
   "preset": "signature",

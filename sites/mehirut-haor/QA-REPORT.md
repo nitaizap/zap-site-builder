@@ -22,7 +22,7 @@
 | desktop | /מדיניות-פרטיות/ | 0 | 1 | 986 | meta description length 73 |
 | desktop | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 979 |  |
 | desktop | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 929 |  |
-| desktop | / | 0 | 0 | 1576 |  |
+| desktop | / | 0 | 1 | 1577 | console: Failed to load resource: the server responded with a status of 500 (Internal Server Error) |
 | mobile | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 873 |  |
 | mobile | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 877 |  |
 | mobile | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 882 |  |
@@ -32,4 +32,4 @@
 | mobile | /מדיניות-פרטיות/ | 0 | 1 | 949 | meta description length 73 |
 | mobile | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 898 |  |
 | mobile | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 872 |  |
-| mobile | / | 0 | 1 | 1332 | console: Failed to load resource: the server responded with a status of 500 (Internal Server Error) |
+| mobile | / | 0 | 0 | 1332 |  |

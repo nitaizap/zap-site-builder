@@ -41,7 +41,7 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 ## Gaps
 - Zap privacy PDF: Zap's own is https://img.zapgroup.co.il/PrivacyPolicy.pdf; the per-client pattern could not be verified from the sandbox (zap.dbusiness.co blocks bots) → placeholder page stays
 - Final domain: assumed mehiruthaor.co.il (old site 403; Wayback snapshot 2022-12-14 exists but archive.org is blocked from the sandbox)
-- No registered company (בע"מ / ח.פ.) found → none shown
+- No registered company (בע"מ / ח.פ.) found → none shown. The privacy policy names the business as in the brief (מהירות האור שליחויות); database: yes (confirmed by the user 2026-10-13)
 - Higher-res / vector logo · real photos of fleet and team
 - Tracking system is plain http on a bare IP (browser "not secure"); opens in a new tab
 
