@@ -211,7 +211,7 @@
   }
   if (motion) [].forEach.call(document.querySelectorAll('.zs-pausable'), addPause);
 
-  /* ---------- hero slider: 2-3 photos crossfade every 6 s (a plain swap under reduced motion) ---------- */
+  /* ---------- hero slider: 2-3 photos crossfade every hero.interval s (default 4) (a plain swap under reduced motion) ---------- */
   [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
     var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
     if (slides.length < 2) return;
@@ -227,7 +227,7 @@
       slides[i].classList.remove('is-on');
       i = (i + 1) % slides.length;
       slides[i].classList.add('is-on');
-    }, 6000);
+    }, (parseInt((sl.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000);
   });
 
 

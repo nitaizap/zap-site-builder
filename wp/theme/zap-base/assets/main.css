@@ -1044,10 +1044,10 @@ body.zs-tone-light .zs-hero__vid { display: none; }
 
 /* hero slider: stacked slides crossfade with a slow settle (site.js rotates; first slide alone without JS) */
 .zs-hero__slider { isolation: isolate; }
-body .zs-hero__slider > .elementor-element.zs-hero__slide { position: absolute; inset: 0; margin: 0; width: 100%; max-width: none; opacity: 0; transition: opacity 1.6s ease; z-index: 0; }
+body .zs-hero__slider > .elementor-element.zs-hero__slide { position: absolute; inset: 0; margin: 0; width: 100%; max-width: none; opacity: 0; transition: opacity 1.1s ease; z-index: 0; }
 body .zs-hero__slider:not(.is-ready) > .elementor-element.zs-hero__slide:first-child, body .zs-hero__slider > .elementor-element.zs-hero__slide.is-on { opacity: 1; z-index: 1; }
 .zs-hero__slide img { width: 100%; height: 100% !important; object-fit: cover; }
-.zs-motion .zs-hero__slide.is-on img { animation: zs-settle 9s ease-out both; }
+.zs-motion .zs-hero__slide.is-on img { animation: zs-settle 6s ease-out both; }
 @keyframes zs-settle { from { transform: scale(1.07); } to { transform: scale(1); } }
 .zs-hero.is-paused .zs-hero__slide.is-on img { animation-play-state: paused; }
 
