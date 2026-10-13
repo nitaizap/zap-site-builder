@@ -9,7 +9,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 |---|---|
 | `site` | `{ "index": false }` – leave false; packaging decides indexing from the domain. `tagline` optional |
 | `business` | facts (below) |
-| `standards` | `privacy_url` (Zap PDF; empty → automatic placeholder page), `accessibility_url` (default Zap central statement) |
+| `standards` | `privacy_url` (empty → the page is built from Zap's standard privacy wording; set it only when the client has its own policy), `privacy_database` (true only when the client confirmed a database; adds the database paragraph), `privacy_purposes` (extra "השימוש במידע" items; default: answering the contact forms), `privacy_email` (default `business.email_public`), `privacy_confirmed` (the client confirmed these and `business.legal_name`; clears the launch blocker), `accessibility_url` (default Zap central statement) |
 | `design` | the active look (below) |
 | `directions` | `{ "a": {...}, "b": {...}, "c": {...} }` partial `design` overrides for the gate preview; each has a `label` |
 | `form` | `title`, `text`, `button`, `thanks` – the footer lead form |
