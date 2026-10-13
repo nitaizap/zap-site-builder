@@ -55,7 +55,7 @@ spend the effort to find it. Ask only for what cannot exist online or needs a hu
 5. Real photos and video of the business beat AI every time: use what the client already published
    (their site, Facebook, YouTube), describe what each shows in `alt`, record the source URL.
 
-Only then ask, in one message, for what is left: the Zap privacy PDF, contradictions, decisions
+Only then ask, in one message, for what is left: the privacy-policy details (official company name, database yes/no, privacy e-mail), contradictions, decisions
 (direction, Weave budget) and anything private. Every fact you found goes into NOTES.md with its source
 URL, marked "found", so the user sees what you verified.
 
@@ -71,7 +71,7 @@ background agent while you plan, and record every result with its URL in NOTES.m
 | WhatsApp | d.co.il WhatsApp button, Facebook page | prefer a number the client published over a guess from the brief |
 | old site content + photos | live site; if down, Wayback: `http://archive.org/wayback/available?url=<domain>` | `bin/zs grab` does this automatically via the Wayback CDX index (finds www/http variants the 'available' API misses) |
 | legal name / ח.פ. | search "<name> בע\"מ ח.פ." | show nothing legal unless found with a source |
-| privacy PDF | Zap provides per client | if not in the brief: placeholder page (automatic) + launch checklist |
+| privacy policy | Zap's standard wording (`engine/templates/privacy-he.html`, the text behind campaign.zapx.co.il/privacy-policy) is built automatically; the client confirms the official company name, whether they keep a database, extra purposes and the privacy e-mail (the same fields as Zap's campaign form) | page built from site.json; launch blocker until `standards.privacy_confirmed` |
 | final domain | brief → old site domain | assume the old domain, say so |
 | Facebook / Instagram | links from the listing | facts and visual tone only, no photo copying |
 

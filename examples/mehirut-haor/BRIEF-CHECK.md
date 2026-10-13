@@ -44,5 +44,6 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | Built on WordPress + Elementor, editable in containers | ✅ every section is Elementor containers with native widgets; header/footer are Elementor Pro Theme Builder templates |
 | Uploaded to the Zap staging clone through Novamira | ✅ https://mehiruthaor.ussl.co.il (staging lock: no client mail, noindex) |
 | QA | ✅ `zs qa` 0 errors locally and on the live staging site |
-| Launch blockers | ⏳ Zap privacy-policy URL (standards.privacy_url); client domain + `--live` push after approval |
+| Privacy policy | ✅ /מדיניות-פרטיות/ built from Zap's standard wording (company מהירות האור שליחויות, e-mail shirana221@gmail.com, no database paragraph, extra purpose: answering the site's forms) · ⏳ the client confirms the official company name and whether they keep a database (Zap's campaign form fields) |
+| Launch blockers | ⏳ the privacy confirmation above; client domain + `--live` push after approval |
 | About-page video | ⏳ the company's own YouTube video (QhidydOUNoM) shows the old number 04-8040404 in its thumbnail; ask the client whether to keep it |

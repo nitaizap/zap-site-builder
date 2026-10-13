@@ -51,8 +51,12 @@ def validate(d, site_dir):
     for k in ("phone_e164", "whatsapp_e164"):
         if b.get(k) and not re.fullmatch(r"\+972\d{8,9}", b[k]):
             E(f"business.{k} must look like +9725XXXXXXXX, got {b[k]}")
-    if not d.get("standards", {}).get("privacy_url"):
-        W("standards.privacy_url missing: the footer and form consent link to a placeholder (launch blocker: Zap privacy PDF)")
+    std = d.get("standards", {})
+    if not std.get("privacy_url") and not std.get("privacy_confirmed"):
+        W("privacy policy: built from Zap's standard wording; confirm legal_name, privacy_database, privacy_purposes and "
+          "privacy_email with the client, then set standards.privacy_confirmed (launch blocker until then)")
+    if std.get("privacy_database") not in (None, True, False):
+        E("standards.privacy_database must be true or false")
     if not b.get("dpz_customer_id"):
         W("business.dpz_customer_id missing: no reviews block will render (correct until a real id is provided)")
 

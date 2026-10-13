@@ -2,7 +2,7 @@
 
 - Pages × viewports checked: **20** (10 URLs × 2)
 - Internal links tested: **18**, not 200: **0**
-- Errors: **0** · Warnings: **4**
+- Errors: **0** · Warnings: **3**
 
 - ✅ hero buttons above the fold at 1280×620
 - ✅ 404 page returns HTTP 404
@@ -19,17 +19,17 @@
 | desktop | /שירותי-שליחויות/ | 0 | 0 | 1297 |  |
 | desktop | /אודות/ | 0 | 0 | 1233 |  |
 | desktop | /צור-קשר/ | 0 | 0 | 833 |  |
-| desktop | /מדיניות-פרטיות/ | 0 | 1 | 972 | meta description length 73 |
+| desktop | /מדיניות-פרטיות/ | 0 | 1 | 986 | meta description length 73 |
 | desktop | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 979 |  |
 | desktop | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 929 |  |
-| desktop | / | 0 | 1 | 1577 | console: Failed to load resource: the server responded with a status of 500 (Internal Server Error) |
+| desktop | / | 0 | 0 | 1576 |  |
 | mobile | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 873 |  |
 | mobile | /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/ | 0 | 0 | 877 |  |
 | mobile | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 882 |  |
 | mobile | /שירותי-שליחויות/ | 0 | 0 | 1192 |  |
 | mobile | /אודות/ | 0 | 0 | 1096 |  |
 | mobile | /צור-קשר/ | 0 | 0 | 797 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 1 | 936 | meta description length 73 |
+| mobile | /מדיניות-פרטיות/ | 0 | 1 | 949 | meta description length 73 |
 | mobile | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 898 |  |
 | mobile | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 872 |  |
 | mobile | / | 0 | 1 | 1332 | console: Failed to load resource: the server responded with a status of 500 (Internal Server Error) |
