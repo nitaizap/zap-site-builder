@@ -85,6 +85,9 @@ MEASURE_JS = r"""
     return n; };
   const lum = ([r, g, b]) => { const f = c => { c /= 255; return c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
   const bgOf = el => { for (let e = el; e; e = e.parentElement) { const s = getComputedStyle(e);
+      if (e.classList && e.classList.contains('zs-card--img')) {   // text over a photo tile: judge against the tile's shade
+        const pb = getComputedStyle(e, '::before'), g = pb.display !== 'none' && pb.content !== 'none' ? pb.backgroundImage : '', m = g && g.match(/rgba?\([^)]+\)/);
+        if (m) return rgb(m[0]).slice(0, 3); }
       if (s.backgroundImage !== 'none' && !/gradient/.test(s.backgroundImage)) return null;
       const c = rgb(s.backgroundColor); if (c && (c.length < 4 || c[3] > .5)) return c; }
     return [255, 255, 255]; };

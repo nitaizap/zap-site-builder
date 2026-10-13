@@ -1156,3 +1156,56 @@ body .zs-social a { border: 1.5px solid color-mix(in srgb, currentColor 62%, tra
 body .elementor-heading-title, body h1, body h2, body h3 { font-synthesis-weight: none; }
 /* footer wordmark on a light footer: a clear brand-colour outline, not white on white */
 body.zs-tone-light .zs-footer__mark { -webkit-text-stroke: 1.5px var(--c-primary); color: transparent; opacity: 1; }
+
+/* ===================== tone light, editorial rhythm (round 4: "closer to the first version, less template") ===================== */
+/* tighter vertical rhythm; neighbours on the same ground do not double their padding */
+body.zs-tone-light { --sec-y: clamp(48px, 2.5rem + 3vw, 96px); }
+body.zs-tone-light .e-con.zs-sec:has(+ .e-con.zs-road) { --padding-bottom: clamp(24px, 2vw, 36px); }
+body.zs-tone-light .e-con.zs-sec.zs-bg-surface + .e-con.zs-sec.zs-bg-surface,
+body.zs-tone-light .e-con.zs-sec:not([class*="zs-bg-"]) + .e-con.zs-sec:not([class*="zs-bg-"]):not(.zs-hero):not(.zs-trust):not(.zs-marquee) { --padding-top: clamp(16px, 1.5vw, 28px); }
+
+/* full-bleed hero (hero: "image"): the photo slider fills the band, the text sits on a soft ivory wash — light, never dark */
+@media (min-width: 901px) {
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--home { min-height: min(84vh, 820px); --padding-top: clamp(56px, 6vw, 120px); --padding-bottom: clamp(88px, 8vw, 150px); --justify-content: center; justify-content: center; }
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--img > .e-con-inner { display: flex; flex-direction: column; justify-content: center; }
+  body.zs-tone-light.zs-hv-image .zs-hero--img .e-con.zs-hero__media { position: absolute; inset: 0; height: auto; z-index: 0; border-radius: 0; }
+  body.zs-tone-light.zs-hv-image .zs-hero--img .zs-hero__media::after { display: block; content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(270deg, rgb(251 249 245 / .96) 0%, rgb(251 249 245 / .9) 34%, rgb(251 249 245 / .35) 58%, rgb(251 249 245 / 0) 74%); }
+  [dir="ltr"] body.zs-tone-light.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(90deg, rgb(251 249 245 / .96) 0%, rgb(251 249 245 / .9) 34%, rgb(251 249 245 / .35) 58%, rgb(251 249 245 / 0) 74%); }
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--img .e-con.zs-hero__text { position: relative; z-index: 3; max-width: 620px; }
+  body.zs-tone-light.zs-hv-image .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(3rem, 1.6rem + 3.6vw, 5.4rem); }
+  body.zs-tone-light.zs-hv-image .zs-hero__media > .zs-pause { inset-inline-end: auto; inset-inline-start: 18px; }
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--page.zs-hero--img { min-height: 360px; }
+}
+
+/* stat band welded to the hero: big serif numerals on stone, hairline dividers */
+body.zs-tone-light .e-con.zs-trust { background: var(--c-surface); border-block: 1px solid var(--zs-line); }
+body.zs-tone-light .zs-trust__list { border: 0; padding-block: clamp(26px, 3vw, 44px); }
+body.zs-tone-light .zs-trust__list strong { font-size: clamp(2.2rem, 1.4rem + 2.4vw, 3.6rem); color: var(--c-primary); }
+body.zs-tone-light .zs-trust__list span { color: var(--zs-text); font-size: 1rem; }
+
+/* slogan band: a straight full-width stone band, big words */
+body.zs-tone-light.zs-p-signature .e-con.zs-marquee.zs-bg-accent, body.zs-tone-light .e-con.zs-marquee { background: var(--zs-stone); }
+body.zs-tone-light.zs-p-signature .zs-marquee.zs-bg-accent .zs-mq__w { border: 0; }
+body.zs-tone-light .zs-mq { padding-block: clamp(16px, 1.8vw, 28px); }
+body.zs-tone-light .zs-mq__i { font-size: clamp(1.9rem, 1.1rem + 2.8vw, 3.8rem); }
+body.zs-tone-light .zs-mq__i:nth-child(4n+3) { -webkit-text-stroke: 1.5px var(--zs-ink); }
+
+/* photo tiles (cards with images, not bento): the title sits on the photo over a warm shade at the foot of the image */
+body.zs-tone-light .zs-cards--overlay .e-con.zs-card--img { border: 0; background: var(--c-surface); min-height: clamp(300px, 26vw, 380px); justify-content: flex-end; isolation: isolate; box-shadow: none; }
+body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__img { position: absolute; inset: 0; z-index: -2; }
+body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__img .elementor-widget-container, body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__img img { height: 100%; aspect-ratio: auto; }
+body.zs-tone-light .zs-cards--overlay .e-con.zs-card--img::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(0deg, rgb(31 27 24 / .86) 0%, rgb(31 27 24 / .62) 30%, rgb(31 27 24 / 0) 62%); }
+body.zs-tone-light .zs-cards--overlay .zs-card--img .e-con.zs-card__body { flex-grow: 0; --padding-top: 0px; --padding-bottom: 22px; --padding-left: 64px; --padding-right: 22px; }
+body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__title .elementor-heading-title { color: #fff; font-size: clamp(1.45rem, 1.1rem + .9vw, 1.9rem); }
+body.zs-tone-light .zs-cards--overlay .zs-card--img .zs-card__text { color: rgb(255 255 255 / .9); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+body.zs-tone-light .zs-cards--overlay.zs-cards--linked .zs-card--img .e-con.zs-card__body::after { color: #fff; inset-block-end: 24px; }
+body.zs-tone-light .zs-cards--overlay.zs-cards--linked .e-con.zs-card--img:hover { transform: none; }
+body.zs-tone-light .zs-cards--overlay.zs-cards--linked .e-con.zs-card--img:hover .zs-card__img img { transform: scale(1.05); }
+@media (min-width: 901px) {
+  body.zs-tone-light.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(270deg, rgb(251 249 245 / .97) 0%, rgb(251 249 245 / .93) 42%, rgb(251 249 245 / .5) 60%, rgb(251 249 245 / 0) 76%); }
+  [dir="ltr"] body.zs-tone-light.zs-hv-image .zs-hero--img .zs-hero__media::after { background: linear-gradient(90deg, rgb(251 249 245 / .97) 0%, rgb(251 249 245 / .93) 42%, rgb(251 249 245 / .5) 60%, rgb(251 249 245 / 0) 76%); }
+  body.zs-tone-light.zs-hv-image .e-con.zs-hero--img .e-con.zs-hero__text { max-width: 560px; }
+}
+body.zs-tone-light .e-con.zs-sec:is(:not([class*="zs-bg-"]), .zs-bg-plain):not(.zs-hero):not(.zs-trust):not(.zs-marquee) + .e-con.zs-sec:is(:not([class*="zs-bg-"]), .zs-bg-plain):not(.zs-trust):not(.zs-marquee) { --padding-top: clamp(16px, 1.5vw, 28px); }
