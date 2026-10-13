@@ -26,7 +26,7 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 
 ## Needs a person ✋ (goes on LAUNCH-CHECKLIST.md automatically)
 
-- Zap's per-client privacy PDF (`standards.privacy_url`).
+- The privacy policy: Zap's standard wording, filled from site.json (`legal_name`, `standards.privacy_*`) and confirmed by the client (`standards.privacy_confirmed`). Never edit the legal text itself; only its fields.
 - Dapei Zahav `customer-id` — verify the listing on legal name + street + phone before using it; flag
   duplicates. A wrong id publishes another company's reviews.
 - Google Business link (schema `sameAs` / `hasMap`), and NAP identical to it byte for byte.

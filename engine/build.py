@@ -54,6 +54,27 @@ def chunks(items, n):
     return [items[i:i + n] for i in range(0, len(items), n)] or [[]]
 
 
+
+def privacy_html(data):
+    """Zap's standard privacy policy for this business. Only the template's {{...}} fields are filled:
+    the company (business.legal_name), the database paragraph (standards.privacy_database: true only when
+    the client confirmed it keeps a database), extra purposes (standards.privacy_purposes; default: answering
+    the site's contact form) and the privacy e-mail (standards.privacy_email, else business.email_public)."""
+    import html as _h
+    b, std = data["business"], data.get("standards", {})
+    t = (Path(__file__).parent / "templates" / "privacy-he.html").read_text(encoding="utf-8")
+    t = re.sub(r"<!--.*?-->\s*", "", t, count=1, flags=re.S)
+    db = ("<p>הנתונים שתמסור בעת ההרשמה לשירותים באתרים ו/או בעת עדכון פרטיך (כפי שיעשה מעת לעת), יישמרו במאגר "
+          "המידע של החברה, המנוהל בהתאם לחוק הגנת הפרטיות, התשמ\"א – 1981 לרבות לצורך דיוור שיווקי ודוור ישיר.</p>"
+          if std.get("privacy_database") else "")
+    purposes = std.get("privacy_purposes") or ["לצורך מענה לפניות שנשלחו באמצעות טופסי יצירת הקשר באתר וחזרה אל הפונה."]
+    mail = std.get("privacy_email") or b.get("email_public") or b.get("email_leads", "")
+    fill = {"name": _h.escape(b.get("legal_name") or b["name"]), "data": db,
+            "more1": "\n".join(f"<li>{_h.escape(x)}</li>" for x in purposes),
+            "mail": f'<a href="mailto:{_h.escape(mail)}" dir="ltr">{_h.escape(mail)}</a>'}
+    return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
+
+
 def build(site, only=None):
     site_dir = site.src
     data = load_site(site_dir)
@@ -64,8 +85,9 @@ def build(site, only=None):
     if errors:
         raise SystemExit(f"site.json has {len(errors)} error(s); fix them and build again.")
 
-    # Zap's per-client privacy PDF often arrives late. Until then: a noindexed placeholder page,
-    # never a dead or '#' link (the form consent and the footer both point at it).
+    # Privacy policy: Zap's standard wording (engine/templates/privacy-he.html, the text behind
+    # campaign.zapx.co.il/privacy-policy), filled from site.json. A site with its own policy sets
+    # standards.privacy_url and gets no generated page.
     std = data.setdefault("standards", {})
     if not std.get("privacy_url"):
         b = data["business"]
@@ -73,8 +95,7 @@ def build(site, only=None):
             "key": "מדיניות-פרטיות", "type": "privacy", "title": "מדיניות פרטיות", "noindex": True,
             "seo": {"title": f"מדיניות פרטיות | {b['name']}",
                     "description": f"מדיניות הפרטיות של {b['name']}: איך נשמר ומשמש המידע שנמסר באתר."},
-            "content": f"<p>מדיניות הפרטיות של {b['name']} תפורסם בעמוד זה. לכל שאלה בנושא פרטיות ושימוש במידע "
-                       f"שנמסר באתר אפשר לפנות אלינו בטלפון {b.get('phone_display', '')}.</p>",
+            "content": privacy_html(data),
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"

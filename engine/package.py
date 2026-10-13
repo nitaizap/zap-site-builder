@@ -143,8 +143,10 @@ def package(site, domain, require_clean_qa=True):
 def launch_checklist(d, domain, staging):
     b, std = d["business"], d.get("standards", {})
     blockers = []
-    if not std.get("privacy_url") or std["privacy_url"].startswith("/מדיניות"):
-        blockers.append("קובץ מדיניות הפרטיות (PDF) מזאפ — כרגע מקושר עמוד זמני `/מדיניות-פרטיות/`. להעלות את ה-PDF ולעדכן את `zap_site.standards.privacy_url`.")
+    if (not std.get("privacy_url") or std["privacy_url"].startswith("/מדיניות")) and not std.get("privacy_confirmed"):
+        blockers.append("מדיניות פרטיות: העמוד בנוי מהנוסח הסטנדרטי של זאפ. לאשר מול הלקוח (כמו בטופס campaign.zapx.co.il/privacy-policy): "
+                        "שם החברה הרשמי (business.legal_name), האם יש מאגר מידע (standards.privacy_database), מטרות שימוש נוספות "
+                        "(standards.privacy_purposes) ומייל לפניות פרטיות (standards.privacy_email). אחרי האישור: standards.privacy_confirmed = true.")
     if not b.get("dpz_customer_id"):
         blockers.append("customer-id של דפי זהב — בלעדיו אין בלוק ביקורות (וזה נכון). אחרי שמתקבל: להוסיף ל-site.json ולבנות מחדש, או לעדכן באופציה `zap_site`.")
     if not b.get("gmb_url"):
