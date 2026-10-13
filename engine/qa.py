@@ -85,24 +85,66 @@ MEASURE_JS = r"""
     return n; };
   const lum = ([r, g, b]) => { const f = c => { c /= 255; return c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
   const bgOf = el => { for (let e = el; e; e = e.parentElement) { const s = getComputedStyle(e);
+      if (e.classList && e.classList.contains('zs-card--img')) {   // text over a photo tile: judge against the tile's shade
+        for (const ps of ['::after', '::before']) { const pb = getComputedStyle(e, ps);
+          const g = pb.display !== 'none' && pb.content !== 'none' ? pb.backgroundImage : '', m = g && /gradient/.test(g) && g.match(/rgba?\([^)]+\)/);
+          if (m) return rgb(m[0]).slice(0, 3); } }
       if (s.backgroundImage !== 'none' && !/gradient/.test(s.backgroundImage)) return null;
       const c = rgb(s.backgroundColor); if (c && (c.length < 4 || c[3] > .5)) return c; }
     return [255, 255, 255]; };
+  const flat = (fg, bg) => { const a = fg.length > 3 ? fg[3] : 1; return [0, 1, 2].map(i => fg[i] * a + bg[i] * (1 - a)); };
+  const cr = (x, y) => { const L1 = lum(x), L2 = lum(y); return (Math.max(L1, L2) + .05) / (Math.min(L1, L2) + .05); };
+  const behind = el => { for (let e = el.parentElement; e; e = e.parentElement) { const s = getComputedStyle(e);
+      if (s.backgroundImage !== 'none' && !/gradient/.test(s.backgroundImage)) return null;
+      if (e.matches('.zs-hero__media, .zs-card__img, .zs-split__media, picture')) return null;
+      const c = rgb(s.backgroundColor); if (c && (c.length < 4 || c[3] > .5)) return c.slice(0, 3); }
+    return [255, 255, 255]; };
+  const skip = '.zs-hero__media, .zs-form__hp, [aria-hidden="true"], #pojo-a11y-toolbar, script, style, noscript';
+  // every element that carries its own text must meet WCAG AA (4.5, large text 3): below it is an error
   const low = new Map();
-  q('h1,h2,h3,h4,p,li,a,span,strong,label,button').filter(vis).forEach(el => {
+  q('body *').filter(vis).forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
-    if (el.closest('.zs-hero__media, .zs-form__hp, [aria-hidden="true"]')) return;   // decorative text (marquee, wordmark) is hidden from AT
+    if (el.closest(skip)) return;   // decorative text (marquee, wordmark) is hidden from AT
     const bg = bgOf(el); if (!bg) return;
     const s = getComputedStyle(el), fg = rgb(s.color); if (!fg) return;
-    const a = fg.length > 3 ? fg[3] : 1; const mix = [0, 1, 2].map(i => fg[i] * a + bg[i] * (1 - a));
-    const L1 = lum(mix), L2 = lum(bg), ratio = (Math.max(L1, L2) + .05) / (Math.min(L1, L2) + .05);
+    const ratio = cr(flat(fg, bg.slice(0, 3)), bg.slice(0, 3));
     const big = parseFloat(s.fontSize) >= 24 || (parseFloat(s.fontSize) >= 18.6 && +s.fontWeight >= 700);
-    const need = big ? 3 : 4.5;
-    if (ratio < need) low.set(el.textContent.trim().slice(0, 30), ratio.toFixed(2));
+    if (ratio < (big ? 3 : 4.5)) low.set(el.textContent.trim().slice(0, 30), ratio.toFixed(2));
   });
-  // text over a photo: judge against the dark scrim colour the section declares
-  if (low.size) { const list = [...low].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ');
-    ([...low.values()].some(r => r < 3) ? E : W)(`low contrast (${low.size}): ${list}`); }
+  if (low.size) E(`low text contrast (${low.size}): ${[...low].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
+  // controls and outlines (WCAG 1.4.11): fill or border at least 3:1 against what is behind them
+  const faint = new Map();
+  q('.elementor-button, .zs-btn, button:not(.zs-burger), .zs-pause, .zs-social a, input:not([type=hidden]):not([type=checkbox]), textarea, select').filter(vis).forEach(el => {
+    if (el.closest(skip)) return;
+    const bg = behind(el); if (!bg) return;
+    const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
+    const fr = fill && (fill.length < 4 || fill[3] > .05) ? cr(flat(fill, bg), bg) : 1;
+    const br = bw >= 1 && bc ? cr(flat(bc, bg), bg) : 1;
+    if (Math.max(fr, br) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
+  });
+  if (faint.size) E(`control blends into its background (${faint.size}): ${[...faint].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
+  // icons (svg / icon font / check bullets) at least 3:1
+  const dim = new Map();
+  q('svg.zs-ico, .elementor-icon, .zs-svg, .zs-checks li').filter(vis).forEach(el => {
+    if (el.closest('.zs-hero__media, #pojo-a11y-toolbar')) return;
+    const bg = bgOf(el); if (!bg) return;
+    let c = rgb(getComputedStyle(el).color);
+    if (el.matches('.zs-checks li')) { const pb = getComputedStyle(el, '::before'); if (pb.backgroundImage !== 'none') return;   // the bullet draws its own dark tick
+      const b = rgb(pb.backgroundColor); if (b && (b.length < 4 || b[3] > .05)) c = b; }
+    if (!c) return; const r = cr(flat(c, bg.slice(0, 3)), bg.slice(0, 3));
+    if (r < 3) dim.set(el.className.toString().split(' ').find(x => x.startsWith('zs-') || x.startsWith('elementor')) || el.tagName, r.toFixed(2));
+  });
+
+  // decorative display text (wordmark, ticker) is hidden from screen readers but must still be visible: 3:1,
+  // judged on its outline colour when the fill is transparent
+  q('.zs-footer__mark, .zs-mq__i').filter(vis).forEach(el => {
+    const bg = bgOf(el); if (!bg) return;
+    const s = getComputedStyle(el); let c = rgb(s.color);
+    if (!c || (c.length > 3 && c[3] < .05)) c = parseFloat(s.webkitTextStrokeWidth) > 0 ? rgb(s.webkitTextStrokeColor) : null;
+    if (!c) return; const r = cr(flat(c, bg.slice(0, 3)), bg.slice(0, 3));
+    if (r < 3) dim.set(el.className.toString().split(' ')[0], r.toFixed(2));
+  });
+  if (dim.size) E(`decorative text or icon too faint (${dim.size}): ${[...dim].slice(0, 4).map(([t, r]) => `${t} ${r}`).join('; ')}`);
   // css or shortcodes leaking as text
   if (/\.(zs|elementor)-[a-z_-]+\s*\{|\[zap_[a-z_]+/.test(txt)) E('CSS or shortcode text visible on the page');
   // accessibility basics
@@ -316,6 +358,19 @@ def run_qa(site):
                 ok_msg, saved, mailed = test_form(page, site)
                 extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
                 if not (ok_msg and saved == 1):
+                    errors += 1
+            # above the fold: the home hero's buttons are visible without scrolling on a short laptop / small phone
+            # (browser bars deducted; on phones the fixed call bar too)
+            fw, fh = (1280, 620) if vp == "desktop" else (360, 640)
+            page.set_viewport_size({"width": fw, "height": fh})
+            page.goto(site.url + "/", wait_until="networkidle")
+            page.wait_for_timeout(400)
+            fold = page.evaluate("""() => { const bs = [...document.querySelectorAll('.zs-hero--home .zs-btns .elementor-button')].slice(0, 2);
+                const bar = document.querySelector('.zs-fab'); const lim = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect().top : innerHeight;
+                return bs.length ? Math.max(...bs.map(b => b.getBoundingClientRect().bottom)) - lim : null; }""")
+            if fold is not None:
+                extra.append((f"hero buttons above the fold at {fw}×{fh}" + ("" if fold <= 0 else f" — {round(fold)}px below"), fold <= 0))
+                if fold > 0:
                     errors += 1
             # 404 must be a real 404
             r404 = page.goto(site.url + "/no-such-page-zs/", wait_until="domcontentloaded")

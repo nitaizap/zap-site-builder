@@ -52,7 +52,7 @@
   "colors": {
    "primary": "#8c1d22",
    "primary_ink": "#ffffff",
-   "accent": "#a8875a",
+   "accent": "#8a6a3a",
    "accent_ink": "#1f1b18",
    "ink": "#1f1b18",
    "text": "#45403b",
@@ -64,8 +64,8 @@
    "dark_ink": "#f3efe7"
   },
   "fonts": {
-   "heading": "Frank Ruhl Libre",
-   "body": "Heebo"
+   "heading": "Rubik",
+   "body": "Assistant"
   },
   "radius": 2,
   "custom_css": "",

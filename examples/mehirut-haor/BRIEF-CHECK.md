@@ -7,7 +7,7 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | brief | on the site |
 |---|---|
 | סגנון: "אתר חדשני עם אנימציות של רכבים/אופנועים זזים" | ✅ **Home hero**: 3 rotating daylight photos (crossfade, client round 2) with an illustrated scooter driving along the bottom; pause button. ✅ **Every inner page hero**: the same scooter drives across (design.ride), desktop and phone. ✅ **Road scene** (home): scooters, a van and a truck in two lanes drive across, wheels spin, bodies bob, speed lines, moving lane marks, skyline drifting behind. ✅ **"איך זה עובד" route**: a scooter rides the route as you scroll and each stop lights up when it is reached. ✅ **Scroll progress**: a brand-colour bar at the top with a scooter riding its tip (desktop/tablet). ✅ Slogan marquee, H1 word-by-word entrance, image wipe-ins, counters, tilt + light sweep on the service tiles. Everything stops under "reduce motion" (accessibility). |
-| צבעים: על בסיס הלוגו | ✅ derived from the logo, toned down per the client's round 2 ("יוקרה, פחות צבעי לוגו, בלי רקע שחור, לא כמו האתר הישן"): oxblood #8c1d22 (deeper logo red) + brass #a8875a instead of the bright yellow, ivory/stone grounds, no dark sections; Elementor Global Colors so one change restyles the site |
+| צבעים: על בסיס הלוגו | ✅ derived from the logo, toned down per the client's round 2 ("יוקרה, פחות צבעי לוגו, בלי רקע שחור, לא כמו האתר הישן"): oxblood #8c1d22 (deeper logo red) + brass #8a6a3a instead of the bright yellow; headings Rubik (bold) + text Assistant: chosen by the user from 6 rendered pairings after Bellefair / Miriam Libre was rejected; Zap's colour logo in the light footer, ivory/stone grounds, no dark sections; Elementor Global Colors so one change restyles the site |
 | לוגו | ✅ logo.png (keyed from the brief's logo); the original kept as logo-original.jpg |
 | רכיבים: טופס יצירת קשר + מפה | ✅ Contact page: form + Google map; lead form in the footer band on every page (saved in WP; mail goes to shirana221@gmail.com only on production) |
 | SEO: לא | ✅ No blog; basic Yoast titles/descriptions only (Zap standard) |
@@ -19,7 +19,7 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | שם העסק, כתובת בר אילן 23 חיפה | ✅ footer, contact page, schema |
 | טלפון לאתר | ➖ 072-2599648 (Zap tracking number, confirmed by the user 2026-10-07) instead of the contact's mobile (in the brief) |
 | מייל, שעות א׳–ה׳ 8–18, ו׳ 8–13 | ✅ footer + contact page + schema |
-| פייסבוק | ✅ icon link in the footer (every page) and on the contact page; QA checks it is shown (was missing until 2026-10-11: the link sat only in schema) |
+| פייסבוק | ✅ "ביקרו בפייסבוק שלנו" row with the Facebook icon in the footer contact list (every page) and on the contact page; QA checks it is shown (was missing until 2026-10-11: the link sat only in schema) |
 | וואטסאפ / אינסטגרם / לינקדאין / GMB | ➖ empty in the brief; WhatsApp +972559686670 and GMB found in research (NOTES.md); no Instagram/LinkedIn found |
 | שנות פעילות: למעלה מ-30 | ✅ hero points, badge "30+", trust strip (no invented founding year) |
 

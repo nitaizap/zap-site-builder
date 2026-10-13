@@ -253,7 +253,21 @@ function zs_part_footer_contact() {
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
     if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($a) . '</span></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
-    return $o . '</ul>' . zs_part_social();
+    return $o . zs_social_rows() . '</ul>';
+}
+
+/** Social profiles as rows of a contact list: the same icon size and alignment as phone/address, with a label. */
+function zs_social_rows() {
+    $nets = ['facebook' => 'ביקרו בפייסבוק שלנו', 'instagram' => 'עקבו אחרינו באינסטגרם', 'linkedin' => 'בקרו בלינקדאין שלנו',
+             'youtube' => 'צפו בערוץ היוטיוב שלנו', 'tiktok' => 'עקבו אחרינו בטיקטוק'];
+    $o = '';
+    foreach ($nets as $k => $label) {
+        $u = trim((string) zs_opt('business.' . $k, ''));
+        if ($u === '' || !preg_match('#^https?://#i', $u)) continue;
+        $o .= '<li class="zs-social-row zs-social-row--' . $k . '">' . zs_social_icon($k) . '<a href="' . esc_url($u)
+            . '" target="_blank" rel="noopener">' . esc_html($label) . '<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li>';
+    }
+    return $o;
 }
 
 /** Solid brand marks (recognisable at 20 px; the outline set is for UI icons). */
@@ -265,7 +279,7 @@ function zs_social_icon($k) {
         'youtube'   => '<path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>',
         'tiktok'    => '<path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-1.8-2.5V9.7a5.7 5.7 0 1 0 4.9 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/>',
     ];
-    return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false">' . ($p[$k] ?? '') . '</svg>';
+    return '<svg class="zs-ico zs-ico--solid" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="none" aria-hidden="true" focusable="false">' . ($p[$k] ?? '') . '</svg>';
 }
 
 /** The business's social profiles (business.facebook / instagram / linkedin / youtube / tiktok) as icon links. */
@@ -295,6 +309,12 @@ function zs_part_legal() {
 }
 
 function zs_part_group_logo() {
+    // light footers carry Zap's colour logo (blue mark, navy word); dark footers the white credit image
+    if ((zs_design()['tone'] ?? '') === 'light') {
+        return '<a class="zs-footer__zap zs-footer__zap--color" href="https://zapgroup.co.il/" target="_blank" rel="noopener">'
+             . '<span class="zs-footer__zap-by">Power by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
+             . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
+    }
     return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'
          . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group.webp') . '" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
 }

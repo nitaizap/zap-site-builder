@@ -192,25 +192,9 @@
     });
   }
 
-  /* ---------- hero slider: 2-3 photos crossfade (first one stays put under reduced motion) ---------- */
-  [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
-    var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
-    if (slides.length < 2) return;
-    slides[0].classList.add('is-on');
-    sl.classList.add('is-ready');
-    if (!motion) return;
-    var i = 0, host = sl.closest('.zs-hero') || sl;
-    setInterval(function () {
-      if (host.classList.contains('is-paused') || document.hidden) return;
-      slides[i].classList.remove('is-on');
-      i = (i + 1) % slides.length;
-      slides[i].classList.add('is-on');
-    }, 6000);
-  });
-
   /* ---------- pause button for everything that moves on its own for more than 5 s (WCAG 2.2.2) ---------- */
-  if (motion) {
-    [].forEach.call(document.querySelectorAll('.zs-pausable'), function (el) {
+  function addPause(el) {
+    if (el.querySelector('.zs-pause')) return;
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'zs-pause';
@@ -224,8 +208,37 @@
         btn.setAttribute('aria-label', on ? 'הפעלת התנועה' : 'עצירת התנועה');
       });
       (el.querySelector('.zs-hero__media') || el).appendChild(btn);
-    });
   }
+  if (motion) [].forEach.call(document.querySelectorAll('.zs-pausable'), addPause);
+
+  /* ---------- hero slider: 2-3 photos crossfade every hero.interval s (default 4); reduced motion keeps the fade, drops the zoom ---------- */
+  [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
+    var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
+    if (slides.length < 2) return;
+    slides[0].classList.add('is-on');
+    sl.classList.add('is-ready');
+    // the client asked for rotating photos: they rotate under "reduce motion" too (a crossfade without the
+    // zoom); only motion:"none" keeps the first photo
+    if (body.classList.contains('zs-m-none')) return;
+    var i = 0, host = sl.closest('.zs-hero') || sl;
+    if (!motion) addPause(host);
+    var iv = (parseInt((sl.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000, prev = null, t = 0;
+    sl.style.setProperty('--zs-iv', iv + 'ms');
+    setInterval(function () {
+      if (host.classList.contains('is-paused') || document.hidden) return;
+      // the outgoing photo stays opaque underneath (.is-prev) while the next one fades in over it
+      clearTimeout(t);
+      if (prev) prev.classList.remove('is-prev');
+      prev = slides[i];
+      prev.classList.add('is-prev');
+      prev.classList.remove('is-on');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-on');
+      var done = prev;
+      t = setTimeout(function () { done.classList.remove('is-prev'); }, 2000);
+    }, iv);
+  });
+
 
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');

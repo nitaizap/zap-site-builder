@@ -199,7 +199,8 @@ def hero(ctx, s):
     keys = s.get("images") or ([s["image"]] if s.get("image") else [])
     slides = [image(ctx, k, "zs-hero__img" + (" zs-hero__slide" if len(keys) > 1 else ""), "full", eager=(i == 0))
               for i, k in enumerate(keys)]
-    media = C(ctx, "zs-hero__media" + (" zs-hero__slider" if len(keys) > 1 else ""), [*slides, vid]) if keys else None
+    iv = max(2, min(10, int(s.get("interval", 4)))) if len(keys) > 1 else 0   # seconds per photo
+    media = C(ctx, "zs-hero__media" + (f" zs-hero__slider zs-int-{iv}" if len(keys) > 1 else ""), [*slides, vid]) if keys else None
     # `ride: scooter` -> an illustrated vehicle drives along the hero's bottom edge (decorative); with a hero
     # video it only shows where the video does not play (phones), so the two never compete
     ride = None

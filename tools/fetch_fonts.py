@@ -22,6 +22,12 @@ FAMILIES = {
     "Suez One": "",
     "Varela Round": "",
     "Fredoka": "wght@300..700",
+    "Bellefair": "",
+    "Miriam Libre": "wght@400..700",
+    "David Libre": "wght@400;500;700",
+    "Alef": "wght@400;700",
+    "Bona Nova": "wght@400;700",
+    "Karantina": "wght@300;400;700",
 }
 KEEP = {"hebrew", "latin"}
 
@@ -33,8 +39,10 @@ def get(url, binary=False):
     return data if binary else data.decode()
 
 
-def main():
+def main(only=None):
     for fam, axes in FAMILIES.items():
+        if only and fam not in only:
+            continue
         slug = fam.lower().replace(" ", "-")
         q = fam.replace(" ", "+") + (":" + axes if axes else "")
         css = get(f"https://fonts.googleapis.com/css2?family={q}&display=swap")
@@ -56,4 +64,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(set(sys.argv[1:]) or None)   # py tools/fetch_fonts.py "Bellefair" -> only that family
