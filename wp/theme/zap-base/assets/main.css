@@ -1264,3 +1264,37 @@ body { --zs-h1-cap: 9.4svh; }
 
 /* whole card clickable (site.js follows the title link) */
 .zs-card:has(.zs-card__title a[href]) { cursor: pointer; }
+
+/* ===== Dapei Zahav reviews widget (<zap-reviews>, light DOM). Zap's own stylesheet (zap.dbusiness.co/css/zap-reviews.css)
+   is a 404, so the theme styles the widget completely: one clean review card — score label + one row of stars, the
+   review in body text with its line breaks, a muted date, then page chips and the two Dapei Zahav links. ===== */
+.zs-reviews zap-reviews { display: block; font-family: var(--f-body); color: var(--c-text); text-align: start; }
+.zs-reviews zap-reviews * { font-family: inherit; text-align: start; }
+.zs-reviews zap-reviews .reviews, .zs-reviews zap-reviews .review_wrap, .zs-reviews zap-reviews .review_content_wrap { display: block; margin: 0; padding: 0; float: none; width: auto; }
+.zs-reviews zap-reviews .review_leftinsidewrap { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px 20px;
+  background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r-lg, 6px); padding: clamp(24px, 3vw, 44px); padding-top: clamp(28px, 3.4vw, 48px); }
+.zs-reviews zap-reviews .review_leftinsidewrap::before { content: "”"; position: absolute; inset-inline-end: clamp(20px, 3vw, 40px); top: -.18em; font: 700 clamp(4.5rem, 3rem + 4vw, 7rem)/1 var(--f-head); color: var(--c-accent); pointer-events: none; }
+.zs-reviews zap-reviews .review_title { display: none; }   /* "חוות דעת": the section title already says it */
+.zs-reviews zap-reviews .review_score_text { grid-column: 1; grid-row: 1; font-size: .9rem; font-weight: 600; letter-spacing: .02em; color: var(--c-muted); }
+/* stars: grey row with the gold row clipped over it (width = score) */
+.zs-reviews zap-reviews .score_stars { grid-column: 1; grid-row: 2; position: relative; width: calc(5 * 22px); height: 20px; margin: 0; }
+.zs-reviews zap-reviews :is(.stars, .stars_over) { position: absolute !important; top: 0; inset-inline-start: 0; display: flex; gap: 2px; height: 20px; overflow: hidden; white-space: nowrap; direction: ltr; font-size: 0; }
+[dir="rtl"] .zs-reviews zap-reviews :is(.stars, .stars_over), .zs-reviews zap-reviews :is(.stars, .stars_over) { left: auto; right: 0; direction: rtl; }
+.zs-reviews zap-reviews :is(.stars, .stars_over) span { display: inline-block; flex: none; }
+.zs-reviews zap-reviews :is(.stars, .stars_over) img { display: block; width: 20px !important; height: 20px !important; max-width: none; margin: 0; }
+.zs-reviews zap-reviews .review_date { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: .9rem; color: var(--c-muted); }
+.zs-reviews zap-reviews .review_text { grid-column: 1 / -1; margin-top: 12px; white-space: pre-line; text-align: start; font-size: clamp(1.05rem, 1rem + .3vw, 1.2rem); line-height: 1.75; font-weight: 400; color: var(--c-ink); max-width: 70ch; }
+/* footer: page chips + Dapei Zahav links, one tidy row (the widget floats the links and pads with nbsp spans) */
+.zs-reviews zap-reviews .pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 18px; color: var(--c-text); font-size: .95rem; }
+.zs-reviews zap-reviews .pagination > span:not([class]) { display: none; }
+.zs-reviews zap-reviews .pagination > :is(a, .currpage) { display: inline-grid; place-items: center; min-width: 36px; height: 36px; padding: 0 8px; border: 1px solid var(--c-line); border-radius: var(--r-sm, 4px); background: var(--c-bg); color: var(--c-ink); font-weight: 600; text-decoration: none; }
+.zs-reviews zap-reviews .pagination > a:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.zs-reviews zap-reviews .pagination > .currpage { background: var(--c-primary); border-color: var(--c-primary); color: var(--c-primary-ink, #fff); }
+.zs-reviews zap-reviews .pagination > span[class]:not(.currpage) { float: none !important; margin: 0 !important; margin-inline-start: auto !important; display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.zs-reviews zap-reviews .pagination > span[class]:not(.currpage) > span { display: none; }
+.zs-reviews zap-reviews .pagination > span[class]:not(.currpage) a { color: var(--c-primary); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.zs-reviews:has(zap-reviews .pagination a[href*="d.co.il"]) .zs-reviews__links { display: none; }   /* the widget already links to Dapei Zahav */
+@media (max-width: 640px) {
+  .zs-reviews zap-reviews .review_date { grid-column: 1; grid-row: 3; }
+  .zs-reviews zap-reviews .pagination > span[class]:not(.currpage) { margin-inline-start: 0 !important; flex-basis: 100%; margin-top: 6px !important; }
+}

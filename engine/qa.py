@@ -372,6 +372,21 @@ def run_qa(site):
                 extra.append((f"hero buttons above the fold at {fw}×{fh}" + ("" if fold <= 0 else f" — {round(fold)}px below"), fold <= 0))
                 if fold > 0:
                     errors += 1
+            # Dapei Zahav reviews widget: when it shows reviews, the theme's styling must hold (Zap's own widget CSS
+            # is a 404): stars in one row, the review in regular body text
+            if vp == "desktop":
+                page.set_viewport_size({"width": w, "height": h})
+                page.goto(site.url + "/", wait_until="networkidle")
+                try:
+                    page.wait_for_function("document.querySelector('.zs-reviews-sec.zs-has-reviews')", timeout=8000)
+                    rv = page.evaluate("""() => { const tops = new Set([...document.querySelectorAll('.zs-reviews .stars_over img')].map(i => Math.round(i.getBoundingClientRect().top)));
+                        const t = document.querySelector('.zs-reviews .review_text'); return {rows: tops.size, bold: t ? +getComputedStyle(t).fontWeight >= 600 : false}; }""")
+                    ok_rv = rv["rows"] <= 1 and not rv["bold"]
+                    extra.append(("reviews widget styled (stars in one row, review in body text)", ok_rv))
+                    if not ok_rv:
+                        errors += 1
+                except Exception:
+                    pass        # no reviews shown (no customer-id, or the widget's API is unreachable from here)
             # 404 must be a real 404
             r404 = page.goto(site.url + "/no-such-page-zs/", wait_until="domcontentloaded")
             if vp == "desktop":

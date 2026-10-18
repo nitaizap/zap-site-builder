@@ -150,6 +150,12 @@ git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
 - **The pushed site can render differently from the local build**: e.g. the server's Elementor outputs
   font icons (`<i class="fas …">`) where the local build outputs SVG; caches; host plugins (a11y toolbar).
   That is why `zs shots --site` is part of delivery, and why theme CSS must handle both icon forms.
+- **Third-party widgets render only on the pushed site** (the Dapei Zahav reviews `<zap-reviews>`, the a11y
+  toolbar). Look at the reviews block in `zs shots --site`. Zap's own widget stylesheet is a 404, so the theme
+  styles the widget (main.css, "Dapei Zahav reviews widget"); a messy reviews block is a theme fix, never hand
+  CSS in Elementor. If the widget's API is blocked from the session (CORS through the proxy), fetch the reviews
+  HTML with curl (`POST https://api.zap360.co.il/api/zap-widgets/reviews`) and answer the page's request with
+  it (Playwright `page.route`) to check the styling; `zs qa --site` checks it whenever reviews show.
 - **A single `HTTP 502` / "upstream request failed" in the live QA** is the network, not the site: check the
   page with curl and re-run the QA once. A second failure is real.
 - **"It looks static in Novamira/Elementor"**: the Elementor editor is an editing canvas; scroll-driven

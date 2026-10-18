@@ -18,8 +18,11 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 - LocalBusiness schema with the locked NAP, FAQPage (matches the visible FAQ), Service on service pages,
   breadcrumbs (Yoast). **Never** `aggregateRating`.
 - No ratings, stars, review counts or "5.0 בגוגל" anywhere (blocked by the validator and QA).
-- Reviews block only with a real Dapei Zahav `customer-id` (`<zap-reviews customer-id site-id="5">`).
-- Privacy: placeholder page until Zap's PDF arrives; never a `#` link.
+- Reviews block only with a real Dapei Zahav `customer-id` (`<zap-reviews customer-id site-id="5">`). The widget
+  writes its own HTML into the page (no shadow DOM) and links a stylesheet that is a 404, so the theme styles it:
+  one review card (score label, one row of stars, the review in body text, a muted date), page chips and the two
+  Dapei Zahav links in one row. QA fails when the stars break into a column or the review text turns bold.
+- Privacy: Zap's standard policy page built from site.json (see below); never a `#` link.
 - Hebrew URLs only, no `/category/`; one keyword per page; unique titles/descriptions.
 - Hardening: no xmlrpc, no user enumeration, version hidden, security headers, no PHP in uploads (Apache).
 - Staging is `noindex`; the package switches indexing on only for the client's own domain.
