@@ -17,6 +17,11 @@ holds the build engine and the shared theme. A chat alone cannot build or push t
 Access needed: GitHub access to the repo, Claude Code on the web with the GitHub app, the `zap-sites` environment.
 The session runs in the cloud: the computer can be closed; come back from any device to the same session.
 
+If something on a built site looks wrong (layout, a widget such as the Dapei Zahav reviews block, mobile), fix it in
+the repo session, not by hand in Elementor: the fix goes into the shared theme so every future site gets it, and
+the next push would overwrite hand edits anyway. The Dapei Zahav reviews widget is styled by the theme (Zap's own
+widget stylesheet is missing), so a messy reviews block is a theme fix too.
+
 If the user only wants advice in this chat (what a brief is missing, a sitemap, copy ideas), help directly,
 following Zap's rules: never invent business facts (years, numbers, reviews, prices), one keyword per page,
 Hebrew copy written for the business's real customers.

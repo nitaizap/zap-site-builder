@@ -21,20 +21,22 @@ Every line of the טופס איפיון against the built site. ✅ done · ➖ 
 | מייל, שעות א׳–ה׳ 8–18, ו׳ 8–13 | ✅ footer + contact page + schema |
 | פייסבוק | ✅ "ביקרו בפייסבוק שלנו" row with the Facebook icon in the footer contact list (every page) and on the contact page; QA checks it is shown (was missing until 2026-10-11: the link sat only in schema) |
 | וואטסאפ / אינסטגרם / לינקדאין / GMB | ➖ empty in the brief; WhatsApp +972559686670 and GMB found in research (NOTES.md); no Instagram/LinkedIn found |
-| שנות פעילות: למעלה מ-30 | ✅ hero points, badge "30+", trust strip (no invented founding year) |
+| שנות פעילות: למעלה מ-30 | ➖ **24 שנות ניסיון** everywhere (hero, badge, stat band, top bar, footer, SEO): corrected by the client, round 3 (2026-10-18) |
 
 ## 4. עמודי האתר ותוכן
 
 | brief | on the site |
 |---|---|
 | עמוד הבית: כותרת, סלוגן, פתיח | ✅ H1 "חברת שליחויות בחיפה והצפון — מהירות האור שליחויות"; slogan in the marquee; intro text in the split section |
-| 5 בלוקי שירות עם קישור | ✅ bento tiles → 5 service pages |
+| 5 בלוקי שירות עם קישור | ✅ service tiles → 6 service pages (הובלת משטחים added by the client, round 3) |
+| אזורי שירות | ➖ **כל הארץ** (client, round 3): headlines, titles and Google descriptions say כל הארץ; Haifa stays only as the address |
+| שם העסק בטקסט | ✅ never "במהירות האור" / "למהירות האור" (client, round 3): the brand name has no ב/ל prefix |
 | "בכל זמן ובכל מקום" | ✅ features section (fleet, team, tracking) |
 | כפתורים: מעקב משלוחים והזמנות · צרו קשר וקבלו הצעת מחיר | ✅ hero, features, CTA band; tracking link = the brief's Baldar URL |
 | שירותי שליחויות (14-item list, technology, courtesy) | ✅ services page; "טכנולוגיית WAP" written as "מערכת מעקב אונליין" (WAP is obsolete wording) |
 | אודותינו (+ client types) | ✅ about page + the company's own YouTube video |
 | צרו קשר | ✅ |
-| 5 עמודי שירות | ✅ one page each, with FAQ |
+| 5 עמודי שירות | ✅ one page each, with FAQ, plus הובלת משטחים (client, round 3; no capacity or vehicle claims until the client gives them) |
 | אין להזכיר משלוחי אוכל | ✅ no mention anywhere (checked: 0 hits) |
 
 ## Delivery
