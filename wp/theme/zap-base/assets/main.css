@@ -1261,3 +1261,6 @@ body { --zs-h1-cap: 9.4svh; }
   .zs-cards--bento .e-con.zs-grid:has(> .e-con.zs-card:nth-child(6):last-child) > .e-con.zs-card:nth-child(n+4) { grid-column: span 4; grid-row: auto; }
   body .zs-cards--bento .e-con.zs-grid:has(> .e-con.zs-card:nth-child(6):last-child) > .e-con.zs-card:nth-child(6) .zs-card__img { aspect-ratio: 16 / 10; flex: 0 0 auto; min-height: 0; }
 }
+
+/* whole card clickable (site.js follows the title link) */
+.zs-card:has(.zs-card__title a[href]) { cursor: pointer; }
