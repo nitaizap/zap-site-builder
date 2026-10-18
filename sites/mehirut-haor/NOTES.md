@@ -14,9 +14,9 @@ Zap customer 80240748 (from the brief title; not confirmed as the Dapei Zahav cu
 | Dapei Zahav id | 80240748 | d.co.il listing matches name + address + phone 072-2599648 (researched 2026-10-07) |
 | Google Maps | https://maps.google.com/?cid=16400963226497574796 · geo 32.833149,35.069494 | linked from the d.co.il listing |
 | hours | א׳–ה׳ 08:00–18:00, ו׳ 08:00–13:00 | brief |
-| years | למעלה מ-30 שנה (no founding year) | brief |
+| years | 24 שנות ניסיון (no founding year) | client correction 2026-10-18 (the brief said למעלה מ-30) |
 | couriers / fleet | עשרות שליחים, עשרות רכבים (קטנועים ורכבים מסחריים) | brief; "עשרות" confirmed by user |
-| areas | חיפה, הקריות, הצפון, כל הארץ | brief |
+| areas | כל הארץ (national positioning; Haifa only as the address) | client 2026-10-18 (the brief stressed חיפה והצפון) |
 | tracking link | http://37.46.35.200/Baldar/Login.aspx?ReturnUrl=%2fbaldar (returns 200, plain http) | brief |
 | facebook | https://www.facebook.com/מהירות-האור-1482628425325474 | brief |
 
@@ -86,3 +86,7 @@ hi-tech. Fear: a document/cheque that does not arrive on time, or a courier who 
 - Push tested end to end on a local Zap-base replica (tools/novamira-replica.py): backup, code, 10 pages, header/footer
   templates, kit; base placeholders drafted; update push idempotent; `zs qa --site` 0 errors; Elementor editor opens.
 - Waiting on: `ZS_NOVAMIRA` secret (integration user on the base site / this site) → `bin/zs push mehirut-haor --site https://mehiruthaor.ussl.co.il`.
+
+## Client round 3 (2026-10-18)
+- 24 years (not 30+); service area כל הארץ; brand name never with a ב/ל prefix ("ברוכים הבאים לחברת מהירות האור", marquee "מהירות האור").
+- New page הובלת משטחים: written without capacity, vehicle or route claims (none given). Image pallets.webp: Weave Nano Banana 2K, AI (5 credits, approved).
