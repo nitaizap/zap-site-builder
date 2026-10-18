@@ -211,6 +211,25 @@
   }
   if (motion) [].forEach.call(document.querySelectorAll('.zs-pausable'), addPause);
 
+  /* ---------- whole card clickable: a click anywhere on a card with a title link follows that link
+     (keyboard users still tab to the title link: one focus stop per card) ---------- */
+  function cardLink(e) {
+    var c = e.target.closest && e.target.closest('.zs-card');
+    if (!c || e.target.closest('a, button, input, textarea, select, label')) return null;
+    if (window.getSelection && String(window.getSelection()).length) return null;   // selecting text, not clicking
+    return c.querySelector('.zs-card__title a[href]');
+  }
+  document.addEventListener('click', function (e) {
+    var a = cardLink(e);
+    if (!a || e.button !== 0) return;
+    if (e.ctrlKey || e.metaKey || e.shiftKey) window.open(a.href, '_blank', 'noopener');
+    else a.click();
+  });
+  document.addEventListener('auxclick', function (e) {
+    var a = cardLink(e);
+    if (a && e.button === 1) { e.preventDefault(); window.open(a.href, '_blank', 'noopener'); }
+  });
+
   /* ---------- hero slider: 2-3 photos crossfade every hero.interval s (default 4); reduced motion keeps the fade, drops the zoom ---------- */
   [].forEach.call(document.querySelectorAll('.zs-hero__slider'), function (sl) {
     var slides = [].slice.call(sl.querySelectorAll('.zs-hero__slide'));
