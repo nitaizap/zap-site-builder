@@ -1255,3 +1255,9 @@ body { --zs-h1-cap: 9.4svh; }
 @media (max-width: 767px) and (max-height: 620px) {
   body .zs-hero--home .zs-eyebrow { display: none; }
 }
+
+/* bento with exactly 6 tiles: the big tile + 2 on top, then 3 equal tiles (not a lone 6th tile) */
+@media (min-width: 1025px) {
+  .zs-cards--bento .e-con.zs-grid:has(> .e-con.zs-card:nth-child(6):last-child) > .e-con.zs-card:nth-child(n+4) { grid-column: span 4; grid-row: auto; }
+  body .zs-cards--bento .e-con.zs-grid:has(> .e-con.zs-card:nth-child(6):last-child) > .e-con.zs-card:nth-child(6) .zs-card__img { aspect-ratio: 16 / 10; flex: 0 0 auto; min-height: 0; }
+}
