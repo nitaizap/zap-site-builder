@@ -52,7 +52,11 @@ before doing the step — every one encodes mistakes already made.
 6. **The brief's style line is a requirement, not a mood.** "אנימציות של רכבים זזים", "צבעים על בסיס
    הלוגו", "אתר חדשני" each map to concrete features (`references/design.md` → *Brief words → features*)
    and get a row in `BRIEF-CHECK.md`. A demand you can't meet is said out loud, never dropped silently.
-7. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
+7. **No em dashes (—) or en dashes (–) in any site copy**: headings, text, captions, SEO titles, FAQ, footer.
+   Rewrite with a comma, colon, period, parentheses or a line break (`"keyword\nbrand"` puts the brand on its
+   own H1 line). The validator stops the build on either character. Only Zap's verbatim privacy template keeps
+   its legal citations as they are.
+8. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
    a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
    this site locally **and on the pushed site**.
 

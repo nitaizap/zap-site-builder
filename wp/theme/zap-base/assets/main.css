@@ -546,8 +546,6 @@ body .e-con.zs-marquee { --padding-top: 0px; --padding-bottom: 0px; --padding-le
 .zs-h1__sep { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .zs-p-signature .zs-h1__b { font-style: italic; color: var(--c-accent); margin-top: .08em; }
 .zs-p-signature .zs-hero--page .zs-h1__b { font-size: .62em; }
-body:not(.zs-p-signature) .zs-h1__k, body:not(.zs-p-signature) .zs-h1__b { display: inline; }
-body:not(.zs-p-signature) .zs-h1__sep { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 
 /* eyebrow: accent dash */
 .zs-p-signature .zs-eyebrow .elementor-heading-title { display: inline-flex; align-items: center; gap: 12px; font-size: .92rem; letter-spacing: .06em; color: var(--c-primary); background: none; padding: 0; }

@@ -169,12 +169,13 @@ def sec_head(ctx, s, tag="h2"):
 # ---------- sections ----------
 
 def _h1_markup(t):
-    """'keyword — brand' -> two spans so presets can set the brand on its own line/colour. Text is unchanged."""
-    a, sep, b = t.partition(" — ")
+    """'keyword\nbrand' (legacy: 'keyword — brand') -> two spans, the brand on its own line. No dash is ever
+    rendered: the separator is a plain space, so the H1 text reads 'keyword brand'."""
+    a, sep, b = t.partition("\n") if "\n" in t else t.partition(" — ")
     if not sep:
         return html.escape(t, quote=False)
     return (f'<span class="zs-h1__k">{html.escape(a, quote=False)}</span>'
-            f'<span class="zs-h1__sep"> — </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
+            f'<span class="zs-h1__sep"> </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
 
 
 def hero(ctx, s):
