@@ -16,6 +16,7 @@
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
+  zs pool <slug>                    this site's recipe vs every other client branch (anti-formula)
 """
 import argparse
 import json
@@ -252,6 +253,18 @@ def cmd_list(a):
         print(f"{s.slug:24} {s.url:28} {'running' if s.running() else 'stopped'}")
 
 
+def cmd_pool(a):
+    from build import load_site
+    from pool import compare, recipe
+    s = Site(a.slug)
+    d = load_site(s.src)
+    r = recipe(d)
+    print("levers:", " · ".join(x or "-" for x in r["levers"]))
+    print("home:  ", " → ".join(r["home"]))
+    warns = compare(a.slug, d)
+    print("\n".join(warns) if warns else "unique: no other client branch is close (git fetch first for the latest)")
+
+
 def main():
     p = argparse.ArgumentParser(prog="zs", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -274,6 +287,7 @@ def main():
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
+    x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
     a = p.parse_args()
     a.f(a)
 

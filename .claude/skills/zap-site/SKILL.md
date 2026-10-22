@@ -30,7 +30,7 @@ before doing the step — every one encodes mistakes already made.
 | before a new site (once) | `references/playbook.md` — the reference build round by round: what the user rejected, what "high end" means, every pitfall paid for |
 | intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
-| design + gate | `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
+| design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
 | examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
@@ -78,6 +78,8 @@ email do block.
 ## 2 · Plan — read `references/keywords.md`, `references/content-seo.md`, `references/design.md`
 
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
+- Set the package (`tier`) from the brief, then compose the pages from the pool (`references/pool.md`): sections
+  chosen for what this business must prove, a variant for each, no two clients alike (`bin/zs pool <slug>`).
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
   `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the

@@ -7,6 +7,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 
 | key | what |
 |---|---|
+| `tier` | `basic` / `standard` / `premium`: the package; caps page count and which sections are allowed (`pool.md`) |
 | `site` | `{ "index": false }` – leave false; packaging decides indexing from the domain. `tagline` optional |
 | `business` | facts (below) |
 | `standards` | `privacy_url` (empty → the page is built from Zap's standard privacy wording; set it only when the client has its own policy), `privacy_database` (true only when the client confirmed a database; adds the database paragraph), `privacy_purposes` (extra "השימוש במידע" items; default: answering the contact forms), `privacy_email` (default `business.email_public`), `privacy_confirmed` (the client confirmed these and `business.legal_name`; clears the launch blocker), `accessibility_url` (default Zap central statement) |
@@ -66,6 +67,8 @@ Every page with sections needs exactly one `hero` (it carries the H1).
 
 ## Sections (all optional fields can be omitted)
 
+Any section can take a `variant` from the pool (`pool.md`); the validator rejects unknown ones.
+
 Common: `title` (H2; `*word*` = accent colour, `
 ` = line break, a final `.` = accent dot), `eyebrow`
 (tracked label with a rule), `intro` (sits beside the title; `head: "stack"` stacks them), `bg`
@@ -75,17 +78,18 @@ Common: `title` (H2; `*word*` = accent colour, `
 |---|---|
 | `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `images` [2–3 keys: crossfading hero slider, each slide an editable image widget; first = poster], `interval` (seconds per photo, 2–10, default 4), `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings); `style`: `band` (default, full-width stat bar) or `card` |
-| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
-| `features` | `items: [{title, text, icon}]`, `columns`, `cta` |
+| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images); `variant: "framed"` (square photos in offset frames, caption below: projects) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
+| `features` | `items: [{title, text, icon}]`, `columns`, `cta`; `variant`: `aside` (rows beside a framed photo, needs `image`) / `checks` (white check tiles on a brand gradient) |
 | `steps` | `items: [{title, text}]` – numbered process, 3–4 items |
-| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2` |
+| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2`; `variant: "frame"` (text panel in an offset frame) |
 | `prose` | `html` – long text; `<h2>/<h3>` become separate editable headings; lists, tables, links ok |
-| `faq` | `items: [{q, a}]` – 3+; also emitted as FAQPage schema (counts always match) |
+| `faq` | `items: [{q, a}]` – 3+; `variant: "outline"` (centred, outlined rows); also emitted as FAQPage schema (counts always match) |
 | `cta` | `title`, `text`, `cta` (default: השאירו פרטים → footer form), `cta2` (default: phone) |
-| `gallery` | `images: [keys]`, `columns` |
+| `gallery` | `images: [keys]`, `columns`; `variant: "mosaic"` (tight 4-col square grid, 4 or 8 photos) |
 | `logos` | `images: [keys]` – certifications, suppliers, media |
 | `posts` | `count`, `category`, `more` – latest blog posts |
-| `contact` | `title`, `text`, `map` (default true) – NAP + full form + map |
+| `contact` | `title`, `text`, `map` (default true) – NAP + full form + map; `variant: "photo"` + `image` = full-height photo instead of the map |
+| `leadbar` | `title`, `text` – rounded brand band with a one-row lead form; once per page, away from the footer lead band |
 | `reviews` | renders only when `business.dpz_customer_id` exists |
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |

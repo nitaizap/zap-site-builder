@@ -146,6 +146,8 @@ def checks(items):
 def section(ctx, s, classes, children):
     bg = s.get("bg")
     cls = f"zs-sec {classes} " + (f"zs-bg-{bg}" if bg else "")
+    if s.get("variant"):
+        cls += f" zs-v-{s['variant']}"
     if s.get("anchor"):
         cls += f" zs-anchor-{s['anchor']}"
     el = C(ctx, cls, children, tag="section", inner=False, boxed=True)
@@ -250,6 +252,12 @@ def features(ctx, s):
         heading(ctx, it["title"], "h3", "zs-feature__title"),
         text(ctx, it.get("text"), "zs-feature__text"),
     ]) for it in s["items"]]
+    if s.get("variant") == "aside":
+        # "why us": the items stacked beside a framed photo (pool: template 1)
+        media = C(ctx, "zs-features__media", [image(ctx, s.get("image"), "zs-features__img", "large")])
+        body = C(ctx, "zs-features__body", [*sec_head(ctx, {**s, "head": "stack"}), C(ctx, "zs-features__list", items),
+                                            buttons(ctx, s.get("cta"))])
+        return section(ctx, s, "zs-features", [C(ctx, "zs-features__wrap", [body, media])])
     return section(ctx, s, "zs-features", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{n}", items), buttons(ctx, s.get("cta"))])
 
 
@@ -328,8 +336,21 @@ def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
                                        W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})])
-    right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
+    if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
+        right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
+    else:
+        right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
+
+
+def leadbar(ctx, s):
+    """Rounded brand band with a one-row lead form (name, phone, email) mid-page (pool: template 1).
+    The site-wide lead band before the footer stays; use this at most once, far from it."""
+    fid = s.get("form_id", "leadbar")
+    return section(ctx, s, "zs-leadbar", [C(ctx, "zs-leadbar__box", [
+        heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
+        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}),
+    ])])
 
 
 def reviews(ctx, s):
@@ -390,7 +411,20 @@ def route(ctx, s):
 
 
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote, road, route, marquee)}
+                                     logos, posts, contact, leadbar, reviews, video, quote, road, route, marquee)}
+
+
+# The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
+# Hero layout, preset, tone and motion are site-wide design levers; these are per section.
+VARIANTS = {
+    "split": {"frame"},
+    "cards": {"framed"},
+    "features": {"aside", "checks"},
+    "gallery": {"mosaic"},
+    "faq": {"outline"},
+    "contact": {"photo"},
+    "leadbar": set(),
+}
 
 
 def render_page(ctx, sections):
