@@ -289,4 +289,4 @@ body:not(#zs-x) .zs-eyebrow .elementor-heading-title { letter-spacing: 0; text-t
 body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; }
 body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button:hover { background: color-mix(in srgb, #fff 88%, var(--c-primary)); color: var(--c-primary); }
 /* long links (emails, URLs in the privacy policy) wrap instead of pushing the page sideways on phones */
-.elementor-widget-text-editor a { overflow-wrap: anywhere; }
+:is(p, li, td) a { overflow-wrap: anywhere; }
