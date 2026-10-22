@@ -284,3 +284,9 @@ body .zs-b.zs-b-primary .elementor-button .elementor-button-text::after { conten
 body.zs-p-signature .zs-b:not(.zs-b-tel):not(.zs-b-wa) .elementor-button::after { content: none; }
 /* eyebrows, where used, read as Hebrew words: no tracked capitals */
 body:not(#zs-x) .zs-eyebrow .elementor-heading-title { letter-spacing: 0; text-transform: none; }
+
+/* photo heroes (cover / inset / curve): a white primary button reads on any photo under the dark scrim */
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; }
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button:hover { background: color-mix(in srgb, #fff 88%, var(--c-primary)); color: var(--c-primary); }
+/* long links (emails, URLs in the privacy policy) wrap instead of pushing the page sideways on phones */
+.elementor-widget-text-editor a { overflow-wrap: anywhere; }
