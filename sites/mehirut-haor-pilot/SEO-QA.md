@@ -1,13 +1,13 @@
 # SEO QA — מהירות האור שליחויות
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 2 fail, 6 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 29 pass, 2 fail, 5 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
 | 1 | עיצוב וטיפוגרפיה | מספר מקשר פותח פופ אפ | 👁 MANUAL | the engine has no tracking-number popup; check the example site14.clicksite.co.il and the Zap number in the brief |
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 6 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link https://zap.dbusiness.co/js/accessibility.html (Zap's central statement) |
-| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | 👁 MANUAL | blog page yes, 0 posts; the posts come from BestLinks |
+| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ❌ FAIL | blog page no, 0 posts; the posts come from BestLinks |
 | 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | fleet-825x1024.webp 119 KB |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
@@ -16,7 +16,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 2 fa
 | 12 | כפתורים ויצירת קשר | כפתור וואטסאפ צף בכל האתר (טאב חדש) | ✅ PASS | desktop 1440 + mobile 390, every page |
 | 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 072-2599648 |
 | 14 | כפתורים ויצירת קשר | כפתורי טלפון עם tel: לחיוג ישיר | ✅ PASS |  |
-| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ❌ FAIL | בלוג: H1 'מדריכי שליחויות לעסקים' |
+| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
 | 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | — N/A | no posts yet |
 | 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 12 forms |

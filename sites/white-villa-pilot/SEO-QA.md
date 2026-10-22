@@ -8,7 +8,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8256 · 37 rows: 27 pass, 1 fa
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 2 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link https://zap.dbusiness.co/js/accessibility.html (Zap's central statement) |
 | 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | 👁 MANUAL | blog page yes, 0 posts; the posts come from BestLinks |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | hosting-table.webp 116 KB; garden-bar-800x560.webp 107 KB; olive-garden-800x560.webp 116 KB; olive-jar-800x560.webp 120 KB; entrance-768x1024.webp 160 KB; jacaranda-768x1024.webp 174 KB |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | playground-swings-800x459.webp 102 KB; olive-jar-580x560.webp 103 KB |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 38 images, 0 marked AI; compare with the client's folder from the spec |
