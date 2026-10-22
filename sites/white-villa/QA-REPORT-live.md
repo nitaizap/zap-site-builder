@@ -14,16 +14,16 @@
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
 | desktop | /מדיניות-פרטיות/ | 0 | 1 | 451 | meta description length 69 |
-| desktop | /צרו-קשר/ | 0 | 1 | 398 | meta description length 89 |
+| desktop | /צרו-קשר/ | 0 | 1 | 399 | meta description length 89 |
 | desktop | /אודות/ | 0 | 0 | 671 |  |
 | desktop | /גלריה/ | 0 | 0 | 2738 |  |
 | desktop | /מסיבות-ואירועים/ | 0 | 0 | 1142 |  |
 | desktop | /וילה-לנופש/ | 0 | 0 | 3555 |  |
-| desktop | / | 0 | 0 | 1218 |  |
+| desktop | / | 0 | 0 | 1287 |  |
 | mobile | /מדיניות-פרטיות/ | 0 | 1 | 451 | meta description length 69 |
-| mobile | /צרו-קשר/ | 0 | 1 | 399 | meta description length 89 |
+| mobile | /צרו-קשר/ | 0 | 1 | 398 | meta description length 89 |
 | mobile | /אודות/ | 0 | 0 | 607 |  |
 | mobile | /גלריה/ | 0 | 0 | 2678 |  |
-| mobile | /מסיבות-ואירועים/ | 0 | 0 | 972 |  |
+| mobile | /מסיבות-ואירועים/ | 0 | 0 | 973 |  |
 | mobile | /וילה-לנופש/ | 0 | 0 | 779 |  |
 | mobile | / | 0 | 0 | 974 |  |
