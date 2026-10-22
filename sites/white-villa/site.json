@@ -10,8 +10,6 @@
   "schema_type": "LodgingBusiness",
   "phone_display": "054-6666662",
   "phone_e164": "+972546666662",
-  "whatsapp_e164": "+972546666662",
-  "whatsapp_text": "שלום, אשמח לבדוק תאריך פנוי בוילה הלבנה",
   "email_leads": "shimon@ashrh.co.il",
   "email_public": "shimon@ashrh.co.il",
   "address": "מורד התאנה 29, ינוב",
@@ -24,34 +22,34 @@
  },
  "standards": {
   "privacy_url": "",
-  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
+  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html",
+  "privacy_confirmed": true
  },
  "design": {
-  "preset": "signature",
-  "hero": "image",
+  "preset": "editorial",
+  "hero": "centered",
   "header": "light",
   "motion": "lively",
-  "tone": "light",
-  "colors": {
-   "primary": "#3f4b39",
-   "primary_ink": "#ffffff",
-   "accent": "#8a6a3a",
-   "accent_ink": "#ffffff",
-   "ink": "#23261f",
-   "text": "#43463f",
-   "muted": "#626558",
-   "bg": "#fbfaf6",
-   "surface": "#f2f0e8",
-   "line": "#e0ddd2",
-   "dark": "#2a2d26",
-   "dark_ink": "#f2f0e8"
-  },
+  "radius": 0,
   "fonts": {
-   "heading": "Frank Ruhl Libre",
-   "body": "Assistant"
+   "heading": "Bona Nova",
+   "body": "Alef"
   },
-  "radius": 4,
-  "custom_css": ""
+  "colors": {
+   "primary": "#0e4f5c",
+   "primary_ink": "#ffffff",
+   "accent": "#b0502c",
+   "accent_ink": "#ffffff",
+   "ink": "#152a2e",
+   "text": "#33464a",
+   "muted": "#55676a",
+   "bg": "#fdfbf7",
+   "surface": "#f6efe6",
+   "line": "#e6dccd",
+   "dark": "#0f3a43",
+   "dark_ink": "#f6efe6"
+  },
+  "custom_css": "/* white-villa: arches + logo spacing */\nbody .e-con.zs-hero--home{--padding-bottom:clamp(24px,3vw,48px)}\n.zs-gallery .zs-gallery__img:nth-child(4n+1) img{border-radius:999px 999px 0 0}\n.zs-eyebrow,.zs-sec__eyebrow{letter-spacing:.32em}\n.zs-hv-centered .zs-hero--home .zs-hero__img img{border-radius:0 0 0 0;border-top:6px double var(--c-accent)}\n.zs-bg-dark,.zs-bg-primary,.zs-footer{--c-accent:#f0b79a}\n.zs-footer :is(.zs-ico,svg){color:#f0b79a}"
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",
@@ -237,7 +235,7 @@
    "sections": [
     {
      "type": "hero",
-     "eyebrow": "בית של השמחות",
+     "eyebrow": "בית של השמחות · מושב ינוב",
      "title": "וילה פרטית לנופש ואירועים בשרון — *הוילה הלבנה*",
      "lead": "3.5 דונם של טבע, בריכה חצי־אולימפית ופרטיות מלאה במושב ינוב.",
      "cta": {
@@ -253,39 +251,45 @@
       "אירועים עד 150 אורחים",
       "השכרה פרטית ובלעדית"
      ],
-     "image": "poolpanorama",
-     "video": "poolloop"
+     "image": "poolpanorama"
     },
     {
-     "type": "trust",
+     "type": "cards",
+     "layout": "bento",
+     "eyebrow": "המתחם",
+     "title": "3.5 דונם,\n*הכול במקום אחד*.",
+     "intro": "בריכה עם מגלשה, בוסתן ומדשאות, פינות משחק ווילה בשני מפלסים, מושכרים באופן פרטי ובלעדי.",
      "items": [
       {
-       "value": "3.5",
-       "label": "דונם של טבע ומרחבים"
+       "title": "בריכה חצי־אולימפית",
+       "text": "עם מגלשת מים, מוקפת מדשאות.",
+       "href": "page:וילה-לנופש",
+       "image": "poolvilla"
       },
       {
-       "value": "5",
-       "label": "חדרי שינה מרווחים"
+       "title": "5 חדרי שינה, 22 מיטות",
+       "text": "חדרים גדולים ומרווחים בשני מפלסים.",
+       "href": "page:וילה-לנופש",
+       "image": "bedroomb"
       },
       {
-       "value": "22",
-       "label": "מיטות לאורחים"
+       "title": "אירועים עד 150 אורחים",
+       "text": "בריתות, חינות, ימי הולדת ועוד.",
+       "href": "page:מסיבות-ואירועים",
+       "image": "hostingtable"
       },
       {
-       "value": "150",
-       "label": "אורחים באירוע"
+       "title": "מתקנים לילדים",
+       "text": "נדנדות, מגלשות, סנוקר וטניס.",
+       "href": "page:וילה-לנופש",
+       "image": "playground"
+      },
+      {
+       "title": "מטבח מאובזר",
+       "text": "מקרר, מדיח, מכונת קפה ושני כיורים.",
+       "href": "page:וילה-לנופש",
+       "image": "kitchenisland"
       }
-     ]
-    },
-    {
-     "type": "marquee",
-     "items": [
-      "בית של השמחות",
-      "בריכה ומגלשה",
-      "בוסתן ועצי פרי",
-      "אירועים פרטיים",
-      "חופשה משפחתית",
-      "מושב ינוב"
      ]
     },
     {
@@ -302,35 +306,27 @@
      "cta": {
       "label": "עוד על הווילה",
       "href": "page:אודות"
-     }
+     },
+     "image_shape": "arch"
     },
     {
-     "type": "cards",
-     "eyebrow": "שתי דרכים ליהנות",
-     "title": "נופש או *אירוע*.",
-     "intro": "אותו מתחם פרטי וירוק: לחופשה של המשפחה או החבר׳ה, או לחגיגה של עד 150 אורחים.",
-     "columns": 2,
+     "type": "marquee",
      "items": [
-      {
-       "title": "וילה לנופש",
-       "text": "5 חדרי שינה, 22 מיטות, מטבח מאובזר ובריכה עם מגלשה, רק בשבילכם.",
-       "href": "page:וילה-לנופש",
-       "image": "bedroomb"
-      },
-      {
-       "title": "מסיבות ואירועים",
-       "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, במתחם פרטי עם בריכה ומדשאות.",
-       "href": "page:מסיבות-ואירועים",
-       "image": "hostingtable"
-      }
-     ]
+      "בית של השמחות",
+      "בריכה ומגלשה",
+      "בוסתן ועצי פרי",
+      "אירועים פרטיים",
+      "חופשה משפחתית",
+      "מושב ינוב"
+     ],
+     "bg": "surface"
     },
     {
      "type": "features",
      "eyebrow": "במתחם",
      "title": "כל מה שצריך לחופשה מושלמת\nאו לאירוע *באווירה אחרת*.",
      "columns": 3,
-     "bg": "surface",
+     "bg": "dark",
      "items": [
       {
        "title": "בריכה חצי־אולימפית",
@@ -379,6 +375,28 @@
       "roofterrace"
      ],
      "columns": 3
+    },
+    {
+     "type": "trust",
+     "items": [
+      {
+       "value": "3.5",
+       "label": "דונם של טבע ומרחבים"
+      },
+      {
+       "value": "5",
+       "label": "חדרי שינה מרווחים"
+      },
+      {
+       "value": "22",
+       "label": "מיטות לאורחים"
+      },
+      {
+       "value": "150",
+       "label": "אורחים באירוע"
+      }
+     ],
+     "style": "card"
     },
     {
      "type": "faq",
@@ -465,7 +483,8 @@
       "5 חדרי שינה גדולים",
       "22 מיטות בשני מפלסים",
       "מטבח מאובזר עם מכונת קפה"
-     ]
+     ],
+     "image_shape": "arch"
     },
     {
      "type": "split",
@@ -477,7 +496,8 @@
       "בריכה חצי־אולימפית עם מגלשת מים",
       "עמדת מנגל ומקרר חיצוני",
       "נדנדות, מגלשות, סנוקר וטניס"
-     ]
+     ],
+     "image_shape": "arch"
     },
     {
      "type": "gallery",
@@ -562,7 +582,8 @@
      "badge": {
       "title": "150",
       "text": "אורחים באירוע"
-     }
+     },
+     "image_shape": "arch"
     },
     {
      "type": "features",
@@ -728,7 +749,8 @@
      "eyebrow": "המקום",
      "title": "טבע, מרחב\nו*פרטיות*.",
      "image": "entrance",
-     "text": "<p>בלב השרון, במושב ינוב הפסטורלי והשקט, מחכה לכם מתחם נופש ואירועים רחב ידיים המשתרע על כ־3.5 דונם של טבע, מרחבים ופרטיות.</p><p>המתחם מוקף עצי פרי, בוסתן ירוק, מדשאות ופינות ישיבה נעימות, ובמרכזו בריכת שחייה חצי־אולימפית עם מגלשת מים – כל מה שצריך כדי ליהנות מחופשה מושלמת או ליצור אירוע באווירה אחרת.</p>"
+     "text": "<p>בלב השרון, במושב ינוב הפסטורלי והשקט, מחכה לכם מתחם נופש ואירועים רחב ידיים המשתרע על כ־3.5 דונם של טבע, מרחבים ופרטיות.</p><p>המתחם מוקף עצי פרי, בוסתן ירוק, מדשאות ופינות ישיבה נעימות, ובמרכזו בריכת שחייה חצי־אולימפית עם מגלשת מים – כל מה שצריך כדי ליהנות מחופשה מושלמת או ליצור אירוע באווירה אחרת.</p>",
+     "image_shape": "arch"
     },
     {
      "type": "split",
@@ -736,7 +758,8 @@
      "title": "שני מפלסים,\n*5 חדרי שינה*.",
      "image": "staircase",
      "image_side": "end",
-     "text": "<p>הווילה מציעה 5 חדרי שינה גדולים ומרווחים, 22 מיטות, שני מפלסים ומטבח מאובזר הכולל מקרר, מדיח, מכונת קפה ושני כיורים. לרשות האורחים עומדות גם אפשרויות בילוי ופנאי: שולחן סנוקר, שולחן טניס, נדנדות, מגלשות, פינות ישיבה, עמדת מנגל ומקרר חיצוני.</p><p>ניתן להשכיר את המתחם באופן פרטי ובלעדי. מרחב פרטי, טבע ירוק, בריכה מפנקת ואינספור אפשרויות לחגוג, לנוח וליצור זיכרונות – הכול במקום אחד.</p>"
+     "text": "<p>הווילה מציעה 5 חדרי שינה גדולים ומרווחים, 22 מיטות, שני מפלסים ומטבח מאובזר הכולל מקרר, מדיח, מכונת קפה ושני כיורים. לרשות האורחים עומדות גם אפשרויות בילוי ופנאי: שולחן סנוקר, שולחן טניס, נדנדות, מגלשות, פינות ישיבה, עמדת מנגל ומקרר חיצוני.</p><p>ניתן להשכיר את המתחם באופן פרטי ובלעדי. מרחב פרטי, טבע ירוק, בריכה מפנקת ואינספור אפשרויות לחגוג, לנוח וליצור זיכרונות – הכול במקום אחד.</p>",
+     "image_shape": "arch"
     },
     {
      "type": "cta",

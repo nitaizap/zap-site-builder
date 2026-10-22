@@ -1298,3 +1298,10 @@ body { --zs-h1-cap: 9.4svh; }
   .zs-reviews zap-reviews .review_date { grid-column: 1; grid-row: 3; }
   .zs-reviews zap-reviews .pagination > span[class]:not(.currpage) { margin-inline-start: 0 !important; flex-basis: 100%; margin-top: 6px !important; }
 }
+
+/* Dark/primary grounds for every preset (signature has its own above): eyebrows and feature icons in the accent */
+body :is(.zs-bg-dark, .zs-bg-primary) .zs-eyebrow .elementor-heading-title { color: var(--c-accent); }
+body :is(.zs-bg-dark, .zs-bg-primary) :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { color: var(--c-accent); background: color-mix(in srgb, var(--c-accent) 14%, transparent); }
+body :is(.zs-bg-dark, .zs-bg-primary) :is(.zs-feature__icon, .zs-card__icon) .elementor-icon svg { fill: currentColor; }
+/* long URLs (privacy page) never push the page sideways */
+.zs-prose a, .zs-sec a { overflow-wrap: anywhere; }

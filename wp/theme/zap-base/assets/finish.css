@@ -88,6 +88,7 @@ body:not(.zs-p-signature) {
   & .zs-eyebrow .elementor-heading-title { display: inline-flex; align-items: center; gap: 12px; font-size: .86rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-primary); }
   & .zs-eyebrow .elementor-heading-title::before { content: ""; width: 28px; height: 2px; background: currentColor; flex: none; }
   & .zs-eyebrow { margin-bottom: 14px; }
+  & :is(.zs-bg-dark, .zs-bg-primary) .zs-eyebrow .elementor-heading-title { color: var(--c-accent); }
 
   /* buttons: crisper, with a directional arrow on primary actions */
   & .zs-b .elementor-button, & .zs-btn { min-height: 54px; padding: .75em 1.65em; letter-spacing: .01em; }
