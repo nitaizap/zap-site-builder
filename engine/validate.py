@@ -6,6 +6,17 @@ invented social proof, placeholder copy, phone/tel mismatch, thin FAQs, missing 
 import json
 import re
 
+from sections import SECTIONS, VARIANTS
+
+# Packages (references/pool.md): the tier caps the page count and keeps basic sites simple.
+TIERS = {
+    "basic": {"pages": 5, "banned": {"road", "route", "marquee", "video", "posts"}},
+    "standard": {"pages": 12, "banned": set()},
+    "premium": {"pages": None, "banned": set()},
+}
+NEEDS_IMAGE = {("features", "aside"), ("contact", "photo"), ("cta", "photo"), ("split", "overlap"), ("split", "card"), ("split", "duo"),
+               ("hero", "cover"), ("hero", "inset"), ("hero", "curve"), ("faq", "aside"), ("leadbar", "photo"), ("reviews", "photo")}
+
 RATING = re.compile(r"(★|⭐|\b[45][.,]\d\s*(כוכבים|ב-?גוגל|בגוגל|stars?)|דירוג\s*\d|\d+\s*ביקורות|\d+\s*חוות דעת)", re.I)
 SUPERLATIVE = re.compile(r"(הטוב(ה|ים)? ביותר|הכי טוב|המוביל(ה|ים)? ב|מספר\s*1(?!\d)|#1(?![0-9a-fA-F])|הזול ביותר|המומחה הגדול)")
 PLACEHOLDER = re.compile(r"(lorem|ipsum|TODO|TBD|XXX|\[\s*(שם|טלפון|כתובת|client|name)[^\]]*\]|PLACEHOLDER|לורם)", re.I)
@@ -29,7 +40,8 @@ def _texts(obj, path=""):
     elif isinstance(obj, dict):
         for k, v in obj.items():
             if k in ("src", "href", "image", "images", "icon", "type", "key", "slug", "anchor", "bg", "category",
-                     "related_page", "featured_image", "youtube_url", "kind", "video", "colors", "fonts", "preset", "hero", "header"):
+                     "related_page", "featured_image", "youtube_url", "kind", "video", "colors", "fonts", "preset", "hero", "header",
+                     "variant", "tier"):
                 continue
             yield from _texts(v, f"{path}.{k}" if path else k)
     elif isinstance(obj, list):
@@ -82,8 +94,8 @@ def validate(d, site_dir):
             t, ds, kw = seo.get("title", ""), seo.get("description", ""), seo.get("keyword", "")
             if not (25 <= len(t) <= 65):
                 (E if not t else W)(f"{name}: seo.title is {len(t)} chars (want 30-60)")
-            if not (110 <= len(ds) <= 165):
-                (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (want 140-160)")
+            if not (150 <= len(ds) <= 160):
+                (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (Zap SEO checklist: 150-160)")
             if not kw:
                 E(f"{name}: seo.keyword missing (every indexable page owns one keyword)")
             else:
@@ -148,6 +160,40 @@ def validate(d, site_dir):
                     E(f"{p.get('key') or 'home'}: a hero video needs an image too (it is the poster and the mobile view)")
     if d.get("logo") and str(d["logo"]).lower().endswith(".svg"):
         E("logo must be PNG/WebP (WordPress rejects SVG uploads); convert it first")
+
+    bt = (d.get("design") or {}).get("base_template")
+    if bt is not None and bt not in range(1, 7):
+        E(f"design.base_template must be 1-6 (the Zap Figma templates), got {bt}")
+    if not any(p.get("type") == "blog" for p in pages):
+        W("no blog page: the Zap SEO checklist wants a blog category on every site (3 posts arrive through BestLinks)")
+    tier = d.get("tier")
+    if tier and tier not in TIERS:
+        E(f"tier '{tier}' unknown; use one of {', '.join(TIERS)}")
+    elif tier:
+        t = TIERS[tier]
+        real = [p for p in pages if p.get("type") not in ("privacy", "blog")]
+        if t["pages"] and len(real) > t["pages"]:
+            E(f"tier {tier} allows {t['pages']} pages, site.json has {len(real)} (privacy/blog not counted)")
+    for p in pages:
+        name = p.get("key") or "home"
+        for s in p.get("sections", []):
+            ty, v = s.get("type"), s.get("variant")
+            if tier in TIERS and ty in TIERS[tier]["banned"]:
+                E(f"{name}: section '{ty}' is not part of the {tier} package")
+            if tier == "basic" and ty == "hero" and (s.get("video") or len(s.get("images", [])) > 1):
+                E(f"{name}: basic package hero is one still photo (no video, no slider)")
+            if ty == "tiles" and any(not it.get("image") for it in s.get("items", [])):
+                E(f"{name}: every tiles item needs an image")
+            if v is None:
+                continue
+            if ty in SECTIONS and v not in VARIANTS.get(ty, set()):
+                E(f"{name}: {ty} has no variant '{v}'; known: {', '.join(sorted(VARIANTS.get(ty, ()))) or 'none'}")
+            if (ty, v) in NEEDS_IMAGE and not s.get("image"):
+                E(f"{name}: {ty} variant '{v}' needs an image")
+            if (ty, v) == ("split", "duo") and not s.get("image2"):
+                E(f"{name}: split variant 'duo' needs image2 (the small overlapping photo)")
+            if (ty, v) == ("gallery", "stagger") and len(s.get("images", [])) != 4:
+                E(f"{name}: gallery variant 'stagger' takes exactly 4 images")
 
     for path, txt in _texts({k: v for k, v in d.items() if not k.startswith("_")}):
         if RATING.search(txt):

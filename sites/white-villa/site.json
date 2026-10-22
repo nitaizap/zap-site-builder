@@ -26,31 +26,31 @@
   "privacy_confirmed": true
  },
  "design": {
-  "preset": "soft",
-  "hero": "split",
+  "base_template": 2,
+  "preset": "clean",
+  "hero": "image",
   "header": "light",
-  "motion": "lively",
-  "radius": 24,
-  "garland": true,
-  "fonts": {
-   "heading": "Suez One",
-   "body": "Assistant"
-  },
+  "motion": "subtle",
+  "radius": 16,
   "colors": {
-   "primary": "#0a6375",
+   "primary": "#4d5a36",
    "primary_ink": "#ffffff",
-   "accent": "#c4542a",
-   "accent_ink": "#ffffff",
-   "ink": "#0f2a30",
-   "text": "#2c4348",
-   "muted": "#4f6468",
-   "bg": "#fffcf6",
-   "surface": "#e9f5f4",
-   "line": "#d3e6e4",
-   "dark": "#0b3c47",
-   "dark_ink": "#f4fbfa"
+   "accent": "#b39ddb",
+   "accent_ink": "#1f241b",
+   "ink": "#1f241b",
+   "text": "#3a4034",
+   "muted": "#5a6152",
+   "bg": "#ffffff",
+   "surface": "#f4f2ec",
+   "line": "#e2dfd5",
+   "dark": "#262b20",
+   "dark_ink": "#f4f2ec"
   },
-  "custom_css": "/* white-villa: Suez One has one weight; pool-water edge under the home hero; arches from the logo columns */\nbody{--w-head:400}\nbody :is(h1,h2,h3,.elementor-heading-title){font-synthesis:none}\nbody .e-con.zs-hero--home{position:relative}\nbody .e-con.zs-hero--home::after{content:\"\";position:absolute;inset:auto 0 -1px 0;height:46px;background:var(--c-surface);-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 48' preserveAspectRatio='none'%3E%3Cpath d='M0 24 C100 0 200 0 300 24 S500 48 600 24 V48 H0Z'/%3E%3C/svg%3E\") repeat-x 0 0/600px 46px;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 48' preserveAspectRatio='none'%3E%3Cpath d='M0 24 C100 0 200 0 300 24 S500 48 600 24 V48 H0Z'/%3E%3C/svg%3E\") repeat-x 0 0/600px 46px;animation:wv-wave 14s linear 1;z-index:2;pointer-events:none}\n@keyframes wv-wave{to{-webkit-mask-position:600px 0;mask-position:600px 0}}\n@media (prefers-reduced-motion:reduce){body .e-con.zs-hero--home::after{animation:none}}\n.zs-bg-dark,.zs-bg-primary,.zs-footer{--c-accent:#ffb48a}\n.zs-footer :is(.zs-ico,svg){color:#ffb48a}\n/* gallery page: 38 photos fill every row (4 columns, two large tiles) */\n.zs-gallery .zs-grid--4{grid-auto-flow:dense}\n.zs-gallery .zs-grid--4 > .elementor-element:nth-child(20){grid-column:span 2;grid-row:span 2}\n.elementor .zs-gallery .zs-grid--4 > .elementor-element:nth-child(20) img{aspect-ratio:auto;height:100%}\n@media (max-width:640px){body .zs-features .zs-grid--4{--cols:2}body .zs-features .zs-grid--4 .zs-feature{text-align:center;align-items:center;--align-items:center}}"
+  "fonts": {
+   "heading": "Miriam Libre",
+   "body": "Miriam Libre"
+  },
+  "custom_css": ""
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",
@@ -64,7 +64,7 @@
  },
  "header": {
   "cta_label": "להזמנת הווילה",
-  "topbar_text": "מושב ינוב, השרון · עד 22 לנים · אירועים עד 150 אורחים"
+  "topbar_text": "מושב ינוב, השרון. עד 22 לנים, אירועים עד 150 אורחים"
  },
  "content": {
   "disclaimer": ""
@@ -275,9 +275,19 @@
   {
    "label": "צרו קשר",
    "href": "page:צרו-קשר"
+  },
+  {
+   "label": "בלוג",
+   "href": "page:בלוג"
   }
  ],
- "categories": [],
+ "categories": [
+  {
+   "slug": "נופש-ואירועים",
+   "name": "נופש ואירועים",
+   "description": "מדריכים קצרים לתכנון חופשה משפחתית ואירוע פרטי בווילה: מה לבדוק לפני שמזמינים, איך מתכננים"
+  }
+ ],
  "pages": [
   {
    "key": "",
@@ -286,13 +296,12 @@
    "excerpt": "וילה פרטית לנופש ואירועים במושב ינוב שבשרון.",
    "seo": {
     "title": "הוילה הלבנה ינוב - וילה לנופש ואירועים בשרון",
-    "description": "וילה פרטית על 3.5 דונם במושב ינוב: בריכה חצי־אולימפית עם מגלשת מים, 5 חדרי שינה ו־22 מיטות, ואירועים פרטיים עד 150 אורחים.",
+    "description": "הוילה הלבנה ינוב: וילה פרטית על 3.5 דונם במושב ינוב שבשרון, בריכה חצי־אולימפית עם מגלשת מים, 5 חדרי שינה ו־22 מיטות, ואירועים פרטיים עד 150 אורחים בטבע.",
     "keyword": "וילה לנופש ואירועים בשרון"
    },
    "sections": [
     {
      "type": "hero",
-     "eyebrow": "בית של השמחות · מושב ינוב",
      "title": "וילה פרטית לנופש ואירועים בשרון\nהוילה הלבנה",
      "lead": "3.5 דונם של טבע, בריכה חצי־אולימפית ופרטיות מלאה במושב ינוב.",
      "cta": {
@@ -303,85 +312,59 @@
       "label": "בדיקת תאריך פנוי",
       "href": "#leave-details"
      },
-     "points": [
-      "5 חדרי שינה, 22 מיטות",
-      "אירועים עד 150 אורחים",
-      "השכרה פרטית ובלעדית"
-     ],
      "image": "poolpanorama",
-     "images": [
-      "poolpanorama",
-      "villagarden",
-      "playground"
-     ],
-     "interval": 5
-    },
-    {
-     "type": "carousel",
-     "eyebrow": "גלריה",
-     "title": "הצצה לווילה, לבריכה ולמרחבים הירוקים של המתחם",
-     "intro": "החליקו, או תנו לתמונות לרוץ.",
-     "bg": "surface",
-     "interval": 4,
-     "items": [
-      {
-       "image": "poolpanorama",
-       "caption": "הבריכה החצי־אולימפית"
-      },
-      {
-       "image": "slidepool",
-       "caption": "מגלשת המים"
-      },
-      {
-       "image": "playground",
-       "caption": "מתקני המשחק"
-      },
-      {
-       "image": "villapanorama",
-       "caption": "הווילה והמדשאה"
-      },
-      {
-       "image": "livingroom",
-       "caption": "הסלון"
-      },
-      {
-       "image": "bedroomc",
-       "caption": "חדרי השינה"
-      },
-      {
-       "image": "roofterrace",
-       "caption": "מרפסת הגג"
-      },
-      {
-       "image": "orchard",
-       "caption": "הבוסתן"
-      }
-     ]
+     "variant": "inset",
+     "video": "poolloop"
     },
     {
      "type": "split",
-     "eyebrow": "הווילה",
-     "title": "מתחם פרטי\nבלב *השרון*.",
+     "title": "מתחם פרטי\nבלב השרון",
      "image": "villagarden",
      "image_side": "end",
      "text": "<p>בלב השרון, במושב ינוב השקט, מחכה לכם מתחם נופש ואירועים פרטי של כ־3.5 דונם. עצי פרי, בוסתן ירוק ומדשאות מקיפים בריכת שחייה חצי־אולימפית עם מגלשת מים.</p><p>הווילה כוללת 5 חדרי שינה מרווחים ו־22 מיטות, ומתאימה לחופשה משפחתית או לאירוע של עד 150 אורחים.</p>",
-     "badge": {
-      "title": "3.5",
-      "text": "דונם של פרטיות"
-     },
      "cta": {
       "label": "עוד על הווילה",
       "href": "page:אודות"
      },
-     "image_shape": "arch",
-     "bg": "plain"
+     "variant": "duo",
+     "image2": "livingroom"
+    },
+    {
+     "type": "gallery",
+     "variant": "stagger",
+     "title": "הצצה למתחם",
+     "images": [
+      "slidepool",
+      "kitchenisland",
+      "bedrooma",
+      "gardenbar"
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "נופש או חגיגה?",
+     "intro": "אותו מתחם פרטי וירוק, לחופשה של המשפחה או לאירוע של עד 150 אורחים",
+     "items": [
+      {
+       "title": "וילה לנופש",
+       "text": "5 חדרי שינה, 22 מיטות, מטבח מאובזר ובריכה עם מגלשה, רק בשבילכם.",
+       "href": "page:וילה-לנופש",
+       "image": "villagarden"
+      },
+      {
+       "title": "מסיבות ואירועים",
+       "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, עד 150 אורחים.",
+       "href": "page:מסיבות-ואירועים",
+       "image": "hostingtable"
+      }
+     ],
+     "columns": 2,
+     "variant": "framed",
+     "style": "classic"
     },
     {
      "type": "features",
-     "eyebrow": "במתחם",
-     "title": "כל מה שצריך לחופשה מושלמת\nאו לאירוע *באווירה אחרת*.",
-     "columns": 3,
-     "bg": "dark",
+     "title": "כל מה שצריך לחופשה מושלמת\nאו לאירוע באווירה אחרת",
      "items": [
       {
        "title": "בריכה חצי־אולימפית",
@@ -413,55 +396,35 @@
        "text": "ארוחת בוקר, טיפולי ספא וציוד לאירוע, כולל שולחנות וכיסאות, לפי הצורך.",
        "icon": "sparkle"
       }
+     ],
+     "variant": "rows"
+    },
+    {
+     "type": "tiles",
+     "items": [
+      {
+       "title": "הבריכה",
+       "text": "בריכת שחייה חצי־אולימפית עם מגלשת מים, מוקפת מדשאות.",
+       "image": "slidepool"
+      },
+      {
+       "title": "הבוסתן והגינה",
+       "text": "עצי פרי, מדשאות ופינות ישיבה על כ־3.5 דונם של טבע.",
+       "image": "orchard"
+      },
+      {
+       "title": "שולחן לכולם",
+       "text": "מטבח מאובזר, פינת אוכל גדולה ואירוח של עד 150 אורחים.",
+       "image": "hostingtable",
+       "cta": {
+        "label": "על האירועים",
+        "href": "page:מסיבות-ואירועים"
+       }
+      }
      ]
     },
     {
-     "type": "cards",
-     "eyebrow": "שתי דרכים ליהנות",
-     "title": "נופש או *חגיגה*?",
-     "intro": "אותו מתחם פרטי וירוק, לחופשה של המשפחה או לאירוע של עד 150 אורחים.",
-     "items": [
-      {
-       "title": "וילה לנופש",
-       "text": "5 חדרי שינה, 22 מיטות, מטבח מאובזר ובריכה עם מגלשה, רק בשבילכם.",
-       "href": "page:וילה-לנופש",
-       "image": "villagarden"
-      },
-      {
-       "title": "מסיבות ואירועים",
-       "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, עד 150 אורחים.",
-       "href": "page:מסיבות-ואירועים",
-       "image": "hostingtable"
-      }
-     ],
-     "columns": 2
-    },
-    {
-     "type": "trust",
-     "items": [
-      {
-       "value": "3.5",
-       "label": "דונם של טבע ומרחבים"
-      },
-      {
-       "value": "5",
-       "label": "חדרי שינה מרווחים"
-      },
-      {
-       "value": "22",
-       "label": "מיטות לאורחים"
-      },
-      {
-       "value": "150",
-       "label": "אורחים באירוע"
-      }
-     ],
-     "style": "card",
-     "bg": "surface"
-    },
-    {
      "type": "faq",
-     "eyebrow": "שאלות ותשובות",
      "title": "שאלות נפוצות על הוילה הלבנה",
      "items": [
       {
@@ -488,11 +451,13 @@
        "q": "איפה נמצאת הווילה?",
        "a": "ברחוב מורד התאנה 29 במושב ינוב שבשרון."
       }
-     ]
+     ],
+     "variant": "aside",
+     "image": "jacaranda"
     },
     {
      "type": "cta",
-     "title": "רוצים לבדוק\n*תאריך פנוי*?",
+     "title": "רוצים לבדוק\nתאריך פנוי?",
      "text": "התקשרו או השאירו פרטים, ונשמח לעזור לכם לתכנן חופשה או אירוע בוילה הלבנה.",
      "cta": {
       "label": "להזמנת הווילה",
@@ -501,7 +466,9 @@
      "cta2": {
       "label": "השאירו פרטים",
       "href": "#leave-details"
-     }
+     },
+     "variant": "photo",
+     "image": "villapanorama"
     }
    ]
   },
@@ -514,13 +481,12 @@
    "order": 1,
    "seo": {
     "title": "וילה לנופש בשרון | הוילה הלבנה ינוב",
-    "description": "וילה פרטית לנופש משפחתי וקבוצתי במושב ינוב: 5 חדרי שינה, 22 מיטות, בריכה חצי־אולימפית עם מגלשה, מטבח מאובזר וחצר ירוקה.",
+    "description": "וילה פרטית לנופש משפחתי וקבוצתי במושב ינוב: 5 חדרי שינה, 22 מיטות בשני מפלסים, בריכה חצי־אולימפית עם מגלשה, מטבח מאובזר וחצר ירוקה עם בוסתן. הוילה הלבנה ינוב.",
     "keyword": "וילה לנופש בשרון"
    },
    "sections": [
     {
      "type": "hero",
-     "eyebrow": "נופש פרטי",
      "title": "וילה לנופש בשרון",
      "lead": "חופשה פרטית ובלעדית לכל המשפחה או החבר׳ה, על כ־3.5 דונם של טבע במושב ינוב.",
      "image": "villapanorama",
@@ -532,12 +498,11 @@
       "label": "בדיקת תאריך פנוי",
       "href": "#leave-details"
      },
-     "video": "poolloop"
+     "variant": "inset"
     },
     {
      "type": "split",
-     "eyebrow": "בתוך הווילה",
-     "title": "מקום שבו כולם\nיכולים להיות *יחד*.",
+     "title": "מקום שבו כולם\nיכולים להיות יחד",
      "image": "livingroom",
      "image_side": "end",
      "text": "<p>מחפשים מקום שבו כל המשפחה או החבר׳ה יכולים להיות יחד? הוילה הלבנה בינוב מציעה חופשה פרטית ובלעדית על כ־3.5 דונם של טבע.</p><p>בווילה 5 חדרי שינה גדולים ומרווחים ו־22 מיטות על פני שני מפלסים, ומטבח מאובזר עם מקרר, מדיח, מכונת קפה ושני כיורים.</p>",
@@ -546,12 +511,12 @@
       "22 מיטות בשני מפלסים",
       "מטבח מאובזר עם מכונת קפה"
      ],
-     "image_shape": "arch"
+     "variant": "duo",
+     "image2": "kitchenisland"
     },
     {
      "type": "split",
-     "eyebrow": "בחוץ",
-     "title": "בריכה, בוסתן\nו*מרחב לשחק*.",
+     "title": "בריכה, בוסתן\nומרחב לשחק",
      "image": "slidepool",
      "text": "<p>בחוץ מחכים בריכת שחייה חצי־אולימפית עם מגלשת מים, מדשאות, בוסתן ועצי פרי, עמדת מנגל ומקרר חיצוני.</p><p>לילדים ולמבוגרים יש נדנדות, מגלשות, שולחן סנוקר ושולחן טניס.</p><p><strong>חשוב לדעת:</strong> בשבתות אין אפשרות להשתמש במנגל או להשמיע מוזיקה.</p>",
      "points": [
@@ -559,54 +524,21 @@
       "עמדת מנגל ומקרר חיצוני",
       "נדנדות, מגלשות, סנוקר וטניס"
      ],
-     "image_shape": "arch"
+     "variant": "card"
     },
     {
-     "type": "carousel",
-     "eyebrow": "חדרים ומטבח",
-     "title": "בתוך *הווילה*.",
-     "bg": "dark",
-     "items": [
-      {
-       "image": "livingroom",
-       "caption": "הסלון"
-      },
-      {
-       "image": "livingtv",
-       "caption": "סלון ופינת אוכל"
-      },
-      {
-       "image": "dining",
-       "caption": "פינת האוכל"
-      },
-      {
-       "image": "staircase",
-       "caption": "המדרגות לקומה השנייה"
-      },
-      {
-       "image": "bedrooma",
-       "caption": "חדר שינה"
-      },
-      {
-       "image": "bedroomb",
-       "caption": "חדר בעליית הגג"
-      },
-      {
-       "image": "bedroomc",
-       "caption": "חדר עם מקלחת צמודה"
-      },
-      {
-       "image": "bathrooma",
-       "caption": "חדר רחצה"
-      },
-      {
-       "image": "bathroomb",
-       "caption": "חדר רחצה"
-      },
-      {
-       "image": "kitchenisland",
-       "caption": "אי המטבח"
-      }
+     "type": "gallery",
+     "variant": "mosaic",
+     "title": "בתוך הווילה",
+     "images": [
+      "livingroom",
+      "livingtv",
+      "dining",
+      "staircase",
+      "bedrooma",
+      "bedroomb",
+      "bedroomc",
+      "bathrooma"
      ]
     },
     {
@@ -629,11 +561,12 @@
        "q": "אפשר להזמין ארוחת בוקר?",
        "a": "כן, ניתן להזמין ארוחת בוקר וטיפולי ספא בתיאום מראש."
       }
-     ]
+     ],
+     "variant": "outline"
     },
     {
      "type": "cta",
-     "title": "מתכננים חופשה\n*עם כולם*?",
+     "title": "מתכננים חופשה\nעם כולם?",
      "text": "השאירו פרטים או התקשרו לבדיקת תאריך פנוי."
     }
    ]
@@ -647,14 +580,13 @@
    "order": 2,
    "seo": {
     "title": "מסיבות ואירועים בשרון | הוילה הלבנה ינוב",
-    "description": "מתחם פרטי לאירועים עד 150 אורחים במושב ינוב: בריתות, חינות, ימי הולדת, בר ובת מצווה, מסיבות רווקים ורווקות ועוד.",
-    "keyword": "מתחם לאירועים פרטיים בשרון"
+    "description": "מתחם פרטי לאירועים עד 150 אורחים במושב ינוב: בריתות, חינות, שבתות חתן, ימי הולדת, בר ובת מצווה, מסיבות רווקים ורווקות ועוד. הוילה הלבנה ינוב, השרון, בפרטיות.",
+    "keyword": "מסיבות ואירועים בשרון"
    },
    "sections": [
     {
      "type": "hero",
-     "eyebrow": "אירועים פרטיים",
-     "title": "מתחם לאירועים פרטיים בשרון",
+     "title": "מסיבות ואירועים פרטיים בשרון",
      "lead": "חוגגים באווירה אחרת: עד 150 אורחים במתחם פרטי וירוק עם בריכה ומדשאות.",
      "image": "hostingtable",
      "cta": {
@@ -664,27 +596,21 @@
      "cta2": {
       "label": "השאירו פרטים",
       "href": "#leave-details"
-     }
+     },
+     "variant": "inset"
     },
     {
      "type": "split",
-     "eyebrow": "האירוע שלכם",
-     "title": "רוצים לחגוג\n*באווירה אחרת*?",
+     "title": "רוצים לחגוג\nבאווירה אחרת?",
      "image": "hostingtable",
      "image_side": "end",
      "text": "<p>הוילה הלבנה בינוב מתאימה לאירוח של עד 150 אורחים, במתחם פרטי וירוק עם בריכה ומדשאות.</p><p>המתחם מושכר באופן פרטי ובלעדי, עם אפשרות להזמנת ציוד לאירוע (שולחנות, כיסאות ועוד) בהתאם לצרכים שלכם.</p><p><strong>חשוב לדעת:</strong> בשבתות אין אפשרות להשתמש במנגל או להשמיע מוזיקה.</p>",
-     "badge": {
-      "title": "150",
-      "text": "אורחים באירוע"
-     },
-     "image_shape": "arch"
+     "variant": "duo",
+     "image2": "kitchenisland"
     },
     {
      "type": "features",
-     "eyebrow": "מה חוגגים כאן",
-     "title": "אירועים פרטיים\n*ומשפחתיים*.",
-     "columns": 4,
-     "bg": "surface",
+     "title": "אירועים פרטיים\nומשפחתיים",
      "items": [
       {
        "title": "בריתות",
@@ -718,42 +644,18 @@
        "title": "מסיבות רווקים ורווקות",
        "icon": "users"
       }
-     ]
+     ],
+     "variant": "checks"
     },
     {
-     "type": "carousel",
-     "eyebrow": "המרחבים",
-     "title": "איפה *חוגגים*.",
-     "bg": "dark",
-     "items": [
-      {
-       "image": "hostingtable",
-       "caption": "שולחן האירוח"
-      },
-      {
-       "image": "poolpanorama",
-       "caption": "הבריכה והפרגולה"
-      },
-      {
-       "image": "villagarden",
-       "caption": "המדשאה"
-      },
-      {
-       "image": "palmpergola",
-       "caption": "פרגולת הסכך"
-      },
-      {
-       "image": "gardenbar",
-       "caption": "פינת הבר בגינה"
-      },
-      {
-       "image": "playground",
-       "caption": "מתחם המשחקים"
-      },
-      {
-       "image": "snooker",
-       "caption": "סנוקר"
-      }
+     "type": "gallery",
+     "variant": "mosaic",
+     "title": "איפה חוגגים",
+     "images": [
+      "hostingtable",
+      "poolpanorama",
+      "villagarden",
+      "palmpergola"
      ]
     },
     {
@@ -776,11 +678,12 @@
        "q": "אפשר להשמיע מוזיקה בשבת?",
        "a": "לא. בשבתות אין אפשרות להשתמש במנגל או להשמיע מוזיקה."
       }
-     ]
+     ],
+     "variant": "outline"
     },
     {
      "type": "cta",
-     "title": "בואו נתאם\n*את האירוע שלכם*.",
+     "title": "בואו נתאם\nאת האירוע שלכם",
      "text": "ספרו לנו על התאריך ומספר האורחים, ונחזור אליכם."
     }
    ]
@@ -794,19 +697,20 @@
    "order": 3,
    "seo": {
     "title": "גלריית תמונות הוילה הלבנה ינוב | וילה, בריכה ומתחם אירועים",
-    "description": "צפו בתמונות של הוילה הלבנה במושב ינוב: הווילה, הבריכה החצי־אולימפית, המדשאות והבוסתן ומתחם האירועים.",
-    "keyword": "גלריית תמונות הוילה הלבנה"
+    "description": "גלריית התמונות של הוילה הלבנה במושב ינוב: הווילה וחדרי השינה, הבריכה החצי־אולימפית עם המגלשה, המדשאות והבוסתן ומתחם האירועים הפרטיים לעד 150 אורחים בשרון.",
+    "keyword": "גלריה הוילה הלבנה"
    },
    "sections": [
     {
      "type": "hero",
-     "title": "גלריית תמונות הוילה הלבנה",
+     "title": "גלריה: הוילה הלבנה בתמונות",
      "lead": "הווילה, הבריכה, המדשאות והבוסתן ומתחם האירועים.",
-     "image": "slidepool"
+     "image": "slidepool",
+     "variant": "inset"
     },
     {
      "type": "gallery",
-     "title": "המתחם *בתמונות*.",
+     "title": "המתחם בתמונות",
      "images": [
       "poolpanorama",
       "slidepool",
@@ -865,36 +769,36 @@
    "order": 4,
    "seo": {
     "title": "אודות הוילה הלבנה ינוב - מתחם נופש ואירועים בשרון",
-    "description": "הכירו את הוילה הלבנה במושב ינוב: 3.5 דונם של טבע ופרטיות, בריכה חצי־אולימפית, 5 חדרי שינה ואירועים פרטיים עד 150 אורחים.",
+    "description": "הכירו את הוילה הלבנה במושב ינוב שבשרון: 3.5 דונם של טבע ופרטיות, בריכה חצי־אולימפית עם מגלשה, 5 חדרי שינה, 22 מיטות ואירועים פרטיים עד 150 אורחים בטבע.",
     "keyword": "מתחם נופש ואירועים בשרון"
    },
    "sections": [
     {
      "type": "hero",
-     "title": "מתחם נופש ואירועים בשרון\nהוילה הלבנה",
+     "title": "אודות הוילה הלבנה\nמתחם נופש ואירועים בשרון",
      "lead": "3.5 דונם של טבע, מרחבים ופרטיות במושב ינוב הפסטורלי.",
-     "image": "villagarden"
+     "image": "villagarden",
+     "variant": "inset"
     },
     {
      "type": "split",
-     "eyebrow": "המקום",
-     "title": "טבע, מרחב\nו*פרטיות*.",
+     "title": "טבע, מרחב\nופרטיות",
      "image": "entrance",
      "text": "<p>בלב השרון, במושב ינוב הפסטורלי והשקט, מחכה לכם מתחם נופש ואירועים רחב ידיים המשתרע על כ־3.5 דונם של טבע, מרחבים ופרטיות.</p><p>המתחם מוקף עצי פרי, בוסתן ירוק, מדשאות ופינות ישיבה נעימות, ובמרכזו בריכת שחייה חצי־אולימפית עם מגלשת מים. כל מה שצריך כדי ליהנות מחופשה מושלמת או ליצור אירוע באווירה אחרת.</p>",
-     "image_shape": "arch"
+     "variant": "duo",
+     "image2": "kitchenisland"
     },
     {
      "type": "split",
-     "eyebrow": "הווילה",
-     "title": "שני מפלסים,\n*5 חדרי שינה*.",
+     "title": "שני מפלסים,\n5 חדרי שינה",
      "image": "staircase",
      "image_side": "end",
      "text": "<p>הווילה מציעה 5 חדרי שינה גדולים ומרווחים, 22 מיטות, שני מפלסים ומטבח מאובזר הכולל מקרר, מדיח, מכונת קפה ושני כיורים. לרשות האורחים עומדות גם אפשרויות בילוי ופנאי: שולחן סנוקר, שולחן טניס, נדנדות, מגלשות, פינות ישיבה, עמדת מנגל ומקרר חיצוני.</p><p>ניתן להשכיר את המתחם באופן פרטי ובלעדי. מרחב פרטי, טבע ירוק, בריכה מפנקת ואינספור אפשרויות לחגוג, לנוח וליצור זיכרונות, הכול במקום אחד.</p>",
-     "image_shape": "arch"
+     "variant": "card"
     },
     {
      "type": "cta",
-     "title": "בואו ליצור\n*זיכרונות*.",
+     "title": "בואו ליצור\nזיכרונות",
      "text": "התקשרו או השאירו פרטים, ונחזור אליכם."
     }
    ]
@@ -906,7 +810,7 @@
    "order": 5,
    "seo": {
     "title": "צרו קשר - הוילה הלבנה ינוב | הזמנת וילה ואירועים",
-    "description": "צרו קשר עם הוילה הלבנה בינוב לבירור זמינות, הזמנת נופש או תיאום אירוע פרטי עד 150 אורחים.",
+    "description": "צרו קשר עם הוילה הלבנה ינוב לבירור תאריך פנוי, הזמנת נופש משפחתי או תיאום אירוע פרטי עד 150 אורחים. 054-6666662, מורד התאנה 29, מושב ינוב שבשרון. נשמח לעזור.",
     "keyword": "צרו קשר הוילה הלבנה"
    },
    "sections": [
@@ -921,8 +825,20 @@
      "text": "מורד התאנה 29, מושב ינוב."
     }
    ]
+  },
+  {
+   "key": "בלוג",
+   "type": "blog",
+   "title": "מדריכים לנופש ולאירועים",
+   "excerpt": "מדריכים קצרים לתכנון חופשה משפחתית ואירוע פרטי בווילה: מה לבדוק לפני שמזמינים, איך מתכננים",
+   "seo": {
+    "title": "מדריכים לנופש ולאירועים | הוילה הלבנה ינוב",
+    "description": "מדריכים קצרים לתכנון חופשה משפחתית ואירוע פרטי בווילה: מה לבדוק לפני שמזמינים, איך מתכננים אירוע עד 150 אורחים ומה חשוב לדעת על שבת. הוילה הלבנה ינוב.",
+    "keyword": "מדריכים לנופש ולאירועים"
+   }
   }
  ],
  "posts": [],
- "logo": "assets/logo.png"
+ "logo": "assets/logo.png",
+ "tier": "standard"
 }

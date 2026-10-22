@@ -146,6 +146,8 @@ def checks(items):
 def section(ctx, s, classes, children):
     bg = s.get("bg")
     cls = f"zs-sec {classes} " + (f"zs-bg-{bg}" if bg else "")
+    if s.get("variant"):
+        cls += f" zs-v-{s['variant']}"
     if s.get("anchor"):
         cls += f" zs-anchor-{s['anchor']}"
     el = C(ctx, cls, children, tag="section", inner=False, boxed=True)
@@ -181,8 +183,14 @@ def _h1_markup(t):
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
     is_home = ctx.page_key == ""
+    logo = None
+    if s.get("logo"):      # the brand's logo above the H1 (cover heroes: restaurants, venues)
+        lk = "__logo_light" if "__logo_light" in ctx.media else "__logo"
+        chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
+        logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
         W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
+        logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
          else heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title", raw=True)),
@@ -251,6 +259,12 @@ def features(ctx, s):
         heading(ctx, it["title"], "h3", "zs-feature__title"),
         text(ctx, it.get("text"), "zs-feature__text"),
     ]) for it in s["items"]]
+    if s.get("variant") == "aside":
+        # "why us": the items stacked beside a framed photo (pool: template 1)
+        media = C(ctx, "zs-features__media", [image(ctx, s.get("image"), "zs-features__img", "large")])
+        body = C(ctx, "zs-features__body", [*sec_head(ctx, {**s, "head": "stack"}), C(ctx, "zs-features__list", items),
+                                            buttons(ctx, s.get("cta"))])
+        return section(ctx, s, "zs-features", [C(ctx, "zs-features__wrap", [body, media])])
     return section(ctx, s, "zs-features", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{n}", items), buttons(ctx, s.get("cta"))])
 
 
@@ -272,7 +286,9 @@ def split(ctx, s):
                                                text(ctx, bd.get("text", ""), "zs-badge__label")])
     shape = s.get("image_shape", "")
     media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
-              [image(ctx, s.get("image"), "zs-split__img", "large"), badge]) if s.get("image") else None
+              [image(ctx, s.get("image"), "zs-split__img", "large"),
+               image(ctx, s.get("image2"), "zs-split__img2", "medium") if s.get("variant") == "duo" else None,
+               badge]) if s.get("image") else None
     rev = " zs-split--rev" if s.get("image_side") == "end" else ""
     return section(ctx, s, f"zs-split{rev}{'' if media else ' zs-split--noimg'}", [txt, media])
 
@@ -297,11 +313,20 @@ def faq(ctx, s):
         a = it["a"] if it["a"].lstrip().startswith("<") else f"<p>{html.escape(it['a'], quote=False)}</p>"
         tabs.append({"_id": hashlib.md5(f"{ctx.page_key}:faq:{i}".encode()).hexdigest()[:7],
                      "tab_title": it["q"], "tab_content": a})
-    return section(ctx, s, "zs-faq", [*sec_head(ctx, s),
-                                      W(ctx, "toggle", {"tabs": tabs, "title_html_tag": "h3", "faq_schema": ""}, "zs-faq__list")])
+    lst = W(ctx, "toggle", {"tabs": tabs, "title_html_tag": "h3", "faq_schema": ""}, "zs-faq__list")
+    if s.get("variant") == "aside":     # questions beside a tall photo (template 4)
+        return section(ctx, s, "zs-faq", [C(ctx, "zs-faq__wrap", [C(ctx, "zs-faq__body", [*sec_head(ctx, {**s, "head": "stack"}), lst]),
+                                                                   C(ctx, "zs-faq__media", [image(ctx, s.get("image"), "zs-faq__img", "large")])])])
+    return section(ctx, s, "zs-faq", [*sec_head(ctx, s), lst])
 
 
 def cta(ctx, s):
+    if s.get("variant") == "photo":     # half photo, half brand panel with the action (lacuccina "להזמנת שולחן")
+        panel = C(ctx, "zs-cta__panel", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
+                                         heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text")),
+                                         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}), s.get("cta2"))])
+        return section(ctx, {**s, "bg": s.get("bg")}, "zs-ctaph",
+                       [C(ctx, "zs-ctaph__media", [image(ctx, s.get("image"), "zs-ctaph__img", "large")]), panel])
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
         garland(ctx, s),
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
@@ -312,12 +337,18 @@ def cta(ctx, s):
 
 
 def gallery(ctx, s):
-    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in s["images"]]
-    return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs)])
+    keys = s["images"][:3] if s.get("variant") == "strip" else s["images"]   # strip: a teaser row, `more` leads on
+    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in keys]
+    return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs),
+                                          buttons(ctx, s.get("more"))])
 
 
 def logos(ctx, s):
     imgs = [image(ctx, k, "zs-logos__img", "medium") for k in s["images"]]
+    if s.get("variant") == "band":      # dark band: title on one side, logo chips on the other (template 6)
+        return section(ctx, {**s, "bg": s.get("bg") or "dark"}, "zs-logos", [C(ctx, "zs-logos__band", [
+            C(ctx, "zs-logos__head", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("intro"))]),
+            C(ctx, "zs-logos__row", imgs)])])
     return section(ctx, s, "zs-logos", [*sec_head(ctx, s), C(ctx, "zs-logos__row", imgs)])
 
 
@@ -330,14 +361,41 @@ def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
                                        W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})])
-    right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
+    if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
+        right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
+    else:
+        right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
+
+
+def tiles(ctx, s):
+    """Edge-to-edge checkerboard: each item is a photo half and a colour half, alternating sides row by row
+    (lacuccina, the Zap restaurant sites). Text halves are native widgets; grounds cycle dark / accent."""
+    rows = []
+    for i, it in enumerate(s["items"]):
+        panel = C(ctx, "zs-tile__panel", [heading(ctx, it.get("title"), "h3" if s.get("title") else "h2", "zs-tile__title"),
+                                          text(ctx, it.get("text"), "zs-tile__text"), buttons(ctx, it.get("cta"))])
+        media = C(ctx, "zs-tile__media", [image(ctx, it.get("image"), "zs-tile__img", "large")])
+        rows.append(C(ctx, f"zs-tile zs-tile--{'b' if i % 2 else 'a'}", [panel, media]))
+    return section(ctx, {**s, "bg": s.get("bg")}, "zs-tiles", [*sec_head(ctx, s), C(ctx, "zs-tiles__list", rows)])
+
+
+def leadbar(ctx, s):
+    """Rounded brand band with a one-row lead form (name, phone, email) mid-page (pool: template 1).
+    The site-wide lead band before the footer stays; use this at most once, far from it."""
+    fid = s.get("form_id", "leadbar")
+    bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
+    return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
+        heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
+        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}),
+    ])])
 
 
 def reviews(ctx, s):
     if not ctx.site["business"].get("dpz_customer_id"):
         return None   # no real source -> no reviews block at all
-    return section(ctx, s, "zs-reviews-sec", [*sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
+    bgimg = image(ctx, s.get("image"), "zs-reviews__bg", "full") if s.get("variant") == "photo" else None
+    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
 
 
 def video(ctx, s):
@@ -427,7 +485,27 @@ def carousel(ctx, s):
 
 
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote, road, route, marquee, carousel)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel)}
+
+
+# The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
+# Hero layout, preset, tone and motion are site-wide design levers; these are per section.
+VARIANTS = {
+    "hero": {"cover", "inset", "curve"},
+    "split": {"frame", "overlap", "card", "duo"},
+    "cta": {"photo"},
+    "cards": {"framed"},
+    "features": {"aside", "checks", "rows"},
+    "gallery": {"mosaic", "strip", "stagger"},
+    "faq": {"outline", "aside", "dark"},
+    "steps": {"stack", "cards"},
+    "prose": {"band"},
+    "reviews": {"photo"},
+    "logos": {"band"},
+    "contact": {"photo"},
+    "leadbar": {"photo"},
+    "tiles": set(),
+}
 
 
 def render_page(ctx, sections):
@@ -437,7 +515,7 @@ def render_page(ctx, sections):
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta", "marquee", "trust") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee", "trust", "tiles") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
             s = {**s, "bg": "surface" if plain_i % 2 else None}
             plain_i += 1

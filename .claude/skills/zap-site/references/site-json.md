@@ -7,6 +7,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 
 | key | what |
 |---|---|
+| `tier` | `basic` / `standard` / `premium`: the package; caps page count and which sections are allowed (`pool.md`) |
 | `site` | `{ "index": false }` – leave false; packaging decides indexing from the domain. `tagline` optional |
 | `business` | facts (below) |
 | `standards` | `privacy_url` (empty → the page is built from Zap's standard privacy wording; set it only when the client has its own policy), `privacy_database` (true only when the client confirmed a database; adds the database paragraph), `privacy_purposes` (extra "השימוש במידע" items; default: answering the contact forms), `privacy_email` (default `business.email_public`), `privacy_confirmed` (the client confirmed these and `business.legal_name`; clears the launch blocker), `accessibility_url` (default Zap central statement) |
@@ -45,7 +46,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ```json
 { "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
-  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "custom_css": "" }
+  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "custom_css": "", "base_template": "1-6: the Zap Figma template this site starts from (pool.md)" }
 ```
 
 Fonts available (self-hosted): Heebo, Assistant, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew,
@@ -66,6 +67,8 @@ Every page with sections needs exactly one `hero` (it carries the H1).
 
 ## Sections (all optional fields can be omitted)
 
+Any section can take a `variant` from the pool (`pool.md`); the validator rejects unknown ones.
+
 Common: `title` (H2; `*word*` = accent colour, `
 ` = line break, a final `.` = accent dot), `eyebrow`
 (tracked label with a rule), `intro` (sits beside the title; `head: "stack"` stacks them), `bg`
@@ -73,20 +76,22 @@ Common: `title` (H2; `*word*` = accent colour, `
 
 | type | fields |
 |---|---|
-| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `images` [2–3 keys: crossfading hero slider, each slide an editable image widget; first = poster], `interval` (seconds per photo, 2–10, default 4), `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play), `garland: true` (festoon bulbs in two swags across the top; twinkle and sway a few seconds, then settle — events, venues, hospitality; also on `cta`, or `design.garland` for all) |
+| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `images` [2–3 keys: crossfading hero slider, each slide an editable image widget; first = poster], `interval` (seconds per photo, 2–10, default 4), `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play); `variant`: `cover` (full-bleed photo, centred text; `logo: true` puts the logo above the H1) / `inset` (cover as a rounded card) / `curve` (curved bottom edge); `garland: true` (festoon bulbs in two swags across the top; twinkle and sway a few seconds, then settle — events, venues, hospitality; also on `cta`, or `design.garland` for all) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings); `style`: `band` (default, full-width stat bar) or `card` |
-| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
-| `features` | `items: [{title, text, icon}]`, `columns`, `cta` |
-| `steps` | `items: [{title, text}]` – numbered process, 3–4 items |
-| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2` |
-| `prose` | `html` – long text; `<h2>/<h3>` become separate editable headings; lists, tables, links ok |
-| `faq` | `items: [{q, a}]` – 3+; also emitted as FAQPage schema (counts always match) |
-| `cta` | `title`, `text`, `cta` (default: השאירו פרטים → footer form), `cta2` (default: phone) |
-| `gallery` | `images: [keys]`, `columns` |
-| `logos` | `images: [keys]` – certifications, suppliers, media |
+| `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images); `variant: "framed"` (square photos in offset frames, caption below: projects) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
+| `features` | `items: [{title, text, icon}]`, `columns`, `cta`; `variant`: `aside` (rows beside a framed photo, needs `image`) / `checks` (white check tiles on a brand gradient) / `rows` (2-col horizontal cards) |
+| `steps` | `items: [{title, text}]` – numbered process, 3–4 items; `variant`: `stack` (numbered dark cards in a column) / `cards` (italic numerals on a soft gradient) |
+| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2`; `variant: "frame"` (text panel in an offset frame) / `"overlap"` (dark box over the photo edge) / `"card"` (light card over the photo) / `"duo"` (+ `image2` overlapping); `image_shape` also `hex` |
+| `prose` | `html` – long text; `<h2>/<h3>` become separate editable headings; lists, tables, links ok; `variant: "band"` (dark gradient band) |
+| `faq` | `items: [{q, a}]` – 3+; `variant`: `outline` (centred, outlined rows) / `aside` (+ `image` beside) / `dark` (dark panel); also emitted as FAQPage schema (counts always match) |
+| `cta` | `title`, `text`, `cta` (default: השאירו פרטים → footer form), `cta2` (default: phone); `variant: "photo"` + `image` (half photo, half accent panel) |
+| `gallery` | `images: [keys]`, `columns`; `variant: "mosaic"` (tight 4-col square grid, 4 or 8 photos) / `"strip"` (3 tall photos + `more`) / `"stagger"` (exactly 4, raised/lowered) |
+| `logos` | `images: [keys]` – certifications, suppliers, media; `variant: "band"` (+ `title`, `intro`: dark band, white logo chips) |
 | `posts` | `count`, `category`, `more` – latest blog posts |
-| `contact` | `title`, `text`, `map` (default true) – NAP + full form + map |
-| `reviews` | renders only when `business.dpz_customer_id` exists |
+| `contact` | `title`, `text`, `map` (default true) – NAP + full form + map; `variant: "photo"` + `image` = full-height photo instead of the map |
+| `tiles` | `items: [{title, text, image, cta}]` – edge-to-edge photo/colour checkerboard |
+| `leadbar` | `title`, `text` – rounded brand band with a one-row lead form; once per page, away from the footer lead band; `variant: "photo"` + `image` = over a full-bleed photo |
+| `reviews` | renders only when `business.dpz_customer_id` exists; `variant: "photo"` + `image` (over a darkened photo) |
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |
 | `carousel` | `items`: image keys or `{image, caption}` (5–12), `interval` (s, 2–10) – full-bleed swipeable photo strip; the centred slide grows, caption as a pill, arrows + counter, autoplays only on screen (pause button, stops on hover/focus). Venues, rooms, portfolios |
