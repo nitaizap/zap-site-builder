@@ -2,7 +2,7 @@
 
 - Pages × viewports checked: **22** (11 URLs × 2)
 - Internal links tested: **20**, not 200: **0**
-- Errors: **2** · Warnings: **6**
+- Errors: **0** · Warnings: **6**
 
 - ✅ hero buttons above the fold at 1280×620
 - ✅ 404 page returns HTTP 404
@@ -21,10 +21,10 @@
 | desktop | /שירותי-שליחויות/הובלת-משטחים/ | 0 | 0 | 1027 |  |
 | desktop | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 1008 |  |
 | desktop | /שירותי-שליחויות/ | 0 | 0 | 1504 |  |
-| desktop | /אודות/ | 0 | 0 | 1420 |  |
+| desktop | /אודות/ | 0 | 0 | 1296 |  |
 | desktop | /צור-קשר/ | 0 | 0 | 1050 |  |
 | desktop | / | 0 | 2 | 1722 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
-| mobile | /מדיניות-פרטיות/ | 2 | 1 | 1016 | horizontal overflow (1): A -7..374; page scrolls sideways: 397px > 390px; meta description length 73 |
+| mobile | /מדיניות-פרטיות/ | 0 | 1 | 1016 | meta description length 73 |
 | mobile | /שירותי-שליחויות/שליחויות-לכל-הארץ/ | 0 | 0 | 961 |  |
 | mobile | /שירותי-שליחויות/איסוף-והפקדת-צקים/ | 0 | 0 | 935 |  |
 | mobile | /שירותי-שליחויות/משלוחים-מהיום-להיום/ | 0 | 0 | 936 |  |
@@ -32,6 +32,6 @@
 | mobile | /שירותי-שליחויות/הובלת-משטחים/ | 0 | 0 | 939 |  |
 | mobile | /שירותי-שליחויות/שליחויות-משפטיות/ | 0 | 0 | 946 |  |
 | mobile | /שירותי-שליחויות/ | 0 | 0 | 1296 |  |
-| mobile | /אודות/ | 0 | 0 | 1159 |  |
+| mobile | /אודות/ | 0 | 0 | 1181 |  |
 | mobile | /צור-קשר/ | 0 | 0 | 957 |  |
 | mobile | / | 0 | 2 | 1441 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
