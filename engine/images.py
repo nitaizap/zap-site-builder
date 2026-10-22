@@ -43,4 +43,8 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
             continue
         im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
         im.save(dst, "WEBP", quality=MIN_QUALITY + 8, method=6)
+    q = MIN_QUALITY
+    while dst.stat().st_size > TARGET_KB * 1024 and q > 40:   # detailed photos: last resort, lower quality
+        q -= 5
+        im.save(dst, "WEBP", quality=q, method=6)
     return dst, im.width, im.height
