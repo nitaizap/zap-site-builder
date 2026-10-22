@@ -76,21 +76,21 @@ Common: `title` (H2; `*word*` = accent colour, `
 
 | type | fields |
 |---|---|
-| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `images` [2–3 keys: crossfading hero slider, each slide an editable image widget; first = poster], `interval` (seconds per photo, 2–10, default 4), `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play); `variant: "cover"` (full-bleed photo, centred text; `logo: true` puts the logo above the H1) |
+| `hero` | `title` (= H1), `lead`, `eyebrow`, `cta {label,href}`, `cta2`, `points` [3 short facts], `image`, `images` [2–3 keys: crossfading hero slider, each slide an editable image widget; first = poster], `interval` (seconds per photo, 2–10, default 4), `video` (key in `videos`; needs `image` as poster/mobile), `ride` (scooter/van/truck: a vehicle drives along the hero bottom; with a video only on phones, where the video does not play); `variant`: `cover` (full-bleed photo, centred text; `logo: true` puts the logo above the H1) / `inset` (cover as a rounded card) / `curve` (curved bottom edge) |
 | `trust` | `items: [{value, label}]` – 3–4 verifiable facts (never ratings); `style`: `band` (default, full-width stat bar) or `card` |
 | `cards` | `items: [{title, text, href, image \| icon}]`, `columns` 2–4, `more {label,href}`, `item_tag`; `layout: "bento"` (photo tiles, first one large, numbered; needs images); `variant: "framed"` (square photos in offset frames, caption below: projects) or, without a layout, `style`: `overlay` (automatic when every item has a photo) / `classic` |
 | `features` | `items: [{title, text, icon}]`, `columns`, `cta`; `variant`: `aside` (rows beside a framed photo, needs `image`) / `checks` (white check tiles on a brand gradient) |
 | `steps` | `items: [{title, text}]` – numbered process, 3–4 items |
-| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2`; `variant: "frame"` (text panel in an offset frame) / `"overlap"` (dark box over the photo edge) |
+| `split` | `title`, `text` (HTML), `points` [], `image`, `image_side` (`start`/`end`), `image_shape` (`arch`/`square`), `badge {title, text}` (a real number), `cta`, `cta2`; `variant: "frame"` (text panel in an offset frame) / `"overlap"` (dark box over the photo edge) / `"card"` (light card over the photo) / `"duo"` (+ `image2` overlapping); `image_shape` also `hex` |
 | `prose` | `html` – long text; `<h2>/<h3>` become separate editable headings; lists, tables, links ok |
-| `faq` | `items: [{q, a}]` – 3+; `variant: "outline"` (centred, outlined rows); also emitted as FAQPage schema (counts always match) |
+| `faq` | `items: [{q, a}]` – 3+; `variant`: `outline` (centred, outlined rows) / `aside` (+ `image` beside) / `dark` (dark panel); also emitted as FAQPage schema (counts always match) |
 | `cta` | `title`, `text`, `cta` (default: השאירו פרטים → footer form), `cta2` (default: phone); `variant: "photo"` + `image` (half photo, half accent panel) |
-| `gallery` | `images: [keys]`, `columns`; `variant: "mosaic"` (tight 4-col square grid, 4 or 8 photos) / `"strip"` (3 tall photos + `more`) |
-| `logos` | `images: [keys]` – certifications, suppliers, media |
+| `gallery` | `images: [keys]`, `columns`; `variant: "mosaic"` (tight 4-col square grid, 4 or 8 photos) / `"strip"` (3 tall photos + `more`) / `"stagger"` (exactly 4, raised/lowered) |
+| `logos` | `images: [keys]` – certifications, suppliers, media; `variant: "band"` (+ `title`, `intro`: dark band, white logo chips) |
 | `posts` | `count`, `category`, `more` – latest blog posts |
 | `contact` | `title`, `text`, `map` (default true) – NAP + full form + map; `variant: "photo"` + `image` = full-height photo instead of the map |
 | `tiles` | `items: [{title, text, image, cta}]` – edge-to-edge photo/colour checkerboard |
-| `leadbar` | `title`, `text` – rounded brand band with a one-row lead form; once per page, away from the footer lead band |
+| `leadbar` | `title`, `text` – rounded brand band with a one-row lead form; once per page, away from the footer lead band; `variant: "photo"` + `image` = over a full-bleed photo |
 | `reviews` | renders only when `business.dpz_customer_id` exists |
 | `video` | `youtube_url` |
 | `quote` | `text`, `by` – a real quote from the owner only |

@@ -14,7 +14,8 @@ TIERS = {
     "standard": {"pages": 12, "banned": set()},
     "premium": {"pages": None, "banned": set()},
 }
-NEEDS_IMAGE = {("features", "aside"), ("contact", "photo"), ("cta", "photo"), ("split", "overlap"), ("hero", "cover")}
+NEEDS_IMAGE = {("features", "aside"), ("contact", "photo"), ("cta", "photo"), ("split", "overlap"), ("split", "card"), ("split", "duo"),
+               ("hero", "cover"), ("hero", "inset"), ("hero", "curve"), ("faq", "aside"), ("leadbar", "photo")}
 
 RATING = re.compile(r"(★|⭐|\b[45][.,]\d\s*(כוכבים|ב-?גוגל|בגוגל|stars?)|דירוג\s*\d|\d+\s*ביקורות|\d+\s*חוות דעת)", re.I)
 SUPERLATIVE = re.compile(r"(הטוב(ה|ים)? ביותר|הכי טוב|המוביל(ה|ים)? ב|מספר\s*1(?!\d)|#1(?![0-9a-fA-F])|הזול ביותר|המומחה הגדול)")
@@ -183,6 +184,10 @@ def validate(d, site_dir):
                 E(f"{name}: {ty} has no variant '{v}'; known: {', '.join(sorted(VARIANTS.get(ty, ()))) or 'none'}")
             if (ty, v) in NEEDS_IMAGE and not s.get("image"):
                 E(f"{name}: {ty} variant '{v}' needs an image")
+            if (ty, v) == ("split", "duo") and not s.get("image2"):
+                E(f"{name}: split variant 'duo' needs image2 (the small overlapping photo)")
+            if (ty, v) == ("gallery", "stagger") and len(s.get("images", [])) != 4:
+                E(f"{name}: gallery variant 'stagger' takes exactly 4 images")
 
     for path, txt in _texts({k: v for k, v in d.items() if not k.startswith("_")}):
         if RATING.search(txt):

@@ -285,7 +285,9 @@ def split(ctx, s):
                                                text(ctx, bd.get("text", ""), "zs-badge__label")])
     shape = s.get("image_shape", "")
     media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
-              [image(ctx, s.get("image"), "zs-split__img", "large"), badge]) if s.get("image") else None
+              [image(ctx, s.get("image"), "zs-split__img", "large"),
+               image(ctx, s.get("image2"), "zs-split__img2", "medium") if s.get("variant") == "duo" else None,
+               badge]) if s.get("image") else None
     rev = " zs-split--rev" if s.get("image_side") == "end" else ""
     return section(ctx, s, f"zs-split{rev}{'' if media else ' zs-split--noimg'}", [txt, media])
 
@@ -310,8 +312,11 @@ def faq(ctx, s):
         a = it["a"] if it["a"].lstrip().startswith("<") else f"<p>{html.escape(it['a'], quote=False)}</p>"
         tabs.append({"_id": hashlib.md5(f"{ctx.page_key}:faq:{i}".encode()).hexdigest()[:7],
                      "tab_title": it["q"], "tab_content": a})
-    return section(ctx, s, "zs-faq", [*sec_head(ctx, s),
-                                      W(ctx, "toggle", {"tabs": tabs, "title_html_tag": "h3", "faq_schema": ""}, "zs-faq__list")])
+    lst = W(ctx, "toggle", {"tabs": tabs, "title_html_tag": "h3", "faq_schema": ""}, "zs-faq__list")
+    if s.get("variant") == "aside":     # questions beside a tall photo (template 4)
+        return section(ctx, s, "zs-faq", [C(ctx, "zs-faq__wrap", [C(ctx, "zs-faq__body", [*sec_head(ctx, {**s, "head": "stack"}), lst]),
+                                                                   C(ctx, "zs-faq__media", [image(ctx, s.get("image"), "zs-faq__img", "large")])])])
+    return section(ctx, s, "zs-faq", [*sec_head(ctx, s), lst])
 
 
 def cta(ctx, s):
@@ -338,6 +343,10 @@ def gallery(ctx, s):
 
 def logos(ctx, s):
     imgs = [image(ctx, k, "zs-logos__img", "medium") for k in s["images"]]
+    if s.get("variant") == "band":      # dark band: title on one side, logo chips on the other (template 6)
+        return section(ctx, {**s, "bg": s.get("bg") or "dark"}, "zs-logos", [C(ctx, "zs-logos__band", [
+            C(ctx, "zs-logos__head", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("intro"))]),
+            C(ctx, "zs-logos__row", imgs)])])
     return section(ctx, s, "zs-logos", [*sec_head(ctx, s), C(ctx, "zs-logos__row", imgs)])
 
 
@@ -373,7 +382,8 @@ def leadbar(ctx, s):
     """Rounded brand band with a one-row lead form (name, phone, email) mid-page (pool: template 1).
     The site-wide lead band before the footer stays; use this at most once, far from it."""
     fid = s.get("form_id", "leadbar")
-    return section(ctx, s, "zs-leadbar", [C(ctx, "zs-leadbar__box", [
+    bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
+    return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
         heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
         W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}),
     ])])
@@ -443,15 +453,16 @@ SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
 # Hero layout, preset, tone and motion are site-wide design levers; these are per section.
 VARIANTS = {
-    "hero": {"cover"},
-    "split": {"frame", "overlap"},
+    "hero": {"cover", "inset", "curve"},
+    "split": {"frame", "overlap", "card", "duo"},
     "cta": {"photo"},
     "cards": {"framed"},
     "features": {"aside", "checks"},
-    "gallery": {"mosaic", "strip"},
-    "faq": {"outline"},
+    "gallery": {"mosaic", "strip", "stagger"},
+    "faq": {"outline", "aside", "dark"},
+    "logos": {"band"},
     "contact": {"photo"},
-    "leadbar": set(),
+    "leadbar": {"photo"},
     "tiles": set(),
 }
 
