@@ -93,8 +93,8 @@ def validate(d, site_dir):
             t, ds, kw = seo.get("title", ""), seo.get("description", ""), seo.get("keyword", "")
             if not (25 <= len(t) <= 65):
                 (E if not t else W)(f"{name}: seo.title is {len(t)} chars (want 30-60)")
-            if not (110 <= len(ds) <= 165):
-                (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (want 140-160)")
+            if not (150 <= len(ds) <= 160):
+                (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (Zap SEO checklist: 150-160)")
             if not kw:
                 E(f"{name}: seo.keyword missing (every indexable page owns one keyword)")
             else:
@@ -163,6 +163,8 @@ def validate(d, site_dir):
     bt = (d.get("design") or {}).get("base_template")
     if bt is not None and bt not in range(1, 7):
         E(f"design.base_template must be 1-6 (the Zap Figma templates), got {bt}")
+    if not any(p.get("type") == "blog" for p in pages):
+        W("no blog page: the Zap SEO checklist wants a blog category on every site (3 posts arrive through BestLinks)")
     tier = d.get("tier")
     if tier and tier not in TIERS:
         E(f"tier '{tier}' unknown; use one of {', '.join(TIERS)}")
