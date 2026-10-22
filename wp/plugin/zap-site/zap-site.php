@@ -29,4 +29,4 @@ require __DIR__ . '/inc/hardening.php';
 require __DIR__ . '/inc/robots.php';
 
 // Zap SEO checklist: every image under 100 KB. The engine uploads light WebPs; keep WordPress's own resized copies light too.
-add_filter('wp_editor_set_quality', fn() => 68);
+add_filter('wp_editor_set_quality', fn() => 60);
