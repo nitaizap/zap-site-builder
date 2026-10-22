@@ -1,31 +1,31 @@
 # SEO QA — מהירות האור שליחויות
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 3 fail, 5 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 2 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
 | 1 | עיצוב וטיפוגרפיה | מספר מקשר פותח פופ אפ | 👁 MANUAL | the engine has no tracking-number popup; check the example site14.clicksite.co.il and the Zap number in the brief |
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 6 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link https://zap.dbusiness.co/js/accessibility.html (Zap's central statement) |
-| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ❌ FAIL | blog page no, 0 posts; the posts come from BestLinks |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | logo.png 192 KB; fleet-825x1024.webp 119 KB |
+| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | 👁 MANUAL | blog page yes, 0 posts; the posts come from BestLinks |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | fleet-825x1024.webp 119 KB |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 11 images, 11 marked AI; compare with the client's folder from the spec |
-| 11 | כפתורים ויצירת קשר | לינק וואטסאפ למספר הנכון + טאב חדש | ✅ PASS | 23 links |
+| 11 | כפתורים ויצירת קשר | לינק וואטסאפ למספר הנכון + טאב חדש | ✅ PASS | 25 links |
 | 12 | כפתורים ויצירת קשר | כפתור וואטסאפ צף בכל האתר (טאב חדש) | ✅ PASS | desktop 1440 + mobile 390, every page |
 | 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 072-2599648 |
 | 14 | כפתורים ויצירת קשר | כפתורי טלפון עם tel: לחיוג ישיר | ✅ PASS |  |
-| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
+| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ❌ FAIL | בלוג: H1 'מדריכי שליחויות לעסקים' |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
 | 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | — N/A | no posts yet |
-| 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 11 forms |
-| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 19 internal links, all < 400 |
+| 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 12 forms |
+| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 20 internal links, all < 400 |
 | 20 | שגיאות 301 ו-404 | תיקון כל ה-404 (עמוד / 301) | ✅ PASS | redesign: map the old site's URLs to new ones (301) before launch |
 | 21 | שגיאות 301 ו-404 | קישורים פנימיים לא מפנים לכתובות ישנות | ✅ PASS |  |
 | 22 | SEO On-Page | סכמת FAQ בעמודי שירות ופוסטים | ✅ PASS |  |
-| 23 | SEO On-Page | Meta Title ייחודי ואופטימלי בכל עמוד | ✅ PASS | 11 unique titles |
-| 24 | SEO On-Page | Meta Description ייחודי (150-160 תווים) | ❌ FAIL | /מדיניות-פרטיות/: 73; /שירותי-שליחויות/שליחויות-לכל-הארץ/: 137; /שירותי-שליחויות/איסוף-והפקדת-צקים/: 123; /שירותי-שליחויות/משלוחים-מהיום-להיום/: 115; /שירותי-שליחויות/הובלת-חבילות-ומשאות-קלים/: 128; /שירותי-שליחויות/הובלת-משטחים/: 139; /שירותי-שליחויות/שליחויות-משפטיות/: 131; /שירותי-שליחויות/: 136; /אודות/: 122; /צור-קשר/: 121; /: 145 |
+| 23 | SEO On-Page | Meta Title ייחודי ואופטימלי בכל עמוד | ✅ PASS | 12 unique titles |
+| 24 | SEO On-Page | Meta Description ייחודי (150-160 תווים) | ✅ PASS |  |
 | 25 | עמוד 404 | עיצוב מותאם לעמוד 404 | ✅ PASS | HTTP 404 |
 | 26 | עמוד 404 | קישור לעמוד הבית | ✅ PASS |  |
 | 27 | עמוד 404 | קישור לעמוד צור קשר | ✅ PASS |  |
