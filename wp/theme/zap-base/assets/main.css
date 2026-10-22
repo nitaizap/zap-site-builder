@@ -1308,10 +1308,10 @@ body :is(.zs-bg-dark, .zs-bg-primary) :is(.zs-feature__icon, .zs-card__icon) .el
 .zs-carousel { overflow: hidden; }
 body .e-con.zs-car__track { --flex-direction: row; --flex-wrap: nowrap; flex-direction: row; flex-wrap: nowrap; --gap: clamp(12px, 2vw, 24px); gap: clamp(12px, 2vw, 24px);
   overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
-  padding-block: 12px 4px; padding-inline: calc(50vw - min(36vw, 230px)); position: relative;
+  padding-block: 12px 4px; padding-inline: max(16px, calc(50vw - 600px)); scroll-padding-inline: max(16px, calc(50vw - 600px)); position: relative;
   width: 100vw; max-width: 100vw; margin-inline: calc(50% - 50vw); align-items: center; --align-items: center; }
 .zs-car__track::-webkit-scrollbar { display: none; }
-body .e-con.zs-car__slide { flex: 0 0 min(72vw, 460px); width: min(72vw, 460px); height: auto; align-self: center; --padding-top: 0; --padding-bottom: 0; --padding-left: 0; --padding-right: 0; padding: 0; --gap: 0; gap: 0; scroll-snap-align: center; position: relative;
+body .e-con.zs-car__slide { flex: 0 0 min(72vw, 460px); width: min(72vw, 460px); height: auto; align-self: center; --padding-top: 0; --padding-bottom: 0; --padding-left: 0; --padding-right: 0; padding: 0; --gap: 0; gap: 0; scroll-snap-align: start; position: relative;
   border-radius: var(--r-lg); overflow: hidden; transform: scale(.88); opacity: .55; transition: transform .7s var(--ease), opacity .7s var(--ease); }
 body .e-con.zs-car__slide.is-active { transform: scale(1); opacity: 1; }
 .zs-car__img, .zs-car__img .elementor-widget-container { margin: 0; line-height: 0; }

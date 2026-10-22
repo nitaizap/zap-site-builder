@@ -265,15 +265,18 @@
     var tr = sec.querySelector('.zs-car__track'); if (!tr) return;
     var sl = [].slice.call(tr.querySelectorAll('.zs-car__slide')); if (!sl.length) return;
     var cnt = sec.querySelector('.zs-car__count'), cur = 0, seen = false, hold = false;
-    function mid(el) { var r = el.getBoundingClientRect(); return r.left + r.width / 2; }
+    // slides line up on the reading start (the right edge in RTL), first photo first
+    var rtl = getComputedStyle(tr).direction === 'rtl';
+    function mid(el) { var r = el.getBoundingClientRect(); return rtl ? r.right : r.left; }
+    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0; return rtl ? r.right - pad : r.left + pad; }
     function upd() {
-      var c = mid(tr), best = 0, bd = 1e9;
+      var c = edge(), best = 0, bd = 1e9;
       sl.forEach(function (s, i) { var d = Math.abs(mid(s) - c); if (d < bd) { bd = d; best = i; } });
       cur = best;
       sl.forEach(function (s, i) { s.classList.toggle('is-active', i === best); });
       if (cnt) cnt.textContent = (best + 1) + ' / ' + sl.length;
     }
-    function go(i) { i = (i + sl.length) % sl.length; tr.scrollBy({ left: mid(sl[i]) - mid(tr), behavior: reduce ? 'auto' : 'smooth' }); }
+    function go(i) { i = (i + sl.length) % sl.length; tr.scrollBy({ left: mid(sl[i]) - edge(), behavior: reduce ? 'auto' : 'smooth' }); }
     var t2 = false;
     tr.addEventListener('scroll', function () { if (!t2) { t2 = true; requestAnimationFrame(function () { t2 = false; upd(); }); } }, { passive: true });
     window.addEventListener('resize', upd);
@@ -281,7 +284,7 @@
     if (nx) nx.addEventListener('click', function () { go(cur + 1); });
     if (pv) pv.addEventListener('click', function () { go(cur - 1); });
     sl.forEach(function (s, i) { s.addEventListener('click', function () { if (i !== cur) go(i); }); });
-    go(0); setTimeout(upd, 60);
+    setTimeout(upd, 60);
     if (!motion) return;
     ['pointerenter', 'focusin'].forEach(function (e) { sec.addEventListener(e, function () { hold = true; }); });
     ['pointerleave', 'focusout'].forEach(function (e) { sec.addEventListener(e, function () { hold = false; }); });
