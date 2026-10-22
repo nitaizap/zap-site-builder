@@ -13,7 +13,7 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 1 INTAKE      brief + research → facts, gaps (one message of questions)
 2 PLAN        keyword map + sitemap + 3 design directions → site.json (copy-first)
 3 PREVIEW     zs build → zs preview → ⏸ THE ONE GATE: approve sitemap + pick a direction
-4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors
+4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors → zs seo until 0 FAIL
               → mobile pass on every page → BRIEF-CHECK.md (every line of the brief, incl. style demands)
 5 DELIVER     zs push → zs qa --site → zs shots --site (Novamira sites)  |  zs package → zs publish (zip)
 ```
@@ -32,6 +32,7 @@ before doing the step — every one encodes mistakes already made.
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
 | design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
+| SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
 | deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
 | examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
@@ -41,7 +42,8 @@ before doing the step — every one encodes mistakes already made.
 1. **Never invent a business fact.** Years, licences, numbers, prices, addresses, staff, results, reviews,
    ratings, awards. If it is not in the brief, the client's own site, or a source you can cite, it is not
    on the site. The validator blocks ratings, review counts, placeholders and "illustration" labels.
-2. **Measure, don't eyeball.** Done means `zs qa` reports **0 errors**. Screenshots are for taste, numbers
+2. **Measure, don't eyeball.** Done means `zs qa` reports **0 errors** and `zs seo` (the Zap SEO checklist,
+   `references/seo-checklist.md`) **0 FAIL**. Screenshots are for taste, numbers
    are for correctness. Never report a page as finished from a screenshot or from memory.
 3. **One keyword owns one page.** The H1 is that keyword in natural Hebrew; home and about carry the brand
    name in the H1 too. The validator stops cannibalisation.
@@ -114,6 +116,7 @@ direction, say which and why in one line, and continue without waiting.
 3. Loop until clean:
    ```bash
    bin/zs build <slug> && bin/zs qa <slug>      # read QA-REPORT.md; fix; repeat
+   bin/zs seo <slug>                            # Zap SEO checklist → SEO-QA.md; 0 FAIL, every 👁 row looked at
    bin/zs shots <slug> / /<some-page>/           # look at desktop + mobile yourself
    ```
    Fix content problems in `site.json`. Fix a visual problem for this client only with
