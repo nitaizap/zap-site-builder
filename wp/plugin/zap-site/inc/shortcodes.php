@@ -48,7 +48,7 @@ add_shortcode('zap_map', function ($atts) {
     $a = shortcode_atts(['q' => zap_opt('business.address')], $atts);
     if (!$a['q']) return '';
     $src = 'https://www.google.com/maps?q=' . rawurlencode($a['q']) . '&output=embed&hl=iw';
-    return '<div class="zs-map"><iframe src="' . esc_url($src) . '" title="מפת הגעה — ' . esc_attr(zap_opt('business.name')) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>';
+    return '<div class="zs-map"><iframe src="' . esc_url($src) . '" title="מפת הגעה: ' . esc_attr(zap_opt('business.name')) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>';
 });
 
 /* Business contact details block. */
