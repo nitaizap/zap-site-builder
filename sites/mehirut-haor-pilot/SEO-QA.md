@@ -1,6 +1,6 @@
 # SEO QA — מהירות האור שליחויות
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 2 fail, 6 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 29 pass, 1 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -16,7 +16,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 28 pass, 2 fa
 | 12 | כפתורים ויצירת קשר | כפתור וואטסאפ צף בכל האתר (טאב חדש) | ✅ PASS | desktop 1440 + mobile 390, every page |
 | 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 072-2599648 |
 | 14 | כפתורים ויצירת קשר | כפתורי טלפון עם tel: לחיוג ישיר | ✅ PASS |  |
-| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ❌ FAIL | בלוג: H1 'מדריכי שליחויות לעסקים' |
+| 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
 | 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | — N/A | no posts yet |
 | 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 12 forms |
