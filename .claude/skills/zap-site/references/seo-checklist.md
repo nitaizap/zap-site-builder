@@ -35,3 +35,4 @@ and writes `sites/<slug>/SEO-QA.md`: every row of the sheet in order, ✅ PASS /
 | +6 | mobile + 1280 laptop look right | `zs qa` measures 1440/390 and the hero at 1280×620; 👁 once at 1280 |
 | +8 | form email and site name set correctly | leads go to `business.email_leads`; staging never mails the client |
 | +9 | heading order H1 → H2 → H3, no H2 inside forms | measured on every page |
+| +10 | the accessibility button shows (Zap standard) | measured in a browser. Ally 4 renders its button only after wp-admin → Ally → Connect (free); a client WordPress must be connected once |
