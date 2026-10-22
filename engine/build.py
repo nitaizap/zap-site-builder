@@ -211,6 +211,15 @@ def build(site, only=None):
         "business": data["business"], "design": data.get("design", {}),
         "blog_public": data.get("site", {}).get("index", False),
     }))
+    # Zap standard: the accessibility toolbar button on every page. Ally 4 hides its new widget until the site is
+    # connected to an Ally account; a site that is not connected runs Ally's classic toolbar instead (its "revert").
+    log.append("a11y: " + site.eval_php(
+        "if (!defined('EA11Y_VERSION') && !class_exists('\\EA11Y\\Plugin')) { echo 'Ally not active'; return; }"
+        "$c = class_exists('\\EA11Y\\Modules\\Connect\\Module') && \\EA11Y\\Modules\\Connect\\Module::is_connected();"
+        "if ($c) { echo 'Ally connected: widget'; return; }"
+        "update_option('ea11y_reverted', true); delete_option('ea11y_upgraded');"
+        "if (!get_option('pojo_a11y_customizer_options')) update_option('pojo_a11y_customizer_options', ['a11y_toolbar_enable' => 'enable']);"
+        "echo 'classic toolbar';").strip().splitlines()[-1])
     site.wp("rewrite", "flush", check=False)
     # Yoast 2x serves meta from its indexables table, not from the options we just wrote.
     site.wp("yoast", "index", "--reindex", "--skip-confirmation", check=False)
