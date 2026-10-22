@@ -14,7 +14,7 @@ TIERS = {
     "standard": {"pages": 12, "banned": set()},
     "premium": {"pages": None, "banned": set()},
 }
-NEEDS_IMAGE = {("features", "aside"), ("contact", "photo")}
+NEEDS_IMAGE = {("features", "aside"), ("contact", "photo"), ("cta", "photo"), ("split", "overlap"), ("hero", "cover")}
 
 RATING = re.compile(r"(★|⭐|\b[45][.,]\d\s*(כוכבים|ב-?גוגל|בגוגל|stars?)|דירוג\s*\d|\d+\s*ביקורות|\d+\s*חוות דעת)", re.I)
 SUPERLATIVE = re.compile(r"(הטוב(ה|ים)? ביותר|הכי טוב|המוביל(ה|ים)? ב|מספר\s*1(?!\d)|#1(?![0-9a-fA-F])|הזול ביותר|המומחה הגדול)")
@@ -175,6 +175,8 @@ def validate(d, site_dir):
                 E(f"{name}: section '{ty}' is not part of the {tier} package")
             if tier == "basic" and ty == "hero" and (s.get("video") or len(s.get("images", [])) > 1):
                 E(f"{name}: basic package hero is one still photo (no video, no slider)")
+            if ty == "tiles" and any(not it.get("image") for it in s.get("items", [])):
+                E(f"{name}: every tiles item needs an image")
             if v is None:
                 continue
             if ty in SECTIONS and v not in VARIANTS.get(ty, set()):

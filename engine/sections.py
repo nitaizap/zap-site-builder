@@ -182,8 +182,14 @@ def _h1_markup(t):
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
     is_home = ctx.page_key == ""
+    logo = None
+    if s.get("logo"):      # the brand's logo above the H1 (cover heroes: restaurants, venues)
+        lk = "__logo_light" if "__logo_light" in ctx.media else "__logo"
+        chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
+        logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
         W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
+        logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
          else heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title", raw=True)),
@@ -309,6 +315,12 @@ def faq(ctx, s):
 
 
 def cta(ctx, s):
+    if s.get("variant") == "photo":     # half photo, half brand panel with the action (lacuccina "להזמנת שולחן")
+        panel = C(ctx, "zs-cta__panel", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
+                                         heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text")),
+                                         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}), s.get("cta2"))])
+        return section(ctx, {**s, "bg": s.get("bg")}, "zs-ctaph",
+                       [C(ctx, "zs-ctaph__media", [image(ctx, s.get("image"), "zs-ctaph__img", "large")]), panel])
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                 heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
@@ -318,8 +330,10 @@ def cta(ctx, s):
 
 
 def gallery(ctx, s):
-    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in s["images"]]
-    return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs)])
+    keys = s["images"][:3] if s.get("variant") == "strip" else s["images"]   # strip: a teaser row, `more` leads on
+    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in keys]
+    return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs),
+                                          buttons(ctx, s.get("more"))])
 
 
 def logos(ctx, s):
@@ -341,6 +355,18 @@ def contact(ctx, s):
     else:
         right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
+
+
+def tiles(ctx, s):
+    """Edge-to-edge checkerboard: each item is a photo half and a colour half, alternating sides row by row
+    (lacuccina, the Zap restaurant sites). Text halves are native widgets; grounds cycle dark / accent."""
+    rows = []
+    for i, it in enumerate(s["items"]):
+        panel = C(ctx, "zs-tile__panel", [heading(ctx, it.get("title"), "h3" if s.get("title") else "h2", "zs-tile__title"),
+                                          text(ctx, it.get("text"), "zs-tile__text"), buttons(ctx, it.get("cta"))])
+        media = C(ctx, "zs-tile__media", [image(ctx, it.get("image"), "zs-tile__img", "large")])
+        rows.append(C(ctx, f"zs-tile zs-tile--{'b' if i % 2 else 'a'}", [panel, media]))
+    return section(ctx, {**s, "bg": s.get("bg")}, "zs-tiles", [*sec_head(ctx, s), C(ctx, "zs-tiles__list", rows)])
 
 
 def leadbar(ctx, s):
@@ -411,19 +437,22 @@ def route(ctx, s):
 
 
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, reviews, video, quote, road, route, marquee)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
 # Hero layout, preset, tone and motion are site-wide design levers; these are per section.
 VARIANTS = {
-    "split": {"frame"},
+    "hero": {"cover"},
+    "split": {"frame", "overlap"},
+    "cta": {"photo"},
     "cards": {"framed"},
     "features": {"aside", "checks"},
-    "gallery": {"mosaic"},
+    "gallery": {"mosaic", "strip"},
     "faq": {"outline"},
     "contact": {"photo"},
     "leadbar": set(),
+    "tiles": set(),
 }
 
 
@@ -434,7 +463,7 @@ def render_page(ctx, sections):
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta", "marquee", "trust") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee", "trust", "tiles") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
             s = {**s, "bg": "surface" if plain_i % 2 else None}
             plain_i += 1

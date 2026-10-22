@@ -27,6 +27,8 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | type | variant | what it looks like | source | needs |
 |---|---|---|---|---|
 | `split` | *(default)* | text + photo, optional badge, arch/square shape | engine | |
+| `hero` | `cover` *(per section; overrides the site's hero layout)* | full-bleed photo, centred statement, `logo: true` puts the logo above the H1 (white chip without `logo_light`) | kira, both Wix restaurant sites | `image` |
+| `split` | `overlap` | dark centred text box overlapping the photo's edge, accent title | lacuccina | `image` |
 | `split` | `frame` | text in a panel inside a thin offset brand-colour frame, photo beside it | template 1 "קצת עלינו" | `image` |
 | `cards` | *(default)* `overlay` / `classic` / `layout: bento` | photo tiles with text over the photo / boxed cards / bento | engine | |
 | `cards` | `framed` | square photos each with an offset hairline frame, brand-colour caption below ("projects") | template 1 "גלריית פרויקטים" | images |
@@ -34,11 +36,14 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | `features` | `aside` | 3–4 icon rows stacked beside a framed photo ("למה לבחור בנו") | template 1 | `image` |
 | `features` | `checks` | white check tiles on a brand gradient ("יתרונות"), short titles only | template 1 | |
 | `gallery` | *(default)* | grid, first photo large when 5+ | engine | |
+| `gallery` | `strip` | one row of 3 tall photos (only the first 3 render) + `more` button to the gallery page | kira, wix1 | 3+ images, `more` |
 | `gallery` | `mosaic` | tight 4-column square grid, no gaps (2 on mobile), 8 photos | template 1 "גלריה" | 4 or 8 images |
 | `faq` | *(default)* | soft cards, round +/- icon | engine | |
 | `faq` | `outline` | centred title, outlined brand-colour rows | template 1 | |
 | `contact` | *(default)* | NAP + form + map | engine | |
 | `contact` | `photo` | NAP + form beside a full-height photo, no map | template 1 | `image` |
+| `cta` | `photo` | half photo, half accent panel with the action ("להזמנת שולחן") | lacuccina | `image` |
+| `tiles` | *(type)* | edge-to-edge checkerboard: photo half + dark/accent half, sides alternate; `items: [{title, text, image, cta}]` | lacuccina, wix1 | every item an image |
 | `leadbar` | *(type)* | rounded brand band with a one-row form (name, phone, email) mid-page | template 1 | once per page, not next to the footer lead band |
 
 Hero layouts (`split`, `image`, `centered`), `trust` styles, `marquee`, `road`, `route`, `steps` and the
@@ -48,8 +53,12 @@ presets are documented in `site-json.md` and `design.md`; they are part of the p
 only if the arrangement truly needs it, CSS in `wp/theme/zap-base/assets/pool.css` scoped to `.zs-v-<name>`,
 a row in this table, then `zs build sample && zs qa sample` with 0 errors and a look at desktop + mobile.
 
-Sources so far: template 1 (Zap Figma "תבניות", pergola demo, `benchmark/zap-template-1-full.jpg`).
-Next to extract: the basic-site references lacuccina.co.il, kira.rest.co.il, zapgroup.wixsite.com/35424380 and /website-890.
+Sources so far: template 1 (Zap Figma "תבניות", pergola demo, `benchmark/zap-template-1-full.jpg`) and the
+basic-site references (`benchmark/basic-*.jpg`): lacuccina.co.il, kira.rest.co.il, zapgroup.wixsite.com/35424380
+(Patagonia) and /website-890 (Pizza & Pasta). What makes those read as "basic done well": one strong food/venue
+photo per block, big centred statements, two or three colours (dark + one warm accent), very few words, a
+booking/order action repeated, and a centred contact block with hours. Their full-width map is not copied
+(it costs speed and adds little); `contact` keeps the map optional.
 The rest of the Figma file is waiting for edit access: extract each new template into variants the same way.
 
 ## Mixing rules (anti-formula)
