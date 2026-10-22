@@ -269,3 +269,18 @@ body .e-con.zs-reviews-sec.zs-v-photo { position: relative; isolation: isolate; 
 .zs-reviews-sec.zs-v-photo .zs-reviews__bg::after { content: ""; position: absolute; inset: 0; background: rgb(8 10 14 / .62); }
 .zs-reviews-sec.zs-v-photo .zs-head { text-align: center; justify-content: center; }
 .zs-reviews-sec.zs-v-photo .zs-reviews zap-reviews { color: var(--c-ink); }
+
+/* ======== team playbook (Yuval's design-quality A.3): no generated-look tells by default ======== */
+/* H1: keyword + brand stay (content rule); the brand half is no longer a coloured/italic word. Line break kept. */
+body .zs-hero__title .zs-h1__b, body.zs-tone-light .zs-hero__title .zs-h1__b { color: inherit; font-style: normal; }
+body .zs-hero__title :is(.zs-hl, .zs-dot) { color: inherit; font-style: inherit; }
+/* the closing period is a period, not an accent dot */
+body .zs-dot { color: inherit; }
+/* no fake sequence numbers on cards that are not a sequence (steps keep theirs: a real process) */
+body .zs-cards--overlay .e-con.zs-card::before { content: none; }
+body .zs-cards--bento .e-con.zs-card--img::after { content: none; }
+/* no arrow appended to every button; phone/WhatsApp icons stay (icons on conversion buttons are required) */
+body .zs-b.zs-b-primary .elementor-button .elementor-button-text::after { content: none; }
+body.zs-p-signature .zs-b:not(.zs-b-tel):not(.zs-b-wa) .elementor-button::after { content: none; }
+/* eyebrows, where used, read as Hebrew words: no tracked capitals */
+body:not(#zs-x) .zs-eyebrow .elementor-heading-title { letter-spacing: 0; text-transform: none; }

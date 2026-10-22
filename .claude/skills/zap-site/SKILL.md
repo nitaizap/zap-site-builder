@@ -83,7 +83,7 @@ email do block.
   chosen for what this business must prove, a variant for each, no two clients alike (`bin/zs pool <slug>`).
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the
+  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference; its eyebrows/accent words predate the team playbook) for the
   structure and finish level, never from a blank file.
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
