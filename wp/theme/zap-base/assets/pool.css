@@ -290,3 +290,5 @@ body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor
 body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button:hover { background: color-mix(in srgb, #fff 88%, var(--c-primary)); color: var(--c-primary); }
 /* long links (emails, URLs in the privacy policy) wrap instead of pushing the page sideways on phones */
 :is(p, li, td) a { overflow-wrap: anywhere; }
+/* tiles: the action on a dark half takes the accent (the primary often sits too close to the dark ground) */
+body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-accent); }
