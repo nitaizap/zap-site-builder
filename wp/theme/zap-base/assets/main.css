@@ -1305,3 +1305,52 @@ body :is(.zs-bg-dark, .zs-bg-primary) :is(.zs-feature__icon, .zs-card__icon) :is
 body :is(.zs-bg-dark, .zs-bg-primary) :is(.zs-feature__icon, .zs-card__icon) .elementor-icon svg { fill: currentColor; }
 /* long URLs (privacy page) never push the page sideways */
 .zs-prose a, .zs-sec a { overflow-wrap: anywhere; }
+
+/* ---------- carousel: snapping photo strip, centred slide grows, arrows + autoplay (site.js) ---------- */
+.zs-carousel { overflow: hidden; }
+body .e-con.zs-car__track { --flex-direction: row; --flex-wrap: nowrap; flex-direction: row; flex-wrap: nowrap; --gap: clamp(12px, 2vw, 24px); gap: clamp(12px, 2vw, 24px);
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+  padding-block: 12px 4px; padding-inline: calc(50vw - min(36vw, 230px)); position: relative;
+  width: 100vw; max-width: 100vw; margin-inline: calc(50% - 50vw); align-items: center; --align-items: center; }
+.zs-car__track::-webkit-scrollbar { display: none; }
+body .e-con.zs-car__slide { flex: 0 0 min(72vw, 460px); width: min(72vw, 460px); height: auto; align-self: center; --padding-top: 0; --padding-bottom: 0; --padding-left: 0; --padding-right: 0; padding: 0; --gap: 0; gap: 0; scroll-snap-align: center; position: relative;
+  border-radius: var(--r-lg); overflow: hidden; transform: scale(.88); opacity: .55; transition: transform .7s var(--ease), opacity .7s var(--ease); }
+body .e-con.zs-car__slide.is-active { transform: scale(1); opacity: 1; }
+.zs-car__img, .zs-car__img .elementor-widget-container { margin: 0; line-height: 0; }
+body .zs-car__img img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block; transition: transform 6s linear; }
+body .zs-car__slide.is-active .zs-car__img img { transform: scale(1.07); }
+body .e-con.zs-car__slide > .zs-car__cap { position: absolute; inset: auto 16px 16px auto; width: auto; max-width: calc(100% - 32px); z-index: 2; padding: 8px 18px; background: rgb(12 20 22 / .82); border-radius: 999px; margin: 0; }
+.zs-car__cap .elementor-heading-title { color: #fff; font-family: var(--f-head); font-size: clamp(1rem, .9rem + .4vw, 1.2rem); margin: 0; line-height: 1.3; }
+.zs-car__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
+.zs-car__btn { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid currentColor; background: transparent; color: var(--c-ink); display: grid; place-items: center; cursor: pointer; transition: background .25s, color .25s, transform .25s; }
+.zs-car__btn:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); transform: scale(1.06); }
+.zs-car__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+.zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); }
+.zs-bg-dark .zs-car__btn, .zs-bg-primary .zs-car__btn { color: var(--c-dark-ink); }
+.zs-bg-dark .zs-car__count, .zs-bg-primary .zs-car__count { color: var(--c-dark-ink); }
+.zs-carousel .zs-pause { position: absolute; inset-block-start: 16px; inset-inline-end: 16px; }
+@media (prefers-reduced-motion: reduce) { body .e-con.zs-car__slide, body .zs-car__img img { transition: none; transform: none; } }
+
+/* ---------- garland: festoon bulbs in two swags across a hero / cta (decorative, settles after a few seconds) ---------- */
+.e-con.zs-sec:has(> .e-con-inner > .zs-garland__w), .e-con.zs-sec:has(> .zs-garland__w) { position: relative; }
+body .zs-garland__w { position: absolute; inset: 0 0 auto 0; height: clamp(54px, 7vw, 96px); pointer-events: none; z-index: 3; margin: 0; overflow: clip; overflow-clip-margin: 0; }
+.zs-garland { position: absolute; inset: 0; transform-origin: 50% 0; animation: zs-sway 3.2s ease-in-out 2 alternate; }
+.zs-garland__wire { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.zs-garland__wire path { fill: none; stroke: color-mix(in srgb, var(--c-ink) 70%, transparent); stroke-width: 1.5; }
+.zs-garland__b { position: absolute; inset-inline-start: var(--x); top: var(--y); width: 12px; height: 17px; margin: -2px -6px 0;
+  border-radius: 45% 45% 50% 50% / 35% 35% 65% 65%; background: radial-gradient(circle at 50% 60%, #fff8dc 0 30%, var(--zs-bulb, #ffd36e) 70%);
+  box-shadow: 0 0 10px 3px color-mix(in srgb, var(--zs-bulb, #ffd36e) 70%, transparent), 0 0 26px 6px color-mix(in srgb, var(--zs-bulb, #ffd36e) 35%, transparent);
+  animation: zs-twinkle 1.6s ease-in-out calc(var(--i) * -0.37s) 4 alternate; }
+.zs-garland__b::before { content: ""; position: absolute; top: -4px; left: 3px; width: 6px; height: 5px; border-radius: 2px; background: color-mix(in srgb, var(--c-ink) 80%, transparent); }
+.zs-garland__b:nth-child(4n+2) { --zs-bulb: var(--c-accent); }
+.zs-garland__b:nth-child(4n+3) { --zs-bulb: #fff1c1; }
+.zs-garland__b:nth-child(4n) { --zs-bulb: #ffb86b; }
+.zs-bg-dark .zs-garland__wire path, .zs-bg-primary .zs-garland__wire path, .zs-hv-image .zs-hero--img .zs-garland__wire path { stroke: rgb(255 255 255 / .6); }
+@keyframes zs-twinkle { from { opacity: 1; filter: brightness(1.1); } to { opacity: .45; filter: brightness(.8); } }
+@keyframes zs-sway { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
+@media (prefers-reduced-motion: reduce) { .zs-garland, .zs-garland__b { animation: none; } }
+
+/* hero slider outside the full-bleed layout: the slides are absolute, so the frame needs its own height */
+body.zs-hv-split .zs-hero__slider { aspect-ratio: 1 / 1; height: auto; }
+body.zs-hv-centered .zs-hero__slider { aspect-ratio: 21 / 8; height: auto; width: 100%; }
+@media (max-width: 767px) { body.zs-hv-split .zs-hero__slider, body.zs-hv-centered .zs-hero__slider { aspect-ratio: 16 / 10; } }
