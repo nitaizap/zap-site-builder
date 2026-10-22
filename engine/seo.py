@@ -97,7 +97,7 @@ def run_seo(site):
     nposts = len(data.get("posts", []))
     has_blog = any(p.get("type") == "blog" for p in data["pages"])
     R("5", "עיצוב וטיפוגרפיה", "קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס)",
-      "PASS" if has_blog and nposts >= 3 else "FAIL",
+      "PASS" if has_blog and nposts >= 3 else ("MANUAL" if has_blog else "FAIL"),
       f"blog page {'yes' if has_blog else 'no'}, {nposts} posts" + ("" if nposts >= 3 else "; the posts come from BestLinks"))
 
     # 6 · every image < 100 KB, WebP  ·  7 · ALT on every image

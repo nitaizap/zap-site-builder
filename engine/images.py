@@ -26,6 +26,8 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
         if im.mode not in ("RGBA", "LA", "P"):
             im = im.convert("RGB")
         im.save(dst, "PNG", optimize=True)
+        if dst.stat().st_size > TARGET_KB * 1024:      # logos too stay under the checklist's 100 KB
+            im.quantize(256, method=Image.Quantize.FASTOCTREE).save(dst, "PNG", optimize=True)
         return dst, im.width, im.height
     if im.mode not in ("RGB", "RGBA"):
         im = im.convert("RGBA" if "transparency" in im.info else "RGB")
