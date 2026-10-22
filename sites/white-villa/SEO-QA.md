@@ -1,6 +1,6 @@
 # SEO QA — הוילה הלבנה ינוב
 
-Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 37 rows: 28 pass, 0 fail, 6 manual
+Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 38 rows: 29 pass, 0 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -41,3 +41,4 @@ Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 37 rows: 28 pass
 | +7 | כללי | שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות | ✅ PASS | legal name: הוילה הלבנה ינוב |
 | +8 | כללי | מייל הטפסים ושם האתר מוגדרים נכון | ✅ PASS | leads → shimon@ashrh.co.il; subject carries the site name; staging never mails the client |
 | +9 | כללי | סדר היררכי של כותרות, בלי H2 בטפסים | ✅ PASS |  |
+| +10 | כללי | כפתור נגישות (Ally) מוצג באתר | ✅ PASS | visible |
