@@ -174,7 +174,7 @@ def run_seo(site):
     sbad = []
     for p in data["pages"]:
         k = p.get("key", "")
-        if not k or p.get("type") in ("privacy", "blog", "contact"):
+        if not k or p.get("noindex") or p.get("type") in ("privacy", "blog", "contact"):
             continue
         last = k.rsplit("/", 1)[-1]
         if not HEB.search(last):
@@ -194,8 +194,7 @@ def run_seo(site):
         R("17", "SEO טכני - URLs", "פרמלינק פוסטים /blog/%postname%/", "N/A", "no posts yet")
     else:
         bp = data["_paths"][blog["key"]] if blog else "/"
-        pbad = [po["slug"] for po in data["posts"]
-                if pages.get(base + urllib.parse.quote(bp + po["slug"] + "/"), (0,))[0] != 200]
+        pbad = [po["slug"] for po in data["posts"] if _get(base + bp + po["slug"] + "/")[0] != 200]
         R("17", "SEO טכני - URLs", "פרמלינק פוסטים /blog/%postname%/", "FAIL" if pbad or bp == "/" else "PASS",
           f"posts live under {bp}" + (f"; not found: {', '.join(pbad)}" if pbad else ""))
 
@@ -239,8 +238,9 @@ def run_seo(site):
             sbad.append(p["key"])
     R("22", "SEO On-Page", "סכמת FAQ בעמודי שירות ופוסטים", "FAIL" if sbad else "PASS", ", ".join(sbad)[:300])
     titles, descs = {}, {}
+    hidden = {data["_paths"][p["key"]] for p in data["pages"] if p.get("noindex") and p.get("type") != "privacy"}
     for u, (st, body) in pages.items():
-        if 'name="robots" content="noindex' in body or "content=\"noindex" in body:
+        if path(u) in hidden:      # (staging is noindex as a whole, so the page meta can't tell)
             continue
         t = _text((re.search(r"<title>(.*?)</title>", body, re.S) or [None, ""])[1] if re.search(r"<title>", body) else "")
         d = re.search(r'<meta name="description" content="([^"]*)"', body)
