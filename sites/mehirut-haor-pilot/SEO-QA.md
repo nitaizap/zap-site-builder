@@ -1,6 +1,6 @@
 # SEO QA — מהירות האור שליחויות
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 29 pass, 1 fail, 6 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 30 pass, 0 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -8,7 +8,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8137 · 37 rows: 29 pass, 1 fa
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 6 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link https://zap.dbusiness.co/js/accessibility.html (Zap's central statement) |
 | 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | 👁 MANUAL | blog page yes, 0 posts; the posts come from BestLinks |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ❌ FAIL | fleet-825x1024.webp 119 KB |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 23 images |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 11 images, 11 marked AI; compare with the client's folder from the spec |
