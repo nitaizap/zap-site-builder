@@ -81,6 +81,49 @@ first frame on each page). New templates: extract them into variants the same wa
 banners. Not extracted: the post sidebar (form + recent posts, share icons) and template 2's event form fields
 (event type, date, guests), which would need theme/plugin work.
 
+## Base templates (from the team's method, Yuval's skill)
+
+Every site starts from **one of the six Zap templates** and names its deviations. Set `design.base_template`
+(1–6); `zs pool` reads it. A direction = base template + named deviations from the client's world: the palette,
+the font, and **one** bold element. Write them in NOTES.md: "from template 5: header, section order, form;
+changed: palette (brand brass), hero `curve`, gallery `stagger`".
+
+| # | demo industry | look | standout sections | fits |
+|---|---|---|---|---|
+| 1 | pergolas / outdoor | navy on white, offset hairline frames | framed about, overlay service cards, framed projects, check tiles on blue | home improvement, outdoor, installers |
+| 2 | restaurant / events | beige surfaces, slate blue, rounded | inset hero, staggered photo row, beige event cards, reviews over a photo, event form | restaurants, venues, catering, events |
+| 3 | construction | dark navy + orange, photo-heavy | light card over the photo, image-top service cards, 2×2 icon cards, form over a photo | contractors, renovation, heavy trades |
+| 4 | vet clinic | white + pink, soft, rounded | curved hero, two overlapping photos, check badges on cards, FAQ beside a photo | clinics, pets, kids, wellness |
+| 5 | metal works | white + red, dark overlay tiles, red gradient | overlay service tiles, white cards on a red gradient, form over a photo | industry, workshops, technicians |
+| 6 | beauty clinic | teal + rose, dark navy bands | hexagon photos, logo band, rounded promo banner, dark FAQ panel | beauty, aesthetics, boutique services |
+
+Template screenshots: `benchmark/zap-template-<n>-full.jpg`.
+
+**The templates' shared language is the default:** header = logo, menu, phone; home order about → services →
+why us → FAQ → form → footer; footer = quick links / services / contact. Deviate on purpose, not by accident.
+Show what the client really has, and nothing they don't:
+- the social bar shows only the networks the client really has (none → no bar);
+- a WhatsApp button only if there is a WhatsApp number;
+- "מספר מקשר" under the phone only if there is a Zap tracking number.
+
+**Never use an image from the templates** (Figma or a crop of the screenshot): they are Freepik placeholders that
+show where an image goes, its ratio and shape. Images come from the client, the old site, GMB or AI (`images.md`).
+
+**What the templates don't give, we still design:** mobile (they have no mobile frames; check 390), real copy
+(they are lorem), and the type scale. The templates use Light (300) body text: allow it in Hebrew only at
+≥18 px with AA contrast, otherwise Regular.
+
+**Two clients in the same industry on the same base template must differ visibly** (palette or the bold
+element). `zs pool` warns when the base template and the primary colour both match another client.
+
+**Density (the team's approved sites, measured 22/10/2026):** 9–13 sections on the home page and 13+ real images
+across the directions. A home page far below that is under-designed, not "clean".
+
+**Redesigning a site that already ranks** (check Search Console/Ahrefs at intake): keep its home page block for
+block (same order, images, link targets, wording) and dress the blocks in the new style. A fresh layout with the
+same words was rejected on a real client. Here that means choosing variants for the existing blocks, not a new
+order, and listing "באתר הקיים ↔ בעיצוב החדש" in NOTES.md.
+
 ## Mixing rules (anti-formula)
 
 - **Start from the business, not from the pool.** Pick sections for what this client must prove (a

@@ -259,7 +259,7 @@ def cmd_pool(a):
     s = Site(a.slug)
     d = load_site(s.src)
     r = recipe(d)
-    print("levers:", " · ".join(x or "-" for x in r["levers"]))
+    print("levers:", " · ".join(x or "-" for x in r["levers"]), f"· base template {r['base'] or '-'}")
     print("home:  ", " → ".join(r["home"]))
     warns = compare(a.slug, d)
     print("\n".join(warns) if warns else "unique: no other client branch is close (git fetch first for the latest)")

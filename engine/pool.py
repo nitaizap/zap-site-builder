@@ -11,7 +11,9 @@ def recipe(d):
     des = d.get("design") or {}
     home = next((p for p in d.get("pages", []) if p.get("type") == "home"), {})
     return {
-        "levers": (des.get("preset", "clean"), des.get("hero", "split"), des.get("tone", ""), (des.get("fonts") or {}).get("heading", "")),
+        "levers": (des.get("preset", "clean"), des.get("hero", "split"), des.get("tone", ""), (des.get("fonts") or {}).get("heading", ""),
+                   str((des.get("colors") or {}).get("primary", "")).lower()),
+        "base": des.get("base_template"),
         "home": [s.get("type", "") + (":" + s["variant"] if s.get("variant") else "") for s in home.get("sections", [])],
     }
 
@@ -40,7 +42,10 @@ def compare(slug, d):
         o = recipe(od)
         sim = SequenceMatcher(None, me["home"], o["home"]).ratio()
         same = sum(a == b for a, b in zip(me["levers"], o["levers"]))
+        if me["base"] and me["base"] == o["base"] and me["levers"][4] and me["levers"][4] == o["levers"][4]:
+            out.append(f"WARN  same base template {me['base']} and the same primary colour as '{other}': change the palette "
+                       f"or the one bold element (references/pool.md, base templates)")
         if sim >= .75 and same >= 3:
-            out.append(f"WARN  recipe too close to '{other}': home {sim:.0%} alike, {same}/4 design levers equal "
+            out.append(f"WARN  recipe too close to '{other}': home {sim:.0%} alike, {same}/5 design levers equal "
                        f"({', '.join(map(str, o['levers']))}). Swap variants or a lever (references/pool.md)")
     return out

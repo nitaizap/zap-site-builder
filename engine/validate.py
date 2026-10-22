@@ -160,6 +160,9 @@ def validate(d, site_dir):
     if d.get("logo") and str(d["logo"]).lower().endswith(".svg"):
         E("logo must be PNG/WebP (WordPress rejects SVG uploads); convert it first")
 
+    bt = (d.get("design") or {}).get("base_template")
+    if bt is not None and bt not in range(1, 7):
+        E(f"design.base_template must be 1-6 (the Zap Figma templates), got {bt}")
     tier = d.get("tier")
     if tier and tier not in TIERS:
         E(f"tier '{tier}' unknown; use one of {', '.join(TIERS)}")
