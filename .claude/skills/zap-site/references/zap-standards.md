@@ -5,7 +5,7 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 ## Automatic ✅
 
 - Accessibility statement link → `https://zap.dbusiness.co/js/accessibility.html` ("הצהרת נגישות אתר"),
-  never a local statement page. Ally (pojo-accessibility) installed; skip link to `main#content`; one `<main>`.
+  never a local statement page. Ally (pojo-accessibility) installed **and connected** (Ally 4 shows no button until wp-admin → Ally → Connect; `zs seo` row +10 fails without it); skip link to `main#content`; one `<main>`.
 - Zap Group logo (183×26) in the footer bar, linking to https://zapgroup.co.il/ in a new tab.
 - Copyright line `© <year> <client> — כל הזכויות שמורות` (+ AI-images note when set).
 - One uniform lead form in the footer of every page except Contact (which has its own full form).
