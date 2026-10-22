@@ -301,6 +301,10 @@ def run_seo(site):
                 break
     R("+9", "כללי", "סדר היררכי של כותרות, בלי H2 בטפסים", "FAIL" if hbad else "PASS", "; ".join(sorted(set(hbad)))[:500])
 
+    a11y = _a11y_button(base + "/")
+    R("+10", "כללי", "כפתור נגישות (Ally) מוצג באתר", "PASS" if a11y else "FAIL",
+      "visible" if a11y else "Ally 4 shows its button only after wp-admin → Ally → Connect (free plan); connect it on the client's WordPress")
+
     fails = [r for r in rows if r[3] == "FAIL"]
     icon = {"PASS": "✅", "FAIL": "❌", "MANUAL": "👁", "N/A": "—"}
     md = [f"# SEO QA — {b['name']}", "", f"Checklist: Zap SEO sheet · site {site.url} · "
@@ -314,6 +318,23 @@ def run_seo(site):
             print(f"{s:6} {n:>3} {ch}: {note[:160]}")
     print(f"SEO checklist: {len(fails)} fail → {site.src / 'SEO-QA.md'}")
     return not fails
+
+
+def _a11y_button(url):
+    """Zap standard: the accessibility toolbar button is visible on the page (Ally / pojo)."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as pw:
+        b = _launch(pw)
+        pg = b.new_page(viewport={"width": 1440, "height": 900})
+        pg.goto(url, wait_until="networkidle")
+        pg.wait_for_timeout(2500)
+        ok = pg.evaluate("""() => [...document.querySelectorAll('#ea11y-root *, [id^="pojo-a11y"] *, button, a')]
+            .concat([...document.querySelectorAll('#ea11y-root')].flatMap(r => r.shadowRoot ? [...r.shadowRoot.querySelectorAll('button')] : []))
+            .some(e => { const t = (e.getAttribute('aria-label') || e.textContent || '').toLowerCase();
+                         const r = e.getBoundingClientRect();
+                         return /accessib|נגישות/.test(t) && r.width > 20 && r.height > 20 && !e.closest('footer, .zs-footer'); })""")
+        b.close()
+    return ok
 
 
 def _floating_wa(site, urls):

@@ -38,7 +38,7 @@ body .zs-cards.zs-v-framed .e-con.zs-card { background: transparent; border: 0; 
 .zs-v-framed .zs-card__img { position: relative; isolation: isolate; margin-bottom: 18px; }
 .zs-v-framed .zs-card__img::before { content: ""; position: absolute; z-index: -1; inset: 10px -10px -10px 10px; border: 1px solid color-mix(in srgb, var(--c-primary) 50%, transparent); border-radius: var(--r-sm, 4px); }
 .zs-v-framed .zs-card__img img { aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--r-sm, 4px); }
-body .zs-v-framed .e-con.zs-card__body { padding: 4px 0 0; }
+body .zs-cards.zs-v-framed .e-con.zs-card__body { padding: 26px 0 0; }   /* clears the frame offset (10px) with room to spare */
 .zs-v-framed .zs-card__title .elementor-heading-title { color: var(--c-primary); font-size: 1.05rem; }
 
 /* ---------- gallery · mosaic: tight edge-to-edge grid ---------- */
