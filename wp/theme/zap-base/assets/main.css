@@ -1349,3 +1349,8 @@ body .zs-garland__w { position: absolute; inset: 0 0 auto 0; height: clamp(54px,
 @keyframes zs-twinkle { from { opacity: 1; filter: brightness(1.1); } to { opacity: .45; filter: brightness(.8); } }
 @keyframes zs-sway { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
 @media (prefers-reduced-motion: reduce) { .zs-garland, .zs-garland__b { animation: none; } }
+
+/* hero slider outside the full-bleed layout: the slides are absolute, so the frame needs its own height */
+body.zs-hv-split .zs-hero__slider { aspect-ratio: 1 / 1; height: auto; }
+body.zs-hv-centered .zs-hero__slider { aspect-ratio: 21 / 8; height: auto; width: 100%; }
+@media (max-width: 767px) { body.zs-hv-split .zs-hero__slider, body.zs-hv-centered .zs-hero__slider { aspect-ratio: 16 / 10; } }

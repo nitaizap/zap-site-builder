@@ -13,17 +13,17 @@
 
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
-| desktop | /מדיניות-פרטיות/ | 0 | 1 | 525 | meta description length 69 |
-| desktop | /צרו-קשר/ | 0 | 1 | 471 | meta description length 89 |
-| desktop | /אודות/ | 0 | 0 | 583 |  |
-| desktop | /גלריה/ | 0 | 0 | 1625 |  |
-| desktop | /מסיבות-ואירועים/ | 0 | 0 | 899 |  |
-| desktop | /וילה-לנופש/ | 0 | 0 | 826 |  |
-| desktop | / | 0 | 0 | 1040 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 1 | 525 | meta description length 69 |
-| mobile | /צרו-קשר/ | 0 | 1 | 471 | meta description length 89 |
-| mobile | /אודות/ | 0 | 0 | 679 |  |
-| mobile | /גלריה/ | 0 | 0 | 1560 |  |
-| mobile | /מסיבות-ואירועים/ | 0 | 0 | 881 |  |
-| mobile | /וילה-לנופש/ | 0 | 0 | 731 |  |
-| mobile | / | 0 | 0 | 967 |  |
+| desktop | /מדיניות-פרטיות/ | 0 | 1 | 451 | meta description length 69 |
+| desktop | /צרו-קשר/ | 0 | 1 | 398 | meta description length 89 |
+| desktop | /אודות/ | 0 | 0 | 578 |  |
+| desktop | /גלריה/ | 0 | 0 | 2311 |  |
+| desktop | /מסיבות-ואירועים/ | 0 | 0 | 1180 |  |
+| desktop | /וילה-לנופש/ | 0 | 0 | 3561 |  |
+| desktop | / | 0 | 0 | 1557 |  |
+| mobile | /מדיניות-פרטיות/ | 0 | 1 | 451 | meta description length 69 |
+| mobile | /צרו-קשר/ | 0 | 1 | 398 | meta description length 89 |
+| mobile | /אודות/ | 0 | 0 | 606 |  |
+| mobile | /גלריה/ | 0 | 0 | 2056 |  |
+| mobile | /מסיבות-ואירועים/ | 0 | 0 | 996 |  |
+| mobile | /וילה-לנופש/ | 0 | 0 | 778 |  |
+| mobile | / | 0 | 0 | 1217 |  |
