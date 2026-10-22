@@ -1,6 +1,6 @@
 # SEO QA — הוילה הלבנה ינוב
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 37 rows: 28 pass, 0 fail, 6 manual
+Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 37 rows: 28 pass, 0 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
