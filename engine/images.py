@@ -6,7 +6,7 @@ from pathlib import Path
 
 from PIL import Image, ImageOps
 
-TARGET_KB = 160      # photos: step quality down until under this
+TARGET_KB = 100      # photos: step quality down until under this (Zap SEO checklist: every image < 100 KB, WebP)
 MIN_QUALITY = 60
 
 
@@ -26,6 +26,8 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
         if im.mode not in ("RGBA", "LA", "P"):
             im = im.convert("RGB")
         im.save(dst, "PNG", optimize=True)
+        if dst.stat().st_size > TARGET_KB * 1024:      # logos too stay under the checklist's 100 KB
+            im.quantize(256, method=Image.Quantize.FASTOCTREE).save(dst, "PNG", optimize=True)
         return dst, im.width, im.height
     if im.mode not in ("RGB", "RGBA"):
         im = im.convert("RGBA" if "transparency" in im.info else "RGB")
@@ -36,7 +38,9 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
         if dst.stat().st_size <= TARGET_KB * 1024 or q <= MIN_QUALITY:
             break
         q -= 6
-    if dst.stat().st_size > TARGET_KB * 1024 * 1.6 and im.width > 1200:
-        im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
-        im.save(dst, "WEBP", quality=MIN_QUALITY + 10, method=6)
+    for w in (1400, 1200, 1000):          # still heavy: shrink until it fits
+        if dst.stat().st_size <= TARGET_KB * 1024 or im.width <= w:
+            continue
+        im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+        im.save(dst, "WEBP", quality=MIN_QUALITY + 8, method=6)
     return dst, im.width, im.height

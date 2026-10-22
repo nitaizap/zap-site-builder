@@ -55,6 +55,15 @@ def chunks(items, n):
 
 
 
+def _privacy_desc(name):
+    """150-160 characters (Zap SEO checklist), whatever the length of the business name."""
+    d = f"מדיניות הפרטיות של {name}: איזה מידע נאסף בטופסי האתר, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו"
+    for extra in (" בכל עת", " בפנייה אלינו", ", בהתאם לחוק"):
+        if len(d) + len(extra) + 1 <= 160 and len(d) < 149:
+            d += extra
+    return (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+
+
 def privacy_html(data):
     """Zap's standard privacy policy for this business. Only the template's {{...}} fields are filled:
     the company (business.legal_name), the database paragraph (standards.privacy_database: true only when
@@ -94,7 +103,7 @@ def build(site, only=None):
         data["pages"].append({
             "key": "מדיניות-פרטיות", "type": "privacy", "title": "מדיניות פרטיות", "noindex": True,
             "seo": {"title": f"מדיניות פרטיות | {b['name']}",
-                    "description": f"מדיניות הפרטיות של {b['name']}: איך נשמר ומשמש המידע שנמסר באתר."},
+                    "description": _privacy_desc(b["name"])},
             "content": privacy_html(data),
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
@@ -124,7 +133,7 @@ def build(site, only=None):
         if not src.exists():
             raise SystemExit(f"image '{key}': file not found: {src}")
         out_file, w, h = prepare_image(src, site.dir / "_media", keep_format=im.get("keep_format", False),
-                                       max_width=im.get("max_width", 1600))
+                                       max_width=im.get("max_width", 600 if im.get("keep_format") else 1600))
         prepared.append({"key": key, "file": str(out_file), "alt": im.get("alt", ""),
                          "title": im.get("title", ""), "ai": bool(im.get("ai")),
                          "hash": hashlib.sha1(out_file.read_bytes()).hexdigest()})
