@@ -70,27 +70,103 @@
  "content": {
   "disclaimer": ""
  },
- "og_image": "villapool",
+ "og_image": "poolpanorama",
  "images": {
-  "villapool": {
-   "src": "assets/villa-pool.jpg",
-   "alt": "מבנה הוילה הלבנה והבריכה המגודרת, עם שמשיות ומרפסת גג"
+  "poolpanorama": {
+   "src": "assets/pool-panorama.jpg",
+   "alt": "הבריכה של הוילה הלבנה עם מגלשת המים, המבנה ומרפסת הגג"
+  },
+  "poolvilla": {
+   "src": "assets/pool-villa.jpg",
+   "alt": "בריכת השחייה, מגלשת המים ופרגולת האירוח מול מבנה הווילה"
+  },
+  "slidepool": {
+   "src": "assets/slide-pool.jpg",
+   "alt": "מגדל מגלשת המים הלבן ליד הבריכה, עם פינת ישיבה מברזל"
   },
   "playground": {
    "src": "assets/playground.jpg",
-   "alt": "נדנדות ומתקני משחק לילדים על מדשאה בין עצי זית"
+   "alt": "מתקני משחק, נדנדות ומגלשה על מדשאה בין עצי דקל"
   },
-  "pergola": {
-   "src": "assets/pergola-games.jpg",
-   "alt": "פרגולת סכך עם שולחן סנוקר ושולחן טניס בגינת הווילה"
+  "playgroundswings": {
+   "src": "assets/playground-swings.jpg",
+   "alt": "נדנדה אדומה ומתקני כושר לילדים בין עצי זית"
   },
-  "garden": {
-   "src": "assets/garden.jpg",
-   "alt": "מדשאה מוצלת בין עצי הפרי בגינת הווילה"
+  "villagarden": {
+   "src": "assets/villa-garden.jpg",
+   "alt": "מבנה הווילה בשני מפלסים מול מדשאה ירוקה ועצים"
   },
-  "table": {
+  "livingroom": {
+   "src": "assets/living-room.jpg",
+   "alt": "סלון הווילה עם ספות עור שחורות ושטיח מעוצב"
+  },
+  "dining": {
+   "src": "assets/dining.jpg",
+   "alt": "פינת אוכל עם שולחן שיש ארוך בסלון הווילה"
+  },
+  "staircase": {
+   "src": "assets/staircase.jpg",
+   "alt": "גרם המדרגות לקומה השנייה עם קיר אבן וזכוכית"
+  },
+  "kitchenisland": {
+   "src": "assets/kitchen-island.jpg",
+   "alt": "אי המטבח עם כיסאות בר מעץ"
+  },
+  "kitchen": {
+   "src": "assets/kitchen.jpg",
+   "alt": "מטבח מאובזר עם מקרר גדול וארונות בגוון כהה"
+  },
+  "bedrooma": {
+   "src": "assets/bedroom-a.jpg",
+   "alt": "חדר שינה עם שתי מיטות ווילונות לבנים"
+  },
+  "bedroomb": {
+   "src": "assets/bedroom-b.jpg",
+   "alt": "חדר שינה בעליית הגג עם שלוש מיטות וטלוויזיה"
+  },
+  "bedroomc": {
+   "src": "assets/bedroom-c.jpg",
+   "alt": "חדר שינה מרווח עם מיטות ומקלחת צמודה"
+  },
+  "bathrooma": {
+   "src": "assets/bathroom-a.jpg",
+   "alt": "חדר רחצה לבן עם מקלחון זכוכית"
+  },
+  "bathroomb": {
+   "src": "assets/bathroom-b.jpg",
+   "alt": "חדר רחצה מחופה אריחי שיש כהים"
+  },
+  "roofterrace": {
+   "src": "assets/roof-terrace.jpg",
+   "alt": "מרפסת גג מדשאה עם נוף לעצי הדקל"
+  },
+  "hostingtable": {
    "src": "assets/hosting-table.jpg",
-   "alt": "שולחן אירוח ארוך מעץ תחת פרגולה, מול הגינה והווילה"
+   "alt": "שולחן אירוח ארוך מעץ תחת פרגולה, מול הגינה"
+  },
+  "palmpergola": {
+   "src": "assets/palm-pergola.jpg",
+   "alt": "פרגולת סכך עם שולחנות משחק בין עצי הדקל"
+  },
+  "snooker": {
+   "src": "assets/snooker.jpg",
+   "alt": "שולחן סנוקר תחת הפרגולה בגינה"
+  },
+  "tabletennis": {
+   "src": "assets/table-tennis.jpg",
+   "alt": "שולחן טניס תחת פרגולת הסכך"
+  },
+  "gardenbar": {
+   "src": "assets/garden-bar.jpg",
+   "alt": "פינת ישיבה עם שולחן עגול ובר בגינה"
+  },
+  "orchard": {
+   "src": "assets/orchard.jpg",
+   "alt": "מדשאה מוצלת בין עצי הפרי בבוסתן"
+  },
+  "entrance": {
+   "src": "assets/entrance.jpg",
+   "alt": "שביל הכניסה המרוצף לווילה בין צמחייה"
   }
  },
  "videos": {
@@ -177,7 +253,7 @@
       "אירועים עד 150 אורחים",
       "השכרה פרטית ובלעדית"
      ],
-     "image": "villapool",
+     "image": "poolpanorama",
      "video": "poolloop"
     },
     {
@@ -216,7 +292,7 @@
      "type": "split",
      "eyebrow": "הווילה",
      "title": "מתחם פרטי\nבלב *השרון*.",
-     "image": "villapool",
+     "image": "villagarden",
      "image_side": "end",
      "text": "<p>בלב השרון, במושב ינוב השקט, מחכה לכם מתחם נופש ואירועים פרטי של כ־3.5 דונם. עצי פרי, בוסתן ירוק ומדשאות מקיפים בריכת שחייה חצי־אולימפית עם מגלשת מים.</p><p>הווילה כוללת 5 חדרי שינה מרווחים ו־22 מיטות, ומתאימה לחופשה משפחתית או לאירוע של עד 150 אורחים.</p>",
      "badge": {
@@ -239,13 +315,13 @@
        "title": "וילה לנופש",
        "text": "5 חדרי שינה, 22 מיטות, מטבח מאובזר ובריכה עם מגלשה, רק בשבילכם.",
        "href": "page:וילה-לנופש",
-       "image": "garden"
+       "image": "bedroomb"
       },
       {
        "title": "מסיבות ואירועים",
        "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, במתחם פרטי עם בריכה ומדשאות.",
        "href": "page:מסיבות-ואירועים",
-       "image": "table"
+       "image": "hostingtable"
       }
      ]
     },
@@ -293,11 +369,14 @@
      "eyebrow": "גלריה",
      "title": "הצצה לווילה, לבריכה ולמרחבים הירוקים של המתחם",
      "images": [
-      "villapool",
+      "poolpanorama",
+      "livingroom",
+      "bedrooma",
+      "kitchenisland",
       "playground",
-      "pergola",
-      "garden",
-      "table"
+      "hostingtable",
+      "snooker",
+      "roofterrace"
      ],
      "columns": 3
     },
@@ -352,7 +431,7 @@
    "type": "service",
    "title": "וילה לנופש",
    "excerpt": "וילה פרטית לנופש משפחתי וקבוצתי במושב ינוב.",
-   "featured_image": "garden",
+   "featured_image": "orchard",
    "order": 1,
    "seo": {
     "title": "וילה לנופש בשרון | הוילה הלבנה ינוב",
@@ -365,7 +444,7 @@
      "eyebrow": "נופש פרטי",
      "title": "וילה לנופש בשרון",
      "lead": "חופשה פרטית ובלעדית לכל המשפחה או החבר׳ה, על כ־3.5 דונם של טבע במושב ינוב.",
-     "image": "garden",
+     "image": "poolvilla",
      "cta": {
       "label": "להזמנת הווילה",
       "href": "tel"
@@ -379,7 +458,7 @@
      "type": "split",
      "eyebrow": "בתוך הווילה",
      "title": "מקום שבו כולם\nיכולים להיות *יחד*.",
-     "image": "villapool",
+     "image": "livingroom",
      "image_side": "end",
      "text": "<p>מחפשים מקום שבו כל המשפחה או החבר׳ה יכולים להיות יחד? הוילה הלבנה בינוב מציעה חופשה פרטית ובלעדית על כ־3.5 דונם של טבע.</p><p>בווילה 5 חדרי שינה גדולים ומרווחים ו־22 מיטות על פני שני מפלסים, ומטבח מאובזר עם מקרר, מדיח, מכונת קפה ושני כיורים.</p>",
      "points": [
@@ -392,13 +471,29 @@
      "type": "split",
      "eyebrow": "בחוץ",
      "title": "בריכה, בוסתן\nו*מרחב לשחק*.",
-     "image": "playground",
+     "image": "slidepool",
      "text": "<p>בחוץ מחכים בריכת שחייה חצי־אולימפית עם מגלשת מים, מדשאות, בוסתן ועצי פרי, עמדת מנגל ומקרר חיצוני.</p><p>לילדים ולמבוגרים יש נדנדות, מגלשות, שולחן סנוקר ושולחן טניס.</p>",
      "points": [
       "בריכה חצי־אולימפית עם מגלשת מים",
       "עמדת מנגל ומקרר חיצוני",
       "נדנדות, מגלשות, סנוקר וטניס"
      ]
+    },
+    {
+     "type": "gallery",
+     "eyebrow": "חדרים ומטבח",
+     "title": "בתוך *הווילה*.",
+     "images": [
+      "bedrooma",
+      "bedroomb",
+      "bedroomc",
+      "kitchenisland",
+      "kitchen",
+      "dining",
+      "bathrooma",
+      "staircase"
+     ],
+     "columns": 4
     },
     {
      "type": "faq",
@@ -434,7 +529,7 @@
    "type": "service",
    "title": "מסיבות ואירועים",
    "excerpt": "מתחם פרטי לאירועים עד 150 אורחים במושב ינוב.",
-   "featured_image": "table",
+   "featured_image": "hostingtable",
    "order": 2,
    "seo": {
     "title": "מסיבות ואירועים בשרון | הוילה הלבנה ינוב",
@@ -447,7 +542,7 @@
      "eyebrow": "אירועים פרטיים",
      "title": "מתחם לאירועים פרטיים בשרון",
      "lead": "חוגגים באווירה אחרת: עד 150 אורחים במתחם פרטי וירוק עם בריכה ומדשאות.",
-     "image": "table",
+     "image": "hostingtable",
      "cta": {
       "label": "לתיאום אירוע",
       "href": "tel"
@@ -461,7 +556,7 @@
      "type": "split",
      "eyebrow": "האירוע שלכם",
      "title": "רוצים לחגוג\n*באווירה אחרת*?",
-     "image": "table",
+     "image": "hostingtable",
      "image_side": "end",
      "text": "<p>הוילה הלבנה בינוב מתאימה לאירוח של עד 150 אורחים, במתחם פרטי וירוק עם בריכה ומדשאות.</p><p>המתחם מושכר באופן פרטי ובלעדי, עם אפשרות להזמנת ציוד לאירוע – שולחנות, כיסאות ועוד – בהתאם לצרכים שלכם.</p>",
      "badge": {
@@ -514,9 +609,12 @@
      "type": "gallery",
      "title": "המרחבים של האירוע",
      "images": [
-      "table",
-      "pergola",
-      "garden"
+      "hostingtable",
+      "palmpergola",
+      "gardenbar",
+      "poolvilla",
+      "snooker",
+      "tabletennis"
      ],
      "columns": 3
     },
@@ -554,7 +652,7 @@
    "type": "page",
    "title": "גלריה",
    "excerpt": "תמונות של הוילה הלבנה במושב ינוב.",
-   "featured_image": "villapool",
+   "featured_image": "poolpanorama",
    "order": 3,
    "seo": {
     "title": "גלריית תמונות הוילה הלבנה ינוב | וילה, בריכה ומתחם אירועים",
@@ -566,19 +664,38 @@
      "type": "hero",
      "title": "גלריית תמונות הוילה הלבנה",
      "lead": "הווילה, הבריכה, המדשאות והבוסתן ומתחם האירועים.",
-     "image": "pergola"
+     "image": "poolvilla"
     },
     {
      "type": "gallery",
      "title": "המתחם *בתמונות*.",
      "images": [
-      "villapool",
+      "poolpanorama",
+      "poolvilla",
+      "slidepool",
       "playground",
-      "pergola",
-      "garden",
-      "table"
+      "playgroundswings",
+      "villagarden",
+      "livingroom",
+      "dining",
+      "staircase",
+      "kitchenisland",
+      "kitchen",
+      "bedrooma",
+      "bedroomb",
+      "bedroomc",
+      "bathrooma",
+      "bathroomb",
+      "roofterrace",
+      "hostingtable",
+      "palmpergola",
+      "snooker",
+      "tabletennis",
+      "gardenbar",
+      "orchard",
+      "entrance"
      ],
-     "columns": 3
+     "columns": 4
     },
     {
      "type": "cta",
@@ -592,7 +709,7 @@
    "type": "about",
    "title": "אודות",
    "excerpt": "מתחם נופש ואירועים פרטי על כ־3.5 דונם במושב ינוב.",
-   "featured_image": "garden",
+   "featured_image": "orchard",
    "order": 4,
    "seo": {
     "title": "אודות הוילה הלבנה ינוב - מתחם נופש ואירועים בשרון",
@@ -604,20 +721,20 @@
      "type": "hero",
      "title": "מתחם נופש ואירועים בשרון — הוילה הלבנה",
      "lead": "3.5 דונם של טבע, מרחבים ופרטיות במושב ינוב הפסטורלי.",
-     "image": "garden"
+     "image": "villagarden"
     },
     {
      "type": "split",
      "eyebrow": "המקום",
      "title": "טבע, מרחב\nו*פרטיות*.",
-     "image": "garden",
+     "image": "entrance",
      "text": "<p>בלב השרון, במושב ינוב הפסטורלי והשקט, מחכה לכם מתחם נופש ואירועים רחב ידיים המשתרע על כ־3.5 דונם של טבע, מרחבים ופרטיות.</p><p>המתחם מוקף עצי פרי, בוסתן ירוק, מדשאות ופינות ישיבה נעימות, ובמרכזו בריכת שחייה חצי־אולימפית עם מגלשת מים – כל מה שצריך כדי ליהנות מחופשה מושלמת או ליצור אירוע באווירה אחרת.</p>"
     },
     {
      "type": "split",
      "eyebrow": "הווילה",
      "title": "שני מפלסים,\n*5 חדרי שינה*.",
-     "image": "pergola",
+     "image": "staircase",
      "image_side": "end",
      "text": "<p>הווילה מציעה 5 חדרי שינה גדולים ומרווחים, 22 מיטות, שני מפלסים ומטבח מאובזר הכולל מקרר, מדיח, מכונת קפה ושני כיורים. לרשות האורחים עומדות גם אפשרויות בילוי ופנאי: שולחן סנוקר, שולחן טניס, נדנדות, מגלשות, פינות ישיבה, עמדת מנגל ומקרר חיצוני.</p><p>ניתן להשכיר את המתחם באופן פרטי ובלעדי. מרחב פרטי, טבע ירוק, בריכה מפנקת ואינספור אפשרויות לחגוג, לנוח וליצור זיכרונות – הכול במקום אחד.</p>"
     },
@@ -652,5 +769,6 @@
    ]
   }
  ],
- "posts": []
+ "posts": [],
+ "logo": "assets/logo.png"
 }
