@@ -80,8 +80,9 @@ email do block.
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the
-  structure and finish level, never from a blank file.
+  `references/site-json.md`; use `examples/mehirut-haor/site.json` as a reference for the schema and the finish
+  level (real copy, eyebrows, intros) — **not** for its look, fonts or section order; the design must be the
+  client's own (`references/design.md` → *No default look*).
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
 ## 3 · Preview — ⏸ the one gate

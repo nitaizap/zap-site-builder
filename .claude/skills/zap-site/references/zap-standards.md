@@ -14,7 +14,9 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 - Every lead is **saved in WordPress** ("פניות מהאתר") and emailed to `business.email_leads` from
   `zapsites@d.co.il` via `relay.d.co.il:25` (no auth, no TLS). On staging no mail is sent to the client.
 - `tel:` links dial the displayed number (validated before build, measured after).
-- WhatsApp links `wa.me/972…` with a prefilled message.
+- WhatsApp links `wa.me/972…` with a prefilled message — **only when the brief (or the client's own published
+  channels) gives a WhatsApp number**. No number in the brief → no `whatsapp_e164`, no WhatsApp button; never
+  reuse the phone number as a WhatsApp guess.
 - LocalBusiness schema with the locked NAP, FAQPage (matches the visible FAQ), Service on service pages,
   breadcrumbs (Yoast). **Never** `aggregateRating`.
 - No ratings, stars, review counts or "5.0 בגוגל" anywhere (blocked by the validator and QA).

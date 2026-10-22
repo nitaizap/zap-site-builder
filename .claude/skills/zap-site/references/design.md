@@ -22,8 +22,14 @@ bland. Every site must have, measured by eye on the preview before the gate:
   footer, plus/minus FAQ, image wipe-ins, word-by-word H1 entrance.
 - **Brand colours exactly from the logo** (sample the pixels), with a darker primary only if contrast needs it.
 
-Start from `preset: signature` with `motion: lively`, then tune. Use the calmer presets only when the
-client's audience calls for it (medical, legal, finance).
+**No default look.** Every site gets its own character, derived from *this* client: the logo's shapes and
+type (a classical column logo → serif + arches; a speed mark → italic grotesk), the colours in their own photos
+(pool teal, olive groves, workshop steel), the place and the audience. Before choosing, read the `design`
+block of the last 2–3 sites built (`git log --all -- 'sites/*/site.json'`, and `examples/`) and make sure
+the new one differs in **at least four** of: preset, hero layout, heading font, palette, radius/shape
+(`image_shape: arch`, sharp, soft), home-page section order, and one site-specific `custom_css` motif
+(a few scoped lines: an arch crop, a rule style, letter-spacing taken from the logo). Two sites in a row with
+the same preset + fonts + hero is a fail, even if each looks good alone.
 
 ## Make three directions that are actually different
 
@@ -58,13 +64,14 @@ The engine does most of it by default; your copy and choices must use it:
   the hero and 2–3 section titles per page, not on every heading.
 - **An eyebrow on every section** (`eyebrow`: 1–3 words: "השירותים", "מי אנחנו", "הצעד הבא").
 - **Asymmetric section heads**: give sections a real 1–2 sentence `intro`; it sits beside the title.
-- **A home-page rhythm, never the same block twice in a row**: cinematic hero → stat band (`trust`, 3–4
-  verifiable facts with short values: "30+ שנה", "24/7", "עשרות שליחים") → `marquee` of services or
-  areas → `split` with a `badge` → overlay `cards` (every card with a photo) → `features` or `steps` →
-  `faq` → `cta` (brand colour). The light lead-form band and the dark footer follow automatically, so
-  the page ends brand colour → light → dark; never stack three dark blocks.
-- **Preset**: `signature` (sharp, hairlines, one accent, editorial-industrial) is the strongest default for
-  B2B, trades, logistics, legal and industry. Make it one of the three directions every time.
+- **A home-page rhythm, never the same block twice in a row** — and compose it for the business, not from
+  a fixed list. Pick from hero, `trust` (3–4 verifiable facts; band or card), `marquee`, `split` (+ `badge`,
+  `image_shape`), `cards` (bento/overlay), `features`, `steps`/`route`, `gallery`, `quote`, `faq`, `cta`, and
+  order them by what this client sells first (a venue leads with its spaces and photos; a courier with
+  proof and process). Never stack three dark blocks.
+- **Preset**: choose by character, not habit. `signature` suits B2B/trades/logistics; `editorial` venues,
+  hospitality, legal; `soft`/`clean` family and health; `bold` events/food/fitness; `industrial` heavy trades.
+  The three directions should use three different presets.
 - **Hero**: `image` (cinematic, ~90% of the screen, text over a deep gradient) whenever you have a strong
   photo; `split` when the photo is small or busy. Render an image hero at 2K.
 - **Type**: headings in a heavy grotesk (Heebo or Rubik, weight 800) for modern brands, Frank Ruhl Libre
@@ -117,7 +124,7 @@ boat) gets a new SVG there in the same structure (`zs-veh__body`, `zs-veh__wheel
 | vehicles / scooters / delivery / transport / moving / towing | `hero.ride`, `road`, `route` for the process, `design.progress` |
 | "וידאו" / movement is the product | `hero.video` (Veo), plus `ride` or `marquee` for phones |
 | "צבעים על בסיס הלוגו" | sample the logo pixels into `colors`; Elementor Global Colors carry them |
-| "יוקרתי", "פחות צבעים", "בלי רקע שחור", "שלא ייראה כמו האתר הישן" | `tone: light`, serif headings (Frank Ruhl Libre), primary = a deeper, desaturated logo colour, the logo's second colour replaced by a muted metal (brass/champagne), hero `images` slider with bright editorial daylight photos |
+| "יוקרתי", "פחות צבעים", "בלי רקע שחור", "שלא ייראה כמו האתר הישן" | light grounds, a serif or display heading face that fits the logo (not always Frank Ruhl), a deeper desaturated logo colour, one restrained accent, bright editorial daylight photos. `tone: light` is one option, not the answer every time |
 | "אינטראקטיבי" | bento tilt, route on scroll, FAQ, counters; never auto-playing sound or popups |
 
 Everything that moves on its own longer than 5 s (hero slider, road, marquee) gets a pause button automatically (`.zs-pausable`, WCAG 2.2.2). A visitor whose OS has animations off (common on managed work PCs and Remote Desktop) sees everything parked — that is correct, not a bug.
