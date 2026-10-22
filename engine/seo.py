@@ -174,7 +174,7 @@ def run_seo(site):
     sbad = []
     for p in data["pages"]:
         k = p.get("key", "")
-        if not k or p.get("type") in ("privacy",):
+        if not k or p.get("type") in ("privacy", "blog", "contact"):
             continue
         last = k.rsplit("/", 1)[-1]
         if not HEB.search(last):
