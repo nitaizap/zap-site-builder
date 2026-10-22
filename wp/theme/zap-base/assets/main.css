@@ -1321,6 +1321,7 @@ body .e-con.zs-car__slide > .zs-car__cap { position: absolute; inset: auto 16px 
 .zs-car__cap .elementor-heading-title { color: #fff; font-family: var(--f-head); font-size: clamp(1rem, .9rem + .4vw, 1.2rem); margin: 0; line-height: 1.3; }
 .zs-car__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
 .zs-car__btn { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid currentColor; background: transparent; color: var(--c-ink); display: grid; place-items: center; cursor: pointer; transition: background .25s, color .25s, transform .25s; }
+.zs-car__btn:disabled { opacity: .28; cursor: default; pointer-events: none; }
 .zs-car__btn:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); transform: scale(1.06); }
 .zs-car__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
 .zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); }
