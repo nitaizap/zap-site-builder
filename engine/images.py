@@ -38,13 +38,13 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
         if dst.stat().st_size <= TARGET_KB * 1024 or q <= MIN_QUALITY:
             break
         q -= 6
-    for w in (1400, 1200, 1000):          # still heavy: shrink until it fits
-        if dst.stat().st_size <= TARGET_KB * 1024 or im.width <= w:
-            continue
-        im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
-        im.save(dst, "WEBP", quality=MIN_QUALITY + 8, method=6)
     q = MIN_QUALITY
-    while dst.stat().st_size > TARGET_KB * 1024 and q > 40:   # detailed photos: last resort, lower quality
-        q -= 5
+    while dst.stat().st_size > TARGET_KB * 1024:          # still heavy: lower quality, then shrink (long side ≥ 900)
+        if q > 45:
+            q -= 5
+        elif max(im.size) > 900:
+            im = im.resize((round(im.width * .85), round(im.height * .85)), Image.LANCZOS)
+        else:
+            break
         im.save(dst, "WEBP", quality=q, method=6)
     return dst, im.width, im.height
