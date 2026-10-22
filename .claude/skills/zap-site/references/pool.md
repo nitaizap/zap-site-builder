@@ -81,6 +81,20 @@ first frame on each page). New templates: extract them into variants the same wa
 banners. Not extracted: the post sidebar (form + recent posts, share icons) and template 2's event form fields
 (event type, date, guests), which would need theme/plugin work.
 
+## Approved reference builds (22/10/2026)
+
+The user approved two pilots built with this pool, the team playbook and the SEO checklist. They are the
+guideline for every new site: `examples/white-villa-pilot/` and `examples/mehirut-haor-pilot/` (site.json, NOTES.md
+with the design brief and the choices, SEO-QA.md), home pages in `benchmark/pilot-*-home.jpg`, photos on the
+`site/<slug>-pilot` branches. What made them work:
+
+- a three-line brief first (subject, audience and moment, the page's one job), then a base template + deviations
+  taken from the client's world (logo colours; the villa's own garden);
+- one font family, one bold element (the road; the inset pool video), everything else quiet;
+- 8–10 home sections, no two neighbours alike, each a different variant; real photos in every slot;
+- no generated-look tells; motion `subtle`;
+- `zs qa` 0 errors and `zs seo` 0 FAIL before anyone sees it.
+
 ## Base templates (from the team's method, Yuval's skill)
 
 Every site starts from **one of the six Zap templates** and names its deviations. Set `design.base_template`

@@ -34,7 +34,7 @@ before doing the step — every one encodes mistakes already made.
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
 | deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
-| examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
+| examples | `examples/white-villa-pilot/`, `examples/mehirut-haor-pilot/` (approved 22/10/2026: template pool + team playbook + SEO checklist; site.json, NOTES.md, SEO-QA.md) · `examples/mehirut-haor/` (older premium reference, predates the playbook) · `examples/sample-plumber/` (minimal, the engine test) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
 
 ## Iron rules
@@ -85,7 +85,8 @@ email do block.
   chosen for what this business must prove, a variant for each, no two clients alike (`bin/zs pool <slug>`).
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference; its eyebrows/accent words predate the team playbook) for the
+  `references/site-json.md`; start from the approved pilots `examples/white-villa-pilot/site.json` (venue, base template 2) or
+  `examples/mehirut-haor-pilot/site.json` (B2B service, base template 5): the reference for the
   structure and finish level, never from a blank file.
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
