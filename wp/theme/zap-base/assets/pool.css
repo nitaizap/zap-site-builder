@@ -290,3 +290,23 @@ body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor
 body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-primary .elementor-button:hover { background: color-mix(in srgb, #fff 88%, var(--c-primary)); color: var(--c-primary); }
 /* long links (emails, URLs in the privacy policy) wrap instead of pushing the page sideways on phones */
 :is(p, li, td) a { overflow-wrap: anywhere; }
+/* tiles: the action on a dark half takes the accent (the primary often sits too close to the dark ground) */
+body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-accent); }
+
+/* SEO checklist #12: a floating WhatsApp button on every page, desktop too (phones keep the call/WhatsApp bar) */
+@media (min-width: 768px) {
+  .zs-fab:has(.zs-fab__wa) { display: block; position: fixed; inset: auto auto 24px 24px; z-index: 90; }
+  .zs-fab .zs-fab__call { display: none; }
+  .zs-fab .zs-fab__wa { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: #157f3f; color: #fff; box-shadow: 0 10px 24px -8px rgb(0 0 0 / .45); }
+  .zs-fab .zs-fab__wa svg { width: 28px; height: 28px; }
+  .zs-fab .zs-fab__wa span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+/* 404 + search results (SEO checklist #25-30) */
+.zs-404 form.search-form, .zs-search form.search-form { display: flex; gap: 8px; margin: 24px 0; max-width: 520px; }
+.zs-404 .search-form input[type=search], .zs-search .search-form input[type=search] { flex: 1; min-height: 48px; padding: 0 14px; border: 1px solid var(--c-line); border-radius: var(--r-sm, 6px); font: inherit; }
+.zs-404 .search-form button, .zs-search .search-form button { min-height: 48px; padding: 0 20px; border: 0; border-radius: var(--r-sm, 6px); background: var(--c-primary); color: var(--c-primary-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.zs-404__links { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 0; margin: 8px 0 0; list-style: none; }
+.zs-404__links a { font-weight: 600; }
+.zs-search { padding-block: clamp(32px, 5vw, 72px); }
+.zs-search__list { display: grid; gap: 22px; margin-top: 28px; padding: 0; list-style: none; }
+.zs-search__list h2 { font-size: 1.25rem; margin: 0 0 4px; }

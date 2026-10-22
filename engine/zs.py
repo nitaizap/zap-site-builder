@@ -16,6 +16,7 @@
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
+  zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
   zs pool <slug>                    this site's recipe vs every other client branch (anti-formula)
 """
 import argparse
@@ -253,6 +254,13 @@ def cmd_list(a):
         print(f"{s.slug:24} {s.url:28} {'running' if s.running() else 'stopped'}")
 
 
+def cmd_seo(a):
+    from seo import run_seo
+    s = Site(a.slug)
+    s.serve()
+    sys.exit(0 if run_seo(s) else 2)
+
+
 def cmd_pool(a):
     from build import load_site
     from pool import compare, recipe
@@ -287,6 +295,7 @@ def main():
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
+    x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
     x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
     a = p.parse_args()
     a.f(a)
