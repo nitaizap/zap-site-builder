@@ -48,7 +48,7 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el); if (s.position === 'fixed' || !vis(el)) return;
     const r = el.getBoundingClientRect(); if (r.right > hw + 1.5 || r.left < -1.5) {
       let p = el.parentElement, clipped = false;
-      while (p && p !== document.body) { const ps = getComputedStyle(p); if (/(hidden|clip)/.test(ps.overflowX)) { clipped = true; break; } p = p.parentElement; }
+      while (p && p !== document.body) { const ps = getComputedStyle(p); if (/(hidden|clip|auto|scroll)/.test(ps.overflowX)) { clipped = true; break; } p = p.parentElement; }
       if (!clipped) over.push((el.className && typeof el.className === 'string' ? '.' + el.className.split(' ')[0] : el.tagName) + ` ${Math.round(r.left)}..${Math.round(r.right)}`);
     } });
   if (over.length) E(`horizontal overflow (${over.length}): ` + over.slice(0, 4).join(', '));

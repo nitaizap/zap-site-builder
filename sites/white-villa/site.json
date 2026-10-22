@@ -26,30 +26,31 @@
   "privacy_confirmed": true
  },
  "design": {
-  "preset": "editorial",
-  "hero": "centered",
+  "preset": "soft",
+  "hero": "split",
   "header": "light",
   "motion": "lively",
-  "radius": 0,
+  "radius": 24,
+  "garland": true,
   "fonts": {
-   "heading": "Bona Nova",
-   "body": "Alef"
+   "heading": "Suez One",
+   "body": "Assistant"
   },
   "colors": {
-   "primary": "#0e4f5c",
+   "primary": "#0a6375",
    "primary_ink": "#ffffff",
-   "accent": "#b0502c",
+   "accent": "#c4542a",
    "accent_ink": "#ffffff",
-   "ink": "#152a2e",
-   "text": "#33464a",
-   "muted": "#55676a",
-   "bg": "#fdfbf7",
-   "surface": "#f6efe6",
-   "line": "#e6dccd",
-   "dark": "#0f3a43",
-   "dark_ink": "#f6efe6"
+   "ink": "#0f2a30",
+   "text": "#2c4348",
+   "muted": "#4f6468",
+   "bg": "#fffcf6",
+   "surface": "#e9f5f4",
+   "line": "#d3e6e4",
+   "dark": "#0b3c47",
+   "dark_ink": "#f4fbfa"
   },
-  "custom_css": "/* white-villa: arches + logo spacing */\nbody .e-con.zs-hero--home{--padding-bottom:clamp(24px,3vw,48px)}\n.zs-gallery .zs-gallery__img:nth-child(4n+1) img{border-radius:999px 999px 0 0}\n.zs-eyebrow,.zs-sec__eyebrow{letter-spacing:.32em}\n.zs-hv-centered .zs-hero--home .zs-hero__img img{border-radius:0 0 0 0;border-top:6px double var(--c-accent)}\n.zs-bg-dark,.zs-bg-primary,.zs-footer{--c-accent:#f0b79a}\n.zs-footer :is(.zs-ico,svg){color:#f0b79a}"
+  "custom_css": "/* white-villa: Suez One has one weight; pool-water edge under the home hero; arches from the logo columns */\nbody{--w-head:400}\nbody :is(h1,h2,h3,.elementor-heading-title){font-synthesis:none}\nbody .e-con.zs-hero--home{position:relative}\nbody .e-con.zs-hero--home::after{content:\"\";position:absolute;inset:auto 0 -1px 0;height:46px;background:var(--c-surface);-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 48' preserveAspectRatio='none'%3E%3Cpath d='M0 24 C100 0 200 0 300 24 S500 48 600 24 V48 H0Z'/%3E%3C/svg%3E\") repeat-x 0 0/600px 46px;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 48' preserveAspectRatio='none'%3E%3Cpath d='M0 24 C100 0 200 0 300 24 S500 48 600 24 V48 H0Z'/%3E%3C/svg%3E\") repeat-x 0 0/600px 46px;animation:wv-wave 14s linear 1;z-index:2;pointer-events:none}\n@keyframes wv-wave{to{-webkit-mask-position:600px 0;mask-position:600px 0}}\n@media (prefers-reduced-motion:reduce){body .e-con.zs-hero--home::after{animation:none}}\n.zs-gallery .zs-gallery__img:nth-child(4n+1) img{border-radius:999px 999px var(--r-lg) var(--r-lg)}\nbody .e-con.zs-car__slide:nth-child(3n+2){border-radius:999px 999px var(--r-lg) var(--r-lg)}\n.zs-bg-dark,.zs-bg-primary,.zs-footer{--c-accent:#ffb48a}\n.zs-footer :is(.zs-ico,svg){color:#ffb48a}"
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",
@@ -251,44 +252,65 @@
       "אירועים עד 150 אורחים",
       "השכרה פרטית ובלעדית"
      ],
-     "image": "poolpanorama"
+     "image": "poolpanorama",
+     "images": [
+      "poolpanorama",
+      "villagarden",
+      "playground"
+     ],
+     "interval": 5
     },
     {
-     "type": "cards",
-     "layout": "bento",
-     "eyebrow": "המתחם",
-     "title": "3.5 דונם,\n*הכול במקום אחד*.",
-     "intro": "בריכה עם מגלשה, בוסתן ומדשאות, פינות משחק ווילה בשני מפלסים, מושכרים באופן פרטי ובלעדי.",
+     "type": "carousel",
+     "eyebrow": "סיור",
+     "title": "סיבוב *במתחם*.",
+     "intro": "מהבריכה והמגלשה, דרך הבוסתן ופרגולת הסכך ועד חדרי השינה. החליקו, או תנו לתמונות לרוץ.",
+     "bg": "surface",
+     "interval": 4,
      "items": [
       {
-       "title": "בריכה חצי־אולימפית",
-       "text": "עם מגלשת מים, מוקפת מדשאות.",
-       "href": "page:וילה-לנופש",
-       "image": "poolvilla"
+       "image": "poolpanorama",
+       "caption": "הבריכה החצי־אולימפית"
       },
       {
-       "title": "5 חדרי שינה, 22 מיטות",
-       "text": "חדרים גדולים ומרווחים בשני מפלסים.",
-       "href": "page:וילה-לנופש",
-       "image": "bedroomb"
+       "image": "slidepool",
+       "caption": "מגלשת המים"
       },
       {
-       "title": "אירועים עד 150 אורחים",
-       "text": "בריתות, חינות, ימי הולדת ועוד.",
-       "href": "page:מסיבות-ואירועים",
-       "image": "hostingtable"
+       "image": "playground",
+       "caption": "מתקני המשחק"
       },
       {
-       "title": "מתקנים לילדים",
-       "text": "נדנדות, מגלשות, סנוקר וטניס.",
-       "href": "page:וילה-לנופש",
-       "image": "playground"
+       "image": "palmpergola",
+       "caption": "פרגולת הסכך"
       },
       {
-       "title": "מטבח מאובזר",
-       "text": "מקרר, מדיח, מכונת קפה ושני כיורים.",
-       "href": "page:וילה-לנופש",
-       "image": "kitchenisland"
+       "image": "snooker",
+       "caption": "שולחן הסנוקר"
+      },
+      {
+       "image": "livingroom",
+       "caption": "הסלון"
+      },
+      {
+       "image": "kitchenisland",
+       "caption": "המטבח המאובזר"
+      },
+      {
+       "image": "bedroomb",
+       "caption": "חדרי השינה"
+      },
+      {
+       "image": "hostingtable",
+       "caption": "שולחן האירוח"
+      },
+      {
+       "image": "roofterrace",
+       "caption": "מרפסת הגג"
+      },
+      {
+       "image": "orchard",
+       "caption": "הבוסתן"
       }
      ]
     },
@@ -307,19 +329,8 @@
       "label": "עוד על הווילה",
       "href": "page:אודות"
      },
-     "image_shape": "arch"
-    },
-    {
-     "type": "marquee",
-     "items": [
-      "בית של השמחות",
-      "בריכה ומגלשה",
-      "בוסתן ועצי פרי",
-      "אירועים פרטיים",
-      "חופשה משפחתית",
-      "מושב ינוב"
-     ],
-     "bg": "surface"
+     "image_shape": "arch",
+     "bg": "plain"
     },
     {
      "type": "features",
@@ -361,20 +372,25 @@
      ]
     },
     {
-     "type": "gallery",
-     "eyebrow": "גלריה",
-     "title": "הצצה לווילה, לבריכה ולמרחבים הירוקים של המתחם",
-     "images": [
-      "poolpanorama",
-      "livingroom",
-      "bedrooma",
-      "kitchenisland",
-      "playground",
-      "hostingtable",
-      "snooker",
-      "roofterrace"
+     "type": "cards",
+     "eyebrow": "שתי דרכים ליהנות",
+     "title": "נופש או *חגיגה*?",
+     "intro": "אותו מתחם פרטי וירוק, לחופשה של המשפחה או לאירוע של עד 150 אורחים.",
+     "items": [
+      {
+       "title": "וילה לנופש",
+       "text": "5 חדרי שינה, 22 מיטות, מטבח מאובזר ובריכה עם מגלשה, רק בשבילכם.",
+       "href": "page:וילה-לנופש",
+       "image": "villagarden"
+      },
+      {
+       "title": "מסיבות ואירועים",
+       "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, עד 150 אורחים.",
+       "href": "page:מסיבות-ואירועים",
+       "image": "hostingtable"
+      }
      ],
-     "columns": 3
+     "columns": 2
     },
     {
      "type": "trust",
@@ -396,7 +412,8 @@
        "label": "אורחים באירוע"
       }
      ],
-     "style": "card"
+     "style": "card",
+     "bg": "surface"
     },
     {
      "type": "faq",
@@ -470,7 +487,8 @@
      "cta2": {
       "label": "בדיקת תאריך פנוי",
       "href": "#leave-details"
-     }
+     },
+     "video": "poolloop"
     },
     {
      "type": "split",
@@ -500,20 +518,52 @@
      "image_shape": "arch"
     },
     {
-     "type": "gallery",
+     "type": "carousel",
      "eyebrow": "חדרים ומטבח",
      "title": "בתוך *הווילה*.",
-     "images": [
-      "bedrooma",
-      "bedroomb",
-      "bedroomc",
-      "kitchenisland",
-      "kitchen",
-      "dining",
-      "bathrooma",
-      "staircase"
-     ],
-     "columns": 4
+     "bg": "dark",
+     "items": [
+      {
+       "image": "livingroom",
+       "caption": "הסלון"
+      },
+      {
+       "image": "dining",
+       "caption": "פינת האוכל"
+      },
+      {
+       "image": "kitchenisland",
+       "caption": "אי המטבח"
+      },
+      {
+       "image": "kitchen",
+       "caption": "המטבח"
+      },
+      {
+       "image": "bedrooma",
+       "caption": "חדר שינה"
+      },
+      {
+       "image": "bedroomb",
+       "caption": "חדר בעליית הגג"
+      },
+      {
+       "image": "bedroomc",
+       "caption": "חדר עם מקלחת צמודה"
+      },
+      {
+       "image": "bathrooma",
+       "caption": "חדר רחצה"
+      },
+      {
+       "image": "bathroomb",
+       "caption": "חדר רחצה"
+      },
+      {
+       "image": "staircase",
+       "caption": "המדרגות לקומה השנייה"
+      }
+     ]
     },
     {
      "type": "faq",
@@ -627,17 +677,40 @@
      ]
     },
     {
-     "type": "gallery",
-     "title": "המרחבים של האירוע",
-     "images": [
-      "hostingtable",
-      "palmpergola",
-      "gardenbar",
-      "poolvilla",
-      "snooker",
-      "tabletennis"
-     ],
-     "columns": 3
+     "type": "carousel",
+     "eyebrow": "המרחבים",
+     "title": "איפה *חוגגים*.",
+     "bg": "dark",
+     "items": [
+      {
+       "image": "hostingtable",
+       "caption": "שולחן האירוח"
+      },
+      {
+       "image": "palmpergola",
+       "caption": "פרגולת הסכך"
+      },
+      {
+       "image": "gardenbar",
+       "caption": "פינת הבר בגינה"
+      },
+      {
+       "image": "poolvilla",
+       "caption": "הבריכה"
+      },
+      {
+       "image": "snooker",
+       "caption": "סנוקר"
+      },
+      {
+       "image": "tabletennis",
+       "caption": "טניס שולחן"
+      },
+      {
+       "image": "villagarden",
+       "caption": "המדשאה"
+      }
+     ]
     },
     {
      "type": "faq",
@@ -686,6 +759,23 @@
      "title": "גלריית תמונות הוילה הלבנה",
      "lead": "הווילה, הבריכה, המדשאות והבוסתן ומתחם האירועים.",
      "image": "poolvilla"
+    },
+    {
+     "type": "carousel",
+     "title": "המתחם *בתנועה*.",
+     "bg": "dark",
+     "items": [
+      "poolpanorama",
+      "poolvilla",
+      "slidepool",
+      "playground",
+      "villagarden",
+      "roofterrace",
+      "palmpergola",
+      "hostingtable",
+      "livingroom",
+      "bedroomb"
+     ]
     },
     {
      "type": "gallery",

@@ -259,6 +259,37 @@
   });
 
 
+
+  /* ---------- carousel: centred slide = active; arrows; autoplay only when on screen, not hovered/focused/paused ---------- */
+  [].forEach.call(document.querySelectorAll('.zs-carousel'), function (sec) {
+    var tr = sec.querySelector('.zs-car__track'); if (!tr) return;
+    var sl = [].slice.call(tr.querySelectorAll('.zs-car__slide')); if (!sl.length) return;
+    var cnt = sec.querySelector('.zs-car__count'), cur = 0, seen = false, hold = false;
+    function mid(el) { var r = el.getBoundingClientRect(); return r.left + r.width / 2; }
+    function upd() {
+      var c = mid(tr), best = 0, bd = 1e9;
+      sl.forEach(function (s, i) { var d = Math.abs(mid(s) - c); if (d < bd) { bd = d; best = i; } });
+      cur = best;
+      sl.forEach(function (s, i) { s.classList.toggle('is-active', i === best); });
+      if (cnt) cnt.textContent = (best + 1) + ' / ' + sl.length;
+    }
+    function go(i) { i = (i + sl.length) % sl.length; tr.scrollBy({ left: mid(sl[i]) - mid(tr), behavior: reduce ? 'auto' : 'smooth' }); }
+    var t2 = false;
+    tr.addEventListener('scroll', function () { if (!t2) { t2 = true; requestAnimationFrame(function () { t2 = false; upd(); }); } }, { passive: true });
+    window.addEventListener('resize', upd);
+    var nx = sec.querySelector('.zs-car__next'), pv = sec.querySelector('.zs-car__prev');
+    if (nx) nx.addEventListener('click', function () { go(cur + 1); });
+    if (pv) pv.addEventListener('click', function () { go(cur - 1); });
+    sl.forEach(function (s, i) { s.addEventListener('click', function () { if (i !== cur) go(i); }); });
+    go(0); setTimeout(upd, 60);
+    if (!motion) return;
+    ['pointerenter', 'focusin'].forEach(function (e) { sec.addEventListener(e, function () { hold = true; }); });
+    ['pointerleave', 'focusout'].forEach(function (e) { sec.addEventListener(e, function () { hold = false; }); });
+    new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }, { threshold: 0.35 }).observe(tr);
+    var iv = (parseInt((sec.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000;
+    setInterval(function () { if (seen && !hold && !document.hidden && !sec.classList.contains('is-paused')) go(cur + 1); }, iv);
+  });
+
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');
   if (v) {
