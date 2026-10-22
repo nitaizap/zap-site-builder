@@ -46,6 +46,11 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | `gallery` | `mosaic` | tight 4-column square grid, no gaps (2 on mobile), 8 photos | template 1 "גלריה" | 4 or 8 images |
 | `faq` | *(default)* | soft cards, round +/- icon | engine | |
 | `faq` | `outline` | centred title, outlined brand-colour rows | template 1 | |
+| `steps` | `stack` | numbered dark cards stacked in one column, numeral behind a divider ("שלבים מרכזיים") | template 3 service page | |
+| `steps` | `cards` | white cards with big italic numerals on a soft brand gradient ("תהליך") | template 4 service page | |
+| `features` | `rows` | 2-column horizontal cards, check icon behind a divider ("יתרונות") | template 4 service page | |
+| `prose` | `band` | a long-text block on a dark gradient band | template 3 service page | |
+| `reviews` | `photo` | the Zap reviews widget over a darkened photo (renders only with `dpz_customer_id`) | template 2 | `image` |
 | `faq` | `aside` | questions beside a tall photo (photo hidden on phones) | template 4 | `image` |
 | `faq` | `dark` | questions on a rounded dark gradient panel, accent questions | template 6 | |
 | `logos` | `band` | dark band: title on one side, white logo chips on the other | template 6 | logo images |
@@ -72,8 +77,9 @@ photo per block, big centred statements, two or three colours (dark + one warm a
 booking/order action repeated, and a centred contact block with hours. Their full-width map is not copied
 (it costs speed and adds little); `contact` keeps the map optional.
 Figma copy with edit access: figma.com/design/PjcbiKwCivnwxqHPg95Nhw (pages = templates; the home frame is the
-first frame on each page). New templates: extract them into variants the same way. Not yet extracted: the inner
-page layouts (service page, blog, post, events) and template 2's review carousel over a photo.
+first frame on each page). New templates: extract them into variants the same way. Inner pages: page heroes take `cover`/`inset`/`curve` too and render as short
+banners. Not extracted: the post sidebar (form + recent posts, share icons) and template 2's event form fields
+(event type, date, guests), which would need theme/plugin work.
 
 ## Mixing rules (anti-formula)
 

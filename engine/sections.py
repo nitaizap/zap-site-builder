@@ -392,7 +392,8 @@ def leadbar(ctx, s):
 def reviews(ctx, s):
     if not ctx.site["business"].get("dpz_customer_id"):
         return None   # no real source -> no reviews block at all
-    return section(ctx, s, "zs-reviews-sec", [*sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
+    bgimg = image(ctx, s.get("image"), "zs-reviews__bg", "full") if s.get("variant") == "photo" else None
+    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
 
 
 def video(ctx, s):
@@ -457,9 +458,12 @@ VARIANTS = {
     "split": {"frame", "overlap", "card", "duo"},
     "cta": {"photo"},
     "cards": {"framed"},
-    "features": {"aside", "checks"},
+    "features": {"aside", "checks", "rows"},
     "gallery": {"mosaic", "strip", "stagger"},
     "faq": {"outline", "aside", "dark"},
+    "steps": {"stack", "cards"},
+    "prose": {"band"},
+    "reviews": {"photo"},
     "logos": {"band"},
     "contact": {"photo"},
     "leadbar": {"photo"},
