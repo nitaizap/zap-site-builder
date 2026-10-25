@@ -1298,3 +1298,6 @@ body { --zs-h1-cap: 9.4svh; }
   .zs-reviews zap-reviews .review_date { grid-column: 1; grid-row: 3; }
   .zs-reviews zap-reviews .pagination > span[class]:not(.currpage) { margin-inline-start: 0 !important; flex-basis: 100%; margin-top: 6px !important; }
 }
+
+/* Long URLs/emails in body text (e.g. the privacy page) must wrap on phones */
+main p a, main li a { overflow-wrap: anywhere; word-break: break-word; }

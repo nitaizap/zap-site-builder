@@ -44,8 +44,8 @@
   "privacy_confirmed": false
  },
  "design": {
-  "preset": "industrial",
-  "hero": "split",
+  "preset": "editorial",
+  "hero": "centered",
   "header": "light",
   "motion": "subtle",
   "colors": {
@@ -63,11 +63,12 @@
    "dark_ink": "#eeeeec"
   },
   "fonts": {
-   "heading": "Karantina",
+   "heading": "Noto Serif Hebrew",
    "body": "Heebo"
   },
-  "radius": 0,
-  "custom_css": ""
+  "radius": 2,
+  "custom_css": "",
+  "tone": "light"
  },
  "directions": {
   "a": {
@@ -287,11 +288,11 @@
      "title": "חברת איטום גגות ומבנים — ניק איטום",
      "lead": "גג שמטפטף בחורף או קיר שמעלה רטיבות? ניק מגיע, בודק, מסביר ומאטם, עם אחריות מלאה על העבודה.",
      "cta": {
-      "label": "התקשרו לייעוץ",
+      "label": "התקשרו",
       "href": "tel"
      },
      "cta2": {
-      "label": "שלחו וואטסאפ",
+      "label": "וואטסאפ",
       "href": "whatsapp"
      },
      "points": [
@@ -410,8 +411,7 @@
        "title": "ביצוע ואחריות",
        "text": "הצוות מבצע את העבודה בקפדנות, ואתם מקבלים אחריות על האיטום."
       }
-     ],
-     "bg": "dark"
+     ]
     },
     {
      "type": "features",
