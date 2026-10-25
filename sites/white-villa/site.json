@@ -50,7 +50,7 @@
    "heading": "Miriam Libre",
    "body": "Miriam Libre"
   },
-  "custom_css": ""
+  "custom_css": "\n/* white-villa: the logo leads the home hero (client note 9): big logo, smaller statement */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(15vw,19svh,230px);height:auto}\nbody .e-con.zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(1.5rem,1rem + 1.5vw,2.4rem)!important;line-height:1.25}\n@media (max-width:767px){body .e-con.zs-hero--home{min-height:calc(100svh - 150px)}body .e-con.zs-hero--home .zs-hero__logo img{width:min(44vw,170px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}"
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",
@@ -224,15 +224,10 @@
    "alt": "מי הבריכה הצלולים מול המרפסת"
   }
  },
- "videos": {
-  "poolloop": {
-   "src": "assets/pool-loop.mp4"
-  }
- },
  "nav": [
   {
-   "label": "דף הבית",
-   "href": "page:"
+   "label": "אודות",
+   "href": "page:אודות"
   },
   {
    "label": "וילה לנופש",
@@ -245,10 +240,6 @@
   {
    "label": "גלריה",
    "href": "page:גלריה"
-  },
-  {
-   "label": "אודות",
-   "href": "page:אודות"
   },
   {
    "label": "צרו קשר",
@@ -309,12 +300,18 @@
       "href": "tel"
      },
      "cta2": {
-      "label": "בדיקת תאריך פנוי",
-      "href": "#leave-details"
+      "label": "לאירועים ומסיבות",
+      "href": "page:מסיבות-ואירועים"
      },
-     "image": "poolpanorama",
-     "variant": "inset",
-     "video": "poolloop"
+     "variant": "cover",
+     "logo": true,
+     "images": [
+      "poolpanorama",
+      "villapanorama",
+      "slidepool"
+     ],
+     "interval": 5,
+     "image": "poolpanorama"
     },
     {
      "type": "split",
@@ -355,12 +352,11 @@
        "title": "מסיבות ואירועים",
        "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, עד 150 אורחים.",
        "href": "page:מסיבות-ואירועים",
-       "image": "hostingtable"
+       "image": "poolpanorama"
       }
      ],
      "columns": 2,
-     "variant": "framed",
-     "style": "classic"
+     "style": "overlay"
     },
     {
      "type": "features",
@@ -415,7 +411,7 @@
       {
        "title": "שולחן לכולם",
        "text": "מטבח מאובזר, פינת אוכל גדולה ואירוח של עד 150 אורחים.",
-       "image": "hostingtable",
+       "image": "gardenbar",
        "cta": {
         "label": "על האירועים",
         "href": "page:מסיבות-ואירועים"
@@ -576,7 +572,7 @@
    "type": "service",
    "title": "מסיבות ואירועים",
    "excerpt": "מתחם פרטי לאירועים עד 150 אורחים במושב ינוב.",
-   "featured_image": "hostingtable",
+   "featured_image": "palmpergola",
    "order": 2,
    "seo": {
     "title": "מסיבות ואירועים בשרון | הוילה הלבנה ינוב",
@@ -588,7 +584,7 @@
      "type": "hero",
      "title": "מסיבות ואירועים פרטיים בשרון",
      "lead": "חוגגים באווירה אחרת: עד 150 אורחים במתחם פרטי וירוק עם בריכה ומדשאות.",
-     "image": "hostingtable",
+     "image": "palmpergola",
      "cta": {
       "label": "לתיאום אירוע",
       "href": "tel"
@@ -602,7 +598,7 @@
     {
      "type": "split",
      "title": "רוצים לחגוג\nבאווירה אחרת?",
-     "image": "hostingtable",
+     "image": "palmpergola",
      "image_side": "end",
      "text": "<p>הוילה הלבנה בינוב מתאימה לאירוח של עד 150 אורחים, במתחם פרטי וירוק עם בריכה ומדשאות.</p><p>המתחם מושכר באופן פרטי ובלעדי, עם אפשרות להזמנת ציוד לאירוע (שולחנות, כיסאות ועוד) בהתאם לצרכים שלכם.</p><p><strong>חשוב לדעת:</strong> בשבתות אין אפשרות להשתמש במנגל או להשמיע מוזיקה.</p>",
      "variant": "duo",
@@ -652,10 +648,10 @@
      "variant": "mosaic",
      "title": "איפה חוגגים",
      "images": [
-      "hostingtable",
+      "palmpergola",
       "poolpanorama",
       "villagarden",
-      "palmpergola"
+      "gardenbar"
      ]
     },
     {
@@ -840,5 +836,6 @@
  ],
  "posts": [],
  "logo": "assets/logo.png",
- "tier": "standard"
+ "tier": "standard",
+ "logo_light": "assets/logo-light.png"
 }

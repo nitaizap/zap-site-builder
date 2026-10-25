@@ -1,6 +1,6 @@
 # SEO QA — הוילה הלבנה ינוב
 
-Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 38 rows: 29 pass, 0 fail, 6 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 29 pass, 0 fail, 6 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -8,7 +8,7 @@ Checklist: Zap SEO sheet · site https://80392936.ussl.co.il · 38 rows: 29 pass
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 2 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link https://zap.dbusiness.co/js/accessibility.html (Zap's central statement) |
 | 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | 👁 MANUAL | blog page yes, 0 posts; the posts come from BestLinks |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 54 images |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 55 images |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 38 images, 0 marked AI; compare with the client's folder from the spec |

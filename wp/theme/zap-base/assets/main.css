@@ -1239,7 +1239,9 @@ body { --zs-h1-cap: 9.4svh; }
 @media (max-width: 767px) {
   body .e-con.zs-hero--home { --padding-top: 10px; }
   body .e-con.zs-hero--home > .e-con-inner { --gap: 14px; gap: 14px; }
-  body .zs-hero--home .e-con.zs-hero__media { aspect-ratio: auto !important; height: clamp(104px, 22svh, 230px) !important; }
+  body .zs-hero--home:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) .e-con.zs-hero__media { aspect-ratio: auto !important; height: clamp(104px, 22svh, 230px) !important; }
+  /* cover/inset/curve heroes keep the photo behind the text on phones too */
+  body .zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .e-con.zs-hero__media { height: auto !important; aspect-ratio: auto !important; inset: 0; }
   body .zs-hero--home .zs-hero__media img { height: 100% !important; aspect-ratio: auto !important; }
   body .zs-hero--home .e-con.zs-hero__text { --row-gap: 10px; row-gap: 10px; }
   body .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(1.7rem, 7.6vw, 2.2rem); line-height: 1.08; }
@@ -1353,3 +1355,9 @@ body .zs-garland__w { position: absolute; inset: 0 0 auto 0; height: clamp(54px,
 body.zs-hv-split .zs-hero__slider { aspect-ratio: 1 / 1; height: auto; }
 body.zs-hv-centered .zs-hero__slider { aspect-ratio: 21 / 8; height: auto; width: 100%; }
 @media (max-width: 767px) { body.zs-hv-split .zs-hero__slider, body.zs-hv-centered .zs-hero__slider { aspect-ratio: 16 / 10; } }
+
+/* phones: the fixed bottom call bar is the one call button; the header's phone icon would be a second (client note) */
+@media (max-width: 767px) {
+  /* hidden, not removed: it keeps its slot so the menu button stays clear of the accessibility toolbar */
+  body:has(.zs-fab) .zs-header__cta, body:has(.zs-fab) .e-con.zs-header__in > .zs-header__cta { visibility: hidden; pointer-events: none; }
+}
