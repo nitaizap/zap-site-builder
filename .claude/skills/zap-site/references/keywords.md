@@ -20,7 +20,7 @@
 - Each service → its own term ("איתור נזילות בחיפה").
 - Hub/category pages → the category term, never a child's term.
 - About → a secondary term, often the profession + "מוסמך"/"מומלץ" variant, plus the brand name.
-- Contact → "צור קשר — <brand>" (navigational; not a competing term).
+- Contact → "צור קשר עם <brand>" (navigational; not a competing term).
 - Blog posts → **informational** terms the service pages do not own ("מה עושים כשיש נזילה מהתקרה").
 - Check the whole slug space: a post slug, a category slug and a page key must never collide.
 

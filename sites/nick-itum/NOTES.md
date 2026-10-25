@@ -46,3 +46,4 @@ Brief: איפיון 80272199 (25/10/2026). Research: research/old-site.md, resea
 - The PRD (brief) overrides every other source.
 - Composition chosen to differ from earlier sites: industrial / split hero / Karantina + Heebo, card trust, rows services, gallery of real work, no marquee/bento/route.
 - Certificates not published (not in PRD; show ID number).
+- Round 3 (user): "bland, AI-looking", no em dashes. Added `layers` (Nick's own tar-roof spec from the old site), `motif: gables` from the logo, "מהמחברת של ניק" tips, spec tables/tips in service pages; em dash now a validator error.

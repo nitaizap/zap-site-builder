@@ -46,7 +46,7 @@
   /* ---------- scroll reveal ---------- */
   var sel = '.zs-sec__title, .zs-sec__intro, .zs-card, .zs-feature, .zs-step, .zs-split__text, .zs-split__media,'
           + ' .zs-faq__list, .zs-postcard, .zs-trust__list li, .zs-cta__text, .zs-cta .zs-btns, .zs-gallery__img,'
-          + ' .zs-contact__info, .zs-contact__map, .zs-prose-sec .zs-prose';
+          + ' .zs-contact__info, .zs-contact__map, .zs-prose-sec .zs-prose, .zs-layers__stack, .zs-layers__item';
   if (motion) {
     var items = [].slice.call(document.querySelectorAll(sel)).filter(function (el) { return !el.closest('.zs-hero'); });
     items.forEach(function (el) {

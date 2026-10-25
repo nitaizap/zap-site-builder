@@ -45,7 +45,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ```json
 { "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
-  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "custom_css": "" }
+  "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "motif": "gables (optional: the brand shape as eyebrow mark + roofline above the lead band; for roofers/builders)", "custom_css": "" }
 ```
 
 Fonts available (self-hosted): Heebo, Assistant, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew,
@@ -91,6 +91,7 @@ Common: `title` (H2; `*word*` = accent colour, `
 | `quote` | `text`, `by` – a real quote from the owner only |
 | `marquee` | `items` [4–8 short slogan words] – big scrolling ticker on the accent colour (decorative, aria-hidden; the words must also exist as real text). `bg` default `accent` |
 | `road` | `vehicles` [scooter / van / truck — illustrated SVGs from `wp/theme/zap-base/assets/vehicles/`, other names fall back to the line icon], `items` [2–4 short labels above the scene] – decorative street scene: two lanes of traffic, spinning wheels, skyline drifting behind; for delivery/transport/moving/towing clients; parked under reduced motion |
+| `layers` | `items` [3–6 × `title`, `text`, `spec` (short fact: "1.5 ק״ג למ״ר")], first item = bottom layer – a build-up drawn as a cross-section (roof, waterproofing, floor, insulation) beside an editable numbered list; bands lay down on scroll. Use the client's real spec, never invented numbers |
 | `route` | `items` [3–5 × `icon`, `title`, `text`], optional `vehicle` (default scooter), `cta` – "how it works" as a route: a vehicle rides the track with the scroll, each stop lights up when reached. Steps are native containers (editable); all lit without JS / reduced motion. Steps must describe the client's real process (from the brief) |
 
 Icons: check, shield, clock, phone, wrench, tools, home, building, users, user, award, truck, droplet,

@@ -7,7 +7,7 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 - Accessibility statement link → `https://zap.dbusiness.co/js/accessibility.html` ("הצהרת נגישות אתר"),
   never a local statement page. Ally (pojo-accessibility) installed; skip link to `main#content`; one `<main>`.
 - Zap Group logo (183×26) in the footer bar, linking to https://zapgroup.co.il/ in a new tab.
-- Copyright line `© <year> <client> — כל הזכויות שמורות` (+ AI-images note when set).
+- Copyright line `© <year> <client> · כל הזכויות שמורות` (+ AI-images note when set).
 - One uniform lead form in the footer of every page except Contact (which has its own full form).
 - Every form: required consent checkbox linking the privacy policy; honeypot + signed time trap + content
   signals; a missing token never blocks a real visitor; blocked attempts logged (last 50).
@@ -37,6 +37,8 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 - One real test lead on launch day, into the client's inbox.
 
 ## Never
+
+- An em dash (—) anywhere in site copy (validator error). Commas, colons, periods, line breaks.
 
 - Copy `zapgroup.co.il/terms` onto a client site (it names Zap as the operator of the client's site).
 - Invent reviews, ratings, awards, case counts, or a founding year.

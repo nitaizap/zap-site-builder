@@ -11,7 +11,7 @@ bland. Every site must have, measured by eye on the preview before the gate:
 - **One strong idea from the brand**, carried everywhere: for a courier it is speed (italic black type,
   light trails, a moving road, a ticker); for a law office it is gravity (serif, hairlines, stillness).
 - **Display typography**: H1 at 5rem+ on desktop, weight 800–900, tight leading; the brand half of the
-  H1 on its own line in the accent colour (the `keyword — brand` H1 does this automatically).
+  H1 on its own line in the accent colour (an H1 that ends with the brand name does this automatically).
 - **A cinematic hero**: a full-bleed photo shot for the brand's mood (night, golden hour, macro), 2K, and
   where the budget allows a 2–4 s silent video loop (Veo image-to-video, then check every frame for
   people, text and logos; trim and crossfade with ffmpeg rather than reroll).
@@ -39,6 +39,15 @@ template even with new colours. For each site decide from the brief and audience
   `route`, vehicle rides) are for that kind of client only. Real-work `gallery` and `logos` of
   certifications suit trades; `quote` needs a real quote.
 - The three gate directions differ in preset, hero, type and radius, and none of them repeats the previous site.
+
+### Identity, not AI slop
+
+Generic phrasing and generic blocks are what make a site read as AI. Every site needs at least one element
+that only this client could have: the client's own expertise as content (their numbers, their method, their
+warnings, from their old site, articles or brief), shown in a form that fits the trade (`layers` for a
+build-up, `route` for a journey, a spec table in `prose`), plus the logo's own shape as furniture
+(`design.motif`). Copy in the client's voice: short, concrete, specific ("3 ק״ג זפת למ״ר"), never
+"פתרונות מקצועיים", "שירות אמין ואיכותי", "ארבע סיבות לבחור בנו". No em dashes.
 
 ## Make three directions that are actually different
 
@@ -69,7 +78,7 @@ The engine does most of it by default; your copy and choices must use it:
 
 - **Headlines carry the design.** Short, strong, two-line H1/H2s. In `site.json` use `\n` where the
   meaning breaks, `*word*` to put the brand or key phrase in the accent colour, and end statements with a
-  period (it renders as an accent dot): `"אינסטלטור בחיפה\nוהקריות — *מים טובים*."`. Use it on
+  period (it renders as an accent dot): `"אינסטלטור בחיפה\nוהקריות, *מים טובים*."`. Use it on
   the hero and 2–3 section titles per page, not on every heading.
 - **An eyebrow on every section** (`eyebrow`: 1–3 words: "השירותים", "מי אנחנו", "הצעד הבא").
 - **Asymmetric section heads**: give sections a real 1–2 sentence `intro`; it sits beside the title.

@@ -155,6 +155,8 @@ def validate(d, site_dir):
             E(f"{path}: placeholder text: '{PLACEHOLDER.search(txt).group(0)}'")
         if MEDIA_LABEL.search(txt):
             E(f"{path}: visible media label/instruction: '{MEDIA_LABEL.search(txt).group(0)}'")
+        if "\u2014" in txt:
+            E(f"{path}: em dash (—) is not allowed in site copy (Zap rule): use a comma, colon, period or a line break")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
     return out

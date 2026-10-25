@@ -176,6 +176,7 @@ add_filter('body_class', function ($classes) {
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');
     $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');
+    if (!empty($d['motif'])) $classes[] = 'zs-motif-' . sanitize_html_class($d['motif']);   // brand shape: gables
     if (($d['header'] ?? 'light') === 'dark' && zs_opt('logo_light_id')) $classes[] = 'zs-has-logo-light';
     if (zs_is_elementor()) $classes[] = 'zs-built';
     if (is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact') $classes[] = 'zs-is-contact';
@@ -298,7 +299,7 @@ function zs_part_social() {
 function zs_part_copyright() {
     $name = zs_opt('business.name', get_bloginfo('name'));
     $note = zs_opt('footer.ai_images_note');
-    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . ' — כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
+    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . ' · כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
 }
 
 function zs_part_legal() {

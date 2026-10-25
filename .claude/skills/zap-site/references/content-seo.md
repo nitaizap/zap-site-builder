@@ -6,7 +6,7 @@ the user sees at the gate is what ships.
 ## H1
 
 - H1 = the page's keyword from the map, in natural Hebrew. Exactly one per page (the hero title).
-- Home and About: keyword + brand name: `אינסטלטור בחיפה — מים טובים אינסטלציה`.
+- Home and About: keyword + brand name: `אינסטלטור בחיפה מים טובים אינסטלציה` (an H1 that ends with the brand name puts the brand on its own line automatically).
 - A slogan goes under the H1 (hero `lead`) or in a section title, never in the H1.
 
 ## Five checks before the gate
@@ -26,7 +26,7 @@ the user sees at the gate is what ships.
 | `seo.description` | 140–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
 | `seo.keyword` | the owned keyword (unique across the site) | `איתור נזילות בחיפה` |
 
-"keyword — N שנות ניסיון | brand" works when N is a locked fact.
+"keyword, N שנות ניסיון | brand" works when N is a locked fact.
 
 ## Per page type
 
@@ -45,7 +45,7 @@ with a child.
 **About** (E-E-A-T): H1 = `אודות <brand> — <secondary keyword>`; who, since when, credentials as facts
 with dates, the owner's real photo when available, service areas.
 
-**Contact**: H1 `צור קשר — <brand>`; `contact` section (NAP + form + map). Hours: ask; never assume.
+**Contact**: H1 `צור קשר עם <brand>`; `contact` section (NAP + form + map). Hours: ask; never assume.
 The footer lead form is hidden on this page automatically.
 
 **Blog post**: H1 = informational term; first paragraph answers it; 500–800 words; H2/H3; at least one link
@@ -55,6 +55,7 @@ to the service that solves it (and `related_page` set, which adds a CTA box); au
 
 - Short paragraphs (2–3 sentences), answer first, lists where there is a list, a table where there is a
   comparison (`prose` supports `<table>`).
+- **No em dashes (—), ever** (Zap rule; the validator stops the build). Use a comma, colon, period or a line break. En dash only in ranges (א׳–ה׳, 07:00–22:00).
 - Natural Hebrew. Read it aloud: if it sounds translated, rewrite it. No AI tells (no "בעולם של היום",
   no "לא רק X אלא גם Y" habit, no em-dash in every sentence, no triplets of adjectives).
 - No instructions for obvious controls ("לחצו להגדלה"), no "תמונה להמחשה" labels: the validator blocks them.

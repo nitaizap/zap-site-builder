@@ -168,13 +168,19 @@ def sec_head(ctx, s, tag="h2"):
 
 # ---------- sections ----------
 
-def _h1_markup(t):
-    """'keyword — brand' -> two spans so presets can set the brand on its own line/colour. Text is unchanged."""
-    a, sep, b = t.partition(" — ")
-    if not sep:
+def _h1_markup(t, brand=""):
+    """H1 ending with the brand name ('keyword ניק איטום', or legacy 'keyword — brand') -> two spans so the
+    brand sits on its own line. The visible text has no dash (Zap rule); a hidden comma keeps it readable for
+    screen readers and search engines."""
+    a = b = ""
+    if brand and t.endswith(brand) and len(t) > len(brand) + 2:
+        a, b = t[:-len(brand)].rstrip(" ,|:\u2014\u2013-"), brand
+    elif " \u2014 " in t:
+        a, _, b = t.partition(" \u2014 ")
+    if not b:
         return html.escape(t, quote=False)
     return (f'<span class="zs-h1__k">{html.escape(a, quote=False)}</span>'
-            f'<span class="zs-h1__sep"> — </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
+            f'<span class="zs-h1__sep">, </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
 
 
 def hero(ctx, s):
@@ -184,7 +190,7 @@ def hero(ctx, s):
         W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
-         else heading(ctx, _h1_markup(s["title"]), "h1", "zs-hero__title", raw=True)),
+         else heading(ctx, _h1_markup(s["title"], ctx.site["business"]["name"]), "h1", "zs-hero__title", raw=True)),
         text(ctx, s.get("lead"), "zs-hero__lead"),
         buttons(ctx, s.get("cta"), s.get("cta2")),
         text(ctx, checks(s.get("points", [])), "zs-hero__points") if s.get("points") else None,
@@ -389,8 +395,29 @@ def route(ctx, s):
     return section(ctx, s, "zs-route", [*sec_head(ctx, s), lst, buttons(ctx, s.get("cta"))])
 
 
+def layers(ctx, s):
+    """A build-up shown as a cross-section: the items stack from the bottom layer (first item) up, each a band
+    of the drawing with its number, next to an editable list (title, text, optional `spec` such as "3 ק״ג למ״ר").
+    For anything built in layers: roofs, waterproofing, floors, insulation, road works. The bands lay down one
+    by one on scroll; all shown without JS / under reduced motion."""
+    items = s.get("items") or []
+    n = len(items)
+    bands = "".join(f'<span class="zs-layer zs-layer--{i + 1}" style="--zs-l:{i};--zs-n:{n}"><b>{i + 1:02d}</b></span>'
+                    for i in range(n))
+    stack = W(ctx, "html", {"html": f'<div class="zs-layers__draw" aria-hidden="true"><span class="zs-layers__sky"></span>'
+                                     f'<span class="zs-layers__bands">{bands}</span></div>'}, "zs-layers__stack")
+    rows = [C(ctx, "zs-layers__item", [
+        heading(ctx, f"{i + 1:02d}", "p", "zs-layers__num"),
+        heading(ctx, it["title"], "h3", "zs-layers__title"),
+        text(ctx, it.get("text"), "zs-layers__text"),
+        heading(ctx, it.get("spec"), "p", "zs-layers__spec"),
+    ]) for i, it in reversed(list(enumerate(items)))]
+    return section(ctx, s, "zs-layers", [*sec_head(ctx, s), C(ctx, "zs-layers__grid", [stack, C(ctx, "zs-layers__list", rows)]),
+                                         buttons(ctx, s.get("cta"))])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, reviews, video, quote, road, route, marquee)}
+                                     logos, posts, contact, reviews, video, quote, road, route, marquee, layers)}
 
 
 def render_page(ctx, sections):
