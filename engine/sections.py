@@ -395,23 +395,61 @@ def route(ctx, s):
     return section(ctx, s, "zs-route", [*sec_head(ctx, s), lst, buttons(ctx, s.get("cta"))])
 
 
-def layers(ctx, s):
-    """A build-up shown as a cross-section: the items stack from the bottom layer (first item) up, each a band
-    of the drawing with its number, next to an editable list (title, text, optional `spec` such as "3 ק״ג למ״ר").
-    For anything built in layers: roofs, waterproofing, floors, insulation, road works. The bands lay down one
-    by one on scroll; all shown without JS / under reduced motion."""
-    items = s.get("items") or []
+LAYER_TH = {"base": 0, "primer": 7, "tar": 15, "mesh": 9, "membrane": 16, "white": 10, "coat": 12, "screed": 20, "tile": 14}
+
+
+def _layers_svg(items):
+    """Roof cross-section (concrete slab + parapet, layers turned up the parapet, flashing on top), drawn to a
+    fixed scale so every site gets the same clean technical look. Item `kind` picks the material: base (the
+    slab itself: preparation), primer, tar, mesh, membrane, white, coat, screed, tile."""
+    X0, YS, X1, YT = 112, 270, 640, 130          # parapet face, slab top, right edge, upturn top
+    g, off = [], 0
     n = len(items)
-    bands = "".join(f'<span class="zs-layer zs-layer--{i + 1}" style="--zs-l:{i};--zs-n:{n}"><b>{i + 1:02d}</b></span>'
-                    for i in range(n))
-    stack = W(ctx, "html", {"html": f'<div class="zs-layers__draw" aria-hidden="true"><span class="zs-layers__sky"></span>'
-                                     f'<span class="zs-layers__bands">{bands}</span></div>'}, "zs-layers__stack")
-    rows = [C(ctx, "zs-layers__item", [
+    for i, it in enumerate(items):
+        k = it.get("kind", "tar")
+        th = LAYER_TH.get(k, 9)
+        a, b = off, off + th
+        if th:
+            pts = f"{X0 + a},{YT} {X0 + b},{YT} {X0 + b},{YS - b} {X1},{YS - b} {X1},{YS - a} {X0 + a},{YS - a}"
+            shape = f'<polygon class="zs-lx__m zs-lx--{k}" points="{pts}"/>'
+            ty = YS - (a + b) / 2
+        else:
+            shape, ty = "", YS + 34
+        bx = 220 + (370 * i / max(n - 1, 1))
+        g.append(f'<g class="zs-lx" data-i="{i}" style="--zs-l:{i}">{shape}'
+                 f'<line class="zs-lx__lead" x1="{bx:.0f}" y1="70" x2="{bx:.0f}" y2="{ty:.1f}"/>'
+                 f'<circle class="zs-lx__dot" cx="{bx:.0f}" cy="{ty:.1f}" r="3.5"/>'
+                 f'<circle class="zs-lx__badge" cx="{bx:.0f}" cy="52" r="19"/>'
+                 f'<text class="zs-lx__n" x="{bx:.0f}" y="58" text-anchor="middle">{i + 1:02d}</text></g>')
+        off = b
+    fl = X0 + off + 10
+    return (f'<svg class="zs-layers__svg" viewBox="0 0 640 372" role="img" aria-hidden="true" direction="ltr">'
+            '<defs><pattern id="zsHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+            '<line x1="0" y1="0" x2="0" y2="9" class="zs-lx__hl"/></pattern>'
+            '<pattern id="zsMesh" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#efe3b4"/><path d="M0 0L6 6M6 0L0 6" class="zs-lx__ml"/></pattern>'
+            '<pattern id="zsGrain" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#59606b"/><circle cx="1.5" cy="1.5" r=".9" class="zs-lx__gr"/>'
+            '<circle cx="4" cy="3.6" r=".7" class="zs-lx__gr"/></pattern></defs>'
+            f'<rect class="zs-lx__sky" x="0" y="0" width="640" height="{YS}"/>'
+            f'<path class="zs-lx__slab" d="M0 {YS}H{X1}V340H0Z"/><path class="zs-lx__slab" d="M48 {YT - 22}H{X0}V{YS}H48Z"/>'
+            f'<path class="zs-lx__slab zs-lx__slab--h" d="M0 {YS}H{X1}V340H0Z"/><path class="zs-lx__slab zs-lx__slab--h" d="M48 {YT - 22}H{X0}V{YS}H48Z"/>'
+            f'<path class="zs-lx__ceil" d="M0 340H640V356H0Z"/>'
+            f'<path class="zs-lx__flash" d="M40 {YT - 26}H{fl}V{YT + 18}"/>'
+            + "".join(g) + '</svg>')
+
+
+def layers(ctx, s):
+    """A build-up shown as a technical cross-section of a roof: each item is a material layer (`kind`), turned up
+    the parapet, with a numbered leader line; beside it an editable numbered list (title, text, optional `spec`
+    such as "1.5 ק״ג למ״ר"). Layers draw in on scroll, then highlight one by one; hovering or tapping a list
+    item or a layer highlights the pair. Without JS / under reduced motion everything is shown, static."""
+    items = s.get("items") or []
+    stack = W(ctx, "html", {"html": f'<div class="zs-layers__draw">{_layers_svg(items)}</div>'}, "zs-layers__stack")
+    rows = [C(ctx, f"zs-layers__item zs-li-{i}", [
         heading(ctx, f"{i + 1:02d}", "p", "zs-layers__num"),
         heading(ctx, it["title"], "h3", "zs-layers__title"),
         text(ctx, it.get("text"), "zs-layers__text"),
         heading(ctx, it.get("spec"), "p", "zs-layers__spec"),
-    ]) for i, it in reversed(list(enumerate(items)))]
+    ]) for i, it in enumerate(items)]
     return section(ctx, s, "zs-layers", [*sec_head(ctx, s), C(ctx, "zs-layers__grid", [stack, C(ctx, "zs-layers__list", rows)]),
                                          buttons(ctx, s.get("cta"))])
 

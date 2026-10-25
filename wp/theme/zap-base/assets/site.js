@@ -274,3 +274,46 @@
     }
   }
 })();
+
+/* layers: highlight a layer and its list item together (hover / tap / focus); auto-tour once when it comes into view */
+(function () {
+  document.querySelectorAll('.zs-layers').forEach(function (sec) {
+    var draw = sec.querySelector('.zs-layers__draw'); if (!draw) return;
+    var gs = [].slice.call(draw.querySelectorAll('.zs-lx'));
+    var rows = [].slice.call(sec.querySelectorAll('.zs-layers__item'));
+    var user = false, timer = null;
+    function hl(i) {
+      draw.classList.toggle('has-hl', i >= 0);
+      gs.forEach(function (g, k) { g.classList.toggle('is-hl', k === i); });
+      rows.forEach(function (r, k) { r.classList.toggle('is-hl', k === i); });
+    }
+    function take(i) { user = true; clearInterval(timer); hl(i); }
+    rows.forEach(function (r, i) {
+      r.setAttribute('tabindex', '0');
+      r.addEventListener('mouseenter', function () { take(i); });
+      r.addEventListener('focus', function () { take(i); });
+      r.addEventListener('click', function () { take(i); });
+    });
+    gs.forEach(function (g, i) {
+      g.addEventListener('mouseenter', function () { take(i); });
+      g.addEventListener('click', function () { take(i); });
+    });
+    sec.addEventListener('mouseleave', function () { if (user) hl(-1); });
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect();
+      var i = 0;
+      setTimeout(function () {
+        if (user) return;
+        hl(0);
+        timer = setInterval(function () {      /* one tour, then rest: no endless motion */
+          if (user) return clearInterval(timer);
+          i++; if (i >= gs.length) { clearInterval(timer); hl(-1); return; }
+          hl(i);
+        }, 1800);
+      }, gs.length * 220 + 900);
+    }, { threshold: 0.35 });
+    io.observe(draw);
+  });
+})();

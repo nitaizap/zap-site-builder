@@ -12,27 +12,27 @@
 
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
-| desktop | /צור-קשר/ | 0 | 0 | 714 |  |
-| desktop | /מדיניות-פרטיות/ | 0 | 1 | 870 | meta description length 62 |
-| desktop | /שירותי-איטום/איטום-גגות/ | 0 | 0 | 927 |  |
-| desktop | /שירותי-איטום/יריעות-ביטומניות/ | 0 | 0 | 1088 |  |
-| desktop | /שירותי-איטום/איתור-נזילות/ | 0 | 0 | 776 |  |
-| desktop | /שירותי-איטום/איטום-בפוליאוריטן/ | 0 | 0 | 954 |  |
-| desktop | /שירותי-איטום/סיוד-גגות/ | 0 | 0 | 829 |  |
-| desktop | /שירותי-איטום/חומרי-איטום-מיוחדים/ | 0 | 0 | 908 |  |
-| desktop | /שירותי-איטום/איטום-חדרים-רטובים/ | 0 | 0 | 827 |  |
-| desktop | / | 0 | 2 | 1430 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
-| desktop | /שירותי-איטום/ | 0 | 0 | 1332 |  |
-| desktop | /אודות/ | 0 | 0 | 946 |  |
-| mobile | /צור-קשר/ | 0 | 0 | 714 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 1 | 870 | meta description length 62 |
-| mobile | /שירותי-איטום/איטום-גגות/ | 0 | 0 | 819 |  |
-| mobile | /שירותי-איטום/יריעות-ביטומניות/ | 0 | 0 | 855 |  |
-| mobile | /שירותי-איטום/איתור-נזילות/ | 0 | 0 | 776 |  |
-| mobile | /שירותי-איטום/איטום-בפוליאוריטן/ | 0 | 0 | 828 |  |
-| mobile | /שירותי-איטום/סיוד-גגות/ | 0 | 0 | 788 |  |
-| mobile | /שירותי-איטום/חומרי-איטום-מיוחדים/ | 0 | 0 | 817 |  |
-| mobile | /שירותי-איטום/איטום-חדרים-רטובים/ | 0 | 0 | 786 |  |
-| mobile | / | 0 | 2 | 1412 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
-| mobile | /שירותי-איטום/ | 0 | 0 | 1265 |  |
-| mobile | /אודות/ | 0 | 0 | 917 |  |
+| desktop | /צור-קשר/ | 0 | 0 | 694 |  |
+| desktop | /מדיניות-פרטיות/ | 0 | 1 | 850 | meta description length 62 |
+| desktop | /שירותי-איטום/איטום-גגות/ | 0 | 0 | 969 |  |
+| desktop | /שירותי-איטום/יריעות-ביטומניות/ | 0 | 0 | 1068 |  |
+| desktop | /שירותי-איטום/איתור-נזילות/ | 0 | 0 | 772 |  |
+| desktop | /שירותי-איטום/איטום-בפוליאוריטן/ | 0 | 0 | 880 |  |
+| desktop | /שירותי-איטום/סיוד-גגות/ | 0 | 0 | 808 |  |
+| desktop | /שירותי-איטום/חומרי-איטום-מיוחדים/ | 0 | 0 | 888 |  |
+| desktop | /שירותי-איטום/איטום-חדרים-רטובים/ | 0 | 0 | 864 |  |
+| desktop | / | 0 | 2 | 1931 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
+| desktop | /שירותי-איטום/ | 0 | 0 | 1458 |  |
+| desktop | /אודות/ | 0 | 0 | 926 |  |
+| mobile | /צור-קשר/ | 0 | 0 | 694 |  |
+| mobile | /מדיניות-פרטיות/ | 0 | 1 | 850 | meta description length 62 |
+| mobile | /שירותי-איטום/איטום-גגות/ | 0 | 0 | 810 |  |
+| mobile | /שירותי-איטום/יריעות-ביטומניות/ | 0 | 0 | 835 |  |
+| mobile | /שירותי-איטום/איתור-נזילות/ | 0 | 0 | 757 |  |
+| mobile | /שירותי-איטום/איטום-בפוליאוריטן/ | 0 | 0 | 809 |  |
+| mobile | /שירותי-איטום/סיוד-גגות/ | 0 | 0 | 768 |  |
+| mobile | /שירותי-איטום/חומרי-איטום-מיוחדים/ | 0 | 0 | 797 |  |
+| mobile | /שירותי-איטום/איטום-חדרים-רטובים/ | 0 | 0 | 790 |  |
+| mobile | / | 0 | 2 | 1579 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
+| mobile | /שירותי-איטום/ | 0 | 0 | 1335 |  |
+| mobile | /אודות/ | 0 | 0 | 897 |  |

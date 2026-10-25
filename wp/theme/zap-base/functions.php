@@ -169,8 +169,26 @@ function zs_tokens_css() {
     return $css;
 }
 
+function zs_lum($hex) {
+    $h = ltrim((string) $hex, '#');
+    if (strlen($h) === 3) $h = $h[0] . $h[0] . $h[1] . $h[1] . $h[2] . $h[2];
+    if (!preg_match('/^[0-9a-f]{6}$/i', $h)) return null;
+    $c = array_map(function ($i) use ($h) { $v = hexdec(substr($h, $i, 2)) / 255; return $v <= .03928 ? $v / 12.92 : pow(($v + .055) / 1.055, 2.4); }, [0, 2, 4]);
+    return .2126 * $c[0] + .7152 * $c[1] + .0722 * $c[2];
+}
+function zs_contrast($a, $b) {
+    $x = zs_lum($a); $y = zs_lum($b);
+    if ($x === null || $y === null) return 21;
+    return (max($x, $y) + .05) / (min($x, $y) + .05);
+}
+
 add_filter('body_class', function ($classes) {
     $d = zs_design();
+    // A saturated accent on a saturated primary (red on blue) blends in: the theme then uses white for accent
+    // details on primary/dark grounds (eyebrows, dots, icons, buttons). Measured, not guessed.
+    $col = $d['colors'] ?? [];
+    if (!empty($col['accent']) && (zs_contrast($col['accent'], $col['primary'] ?? '#000') < 3 || zs_contrast($col['accent'], $col['dark'] ?? '#000') < 3))
+        $classes[] = 'zs-accent-low';
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
     if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
