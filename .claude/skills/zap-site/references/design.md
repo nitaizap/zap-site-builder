@@ -22,8 +22,23 @@ bland. Every site must have, measured by eye on the preview before the gate:
   footer, plus/minus FAQ, image wipe-ins, word-by-word H1 entrance.
 - **Brand colours exactly from the logo** (sample the pixels), with a darker primary only if contrast needs it.
 
-Start from `preset: signature` with `motion: lively`, then tune. Use the calmer presets only when the
+Pick the preset per site (see *No two sites alike*); `motion: lively` for consumer brands. Use the calmer presets only when the
 client's audience calls for it (medical, legal, finance).
+
+## No two sites alike
+
+A new site must not look like the last one. Users compare sites side by side; a reused composition reads as a
+template even with new colours. For each site decide from the brief and audience, and write the choice in NOTES.md:
+
+- **preset** – rotate through all six; `signature` is one option, not the default.
+- **hero** – `image` / `split` / `centered`, with `images` slider or a single photo, with or without `points`.
+- **fonts** – every pairing in the table below is available; don't reuse the previous site's pair.
+- **home composition** – pick from the full section list (`trust` band *or* card, `cards` bento / overlay /
+  classic / icon, `features`, `steps`, `route`, `split`, `gallery`, `logos`, `quote`, `video`, `marquee`,
+  `road`, `reviews`, `posts`, `prose`, `faq`, `cta`). Sections that exist for one kind of client (`road`,
+  `route`, vehicle rides) are for that kind of client only. Real-work `gallery` and `logos` of
+  certifications suit trades; `quote` needs a real quote.
+- The three gate directions differ in preset, hero, type and radius, and none of them repeats the previous site.
 
 ## Make three directions that are actually different
 
@@ -54,7 +69,7 @@ The engine does most of it by default; your copy and choices must use it:
 
 - **Headlines carry the design.** Short, strong, two-line H1/H2s. In `site.json` use `\n` where the
   meaning breaks, `*word*` to put the brand or key phrase in the accent colour, and end statements with a
-  period (it renders as an accent dot): `"חברת שליחויות בחיפה\nוהצפון — *מהירות האור*."`. Use it on
+  period (it renders as an accent dot): `"אינסטלטור בחיפה\nוהקריות — *מים טובים*."`. Use it on
   the hero and 2–3 section titles per page, not on every heading.
 - **An eyebrow on every section** (`eyebrow`: 1–3 words: "השירותים", "מי אנחנו", "הצעד הבא").
 - **Asymmetric section heads**: give sections a real 1–2 sentence `intro`; it sits beside the title.
@@ -64,7 +79,7 @@ The engine does most of it by default; your copy and choices must use it:
   `faq` → `cta` (brand colour). The light lead-form band and the dark footer follow automatically, so
   the page ends brand colour → light → dark; never stack three dark blocks.
 - **Preset**: `signature` (sharp, hairlines, one accent, editorial-industrial) is the strongest default for
-  B2B, trades, logistics, legal and industry. Make it one of the three directions every time.
+  B2B, trades, logistics, legal and industry. Offer it when it fits, but not on every site.
 - **Hero**: `image` (cinematic, ~90% of the screen, text over a deep gradient) whenever you have a strong
   photo; `split` when the photo is small or busy. Render an image hero at 2K.
 - **Type**: headings in a heavy grotesk (Heebo or Rubik, weight 800) for modern brands, Frank Ruhl Libre

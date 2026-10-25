@@ -2,25 +2,25 @@
 
 אותו תוכן, אותו מבנה. משתנים רק צבעים, גופנים, פינות וסגנון ה-Hero. בוחרים אות אחת.
 
-## A · גג בגובה העיניים: צילום מלא, טיפוגרפיה כבדה, כחול-אדום של הלוגו
+## A · קבלן בשטח: חד ותעשייתי, Karantina דחוסה, תמונת עבודה אמיתית בצד, פסי אדום
 
-סגנון `signature` · Hero `image` · גופנים Rubik / Assistant
+סגנון `industrial` · Hero `split` · גופנים Karantina / Heebo
 
 | מחשב | נייד |
 |---|---|
 | <img src="dir-a-desktop.jpg" width="620"> | <img src="dir-a-mobile.jpg" width="250"> |
 
-## B · ותיק ואמין: בהיר ונקי, תמונה ממוסגרת, פינות רכות
+## B · חזק ובולט: תמונת גג מלאה, כותרות Suez One, כפתורים עם צל
 
-סגנון `clean` · Hero `split` · גופנים Heebo / Heebo
+סגנון `bold` · Hero `image` · גופנים Suez One / Assistant
 
 | מחשב | נייד |
 |---|---|
 | <img src="dir-b-desktop.jpg" width="620"> | <img src="dir-b-mobile.jpg" width="250"> |
 
-## C · קבלן תעשייתי: חד, כבד, קווים אדומים, כותרת עליונה כהה
+## C · ותיק ושקט: בהיר בלי רקעים כהים, כותרות סריף, פתיחה ממורכזת
 
-סגנון `industrial` · Hero `centered` · גופנים IBM Plex Sans Hebrew / Heebo
+סגנון `editorial` · Hero `centered` · גופנים Noto Serif Hebrew / Heebo
 
 | מחשב | נייד |
 |---|---|

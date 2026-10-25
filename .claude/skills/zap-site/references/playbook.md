@@ -1,8 +1,9 @@
 # Playbook — how a site actually goes, round by round
 
-The worked case is **מהירות האור שליחויות** (courier, Haifa; `examples/mehirut-haor/`, built Oct 2026), the first
+The worked case is **מהירות האור שליחויות** (courier, Haifa, built Oct 2026; its files are no longer kept as an example), the first
 site taken from brief to a live, editable Novamira site. SKILL.md is the order of work; this file is what
-each step looked like in practice, what the user pushed back on, and what was learned. Read it once before a
+each step looked like in practice, what the user pushed back on, and what was learned. These are lessons, not a layout: never rebuild that
+site's composition for another client. Read it once before a
 new site, and again before the gate and before delivery.
 
 ## The rounds, as they happened

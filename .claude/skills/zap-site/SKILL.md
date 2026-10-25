@@ -33,7 +33,7 @@ before doing the step — every one encodes mistakes already made.
 | design + gate | `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
-| examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
+| examples | `examples/sample-plumber/` (minimal, the engine test: schema only, never a look to copy) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
 
 ## Iron rules
@@ -80,8 +80,9 @@ email do block.
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the
-  structure and finish level, never from a blank file.
+  `references/site-json.md`. **Compose each site from the whole catalogue** (6 presets × 3 heroes × tone ×
+  ~20 section types × fonts): never copy a previous client's site.json, section order or look. Each site's
+  composition is chosen from its own brief and audience (`references/design.md` → *No two sites alike*).
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
 ## 3 · Preview — ⏸ the one gate
@@ -128,7 +129,7 @@ direction, say which and why in one line, and continue without waiting.
 6. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
    and its content, components, prohibitions such as "no food deliveries", delivery) → ✅ / ➖ with the
    reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
-   site.json". Grep site.json for every prohibited word. Example: `examples/mehirut-haor/BRIEF-CHECK.md`.
+   site.json". Grep site.json for every prohibited word. Format: a table per brief section, one row per line of the brief.
 7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
 
 ## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)

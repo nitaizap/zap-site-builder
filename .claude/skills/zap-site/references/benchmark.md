@@ -6,7 +6,6 @@ Read (open the images) before the design gate. These are the Zap builds the user
 |---|---|
 | `benchmark/vlad-hydronics-desktop.jpg` | Vlad's build (hydronics.zapsites.co.il). The reference. |
 | `benchmark/zap-template-towing-desktop.jpg` | A strong Zap template (towing): cinematic hero, orange stat band, real photo grid. |
-| `benchmark/engine-v2-mehirut-haor-desktop.jpg` | This engine after the finish layer, on the first pilot's real content. |
 
 ## What makes the reference look expensive
 

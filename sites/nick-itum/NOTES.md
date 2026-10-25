@@ -7,7 +7,7 @@ Brief: איפיון 80272199 (25/10/2026). Research: research/old-site.md, resea
 |---|---|---|
 | name | ניק איטום | brief |
 | owner | ניק בונביוב | brief (certificates spell בנובייב — ask) |
-| display phone | 072-3220722 (Zap tracking) | brief "מספר מקשר" + old site header |
+| display phone | 054-6242489 | brief (PRD wins over old site 072-3220722) |
 | WhatsApp | 054-6242489 | brief + old site |
 | email (public + leads) | nickitum1@gmail.com | brief |
 | address | זכרון יעקב 18, כניסה א׳, פתח תקווה | brief + old site + d.co.il |
@@ -41,3 +41,8 @@ Brief: איפיון 80272199 (25/10/2026). Research: research/old-site.md, resea
 | …/איטום-חדרים-רטובים | איטום חדרים רטובים | איטום חדרים רטובים |
 | אודות | קבלן איטום מורשה | אודות ניק איטום — קבלן איטום מורשה |
 | צור-קשר | צור קשר ניק איטום | צור קשר — ניק איטום |
+
+## Rule (user, 2026-10-25)
+- The PRD (brief) overrides every other source.
+- Composition chosen to differ from earlier sites: industrial / split hero / Karantina + Heebo, card trust, rows services, gallery of real work, no marquee/bento/route.
+- Certificates not published (not in PRD; show ID number).
