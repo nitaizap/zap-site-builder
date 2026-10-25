@@ -14,7 +14,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 29 pass, 0 fa
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 38 images, 0 marked AI; compare with the client's folder from the spec |
 | 11 | כפתורים ויצירת קשר | לינק וואטסאפ למספר הנכון + טאב חדש | — N/A | no WhatsApp number in the brief |
 | 12 | כפתורים ויצירת קשר | כפתור וואטסאפ צף בכל האתר (טאב חדש) | — N/A | no WhatsApp number |
-| 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 054-6666662 |
+| 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 055-4309532 |
 | 14 | כפתורים ויצירת קשר | כפתורי טלפון עם tel: לחיוג ישיר | ✅ PASS |  |
 | 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
@@ -32,7 +32,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 29 pass, 0 fa
 | 28 | עמוד 404 | שורת חיפוש בעמוד 404 | ✅ PASS |  |
 | 29 | עמוד 404 | קישורים פופולריים / קטגוריות | ✅ PASS |  |
 | 30 | תבניות | טמפלט תוצאות חיפוש עם רשימת פוסטים | ✅ PASS | HTTP 200 |
-| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 054-6666662, shimon@ashrh.co.il, מורד התאנה 29, ינוב; compare with the spec |
+| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 055-4309532, shimon@ashrh.co.il, מורד התאנה 29, ינוב; compare with the spec |
 | +2 | כללי | לוגו זאפ בפוטר + קישור לאתר זאפ | ✅ PASS |  |
 | +3 | כללי | H1 בדף הבית כולל את שם הלקוח | ✅ PASS | וילה פרטית לנופש ואירועים בשרון הוילה הלבנה |
 | +4 | כללי | עמוד פנימי שונה מפוסט | ✅ PASS | pages render through Elementor page layouts, posts through single.php |

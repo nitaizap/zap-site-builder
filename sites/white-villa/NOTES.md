@@ -3,7 +3,7 @@
 | fact | value | source |
 |---|---|---|
 | client no. | 80392936 (weekend 27824) | איפיון xlsx |
-| phone (also WhatsApp) | 054-6666662 | xlsx ("טלפון ישיר"); WhatsApp field empty → same mobile (assumption) |
+| phone (site) | 055-4309532 | Weekend tracking number, from the user (weekend.co.il/villas/white-villa-yanuv). The business line 054-6666662 behind it stays off the site. No WhatsApp (not in the brief). |
 | email | shimon@ashrh.co.il | xlsx |
 | address | מורד התאנה 29, ינוב | xlsx |
 | Instagram | instagram.com/_the_white_villa | xlsx |

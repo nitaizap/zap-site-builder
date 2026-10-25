@@ -1361,3 +1361,9 @@ body.zs-hv-centered .zs-hero__slider { aspect-ratio: 21 / 8; height: auto; width
   /* hidden, not removed: it keeps its slot so the menu button stays clear of the accessibility toolbar */
   body:has(.zs-fab) .zs-header__cta, body:has(.zs-fab) .e-con.zs-header__in > .zs-header__cta { visibility: hidden; pointer-events: none; }
 }
+
+/* phones: the accessibility toolbar (Ally / pojo) never sits on the header's menu button; it parks on the
+   start edge above the bottom call bar (where the Zap hosts already put it) */
+@media (max-width: 767px) {
+  body #pojo-a11y-toolbar { top: auto !important; bottom: 150px !important; }
+}
