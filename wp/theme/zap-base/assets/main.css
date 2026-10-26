@@ -1447,3 +1447,7 @@ html body.zs-motif-gables :is(.zs-bg-primary, .zs-bg-dark, .zs-hero--img) .zs-ey
 /* layers: drawing sticks beside the list instead of floating mid-height; tighter head */
 body .e-con.zs-layers__grid { align-items: start; margin-top: 8px; }
 body .e-con.zs-layers__item { padding-block: 10px; }
+
+/* FAQ icon: Elementor sets the toggle icon's width (~1em), squashing the round chip into a half-circle */
+body .zs-faq__list .elementor-toggle .elementor-toggle-icon { min-width: 30px; flex: 0 0 30px; }
+body.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon { min-width: 38px; flex-basis: 38px; }

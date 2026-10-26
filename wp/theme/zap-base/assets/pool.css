@@ -310,3 +310,5 @@ body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); 
 .zs-search { padding-block: clamp(32px, 5vw, 72px); }
 .zs-search__list { display: grid; gap: 22px; margin-top: 28px; padding: 0; list-style: none; }
 .zs-search__list h2 { font-size: 1.25rem; margin: 0 0 4px; }
+/* tiles: the action on the accent half reads in the accent's own ink (a primary button on an accent ground often blends) */
+body .zs-tile--b .zs-b-primary .elementor-button { background: var(--c-accent-ink); color: var(--c-accent); border-color: var(--c-accent-ink); }
