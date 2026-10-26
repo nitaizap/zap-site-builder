@@ -366,7 +366,8 @@ def run_qa(site):
             page.goto(site.url + "/", wait_until="networkidle")
             page.wait_for_timeout(400)
             fold = page.evaluate("""() => { const bs = [...document.querySelectorAll('.zs-hero--home .zs-btns .elementor-button')].slice(0, 2);
-                const bar = document.querySelector('.zs-fab'); const lim = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect().top : innerHeight;
+                const bar = document.querySelector('.zs-fab'); const br = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect() : null;
+                const lim = br && br.width > innerWidth * .6 ? br.top : innerHeight;   /* only a full-width call bar (phones), not the desktop floating WhatsApp button */
                 return bs.length ? Math.max(...bs.map(b => b.getBoundingClientRect().bottom)) - lim : null; }""")
             if fold is not None:
                 extra.append((f"hero buttons above the fold at {fw}×{fh}" + ("" if fold <= 0 else f" — {round(fold)}px below"), fold <= 0))
