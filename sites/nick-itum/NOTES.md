@@ -48,3 +48,4 @@ Brief: איפיון 80272199 (25/10/2026). Research: research/old-site.md, resea
 - Certificates not published (not in PRD; show ID number).
 - Round 3 (user): "bland, AI-looking", no em dashes. Added `layers` (Nick's own tar-roof spec from the old site), `motif: gables` from the logo, "מהמחברת של ניק" tips, spec tables/tips in service pages; em dash now a validator error.
 - Round 4 (user): "dry, want colourful/alive/interactive; cleaner, accurate roof demo; use Weave". Weave 6 images (25.5 credits, approved). Preset bold + image hero slider, blue/red bands, interactive SVG roof section. Theme: zs-accent-low (measured accent/primary contrast), phone image hero without empty band.
+- 2026-10-26: pushed to https://80272199.ussl.co.il (staging lock on), live QA 0 errors. Orphan page 1229 left untouched (not in site.json).
