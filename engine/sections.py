@@ -577,6 +577,7 @@ VARIANTS = {
 def render_page(ctx, sections):
     out = []
     plain_i = 0
+    prev_bg = None
     for s in sections:
         t = s.get("type")
         if t not in SECTIONS:
@@ -587,6 +588,11 @@ def render_page(ctx, sections):
             plain_i += 1
         el = SECTIONS[t](ctx, s)
         if el:
+            # two neighbours on the same ground read as one band: the second drops most of its top padding
+            bg = s.get("bg") if t not in ("hero", "cta", "marquee", "trust", "tiles") else "-" + t
+            if out and bg and bg == prev_bg:
+                el["settings"]["css_classes"] += " zs-sec--joined"
+            prev_bg = bg
             out.append(el)
     return out
 

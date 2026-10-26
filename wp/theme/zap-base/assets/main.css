@@ -1451,3 +1451,7 @@ body .e-con.zs-layers__item { padding-block: 10px; }
 /* FAQ icon: Elementor sets the toggle icon's width (~1em), squashing the round chip into a half-circle */
 body .zs-faq__list .elementor-toggle .elementor-toggle-icon { min-width: 30px; flex: 0 0 30px; }
 body.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon { min-width: 38px; flex-basis: 38px; }
+
+/* same-ground neighbours (sections.py render_page): one band, not two paddings stacked */
+body .e-con.zs-sec.zs-sec--joined { --padding-top: calc(var(--sec-y) * .2); }
+body .e-con.zs-sec:has(+ .zs-sec--joined) { --padding-bottom: calc(var(--sec-y) * .55); }
