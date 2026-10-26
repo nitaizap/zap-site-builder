@@ -20,6 +20,7 @@ NEEDS_IMAGE = {("features", "aside"), ("contact", "photo"), ("cta", "photo"), ("
 RATING = re.compile(r"(★|⭐|\b[45][.,]\d\s*(כוכבים|ב-?גוגל|בגוגל|stars?)|דירוג\s*\d|\d+\s*ביקורות|\d+\s*חוות דעת)", re.I)
 SUPERLATIVE = re.compile(r"(הטוב(ה|ים)? ביותר|הכי טוב|המוביל(ה|ים)? ב|מספר\s*1(?!\d)|#1(?![0-9a-fA-F])|הזול ביותר|המומחה הגדול)")
 PLACEHOLDER = re.compile(r"(lorem|ipsum|TODO|TBD|XXX|\[\s*(שם|טלפון|כתובת|client|name)[^\]]*\]|PLACEHOLDER|לורם)", re.I)
+DASH = re.compile(r"\S?\s?—\s?\S?|\S?\s–\s\S?")
 MEDIA_LABEL = re.compile(r"(תמונ(ת|ות) אווירה|להמחשה בלבד|סרטון אווירה|לחצו להגדלה)")
 
 
@@ -201,8 +202,8 @@ def validate(d, site_dir):
             E(f"{path}: placeholder text: '{PLACEHOLDER.search(txt).group(0)}'")
         if MEDIA_LABEL.search(txt):
             E(f"{path}: visible media label/instruction: '{MEDIA_LABEL.search(txt).group(0)}'")
-        if "\u2014" in txt:
-            E(f"{path}: em dash (—) is not allowed in site copy (Zap rule): use a comma, colon, period or a line break")
+        if path.split(".")[-1] not in ("custom_css",) and DASH.search(txt):
+            E(f"{path}: dash as punctuation ('{DASH.search(txt).group(0).strip()}'): rewrite with a comma, colon, period or a line break (house rule: no em/en dashes in site copy)")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
     return out

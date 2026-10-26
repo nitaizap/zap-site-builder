@@ -318,7 +318,7 @@ function zs_part_social() {
 function zs_part_copyright() {
     $name = zs_opt('business.name', get_bloginfo('name'));
     $note = zs_opt('footer.ai_images_note');
-    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . ' · כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
+    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . '. כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
 }
 
 function zs_part_legal() {

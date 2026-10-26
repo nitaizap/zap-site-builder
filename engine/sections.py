@@ -171,11 +171,13 @@ def sec_head(ctx, s, tag="h2"):
 # ---------- sections ----------
 
 def _h1_markup(t, brand=""):
-    """H1 ending with the brand name ('keyword ניק איטום', or legacy 'keyword — brand') -> two spans so the
-    brand sits on its own line. The visible text has no dash (Zap rule); a hidden comma keeps it readable for
+    """Two spans, the brand on its own line: 'keyword\nbrand', an H1 ending with the brand name, or legacy
+    'keyword — brand'. No dash is ever rendered; a visually hidden comma keeps the text readable for
     screen readers and search engines."""
     a = b = ""
-    if brand and t.endswith(brand) and len(t) > len(brand) + 2:
+    if "\n" in t:
+        a, _, b = t.partition("\n")
+    elif brand and t.endswith(brand) and len(t) > len(brand) + 2:
         a, b = t[:-len(brand)].rstrip(" ,|:\u2014\u2013-"), brand
     elif " \u2014 " in t:
         a, _, b = t.partition(" \u2014 ")
@@ -225,7 +227,7 @@ def hero(ctx, s):
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
     slc = " zs-hero--slides zs-pausable" if len(keys) > 1 else ""
-    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [txt, media, ride])
+    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [garland(ctx, s), txt, media, ride])
 
 
 def trust(ctx, s):
@@ -333,6 +335,7 @@ def cta(ctx, s):
         return section(ctx, {**s, "bg": s.get("bg")}, "zs-ctaph",
                        [C(ctx, "zs-ctaph__media", [image(ctx, s.get("image"), "zs-ctaph__img", "large")]), panel])
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
+        garland(ctx, s),
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                 heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
@@ -512,8 +515,43 @@ def layers(ctx, s):
                                          buttons(ctx, s.get("cta"))])
 
 
+def garland(ctx, s):
+    """Decorative string of festoon bulbs hanging in two swags across the top of a section (hero, cta).
+    The bulbs twinkle a few times and the string sways, then both settle (no endless motion); aria-hidden.
+    On with `garland: true` on the section, or `design.garland: true` for every hero and cta."""
+    if not (s.get("garland", (ctx.site.get("design") or {}).get("garland"))):
+        return None
+    n, bulbs = 17, []
+    for i in range(n):
+        x = i / (n - 1) * 100
+        u = (x % 50) / 50
+        y = 112 * u * (1 - u) / 40 * 100           # on the quadratic swag of the wire below (viewBox 100x40)
+        bulbs.append(f'<span class="zs-garland__b" style="--x:{x:.2f}%;--y:{y:.1f}%;--i:{i}"></span>')
+    wire = ('<svg class="zs-garland__wire" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">'
+            '<path d="M0,0 Q25,56 50,0 Q75,56 100,0" vector-effect="non-scaling-stroke"/></svg>')
+    return W(ctx, "html", {"html": f'<div class="zs-garland" aria-hidden="true">{wire}{"".join(bulbs)}</div>'}, "zs-garland__w")
+
+
+def carousel(ctx, s):
+    """Photo carousel: a swipeable, snapping strip of photos (native image widgets, editable), each with an
+    optional caption. With motion it advances on its own (pause button, stops on hover/focus/offscreen),
+    the centred slide grows; arrows and swipe always work. `items`: image keys or {image, caption}."""
+    slides = []
+    for i, it in enumerate(s["items"]):
+        it = it if isinstance(it, dict) else {"image": it}
+        slides.append(C(ctx, "zs-car__slide", [image(ctx, it["image"], "zs-car__img", "large"),
+                                               heading(ctx, it.get("caption"), "p", "zs-car__cap")]))
+    nav = W(ctx, "html", {"html": '<div class="zs-car__nav"><button type="button" class="zs-car__btn zs-car__prev" aria-label="התמונה הקודמת">'
+                                  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'
+                                  '<span class="zs-car__count" aria-hidden="true"></span>'
+                                  '<button type="button" class="zs-car__btn zs-car__next" aria-label="התמונה הבאה">'
+                                  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>'}, "zs-car__navw")
+    iv = min(max(int(s.get("interval", 4)), 2), 10)
+    return section(ctx, s, f"zs-carousel zs-pausable zs-int-{iv}", [*sec_head(ctx, s), C(ctx, "zs-car__track", slides), nav])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, layers)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
