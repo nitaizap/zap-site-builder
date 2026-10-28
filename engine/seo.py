@@ -76,10 +76,11 @@ def run_seo(site):
             if not h.startswith("page:"):
                 continue
             n += 1
-            key = h[5:]
+            key, _, frag = h[5:].partition("#")   # 'page:key#anchor' = a section of that page
             st = pages.get(url_of.get(key, ""), (0,))[0]
             words = [w for w in re.split(r"[\s,׳']+", it["title"]) if len(w) > 2]
-            if st != 200 or not any(w in key.replace("-", " ") or w in built.get(key, {}).get("title", "") for w in words):
+            target = " ".join([key, frag, built.get(key, {}).get("title", "")] + [x.get("title", "") for x in built.get(key, {}).get("sections", []) if frag and x.get("anchor") == frag]).replace("-", " ")
+            if st != 200 or not any(w in target for w in words):
                 bad.append(f"{it['title']} → {key or '/'} ({st})")
     R("3", "עיצוב וטיפוגרפיה", "שירותי החברה בדף הבית מפנים לעמוד השירות הנכון",
       "FAIL" if bad else ("PASS" if n else "N/A"), "; ".join(bad) or f"{n} cards checked")
