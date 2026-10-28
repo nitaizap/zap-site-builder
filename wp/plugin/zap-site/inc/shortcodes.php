@@ -58,7 +58,7 @@ add_shortcode('zap_nap', function () {
     if (!empty($b['phone_e164'])) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($b['phone_e164'])) . '">' . esc_html($b['phone_display']) . '</a></li>';
     if (!empty($b['whatsapp_e164'])) $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($b['whatsapp_e164'], zap_opt('business.whatsapp_text', 'שלום, הגעתי מהאתר ואשמח לפרטים'))) . '" target="_blank" rel="noopener">וואטסאפ</a></li>';
     if (!empty($b['email_public'])) $o .= '<li>' . zs_icon('mail') . '<a href="mailto:' . esc_attr($b['email_public']) . '">' . esc_html($b['email_public']) . '</a></li>';
-    if (!empty($b['address'])) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($b['address']) . '</span></li>';
+    if (!empty($b['address'])) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url('https://waze.com/ul?q=' . rawurlencode($b['address']) . '&navigate=yes') . '" target="_blank" rel="noopener">' . esc_html($b['address']) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a></li>';
     foreach ((array) ($b['hours'] ?? []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . (function_exists('zs_social_rows') ? zs_social_rows() : '') . '</ul>';
 });

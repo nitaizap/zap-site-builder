@@ -21,3 +21,16 @@ carries the pilot's design and composition: base template 2, olive + jacaranda, 
 pool video, `split:duo`, `gallery:stagger`, framed cards, `features:rows`, `tiles`, FAQ beside the jacaranda,
 `cta:photo`; descriptions 150-160 and a blog page (SEO checklist). Facts and copy unchanged. Local: `zs qa` 0
 errors, `zs seo` 0 FAIL. The garland and carousel sections stay in the engine, unused here.
+
+## Facts from Weekend Family (weekend-family.co.il/white-villa-yanuv, read 28.10.2026, approved source by the user)
+- Main unit 250 m², 5 bedrooms on two levels, up to 22 guests; 4 bathrooms
+- Kitchen: fridge, dishwasher, coffee machine + capsules, two sinks, water bar, large dining corner, microwave, hob, oven, freezer, kettle
+- Outside: half-olympic pool with attached slide, fenced for children's safety; private lawn + orchard; snooker + table tennis; outdoor kitchen; grill + seating; swings + hammocks; pergola; sunbeds, parasols, outdoor dining table
+- Safe room (מרחב מוגן) on site; free parking; Wi-Fi; air conditioning; balcony
+- Shabbat-observant guests: hot plate, urn, "Jewish bed", double sink, synagogue + mikveh within walking distance; on Shabbat no grill and no music
+- Extras to order: private massages; decorations, balloons, cake, spa treatments (by arrangement); event equipment (tables, chairs)
+- Events up to 150 guests; listed for: birthdays, shabbat chatan, bachelorette, pool party, team days
+- Check-in usually from 15:00, check-out 11:00 (flexible by arrangement); extra mattresses by arrangement
+- Nearby: activities for kids in Pardesiya, HaMeashena restaurant, coffee carts, supermarket, jeep tours, walking trails
+- Accepts reserve-duty (מילואים) vouchers
+- weekend.co.il listing itself is WAF-blocked from the session

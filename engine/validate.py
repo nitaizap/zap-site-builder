@@ -92,7 +92,8 @@ def validate(d, site_dir):
             pass
         else:
             t, ds, kw = seo.get("title", ""), seo.get("description", ""), seo.get("keyword", "")
-            if not (25 <= len(t) <= 65):
+            short_ok = bool(b.get("name")) and t.startswith(b.get("name", "") + " | ")   # "site | page" may be short
+            if not (25 <= len(t) <= 65) and not (short_ok and len(t) < 25):
                 (E if not t else W)(f"{name}: seo.title is {len(t)} chars (want 30-60)")
             if not (150 <= len(ds) <= 160):
                 (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (Zap SEO checklist: 150-160)")
@@ -102,14 +103,30 @@ def validate(d, site_dir):
                 if kw in kw_owner:
                     E(f"keyword cannibalisation: '{kw}' is owned by both {kw_owner[kw]} and {name}")
                 kw_owner[kw] = name
-                h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", "")).replace("*", "").replace(chr(10), " ")
-                core = kw.split()[0] if kw else ""
-                if core and core not in h1:
-                    W(f"{name}: H1 '{h1}' does not contain the keyword '{kw}'")
-        if p.get("type") in ("home", "about") and b.get("name"):
-            h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
-            if b["name"].split()[0] not in h1:
-                W(f"{name}: the brand name should sit in the H1 on home/about")
+            # Zap QA: SEO title = "<site name> | <page name>" on every page (home: "<site name> | <main service>")
+            if b.get("name") and t and not t.startswith(b["name"] + " | "):
+                E(f"{name}: seo.title must read '{b['name']} | <page name>' (Zap QA format), not '{t}'")
+        # Zap QA: H1 = the client's name on home; on inner pages the page's name, one line (keyword goes in
+        # the SEO title, the lead and the first paragraph, not in a two-line H1)
+        hero_t = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), None)
+        if hero_t is not None and not key.startswith("post:"):
+            plain = hero_t.replace("*", "").strip()
+            if chr(10) in plain or " — " in plain:
+                E(f"{name}: H1 '{plain}' joins two lines into one H1; use one short line")
+            if p.get("type") == "home" and b.get("name") and plain not in (b["name"], b["name"].rsplit(" ", 1)[0]):
+                E(f"{name}: home H1 must be the client's name ('{b['name']}'), got '{plain}'")
+            if len(plain.split()) > 6:
+                W(f"{name}: H1 '{plain}' is {len(plain.split())} words; Zap QA wants the page name, short")
+        if p.get("type") == "blog" and len(d.get("posts", [])) < 3:
+            E(f"{name}: a blog page needs at least 3 published posts (has {len(d.get('posts', []))}); Zap QA rejects an empty blog")
+        secs = p.get("sections", [])
+        if secs and secs[-1].get("type") == "cta" and p.get("type") not in ("contact",):
+            E(f"{name}: page ends with a cta section and the lead form follows it: two calls to action in a row (Zap QA); drop the cta or move it up")
+        for s in secs:
+            icons = [it.get("icon") for it in s.get("items", []) if isinstance(it, dict) and it.get("icon")]
+            dup = sorted({i for i in icons if icons.count(i) > 1})
+            if dup:
+                E(f"{name}: {s.get('type')} section repeats icon(s) {dup}: one icon per item, matching its content (Zap QA)")
         for s in p.get("sections", []):
             if s.get("type") == "faq" and len(s.get("items", [])) < 3:
                 E(f"{name}: FAQ needs at least 3 real questions (has {len(s.get('items', []))})")
@@ -125,6 +142,25 @@ def validate(d, site_dir):
             E(f"{name}: page has sections but no hero (the hero carries the only H1)")
         if key.startswith("post:") and p.get("related_page") and p["related_page"] not in keys:
             E(f"{name}: related_page '{p['related_page']}' does not exist")
+
+    # Zap QA: the blog is in the main menu; menu and footer list the pages in the same order
+    if any(p.get("type") == "blog" for p in pages):
+        bk = next(p.get("key") for p in pages if p.get("type") == "blog")
+        if not any(i.get("href") == f"page:{bk}" for i in d.get("nav", [])):
+            E("the blog page is missing from the main menu (nav)")
+    nav_order = [i.get("href") for i in d.get("nav", []) if i.get("href") != "page:"]
+    foot_order = [i.get("href") for i in d.get("footer_nav", []) if i.get("href") in nav_order]
+    if foot_order != [h for h in nav_order if h in foot_order]:
+        E("footer_nav lists the pages in a different order from nav (Zap QA: same order in both)")
+    if any(i.get("href") == "page:" for i in d.get("nav", [])):
+        W("nav has a 'home' item; Zap QA: the logo links home, the menu does not")
+    for c in d.get("categories", []):
+        if re.search(r"[a-zA-Z]", c.get("slug", "")):
+            E(f"category slug '{c['slug']}' is Latin; URLs are Hebrew (Zap QA)")
+        if c.get("description") and not (150 <= len(c["description"]) <= 160):
+            W(f"category '{c.get('slug')}' description is {len(c['description'])} chars; it is the category page's meta description (150-160)")
+        if c.get("description") and not c["description"].rstrip().endswith((".", "!", "?")):
+            E(f"category '{c.get('slug')}' description is cut mid-sentence (it shows on the blog page): end it with a full sentence")
 
     for item in d.get("nav", []) + d.get("footer_nav", []):
         for it in [item] + item.get("children", []):

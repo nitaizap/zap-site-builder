@@ -77,7 +77,7 @@ MEASURE_JS = r"""
       if (str.includes('aggregateRating')) E('aggregateRating in schema');
       const g = j['@graph'] || [j]; g.forEach(n => { if (n['@type'] === 'FAQPage') faqSchema = (n.mainEntity || []).length; }); }
     catch (e) { E('invalid JSON-LD'); } });
-  const faqUi = q('.elementor-toggle-item, .elementor-accordion-item').length;
+  const faqUi = q('.elementor-toggle-item, .elementor-accordion-item, details.zs-faq__item').length;
   if (faqUi || faqSchema) { out.info.faq = `${faqUi}/${faqSchema}`; if (faqUi !== (faqSchema || 0)) E(`FAQ shown ${faqUi} ≠ FAQPage schema ${faqSchema}`); }
   // contrast: text colour against the nearest painted background (WCAG AA: 4.5, large text 3)
   const rgb = s => { const m = s.match(/[\d.]+/g); if (!m) return null; const n = m.map(Number);

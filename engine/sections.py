@@ -128,12 +128,14 @@ def buttons(ctx, *bs):
     return C(ctx, "zs-btns", items) if items else None
 
 
-def image(ctx, key, classes="", size="large", eager=False):
+def image(ctx, key, classes="", size="large", eager=False, lightbox=False):
     m = ctx.img(key)
     if not m:
         return None
     s = {"image": {"url": m["url"], "id": m["id"], "alt": m.get("alt", ""), "source": "library"},
          "image_size": size}
+    if lightbox:    # gallery photos open full size in Elementor's lightbox (Zap QA), one slideshow per section
+        s.update({"link_to": "file", "open_lightbox": "yes"})
     return W(ctx, "image", s, classes + (" zs-eager" if eager else ""))
 
 
@@ -189,7 +191,6 @@ def hero(ctx, s):
         chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
         logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
-        W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
         logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
@@ -287,7 +288,7 @@ def split(ctx, s):
     shape = s.get("image_shape", "")
     media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
               [image(ctx, s.get("image"), "zs-split__img", "large"),
-               image(ctx, s.get("image2"), "zs-split__img2", "medium") if s.get("variant") == "duo" else None,
+               image(ctx, s.get("image2"), "zs-split__img2", "large") if s.get("variant") == "duo" else None,
                badge]) if s.get("image") else None
     rev = " zs-split--rev" if s.get("image_side") == "end" else ""
     return section(ctx, s, f"zs-split{rev}{'' if media else ' zs-split--noimg'}", [txt, media])
@@ -338,7 +339,8 @@ def cta(ctx, s):
 
 def gallery(ctx, s):
     keys = s["images"][:3] if s.get("variant") == "strip" else s["images"]   # strip: a teaser row, `more` leads on
-    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in keys]
+    # "large" (1024 px), not the card crop: sharp on 2x phone screens (Zap QA)
+    imgs = [image(ctx, k, "zs-gallery__img", "large", lightbox=True) for k in keys]
     return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs),
                                           buttons(ctx, s.get("more"))])
 
@@ -358,9 +360,9 @@ def posts(ctx, s):
 
 
 def contact(ctx, s):
-    left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text")),
+    left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "p", "zs-sec__title zs-contact__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})])
+                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'})])   # same fields as the footer form (Zap QA)
     if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
         right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
     else:
@@ -560,7 +562,7 @@ def footer_template(ctx):
     lead = C(ctx, "zs-leadband", [
         C(ctx, "zs-wrap zs-leadband__in", [
             C(ctx, "zs-leadband__text", [
-                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "h2", "zs-leadband__title"),
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "p", "zs-leadband__title"),   # not a heading in the outline (Zap QA)
                 text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
                 W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
             ]),

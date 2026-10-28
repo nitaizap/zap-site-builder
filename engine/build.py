@@ -84,6 +84,38 @@ def privacy_html(data):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
 
 
+def _fit_desc(d):
+    """Pad/trim a generated meta description into the Zap SEO range (150-160 characters), ending with a period."""
+    for extra in (" באתר", " בכל עת", ", ונשמח לעזור"):
+        if len(d) + len(extra) + 1 <= 160 and len(d) < 149:
+            d += extra
+    return (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+
+
+def accessibility_html(data):
+    """Zap's standard accessibility statement as a page of the site (engine/templates/accessibility-he.html),
+    with the business name, its phone/e-mail for accessibility issues and, when given, the accessibility
+    coordinator (standards.accessibility_coordinator: {name, phone, email})."""
+    import html as _h
+    b, std = data["business"], data.get("standards", {})
+    t = (Path(__file__).parent / "templates" / "accessibility-he.html").read_text(encoding="utf-8")
+    t = re.sub(r"<!--.*?-->\s*", "", t, count=1, flags=re.S)
+    bits = []
+    if b.get("phone_display"):
+        bits.append(f'בטלפון <a href="tel:{_h.escape(b.get("phone_e164", ""))}" dir="ltr">{_h.escape(b["phone_display"])}</a>')
+    mail = b.get("email_public") or ""
+    if mail:
+        bits.append(f'במייל <a href="mailto:{_h.escape(mail)}" dir="ltr">{_h.escape(mail)}</a>')
+    contact = ("פנו אלינו " + " או ".join(bits) + ".") if bits else ""
+    co = std.get("accessibility_coordinator") or {}
+    coord = ""
+    if co.get("name"):
+        det = ", ".join(_h.escape(x) for x in (co.get("phone", ""), co.get("email", "")) if x)
+        coord = f"<h2>רכז/ת הנגישות</h2><p>{_h.escape(co['name'])}" + (f", {det}" if det else "") + ".</p>"
+    fill = {"name": _h.escape(b["name"]), "contact": contact, "coordinator": coord}
+    return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
+
+
 def build(site, only=None):
     site_dir = site.src
     data = load_site(site_dir)
@@ -102,12 +134,24 @@ def build(site, only=None):
         b = data["business"]
         data["pages"].append({
             "key": "מדיניות-פרטיות", "type": "privacy", "title": "מדיניות פרטיות", "noindex": True,
-            "seo": {"title": f"מדיניות פרטיות | {b['name']}",
+            "seo": {"title": f"{b['name']} | מדיניות פרטיות",
                     "description": _privacy_desc(b["name"])},
             "content": privacy_html(data),
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"
+    # Accessibility statement: a page of the site with the client's name (Zap QA: not an external file).
+    # A site that keeps an external statement sets standards.accessibility_url to an https:// URL.
+    if not str(std.get("accessibility_url", "")).startswith("http") or "zap.dbusiness.co" in str(std.get("accessibility_url", "")):
+        b = data["business"]
+        data["pages"].append({
+            "key": "הצהרת-נגישות", "type": "privacy", "title": "הצהרת נגישות", "noindex": True,
+            "seo": {"title": f"{b['name']} | הצהרת נגישות",
+                    "description": _fit_desc(f"הצהרת הנגישות של אתר {b['name']}: אמצעי הנגישות באתר, תפריט הנגישות ואיך משתמשים בו, הדפדפנים הנתמכים ואיך פונים אלינו בכל שאלה או קושי בנושא נגישות")},
+            "content": accessibility_html(data),
+        })
+        std["accessibility_url"] = "/הצהרת-נגישות/"
+        data["_paths"]["הצהרת-נגישות"] = "/הצהרת-נגישות/"
 
     site.install_code()
     log = []
