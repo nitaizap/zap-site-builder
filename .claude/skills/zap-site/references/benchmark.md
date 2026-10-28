@@ -1,11 +1,11 @@
 # Benchmark — the finish level to reach
 
-Read (open the images) before the design gate. These are the Zap builds the user called "amazing".
+Read (open the images) before the design gate. These show the finish level to reach. None of them is a structure to copy: the structure comes from the brief and the pool.
 
 | file | what to learn from it |
 |---|---|
-| `benchmark/vlad-hydronics-desktop.jpg` | Vlad's build (hydronics.zapsites.co.il). The reference. |
-| `benchmark/zap-template-towing-desktop.jpg` | A strong Zap template (towing): cinematic hero, orange stat band, real photo grid. |
+| `benchmark/team-build-desktop.jpg` | A team designer's build: the finish level (scale, photography, restraint), not a layout to copy. |
+| `benchmark/zap-template-towing-desktop.jpg` | A strong Zap template: real photography, a confident hero. Finish level, not a layout. |
 
 ## What to take from the references (read with the team playbook, `design.md` → The finish)
 

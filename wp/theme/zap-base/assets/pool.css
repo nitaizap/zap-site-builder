@@ -80,7 +80,7 @@ body .e-con.zs-contact__photo > .zs-contact__img { position: absolute; inset: 0;
 .elementor .zs-contact__img img { object-fit: cover; border-radius: var(--r-lg); }
 @media (max-width: 900px) { body .e-con.zs-contact__photo { min-height: 280px; } }
 
-/* ======== from the Zap basic-site references (lacuccina, kira, the Wix restaurant sites) ======== */
+/* ======== from the Zap basic-site references (the restaurant sites on the basic package) ======== */
 
 /* ---------- hero · cover: full-bleed photo, centred statement, optional logo above the H1 ---------- */
 body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { position: relative; isolation: isolate; background: var(--c-dark); min-height: min(86vh, 820px); justify-content: center;

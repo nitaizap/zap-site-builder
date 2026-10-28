@@ -1,6 +1,6 @@
 # 2b · Copy and on-page SEO
 
-Proven on the Zap pilot sites (Gross, Azrad, Gilboa, Ilan). Copy in `site.json` is the final copy: what
+Copy in `site.json` is the final copy: what
 the user sees at the gate is what ships.
 
 ## H1

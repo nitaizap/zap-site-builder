@@ -351,7 +351,7 @@ def faq(ctx, s):
 
 
 def cta(ctx, s):
-    if s.get("variant") == "photo":     # half photo, half brand panel with the action (lacuccina "להזמנת שולחן")
+    if s.get("variant") == "photo":     # half photo, half brand panel with the action (basic-site references, e.g. "להזמנת שולחן")
         panel = C(ctx, "zs-cta__panel", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                          heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text")),
                                          lead_cta(ctx, s)])
@@ -400,7 +400,7 @@ def contact(ctx, s):
 
 def tiles(ctx, s):
     """Edge-to-edge checkerboard: each item is a photo half and a colour half, alternating sides row by row
-    (lacuccina, the Zap restaurant sites). Text halves are native widgets; grounds cycle dark / accent."""
+    (the Zap basic restaurant references). Text halves are native widgets; grounds cycle dark / accent."""
     rows = []
     for i, it in enumerate(s["items"]):
         panel = C(ctx, "zs-tile__panel", [heading(ctx, it.get("title"), "h3" if s.get("title") else "h2", "zs-tile__title"),

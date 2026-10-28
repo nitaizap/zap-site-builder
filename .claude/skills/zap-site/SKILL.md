@@ -27,7 +27,7 @@ before doing the step — every one encodes mistakes already made.
 
 | when | read |
 |---|---|
-| before a new site (once) | `references/playbook.md` — the reference build round by round: what the user rejected, what "high end" means, every pitfall paid for |
+| before a new site (once) | `references/playbook.md` — lessons paid for on earlier builds, as rules (no site to copy: every site is composed from its own brief and the pool) |
 | intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
 | design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
