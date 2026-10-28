@@ -13,7 +13,7 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 1 INTAKE      brief + research → facts, gaps (one message of questions)
 2 PLAN        keyword map + sitemap + 3 design directions → site.json (copy-first)
 3 PREVIEW     zs build → zs preview → ⏸ THE ONE GATE: approve sitemap + pick a direction
-4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors
+4 BUILD       apply the direction, all pages, images → zs build → zs qa until 0 errors → zs seo until 0 FAIL
               → mobile pass on every page → BRIEF-CHECK.md (every line of the brief, incl. style demands)
 5 DELIVER     zs push → zs qa --site → zs shots --site (Novamira sites)  |  zs package → zs publish (zip)
 ```
@@ -22,18 +22,19 @@ Speak to the user in their language (usually Hebrew). Keep messages short; the f
 
 ## What to read, when
 
-SKILL.md is the order of work; the depth is in `references/` and in two built examples. Read the file for a step
+SKILL.md is the order of work; the depth is in `references/` (the template pool: `references/pool.md`). Read the file for a step
 before doing the step — every one encodes mistakes already made.
 
 | when | read |
 |---|---|
-| before a new site (once) | `references/playbook.md` — the reference build round by round: what the user rejected, what "high end" means, every pitfall paid for |
+| before a new site (once) | `references/playbook.md` — lessons paid for on earlier builds, as rules (no site to copy: every site is composed from its own brief and the pool) |
 | intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
-| design + gate | `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
+| design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
-| deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
-| examples | `examples/mehirut-haor/` (premium reference: site.json, NOTES.md, BRIEF-CHECK.md) · `examples/sample-plumber/` (minimal, the engine test) |
+| SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
+| before QA / deliver | `references/qa-rules.md` and `references/zap-qa.md` (everything Zap QA rejects, as rules; most are enforced by `zs build` / `zs qa`, the rest are on you), `references/novamira.md` (push) or `references/delivery.md` (zip) |
+| examples | `examples/sample-plumber/` (minimal, the engine test: schema only, never a look to copy) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
 
 ## Iron rules
@@ -41,10 +42,13 @@ before doing the step — every one encodes mistakes already made.
 1. **Never invent a business fact.** Years, licences, numbers, prices, addresses, staff, results, reviews,
    ratings, awards. If it is not in the brief, the client's own site, or a source you can cite, it is not
    on the site. The validator blocks ratings, review counts, placeholders and "illustration" labels.
-2. **Measure, don't eyeball.** Done means `zs qa` reports **0 errors**. Screenshots are for taste, numbers
+2. **Measure, don't eyeball.** Done means `zs qa` reports **0 errors** and `zs seo` (the Zap SEO checklist,
+   `references/seo-checklist.md`) **0 FAIL**. Screenshots are for taste, numbers
    are for correctness. Never report a page as finished from a screenshot or from memory.
-3. **One keyword owns one page.** The H1 is that keyword in natural Hebrew; home and about carry the brand
-   name in the H1 too. The validator stops cannibalisation.
+3. **One keyword owns one page; Zap QA decides the H1.** Home H1 = the client's name only. Inner H1 = the
+   page's name, one short line (never two lines joined). The keyword lives in the SEO title, the hero lead and
+   the first paragraph. SEO title = `<site name> | <page name>` on every page. The validator enforces all of it
+   (`references/zap-qa.md`).
 4. **One site per session, one branch per site** (`site/<slug>`, or the branch the session was given).
    Several sites = several sessions in parallel. Never mix two clients in one conversation.
 5. **Everything durable lives in `sites/<slug>/`** and is committed. `work/` and `dist/` are disposable:
@@ -52,7 +56,11 @@ before doing the step — every one encodes mistakes already made.
 6. **The brief's style line is a requirement, not a mood.** "אנימציות של רכבים זזים", "צבעים על בסיס
    הלוגו", "אתר חדשני" each map to concrete features (`references/design.md` → *Brief words → features*)
    and get a row in `BRIEF-CHECK.md`. A demand you can't meet is said out loud, never dropped silently.
-7. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
+7. **No em dashes (—) or en dashes (–) in any site copy**: headings, text, captions, SEO titles, FAQ, footer.
+   Rewrite with a comma, colon, period, parentheses or a line break (`"keyword\nbrand"` puts the brand on its
+   own H1 line). The validator stops the build on either character. Only Zap's verbatim privacy template keeps
+   its legal citations as they are.
+8. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
    a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
    this site locally **and on the pushed site**.
 
@@ -71,17 +79,21 @@ Continuing a site: read `sites/<slug>/NOTES.md` and `site.json`, run `bin/zs bui
 Extract every fact from the brief and its attachments (open every image; filenames lie). Then **research
 the gaps yourself before asking**: Dapei Zahav (customer-id, hours, WhatsApp, Maps CID + geo), the old site
 or its Wayback copy, Google, Facebook (table in `references/intake.md`; run it as a background agent).
-Record sources in `sites/<slug>/NOTES.md`. Send **one** message with only what research could not settle,
+Record sources in `sites/<slug>/NOTES.md`. **The brief's customer id opens every Zap directory** (d.co.il, rest.co.il, mishlohim.co.il…): check all of them, follow every link they list, and list every image they host before you call anything "not found" (`references/intake.md` → *Zap's own directories first*). Send **one** message with only what research could not settle,
 each item with what you found. Do not stop to wait for answers that do not block the plan. Phone and lead
 email do block.
 
 ## 2 · Plan — read `references/keywords.md`, `references/content-seo.md`, `references/design.md`
 
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
+- Set the package (`tier`) and the base template (`design.base_template`, 1–6) from the brief, then compose the
+  pages from the pool (`references/pool.md`): sections
+  chosen for what this business must prove, a variant for each, no two clients alike (`bin/zs pool <slug>`).
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
 - Write `site.json` with **real, final copy** for every page: schema and section catalogue in
-  `references/site-json.md`; start from `examples/mehirut-haor/site.json` (the premium reference) for the
-  structure and finish level, never from a blank file.
+  `references/site-json.md`. **Compose each site from the whole catalogue** (`references/pool.md`: base templates, packages, ~35 section variants; 6 presets × 3 heroes × tone ×
+  ~20 section types × fonts): never copy a previous client's site.json, section order or look. Each site's
+  composition is chosen from its own brief and audience (`references/design.md` → *No two sites alike*).
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
 
 ## 3 · Preview — ⏸ the one gate
@@ -111,6 +123,7 @@ direction, say which and why in one line, and continue without waiting.
 3. Loop until clean:
    ```bash
    bin/zs build <slug> && bin/zs qa <slug>      # read QA-REPORT.md; fix; repeat
+   bin/zs seo <slug>                            # Zap SEO checklist → SEO-QA.md; 0 FAIL, every 👁 row looked at
    bin/zs shots <slug> / /<some-page>/           # look at desktop + mobile yourself
    ```
    Fix content problems in `site.json`. Fix a visual problem for this client only with
@@ -128,8 +141,12 @@ direction, say which and why in one line, and continue without waiting.
 6. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
    and its content, components, prohibitions such as "no food deliveries", delivery) → ✅ / ➖ with the
    reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
-   site.json". Grep site.json for every prohibited word. Example: `examples/mehirut-haor/BRIEF-CHECK.md`.
+   site.json". Grep site.json for every prohibited word. Format: a table per brief section, one row per line of the brief.
 7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
+8. Go through `references/qa-rules.md` (Zap QA's rejections as rules): the "you" column is not automatic: the
+   home H1 is the client's name only, titles `<client> | <page>`, slug = H1 = menu label, no full stop on headings,
+   a legible logo without a tiny tagline, a favicon, 3 blog posts from the client's own material, `phone_is_virtual`
+   when the display number is a Zap number.
 
 ## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)
 

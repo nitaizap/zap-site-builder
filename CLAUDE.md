@@ -16,12 +16,14 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
 
 - One client per session and per branch (`site/<slug>`). Parallel sites = parallel sessions.
 - Do not commit to `main` from a site session. Engine/theme fixes go on a separate branch + PR.
+- No em dashes (—) in any site copy, ever (the validator stops the build).
 - Never invent business facts; never mail the real client from staging; never print secrets.
-- Before calling anything done: `bin/zs qa <slug>` with 0 errors.
+- Before calling anything done: go through `.claude/skills/zap-site/references/qa-rules.md` (what Zap QA rejects), then `bin/zs qa <slug>` with 0 errors and `bin/zs seo <slug>` (the Zap SEO
+  checklist) with 0 FAIL.
 
 ## Test the engine after changing it
 
 ```bash
 bin/zs new sample "מים טובים אינסטלציה" --from examples/sample-plumber   # first time
-bin/zs build sample && bin/zs qa sample && bin/zs preview sample
+bin/zs build sample && bin/zs qa sample && bin/zs seo sample && bin/zs preview sample
 ```

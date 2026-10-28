@@ -46,7 +46,7 @@
   /* ---------- scroll reveal ---------- */
   var sel = '.zs-sec__title, .zs-sec__intro, .zs-card, .zs-feature, .zs-step, .zs-split__text, .zs-split__media,'
           + ' .zs-faq__list, .zs-postcard, .zs-trust__list li, .zs-cta__text, .zs-cta .zs-btns, .zs-gallery__img,'
-          + ' .zs-contact__info, .zs-contact__map, .zs-prose-sec .zs-prose';
+          + ' .zs-contact__info, .zs-contact__map, .zs-prose-sec .zs-prose, .zs-layers__stack, .zs-layers__item';
   if (motion) {
     var items = [].slice.call(document.querySelectorAll(sel)).filter(function (el) { return !el.closest('.zs-hero'); });
     items.forEach(function (el) {
@@ -259,6 +259,44 @@
   });
 
 
+
+  /* ---------- carousel: centred slide = active; arrows; autoplay only when on screen, not hovered/focused/paused ---------- */
+  [].forEach.call(document.querySelectorAll('.zs-carousel'), function (sec) {
+    var tr = sec.querySelector('.zs-car__track'); if (!tr) return;
+    var sl = [].slice.call(tr.querySelectorAll('.zs-car__slide')); if (!sl.length) return;
+    var cnt = sec.querySelector('.zs-car__count'), cur = 0, seen = false, hold = false;
+    var nx = sec.querySelector('.zs-car__next'), pv = sec.querySelector('.zs-car__prev');
+    // slides line up on the reading start (the right edge in RTL), first photo first
+    var rtl = getComputedStyle(tr).direction === 'rtl';
+    function mid(el) { var r = el.getBoundingClientRect(); return rtl ? r.right : r.left; }
+    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0; return rtl ? r.right - pad : r.left + pad; }
+    function upd() {
+      var c = edge(), best = 0, bd = 1e9;
+      sl.forEach(function (s, i) { var d = Math.abs(mid(s) - c); if (d < bd) { bd = d; best = i; } });
+      cur = best;
+      sl.forEach(function (s, i) { s.classList.toggle('is-active', i === best); });
+      // no wrap-around: an arrow that would go past either end is disabled
+      var atEnd = tr.scrollWidth - tr.clientWidth - Math.abs(tr.scrollLeft) < 4;
+      if (cnt) cnt.textContent = (atEnd ? sl.length : best + 1) + ' / ' + sl.length;
+      if (pv) pv.disabled = best === 0;
+      if (nx) nx.disabled = best === sl.length - 1 || atEnd;
+    }
+    function go(i) { i = Math.max(0, Math.min(sl.length - 1, i)); tr.scrollBy({ left: mid(sl[i]) - edge(), behavior: reduce ? 'auto' : 'smooth' }); }
+    var t2 = false;
+    tr.addEventListener('scroll', function () { if (!t2) { t2 = true; requestAnimationFrame(function () { t2 = false; upd(); }); } }, { passive: true });
+    window.addEventListener('resize', upd);
+    if (nx) nx.addEventListener('click', function () { go(cur + 1); });
+    if (pv) pv.addEventListener('click', function () { go(cur - 1); });
+    sl.forEach(function (s, i) { s.addEventListener('click', function () { if (i !== cur) go(i); }); });
+    setTimeout(upd, 60);
+    if (!motion) return;
+    ['pointerenter', 'focusin'].forEach(function (e) { sec.addEventListener(e, function () { hold = true; }); });
+    ['pointerleave', 'focusout'].forEach(function (e) { sec.addEventListener(e, function () { hold = false; }); });
+    new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }, { threshold: 0.35 }).observe(tr);
+    var iv = (parseInt((sec.className.match(/zs-int-(\d+)/) || [])[1], 10) || 4) * 1000;
+    setInterval(function () { if (seen && !hold && !document.hidden && !sec.classList.contains('is-paused') && nx && !nx.disabled) go(cur + 1); }, iv);
+  });
+
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');
   if (v) {
@@ -273,4 +311,57 @@
       if (document.readyState === 'complete') setTimeout(go, 300); else window.addEventListener('load', function () { setTimeout(go, 300); });
     }
   }
+})();
+
+/* layers: highlight a layer and its list item together (hover / tap / focus); auto-tour once when it comes into view */
+(function () {
+  document.querySelectorAll('.zs-layers').forEach(function (sec) {
+    var draw = sec.querySelector('.zs-layers__draw'); if (!draw) return;
+    var gs = [].slice.call(draw.querySelectorAll('.zs-lx'));
+    var rows = [].slice.call(sec.querySelectorAll('.zs-layers__item'));
+    var user = false, timer = null;
+    function hl(i) {
+      draw.classList.toggle('has-hl', i >= 0);
+      gs.forEach(function (g, k) { g.classList.toggle('is-hl', k === i); });
+      rows.forEach(function (r, k) { r.classList.toggle('is-hl', k === i); });
+    }
+    function take(i) { user = true; clearInterval(timer); hl(i); }
+    rows.forEach(function (r, i) {
+      r.setAttribute('tabindex', '0');
+      r.addEventListener('mouseenter', function () { take(i); });
+      r.addEventListener('focus', function () { take(i); });
+      r.addEventListener('click', function () { take(i); });
+    });
+    gs.forEach(function (g, i) {
+      g.addEventListener('mouseenter', function () { take(i); });
+      g.addEventListener('click', function () { take(i); });
+    });
+    sec.addEventListener('mouseleave', function () { if (user) hl(-1); });
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect();
+      var i = 0;
+      setTimeout(function () {
+        if (user) return;
+        hl(0);
+        timer = setInterval(function () {      /* one tour, then rest: no endless motion */
+          if (user) return clearInterval(timer);
+          i++; if (i >= gs.length) { clearInterval(timer); hl(-1); return; }
+          hl(i);
+        }, 1800);
+      }, gs.length * 220 + 900);
+    }, { threshold: 0.35 });
+    io.observe(draw);
+  });
+})();
+
+/* "מספר מקשר": open Zap's virtual-number explanation */
+(function () {
+  var d = document.getElementById('zs-vnote'); if (!d || !d.showModal) return;
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-zs-vnote]'); if (!b) return;
+    e.preventDefault(); d.showModal();
+  });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
 })();

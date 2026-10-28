@@ -33,6 +33,7 @@ function zap_form_token_age($token) {
 
 add_shortcode('zap_form', function ($atts) {
     $a = shortcode_atts(['id' => 'main', 'message' => 'yes', 'email' => 'no', 'button' => ''], $atts);
+    if (!zap_opt('business.email_leads')) return '';   // calls-only site: no inbox for leads, so no form
     // the contact page has its own full form; the site-wide footer form stays out of its markup
     if ($a['id'] === 'footer' && is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact') return '';
     $uid = 'zf-' . sanitize_key($a['id']);
@@ -133,7 +134,7 @@ function zap_handle_lead() {
     if ($to) {
         $headers = [];
         if ($email) $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
-        $subject = 'פנייה חדשה מהאתר — ' . zap_opt('business.name', get_bloginfo('name'));
+        $subject = 'פנייה חדשה מהאתר: ' . zap_opt('business.name', get_bloginfo('name'));
         $ok = wp_mail($to, $subject, $body, $headers);
         update_post_meta($id, '_zap_mailed', $ok ? 'yes' : 'no');
     }

@@ -90,6 +90,9 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('zs-main', "$uri/assets/main.css", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/main.css"));
     wp_add_inline_style('zs-main', zs_tokens_css());
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
+    wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
+    // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
+    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 
@@ -169,13 +172,34 @@ function zs_tokens_css() {
     return $css;
 }
 
+function zs_lum($hex) {
+    $h = ltrim((string) $hex, '#');
+    if (strlen($h) === 3) $h = $h[0] . $h[0] . $h[1] . $h[1] . $h[2] . $h[2];
+    if (!preg_match('/^[0-9a-f]{6}$/i', $h)) return null;
+    $c = array_map(function ($i) use ($h) { $v = hexdec(substr($h, $i, 2)) / 255; return $v <= .03928 ? $v / 12.92 : pow(($v + .055) / 1.055, 2.4); }, [0, 2, 4]);
+    return .2126 * $c[0] + .7152 * $c[1] + .0722 * $c[2];
+}
+function zs_contrast($a, $b) {
+    $x = zs_lum($a); $y = zs_lum($b);
+    if ($x === null || $y === null) return 21;
+    return (max($x, $y) + .05) / (min($x, $y) + .05);
+}
+
 add_filter('body_class', function ($classes) {
     $d = zs_design();
+    // A saturated accent on a saturated primary (red on blue) blends in: the theme then uses white for accent
+    // details on primary/dark grounds (eyebrows, dots, icons, buttons). Measured, not guessed.
+    $col = $d['colors'] ?? [];
+    if (!empty($col['accent']) && (zs_contrast($col['accent'], $col['primary'] ?? '#000') < 3 || zs_contrast($col['accent'], $col['dark'] ?? '#000') < 3))
+        $classes[] = 'zs-accent-low';
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
     if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');
     $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');
+    if (!empty($d['motif'])) $classes[] = 'zs-motif-' . sanitize_html_class($d['motif']);
+    // header phone icon on phones is the default (Zap QA); header.mobile_call: false hides it when the client asks for one call button only
+    if (zs_opt('header.mobile_call', true) === false) $classes[] = 'zs-no-mcall';   // brand shape: gables
     if (($d['header'] ?? 'light') === 'dark' && zs_opt('logo_light_id')) $classes[] = 'zs-has-logo-light';
     if (zs_is_elementor()) $classes[] = 'zs-built';
     if (is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact') $classes[] = 'zs-is-contact';
@@ -193,12 +217,22 @@ function zs_tel_href($e164) {
     return 'tel:' . preg_replace('/[^0-9+]/', '', (string) $e164);
 }
 
+/** Waze navigation to the business: by coordinates when known, else by the address (Zap checklist: the address is a Waze link). */
+function zs_waze_href() {
+    $g = (array) zs_opt('business.geo', []);
+    if (!empty($g['lat']) && !empty($g['lng'])) return 'https://waze.com/ul?ll=' . rawurlencode($g['lat'] . ',' . $g['lng']) . '&navigate=yes';
+    return 'https://waze.com/ul?q=' . rawurlencode((string) zs_opt('business.address', '')) . '&navigate=yes';
+}
+
 function zs_wa_href($e164, $text = '') {
     $n = preg_replace('/\D/', '', (string) $e164);
     return 'https://wa.me/' . $n . ($text !== '' ? '?text=' . rawurlencode($text) : '');
 }
 
 function zs_breadcrumbs() {
+    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
+    // a site that wants the visible trail sets header.breadcrumbs: true.
+    if (!zs_opt('header.breadcrumbs', false)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
@@ -223,12 +257,29 @@ function zs_icon($name) {
 
 /* ---------- site parts: shared by the Elementor header/footer templates (as shortcodes) and the PHP fallback ---------- */
 
+/* "מספר מקשר": when the displayed phone is a Zap virtual number (business.phone_is_virtual), a small link next to it
+   opens Zap's standard explanation (the wording of Zap's sites), with the business's regular number (business.phone_regular). */
+function zs_vnote_btn() {
+    if (!zs_opt('business.phone_is_virtual')) return '';
+    return ' <button type="button" class="zs-vnote-btn" data-zs-vnote aria-haspopup="dialog">מספר מקשר</button>';
+}
+function zs_vnote_dialog() {
+    if (!zs_opt('business.phone_is_virtual')) return '';
+    $reg = trim((string) zs_opt('business.phone_regular', ''));
+    return '<dialog class="zs-vnote" id="zs-vnote" aria-labelledby="zs-vnote-t"><p class="zs-vnote__t" id="zs-vnote-t">מספר מקשר</p>'
+         . '<p>מספר זה הינו מספר וירטואלי, שהוא חלק משירות תוכן המופעל על ידי זאפ גרופ בע"מ ומפנה את המתקשר לבית העסק.</p>'
+         . '<p>משתמש העושה שימוש במספר הווירטואלי, מסכים כי החברה תהא רשאית לשמור את מספר הטלפון ממנו התקשר, לכלול אותו במאגר מידע או ליצור באמצעותו קשר עם המשתמש, וכן כי המספר עשוי להשתנות מעת לעת.</p>'
+         . ($reg ? '<p>מספר הטלפון הרגיל של בית העסק הוא <a href="' . esc_attr(zs_tel_href($reg)) . '" dir="ltr">' . esc_html($reg) . '</a>.</p>' : '')
+         . '<form method="dialog"><button class="zs-vnote__x" aria-label="סגירה">×</button></form></dialog>';
+}
+add_action('wp_footer', function () { echo zs_vnote_dialog(); }, 5);
+
 function zs_part_topbar_meta() {
     $tel = zs_opt('business.phone_e164'); $email = zs_opt('business.email_public'); $hours = (array) zs_opt('business.hours', []);
     $o = '<ul class="zs-topbar__list">';
     if ($hours) $o .= '<li>' . esc_html($hours[0]) . '</li>';
     if ($email) $o .= '<li><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></li>';
-    if ($tel)   $o .= '<li><a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></li>';
+    // no phone here: the header's call button already shows it (Zap QA: one phone per header)
     return $o . '</ul>';
 }
 
@@ -249,9 +300,9 @@ function zs_part_footer_contact() {
     $tel = zs_opt('business.phone_e164'); $wa = zs_opt('business.whatsapp_e164');
     $wa_text = zs_opt('business.whatsapp_text', 'שלום, הגעתי מהאתר ואשמח לפרטים');
     $o = '<ul class="zs-footer__contact">';
-    if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a></li>';
+    if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
-    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($a) . '</span></li>';
+    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . zs_social_rows() . '</ul>';
 }
@@ -298,21 +349,23 @@ function zs_part_social() {
 function zs_part_copyright() {
     $name = zs_opt('business.name', get_bloginfo('name'));
     $note = zs_opt('footer.ai_images_note');
-    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . ' — כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
+    return '<p class="zs-footer__copy">© ' . esc_html(date('Y') . ' ' . $name) . '. כל הזכויות שמורות' . ($note ? ' · ' . esc_html($note) : '') . '</p>';
 }
 
 function zs_part_legal() {
     $privacy = zs_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
-    $a11y = zs_opt('standards.accessibility_url', 'https://zap.dbusiness.co/js/accessibility.html');
-    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '">מדיניות פרטיות</a></li>'
-         . '<li><a href="' . esc_url($a11y) . '" target="_blank" rel="noopener">הצהרת נגישות אתר</a></li></ul>';
+    $a11y = zs_opt('standards.accessibility_url', home_url('/הצהרת-נגישות/'));
+    // both legal links behave the same way: a new tab, so the visitor keeps their place (Zap QA)
+    $nt = ' target="_blank" rel="noopener"';
+    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '"' . $nt . '>מדיניות פרטיות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li>'
+         . '<li><a href="' . esc_url($a11y) . '"' . $nt . '>הצהרת נגישות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li></ul>';
 }
 
 function zs_part_group_logo() {
     // light footers carry Zap's colour logo (blue mark, navy word); dark footers the white credit image
     if ((zs_design()['tone'] ?? '') === 'light') {
         return '<a class="zs-footer__zap zs-footer__zap--color" href="https://zapgroup.co.il/" target="_blank" rel="noopener">'
-             . '<span class="zs-footer__zap-by">Power by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
+             . '<span class="zs-footer__zap-by">Powered by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
              . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
     }
     return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'

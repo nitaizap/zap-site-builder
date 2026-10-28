@@ -27,3 +27,38 @@ require __DIR__ . '/inc/schema.php';
 require __DIR__ . '/inc/shortcodes.php';
 require __DIR__ . '/inc/hardening.php';
 require __DIR__ . '/inc/robots.php';
+
+// Zap SEO checklist: every image under 100 KB. The engine uploads light WebPs; keep WordPress's own resized copies light too.
+add_filter('wp_editor_set_quality', fn() => 60);
+
+// One rewrite flush on the first request after a build: Yoast's category-base stripping only registers its rules
+// on a normal page load, so a flush inside the build itself leaves /<category>/ URLs as 404.
+add_action('init', function () {
+    if (get_option('zs_flush_rewrites')) { delete_option('zs_flush_rewrites'); flush_rewrite_rules(false); }
+}, 99);
+
+// Category archives live under the blog: /<blog>/<category>/ (Zap: no "category"/"נושא" base, Hebrew slugs).
+// WordPress already links them there (the post permalink's front); Yoast's base-stripping writes the rules at the
+// root, so they are moved under the blog base to match the links.
+add_filter('category_rewrite_rules', function ($rules) {
+    $blog = (int) get_option('page_for_posts');
+    if (!$blog || !preg_match('#^/[^/%]+/%postname%/$#u', (string) get_option('permalink_structure'))) return $rules;
+    // the request can arrive decoded or percent-encoded in either case, so the prefix matches all three
+    $enc  = strtolower(get_post_field('post_name', $blog));
+    $base = '(?:' . preg_quote(urldecode($enc), '#') . '|' . $enc . '|' . strtoupper($enc) . ')';
+    $out = [];
+    foreach ($rules as $k => $v) {
+        // the slug group too: decoded (servers that hand WordPress a decoded path) or encoded in either case
+        $k = preg_replace_callback('#\((%[0-9a-fA-F%-]+)\)#', function ($m) {
+            $l = strtolower($m[1]);
+            return '(' . preg_quote(urldecode($l), '#') . '|' . $l . '|' . strtoupper($l) . ')';
+        }, $k);
+        $out[$base . '/' . $k] = $v;
+    }
+    return $out;
+}, 99);
+// Hebrew slugs are stored percent-encoded in lower case; a request in upper case must still find the category.
+add_filter('request', function ($qv) {
+    if (!empty($qv['category_name']) && strpos($qv['category_name'], '%') !== false) $qv['category_name'] = strtolower($qv['category_name']);
+    return $qv;
+});

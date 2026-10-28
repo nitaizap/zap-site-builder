@@ -1,17 +1,21 @@
 # 2b · Copy and on-page SEO
 
-Proven on the Zap pilot sites (Gross, Azrad, Gilboa, Ilan). Copy in `site.json` is the final copy: what
+Copy in `site.json` is the final copy: what
 the user sees at the gate is what ships.
 
 ## H1
 
-- H1 = the page's keyword from the map, in natural Hebrew. Exactly one per page (the hero title).
-- Home and About: keyword + brand name: `אינסטלטור בחיפה — מים טובים אינסטלציה`.
+Zap QA rule (supersedes the old "H1 = keyword"): exactly one H1 per page (the hero title), one short line.
+- Home: the client's name only (`מים טובים אינסטלציה`). The head keyword opens the hero `lead`.
+- Inner pages: the page's name (`אודות`, `איתור נזילות`, `צרו קשר`). The page's keyword opens the `lead` and the
+  first paragraph and sits in the SEO title.
+- Never two lines joined into one H1 (`keyword\nbrand`), never a breadcrumb line above it.
+- No full stop at the end of any heading; nothing but a question mark (validator).
 - A slogan goes under the H1 (hero `lead`) or in a section title, never in the H1.
 
 ## Five checks before the gate
 
-1. H1 = keyword (+ brand on home/about).
+1. H1 = client name (home) / page name (inner); keyword in the lead, first paragraph and SEO title.
 2. Brand name appears in: H1 or hero, the first paragraph, the `<title>`, the footer (automatic).
 3. Each H2 uses a variant (ה/ב/ל prefixes, plural, construct state) or a secondary keyword, never the exact
    H1 phrase again.
@@ -22,11 +26,12 @@ the user sees at the gate is what ships.
 
 | field | rule | example |
 |---|---|---|
-| `seo.title` | keyword first · proof · brand last · 30–60 chars | `איתור נזילות בחיפה ללא הרס \| מים טובים אינסטלציה` |
+| `seo.title` | Zap QA format, every page: `<site name> \| <page name>`; home: `<site name> \| <head keyword>` (validator) | `מים טובים אינסטלציה \| איתור נזילות` |
 | `seo.description` | 140–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
 | `seo.keyword` | the owned keyword (unique across the site) | `איתור נזילות בחיפה` |
 
-"keyword — N שנות ניסיון | brand" works when N is a locked fact.
+Category descriptions are the category page's meta description and show on the blog page: 150–160 chars, a
+full sentence (a cut-off description shows as a stray fragment).
 
 ## Per page type
 
@@ -45,7 +50,7 @@ with a child.
 **About** (E-E-A-T): H1 = `אודות <brand> — <secondary keyword>`; who, since when, credentials as facts
 with dates, the owner's real photo when available, service areas.
 
-**Contact**: H1 `צור קשר — <brand>`; `contact` section (NAP + form + map). Hours: ask; never assume.
+**Contact**: H1 `צור קשר עם <brand>`; `contact` section (NAP + form + map). Hours: ask; never assume.
 The footer lead form is hidden on this page automatically.
 
 **Blog post**: H1 = informational term; first paragraph answers it; 500–800 words; H2/H3; at least one link
@@ -55,6 +60,7 @@ to the service that solves it (and `related_page` set, which adds a CTA box); au
 
 - Short paragraphs (2–3 sentences), answer first, lists where there is a list, a table where there is a
   comparison (`prose` supports `<table>`).
+- **No em dashes (—), ever** (Zap rule; the validator stops the build). Use a comma, colon, period or a line break. En dash only in ranges (א׳–ה׳, 07:00–22:00).
 - Natural Hebrew. Read it aloud: if it sounds translated, rewrite it. No AI tells (no "בעולם של היום",
   no "לא רק X אלא גם Y" habit, no em-dash in every sentence, no triplets of adjectives).
 - No instructions for obvious controls ("לחצו להגדלה"), no "תמונה להמחשה" labels: the validator blocks them.

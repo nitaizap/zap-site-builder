@@ -48,7 +48,7 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el); if (s.position === 'fixed' || !vis(el)) return;
     const r = el.getBoundingClientRect(); if (r.right > hw + 1.5 || r.left < -1.5) {
       let p = el.parentElement, clipped = false;
-      while (p && p !== document.body) { const ps = getComputedStyle(p); if (/(hidden|clip)/.test(ps.overflowX)) { clipped = true; break; } p = p.parentElement; }
+      while (p && p !== document.body) { const ps = getComputedStyle(p); if (/(hidden|clip|auto|scroll)/.test(ps.overflowX)) { clipped = true; break; } p = p.parentElement; }
       if (!clipped) over.push((el.className && typeof el.className === 'string' ? '.' + el.className.split(' ')[0] : el.tagName) + ` ${Math.round(r.left)}..${Math.round(r.right)}`);
     } });
   if (over.length) E(`horizontal overflow (${over.length}): ` + over.slice(0, 4).join(', '));
@@ -77,7 +77,7 @@ MEASURE_JS = r"""
       if (str.includes('aggregateRating')) E('aggregateRating in schema');
       const g = j['@graph'] || [j]; g.forEach(n => { if (n['@type'] === 'FAQPage') faqSchema = (n.mainEntity || []).length; }); }
     catch (e) { E('invalid JSON-LD'); } });
-  const faqUi = q('.elementor-toggle-item, .elementor-accordion-item').length;
+  const faqUi = q('.elementor-toggle-item, .elementor-accordion-item, details.zs-faq__item').length;
   if (faqUi || faqSchema) { out.info.faq = `${faqUi}/${faqSchema}`; if (faqUi !== (faqSchema || 0)) E(`FAQ shown ${faqUi} ≠ FAQPage schema ${faqSchema}`); }
   // contrast: text colour against the nearest painted background (WCAG AA: 4.5, large text 3)
   const rgb = s => { const m = s.match(/[\d.]+/g); if (!m) return null; const n = m.map(Number);
@@ -101,7 +101,7 @@ MEASURE_JS = r"""
     return [255, 255, 255]; };
   const skip = '.zs-hero__media, .zs-form__hp, [aria-hidden="true"], #pojo-a11y-toolbar, script, style, noscript';
   // every element that carries its own text must meet WCAG AA (4.5, large text 3): below it is an error
-  const low = new Map();
+  const low = new Map(), grey = new Map(), small = new Map();
   q('body *').filter(vis).forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
     if (el.closest(skip)) return;   // decorative text (marquee, wordmark) is hidden from AT
@@ -109,12 +109,39 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el), fg = rgb(s.color); if (!fg) return;
     const ratio = cr(flat(fg, bg.slice(0, 3)), bg.slice(0, 3));
     const big = parseFloat(s.fontSize) >= 24 || (parseFloat(s.fontSize) >= 18.6 && +s.fontWeight >= 700);
-    if (ratio < (big ? 3 : 4.5)) low.set(el.textContent.trim().slice(0, 30), ratio.toFixed(2));
+    if (ratio < 4.5) low.set(el.textContent.trim().slice(0, 30), ratio.toFixed(2));   // Zap QA: 4.5 for every size (red titles on navy passed WCAG's 3 for large text and were rejected)
+    // body copy in grey reads as faded (Zap QA): paragraphs and list items need 6:1
+    else if (el.matches('main p, main li') && parseFloat(s.fontSize) < 22 && ratio < 6 && lum(bg.slice(0, 3)) > .5)   // grey copy on a light ground grey.set(el.textContent.trim().slice(0, 30), ratio.toFixed(2));
+    // nothing under 16px (Zap QA: top bar, labels, form fields, consent, footer, copyright)
+    if (parseFloat(s.fontSize) < 15.5 && !el.closest('.screen-reader-text, .sr-only, .elementor-screen-only')) small.set(el.textContent.trim().slice(0, 30), parseFloat(s.fontSize).toFixed(1) + 'px');
   });
   if (low.size) E(`low text contrast (${low.size}): ${[...low].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
+  if (grey.size) E(`body text too grey (${grey.size}, needs 6:1): ${[...grey].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
+  if (small.size) E(`text under 16px (${small.size}): ${[...small].slice(0, 5).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
+  // Zap QA checklist items, measured on every page
+  if (q('.zs-leadband h2, .zs-footer h2, footer h2').length) E('repeated blocks (lead form, footer columns) use <h2>; they must not be headings');
+  const ico = document.querySelector('link[rel~="icon"]');
+  if (!ico) E('no favicon'); else if (!/favicon|cropped/i.test(ico.href)) W(`favicon may be the base site's: ${ico.href.split('/').pop()}`);
+  const flogo = document.querySelector('.zs-footer a[href$="/"] img, footer a[href$="/"] img, .zs-footer__logo img');
+  if (!flogo) E('no client logo in the footer (linking home)');
+  const hlogo = document.querySelector('.zs-brand img');
+  if (hlogo && vis(hlogo) && hlogo.getBoundingClientRect().height < (innerWidth < 768 ? 40 : 46)) E(`header logo too small: ${Math.round(hlogo.getBoundingClientRect().height)}px tall`);
+  const pv = [...document.querySelectorAll('footer a, .zs-footer a')].find(a => /פרטיות/.test(a.textContent));
+  if (pv && pv.target !== '_blank') E('footer privacy link must open in a new tab');
+  const addr = [...document.querySelectorAll('.zs-footer__contact li, .zs-nap li')].find(li => li.querySelector('.zs-ico') && /\d/.test(li.textContent) && !/[@:]|^\s*0\d/.test(li.textContent.trim()) && /[א-ת]{3,}/.test(li.textContent) && !/[א-ת]׳?[–-]/.test(li.textContent));
+  if (addr && !addr.querySelector('a[href*="waze.com"]')) E(`address is not a Waze link: "${addr.textContent.trim().slice(0, 30)}"`);
+  if (innerWidth < 768) {
+    const cta = document.querySelector('.zs-header__cta');
+    if (cta && !document.body.classList.contains('zs-no-mcall') && (!vis(cta) || getComputedStyle(cta).visibility === 'hidden')) E('no phone icon in the mobile header');
+    const hm = document.querySelector('.zs-hero--home .zs-hero__media'), hh = document.querySelector('.zs-hero--home h1');
+    if (hm && hh && vis(hm)) { const g = hh.getBoundingClientRect().top - hm.getBoundingClientRect().bottom; if (g > 90) E(`empty band between the hero photo and the H1 on phones: ${Math.round(g)}px`); }
+    const tb = document.querySelector('#pojo-a11y-toolbar .pojo-a11y-toolbar-toggle') || document.querySelector('#pojo-a11y-toolbar');
+    const hit = (a, b) => a && b && !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+    if (tb && vis(tb)) { const r = tb.getBoundingClientRect(); if ([...document.querySelectorAll('.zs-hero h1, .zs-hero .elementor-button')].some(e => hit(r, e.getBoundingClientRect()))) E('accessibility button covers the hero title or buttons'); }
+  }
   // controls and outlines (WCAG 1.4.11): fill or border at least 3:1 against what is behind them
   const faint = new Map();
-  q('.elementor-button, .zs-btn, button:not(.zs-burger), .zs-pause, .zs-social a, input:not([type=hidden]):not([type=checkbox]), textarea, select').filter(vis).forEach(el => {
+  q('.elementor-button, .zs-btn, button:not(.zs-burger):not(.zs-vnote-btn), .zs-pause, .zs-social a, input:not([type=hidden]):not([type=checkbox]), textarea, select').filter(vis).forEach(el => {
     if (el.closest(skip)) return;
     const bg = behind(el); if (!bg) return;
     const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
@@ -355,10 +382,15 @@ def run_qa(site):
                 extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
                 if not (opened and closed):
                     errors += 1
-                ok_msg, saved, mailed = test_form(page, site)
-                extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
-                if not (ok_msg and saved == 1):
-                    errors += 1
+                if not data["business"].get("email_leads"):
+                    no_form = page.locator("form.zs-form").count() == 0
+                    extra.append(("calls-only site (no leads e-mail): no lead form rendered", no_form))
+                    errors += 0 if no_form else 1
+                else:
+                    ok_msg, saved, mailed = test_form(page, site)
+                    extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
+                    if not (ok_msg and saved == 1):
+                        errors += 1
             # above the fold: the home hero's buttons are visible without scrolling on a short laptop / small phone
             # (browser bars deducted; on phones the fixed call bar too)
             fw, fh = (1280, 620) if vp == "desktop" else (360, 640)
@@ -366,7 +398,8 @@ def run_qa(site):
             page.goto(site.url + "/", wait_until="networkidle")
             page.wait_for_timeout(400)
             fold = page.evaluate("""() => { const bs = [...document.querySelectorAll('.zs-hero--home .zs-btns .elementor-button')].slice(0, 2);
-                const bar = document.querySelector('.zs-fab'); const lim = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect().top : innerHeight;
+                const bar = document.querySelector('.zs-fab'); const br = bar && getComputedStyle(bar).display !== 'none' ? bar.getBoundingClientRect() : null;
+                const lim = br && br.width > innerWidth * .6 ? br.top : innerHeight;   /* only a full-width call bar (phones), not the desktop floating WhatsApp button */
                 return bs.length ? Math.max(...bs.map(b => b.getBoundingClientRect().bottom)) - lim : null; }""")
             if fold is not None:
                 extra.append((f"hero buttons above the fold at {fw}×{fh}" + ("" if fold <= 0 else f" — {round(fold)}px below"), fold <= 0))

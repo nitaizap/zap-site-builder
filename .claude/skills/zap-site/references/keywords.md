@@ -20,7 +20,7 @@
 - Each service → its own term ("איתור נזילות בחיפה").
 - Hub/category pages → the category term, never a child's term.
 - About → a secondary term, often the profession + "מוסמך"/"מומלץ" variant, plus the brand name.
-- Contact → "צור קשר — <brand>" (navigational; not a competing term).
+- Contact → "צור קשר עם <brand>" (navigational; not a competing term).
 - Blog posts → **informational** terms the service pages do not own ("מה עושים כשיש נזילה מהתקרה").
 - Check the whole slug space: a post slug, a category slug and a page key must never collide.
 
@@ -35,6 +35,8 @@
 ```
 
 - Keys are Hebrew, hyphenated, no Latin mixed in (a client complaint, and the validator blocks it).
+- **Slug = H1 = menu label** for service and hub pages (Zap QA): decide the page's name once and use it in the
+  key, the H1, the nav and the footer nav.
 - Services sit under their hub; static pages stay at one level on purpose.
 - Typical small business: home, 1 hub, 3–8 services, about, contact, blog with 2–3 launch posts.
   A larger tree is fine when the keyword research supports it; thin pages are not.

@@ -35,6 +35,19 @@ PATHS = {
     "thumb": '<path d="M7 11v9H3v-9zM7 11l4-8a2.5 2.5 0 0 1 2.5 2.5V9H19a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/>',
     "target": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     "globe": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/>',
+    "utensils": '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 1-3 4-3 7h3v11"/>',
+    "child": '<circle cx="12" cy="5" r="2.2"/><path d="M8 9h8M12 9v6M9 21l3-6 3 6M6 11l2-2M18 11l-2-2"/>',
+    "pingpong": '<circle cx="9" cy="9" r="5.5"/><path d="M13 13l7 7M18.5 5.5v.01"/>',
+    "bell": '<path d="M4 18h16M6 18a6 6 0 0 1 12 0M12 9V7M10 7h4"/>',
+    "baby": '<circle cx="12" cy="9" r="5"/><path d="M10 9h.01M14 9h.01M10.5 11.5a2 2 0 0 0 3 0M8 21a4 4 0 0 1 8 0"/>',
+    "ring": '<circle cx="12" cy="15" r="6"/><path d="M9 4h6l-3 5z"/>',
+    "cake": '<path d="M4 21V13h16v8zM4 16c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 4 0M12 13V9M12 6v.01"/>',
+    "bread": '<path d="M5 20V11a4 4 0 0 1 0-7h14a4 4 0 0 1 0 7v9z"/>',
+    "cheers": '<path d="M5 3h6l-1 7a2 2 0 0 1-4 0zM13 3h6l-1 7a2 2 0 0 1-4 0zM8 12v8M16 12v8M6 20h4M14 20h4"/>',
+    "star-david": '<path d="M12 3l7.8 13.5H4.2zM12 21L4.2 7.5h15.6z"/>',
+    "shower": '<path d="M4 20V8a4 4 0 0 1 8 0M9 9h6M10 13v.01M12 15v.01M14 13v.01M12 17v.01"/>',
+    "wifi": '<path d="M3 9a13 13 0 0 1 18 0M6 12.5a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19v.01"/>',
+    "parking": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M10 17V7h3a3 3 0 0 1 0 6h-3"/>',
 }
 
 
@@ -60,6 +73,12 @@ FA = {
     "medical": ("fas fa-briefcase-medical", "fa-solid"), "star-badge": ("fas fa-certificate", "fa-solid"), "thumb": ("far fa-thumbs-up", "fa-regular"),
     "target": ("fas fa-bullseye", "fa-solid"), "globe": ("fas fa-globe", "fa-solid"), "scooter": ("fas fa-motorcycle", "fa-solid"),
     "van": ("fas fa-shuttle-van", "fa-solid"),
+    # venues, events, hospitality
+    "utensils": ("fas fa-utensils", "fa-solid"), "child": ("fas fa-child", "fa-solid"), "pingpong": ("fas fa-table-tennis", "fa-solid"),
+    "bell": ("fas fa-concierge-bell", "fa-solid"), "baby": ("fas fa-baby", "fa-solid"), "ring": ("fas fa-ring", "fa-solid"),
+    "cake": ("fas fa-birthday-cake", "fa-solid"), "bread": ("fas fa-bread-slice", "fa-solid"), "cheers": ("fas fa-glass-cheers", "fa-solid"),
+    "star-david": ("fas fa-star-of-david", "fa-solid"), "shower": ("fas fa-shower", "fa-solid"), "wifi": ("fas fa-wifi", "fa-solid"),
+    "parking": ("fas fa-parking", "fa-solid"),
 }
 
 
