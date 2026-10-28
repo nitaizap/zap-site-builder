@@ -71,7 +71,7 @@ Continuing a site: read `sites/<slug>/NOTES.md` and `site.json`, run `bin/zs bui
 Extract every fact from the brief and its attachments (open every image; filenames lie). Then **research
 the gaps yourself before asking**: Dapei Zahav (customer-id, hours, WhatsApp, Maps CID + geo), the old site
 or its Wayback copy, Google, Facebook (table in `references/intake.md`; run it as a background agent).
-Record sources in `sites/<slug>/NOTES.md`. Send **one** message with only what research could not settle,
+Record sources in `sites/<slug>/NOTES.md`. **The brief's customer id opens every Zap directory** (d.co.il, rest.co.il, mishlohim.co.il…): check all of them, follow every link they list, and list every image they host before you call anything "not found" (`references/intake.md` → *Zap's own directories first*). Send **one** message with only what research could not settle,
 each item with what you found. Do not stop to wait for answers that do not block the plan. Phone and lead
 email do block.
 
