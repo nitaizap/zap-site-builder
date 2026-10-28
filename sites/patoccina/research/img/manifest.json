@@ -1,0 +1,50 @@
+[
+  {
+    "file": "research/img/00.jpg",
+    "src": "https://static.wixstatic.com/media/96f071_2d94fe62c151466db617e44fbd009334~mv2.jpg/v1/fill/w_1366,h_900,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/96f071_2d94fe62c151466db617e44fbd009334~mv2.jpg",
+    "alt": "פטוצ׳ינה3.jpg",
+    "w": 1366,
+    "logo": false,
+    "kb": 242
+  },
+  {
+    "file": "research/img/logo-01.png",
+    "src": "https://static.wixstatic.com/media/96f071_cdf244b839ab4883b99343c680fc3d29%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/96f071_cdf244b839ab4883b99343c680fc3d29%7Emv2.png",
+    "alt": "",
+    "w": 0,
+    "logo": true,
+    "kb": 48
+  },
+  {
+    "file": "research/img/02.jpg",
+    "src": "https://static.wixstatic.com/media/96f071_e35ead1702614da491e5a8bab19ec81f~mv2.jpg/v1/fill/w_1366,h_900,al_b,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/96f071_e35ead1702614da491e5a8bab19ec81f~mv2.jpg",
+    "alt": "פטוצ׳ינה.jpg",
+    "w": 1366,
+    "logo": false,
+    "kb": 216
+  },
+  {
+    "file": "research/img/03.jpg",
+    "src": "https://static.wixstatic.com/media/96f071_cb563cf736d7403cb11f8ee6af1e0595~mv2.jpg/v1/fill/w_1366,h_1193,al_b,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/96f071_cb563cf736d7403cb11f8ee6af1e0595~mv2.jpg",
+    "alt": "Food and drinks.jpg",
+    "w": 1366,
+    "logo": false,
+    "kb": 290
+  },
+  {
+    "file": "research/img/04.jpg",
+    "src": "https://static.wixstatic.com/media/96f071_549fa560679e4534a6531413cf36a83f~mv2.jpg/v1/fill/w_1366,h_900,al_b,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/96f071_549fa560679e4534a6531413cf36a83f~mv2.jpg",
+    "alt": "Food display-1.jpg",
+    "w": 1366,
+    "logo": false,
+    "kb": 285
+  },
+  {
+    "file": "research/img/05.jpg",
+    "src": "https://static.wixstatic.com/media/96f071_60bad33cb6f040c6991a2a50ede97d3c~mv2.jpg/v1/fill/w_1366,h_900,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/96f071_60bad33cb6f040c6991a2a50ede97d3c~mv2.jpg",
+    "alt": "פטוצ׳ינה אירועים1.jpg",
+    "w": 1366,
+    "logo": false,
+    "kb": 183
+  }
+]
