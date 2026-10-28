@@ -157,7 +157,7 @@ def run_seo(site):
             if _digits(href) != _digits(tel) and not (b.get("phone_is_virtual") and _digits(href) == _digits(b.get("phone_regular", ""))):   # Zap's "מספר מקשר" popup names the regular line
                 tbad.append(f"{path(u) or '/'}: tel:{href}")
         for num in re.findall(r"(?<![\w-])0\d{1,2}-?\d{7}(?![\w])", _text(body)):   # not inside tokens/nonces ("c0775...")
-            if _digits(num) not in (_digits(tel), _digits(wa)) and _digits(num) not in json.dumps(data, ensure_ascii=False):
+            if _digits(num) not in (_digits(tel), _digits(wa), _digits(b.get("phone_regular", "")) if b.get("phone_is_virtual") else "x") and _digits(num) not in json.dumps(data, ensure_ascii=False):
                 shown_bad.append(f"{path(u) or '/'}: {num}")
     R("13", "כפתורים ויצירת קשר", "כפתור טלפון תואם למספר באתר", "FAIL" if tbad or shown_bad else "PASS",
       "; ".join(sorted(set(tbad + shown_bad)))[:400] or f"tel = {b.get('phone_display')}")
