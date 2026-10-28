@@ -69,6 +69,7 @@ body .zs-gallery__img a { display: block; cursor: zoom-in; }
 /* Accessibility toolbar button on phones: small, in the start corner above the call bar, off the content */
 @media (max-width: 767px) {
   body #pojo-a11y-toolbar { top: auto !important; bottom: 84px !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: auto !important; bottom: 0 !important; }
   body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; opacity: .92; }
 }
 
