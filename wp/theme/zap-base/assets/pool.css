@@ -332,3 +332,5 @@ html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__med
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media img { width: 100%; height: 100% !important; object-fit: cover; }
 /* the light tone hides the hero wash (main.css); photo heroes always keep it, on inner pages too */
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media::after { display: block; content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+/* framed cards: the caption sits below the photo and the whole card is the link, so no corner arrow over the text */
+html body .zs-cards.zs-v-framed .e-con.zs-card__body::after { content: none; }
