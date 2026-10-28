@@ -125,6 +125,25 @@ def button(ctx, b, kind="primary"):
     return W(ctx, "button", s, f"zs-b zs-b-{k}")
 
 
+def has_form(ctx):
+    """No leads e-mail in the brief -> calls-only site: no form anywhere, call/WhatsApp buttons instead."""
+    return bool(ctx.site["business"].get("email_leads"))
+
+
+def call_buttons(ctx):
+    b = ctx.site["business"]
+    return buttons(ctx, {"label": b.get("phone_display", ""), "href": "tel"},
+                   {"label": "וואטסאפ", "href": "whatsapp"} if b.get("whatsapp_e164") else None)
+
+
+def lead_cta(ctx, s):
+    """The section's own buttons, or the default 'leave details' pair; calls-only sites get call buttons."""
+    if s.get("cta") or has_form(ctx):
+        return buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
+                       s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"}))
+    return call_buttons(ctx)
+
+
 def buttons(ctx, *bs):
     items = [button(ctx, b, "primary" if i == 0 else "ghost") for i, b in enumerate(bs) if b]
     items = [i for i in items if i]
@@ -335,15 +354,14 @@ def cta(ctx, s):
     if s.get("variant") == "photo":     # half photo, half brand panel with the action (lacuccina "להזמנת שולחן")
         panel = C(ctx, "zs-cta__panel", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                          heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text")),
-                                         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}), s.get("cta2"))])
+                                         lead_cta(ctx, s)])
         return section(ctx, {**s, "bg": s.get("bg")}, "zs-ctaph",
                        [C(ctx, "zs-ctaph__media", [image(ctx, s.get("image"), "zs-ctaph__img", "large")]), panel])
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
         garland(ctx, s),
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                 heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
-        buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
-                s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"})),
+        lead_cta(ctx, s),
     ])
 
 
@@ -372,7 +390,7 @@ def posts(ctx, s):
 def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "p", "zs-sec__title zs-contact__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'})])   # same fields as the footer form (Zap QA)
+                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
     if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
         right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
     else:
@@ -399,7 +417,7 @@ def leadbar(ctx, s):
     bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
     return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
         heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
-        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}),
+        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}) if has_form(ctx) else call_buttons(ctx),
     ])])
 
 
@@ -653,11 +671,11 @@ def footer_template(ctx):
     lead = C(ctx, "zs-leadband", [
         C(ctx, "zs-wrap zs-leadband__in", [
             C(ctx, "zs-leadband__text", [
-                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
-                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
-                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם" if has_form(ctx) else "דברו איתנו"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
+                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם." if has_form(ctx) else "")),
+                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or") if has_form(ctx) else None,
             ]),
-            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form"),
+            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
         ]),
     ], tag="section", inner=False)
     lead["settings"]["_element_id"] = "leave-details"

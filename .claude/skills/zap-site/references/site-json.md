@@ -37,7 +37,7 @@ form), `tel`, `whatsapp`, or a full `https://` URL.
 `name`, `legal_name`, `schema_type` (LocalBusiness subtype: Plumber, Electrician, LegalService, Dentist,
 MedicalClinic, HVACBusiness, RoofingContractor, GeneralContractor, AutoRepair, BeautySalon, Restaurant,
 Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, `whatsapp_text`,
-`email_leads` (required), `email_public`, `address`, `street`, `city`, `postal_code`, `geo {lat,lng}`,
+`email_leads` (optional: empty → calls-only site — no lead form anywhere; contact, CTA and the footer band show call/WhatsApp buttons; only when the brief gives no e-mail), `email_public`, `address`, `street`, `city`, `postal_code`, `geo {lat,lng}`,
 `hours` (display lines), `opening_hours` (schema format `Su-Th 08:00-19:00`), `area_served` [],
 `founded`, `phone_is_virtual` (true when `phone_display` is a Zap virtual number: adds "מספר מקשר" + Zap's explanation popup), `phone_regular` (the business's own number, shown in that popup), `gmb_url`, `gmb_kgmid_url`, `dpz_customer_id`, `facebook`, `instagram`, `linkedin`, `youtube`,
 `author_name`, `author_credentials`.

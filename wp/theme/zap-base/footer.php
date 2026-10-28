@@ -13,7 +13,7 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
 ?>
 </main>
 <?php if (!zs_render_tpl('footer')) : ?>
-<?php if (!$is_contact && shortcode_exists('zap_form')) : ?>
+<?php if (!$is_contact && shortcode_exists('zap_form') && zs_opt('business.email_leads')) : ?>
 <section class="zs-leadband" id="leave-details" aria-labelledby="zs-leadband-title">
   <div class="zs-wrap zs-leadband__in">
     <div class="zs-leadband__text">

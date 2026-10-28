@@ -55,9 +55,11 @@ def validate(d, site_dir):
     W = lambda m: out.append("WARN  " + m)
 
     b = d.get("business", {})
-    for k in ("name", "phone_display", "phone_e164", "email_leads"):
+    for k in ("name", "phone_display", "phone_e164"):
         if not b.get(k):
             E(f"business.{k} is required")
+    if not b.get("email_leads"):
+        W("business.email_leads missing: calls-only site, every lead form is replaced by call/WhatsApp buttons")
     if b.get("phone_display") and b.get("phone_e164") and e164_from_display(b["phone_display"]) != b["phone_e164"]:
         E(f"phone_e164 {b['phone_e164']} does not dial the displayed number {b['phone_display']} "
           f"(expected {e164_from_display(b['phone_display'])})")
