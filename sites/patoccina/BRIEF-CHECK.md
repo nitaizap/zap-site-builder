@@ -48,7 +48,7 @@ Brief: איפיון אתר WIX בייסיק, customer 80356988. ✅ = seen on th
 | brief | status |
 |---|---|
 | H1 נעים להכיר, 3 paragraphs | ✅ word for word (dashes rewritten as commas/colons, house rule) |
-| folder: top image Einat with the spread, side image (dough) | ✅ hero photo + split photo |
+| folder: top image Einat with the spread, side image (dough) | ✅ Einat photo; ➖ dough photo replaced by a bakery photo from the old site (user, 28/10) |
 
 ## Menus
 | brief | status |

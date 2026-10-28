@@ -75,9 +75,13 @@
    "src": "assets/garden-buffet.jpg",
    "alt": "בופה סלטים ומנות חלביות באירוע בגינה"
   },
-  "dough": {
-   "src": "assets/dough.jpg",
-   "alt": "ידיים מעבדות כדורי בצק טרי על משטח עבודה"
+  "pastries-flowers": {
+   "src": "assets/pastries-flowers.jpg",
+   "alt": "מגשי מאפים וכריכים טריים של פטוצ'ינה לצד זר פרחים"
+  },
+  "pastry-trays": {
+   "src": "assets/pastry-trays.jpg",
+   "alt": "מגשי מאפים ממולאים ערוכים על שולחן אירוח"
   },
   "einat-spread": {
    "src": "assets/einat-spread.jpg",
@@ -318,6 +322,11 @@
       "label": "דברו איתנו",
       "href": "page:צור-קשר"
      },
+     "points": [
+      "תפריט בהתאמה אישית",
+      "חלבי כשר בטעמים איטלקיים",
+      "8 שנות ניסיון"
+     ],
      "image": "brunch-table",
      "images": [
       "brunch-table",
@@ -387,7 +396,7 @@
      "variant": "duo",
      "title": "נעים להכיר, פטוצ'ינה",
      "image": "einat-spread",
-     "image2": "dough",
+     "image2": "pastry-trays",
      "image_side": "start",
      "text": "<p>פטוצ'ינה נולדה מתוך אהבה גדולה לבישול ולאירוח של עינת שליין. את התשוקה למטבח האיטלקי, הטעמים העשירים והפשטות המתוחכמת, היא הפכה לקייטרינג חלבי כשר שמביא טעם של בית לכל אירוע, עם שירות אישי והקפדה על כל פרט.</p>",
      "cta": {
@@ -478,7 +487,7 @@
      "type": "split",
      "variant": "frame",
      "title": "מהאהבה לבישול לאירועים שלכם",
-     "image": "dough",
+     "image": "pastries-flowers",
      "image_side": "end",
      "text": "<p>אני עינת שליין, הבעלים של פטוצ'ינה קייטרינג חלבי. האהבה לבישול ולאירוח ליוותה אותי שנים רבות, עד שהחלטתי להפוך את התשוקה הזו למקצוע, וכבר 8 שנים שאני מבשלת לאירועים של אחרים.</p><p>המטבח האיטלקי תמיד קסם לי: השילוב של טעמים עשירים ופשטות מתוחכמת. בפטוצ'ינה אני מביאה את הקסם הזה לאירועים שלכם דרך תפריט חלבי כשר, ממנות ביתיות ומחומרי גלם טריים ואיכותיים.</p><p>אני מאמינה שאוכל טוב מחבר בין אנשים ויוצר רגעים שלא שוכחים. לכן כל תפריט נבנה יחד איתכם, בהתאמה אישית, כי בפטוצ'ינה הכל אפשרי.</p>",
      "cta": {
@@ -697,6 +706,6 @@
    "body": "Assistant"
   },
   "radius": 18,
-  "custom_css": ""
+  "custom_css": "@media (min-width: 1025px) { body.zs-p-soft .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(4rem, 6vw, 5.6rem); line-height: 1.02; } body.zs-p-soft .zs-hero--home .zs-hero__text .elementor-widget-text-editor { font-size: 1.3rem; } }"
  }
 }

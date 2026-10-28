@@ -9,7 +9,8 @@ images = {
     "buffet-quiches": img("buffet-quiches", "שולחן בופה של פטוצ'ינה עם פשטידות, מאפים ומגשי אירוח"),
     "brunch-table": img("brunch-table", "שולחן בראנץ' חלבי עם פשטידות, מאפים ופרחים ליד חלון"),
     "garden-buffet": img("garden-buffet", "בופה סלטים ומנות חלביות באירוע בגינה"),
-    "dough": img("dough", "ידיים מעבדות כדורי בצק טרי על משטח עבודה"),
+    "pastries-flowers": img("pastries-flowers", "מגשי מאפים וכריכים טריים של פטוצ'ינה לצד זר פרחים"),
+    "pastry-trays": img("pastry-trays", "מגשי מאפים ממולאים ערוכים על שולחן אירוח"),
     "einat-spread": img("einat-spread", "עינת שליין, הבעלים של פטוצ'ינה, ליד שולחן אירוח ערוך"),
     "trays-boxes": img("trays-boxes", "מגשי אירוח ארוזים: כריכונים, מאפים ובורקיטס"),
     "trays-pastries": img("trays-pastries", "מגשי מאפים וכריכונים ארוזים במדבקת פטוצ'ינה"),
@@ -46,6 +47,7 @@ home = {"key": "", "type": "home", "title": "דף הבית",
     {"type": "hero", "title": B, "eyebrow": "קייטרינג בוטיק חלבי",
      "lead": "קייטרינג חלבי כשר בטעמים איטלקיים מהלב: מגשי אירוח, קינוחים, בראנץ' ואירועים, הכל בהתאמה אישית.",
      "cta": {"label": "לתפריטים", "href": MENUS}, "cta2": {"label": "דברו איתנו", "href": "page:צור-קשר"},
+     "points": ["תפריט בהתאמה אישית", "חלבי כשר בטעמים איטלקיים", "8 שנות ניסיון"],
      "image": "brunch-table", "images": ["brunch-table", "garden-buffet", "buffet-quiches"]},
     {"type": "cards", "style": "classic", "title": "קייטרינג חלבי כשר לכל אירוע", "head": "stack",
      "intro": "ארבעה תפריטים שהם נקודת התחלה. את כולם מתאימים אישית לאירוע, לכמות האורחים ולטעם שלכם.",
@@ -59,7 +61,7 @@ home = {"key": "", "type": "home", "title": "דף הבית",
     {"type": "split", "variant": "card", "title": f"ב{B} הכל אפשרי", "image": "trays-outdoor", "image_side": "end",
      "text": f"<p>כבר 8 שנים ש{B} מביאה לשולחן שלכם אוכל חלבי כשר, ביתי ומוקפד בהשראת המטבח האיטלקי. בין אם מדובר בישיבת צוות, בבראנץ' משפחתי, באירוע פרטי או באירוע עסקי, נבנה יחד אתכם תפריט שמתאים בדיוק לאירוע, לאורחים ולתקציב.</p>",
      "cta": {"label": "לתפריטים", "href": MENUS}},
-    {"type": "split", "variant": "duo", "title": f"נעים להכיר, {B}", "image": "einat-spread", "image2": "dough", "image_side": "start",
+    {"type": "split", "variant": "duo", "title": f"נעים להכיר, {B}", "image": "einat-spread", "image2": "pastry-trays", "image_side": "start",
      "text": f"<p>{B} נולדה מתוך אהבה גדולה לבישול ולאירוח של עינת שליין. את התשוקה למטבח האיטלקי, הטעמים העשירים והפשטות המתוחכמת, היא הפכה לקייטרינג חלבי כשר שמביא טעם של בית לכל אירוע, עם שירות אישי והקפדה על כל פרט.</p>",
      "cta": {"label": "להכיר אותנו", "href": "page:נעים-להכיר"}},
     {"type": "features", "variant": "checks", "title": f"למה לבחור ב{B}", "head": "stack",
@@ -115,7 +117,7 @@ about = {"key": "נעים-להכיר", "type": "about", "title": "נעים לה�
   "sections": [
     {"type": "hero", "title": "נעים להכיר", "image": "einat-spread",
      "lead": f"{B} קייטרינג: קייטרינג חלבי כשר בטעמים איטלקיים, עם שירות אישי ותפריט בהתאמה אישית לכל אירוע."},
-    {"type": "split", "variant": "frame", "title": "מהאהבה לבישול לאירועים שלכם", "image": "dough", "image_side": "end",
+    {"type": "split", "variant": "frame", "title": "מהאהבה לבישול לאירועים שלכם", "image": "pastries-flowers", "image_side": "end",
      "text": f"<p>אני עינת שליין, הבעלים של {B} קייטרינג חלבי. האהבה לבישול ולאירוח ליוותה אותי שנים רבות, עד שהחלטתי להפוך את התשוקה הזו למקצוע, וכבר 8 שנים שאני מבשלת לאירועים של אחרים.</p>"
              f"<p>המטבח האיטלקי תמיד קסם לי: השילוב של טעמים עשירים ופשטות מתוחכמת. ב{B} אני מביאה את הקסם הזה לאירועים שלכם דרך תפריט חלבי כשר, ממנות ביתיות ומחומרי גלם טריים ואיכותיים.</p>"
              f"<p>אני מאמינה שאוכל טוב מחבר בין אנשים ויוצר רגעים שלא שוכחים. לכן כל תפריט נבנה יחד איתכם, בהתאמה אישית, כי ב{B} הכל אפשרי.</p>",
@@ -227,7 +229,8 @@ colors = {"primary": "#561b31", "primary_ink": "#ffffff", "accent": "#b04a31", "
           "ink": "#2a1219", "text": "#3d2e32", "muted": "#5a4a4e", "bg": "#fdfaf6", "surface": "#f6efe7",
           "line": "#e8ddd2", "dark": "#3a1222", "dark_ink": "#f6efe7"}
 site["design"] = {"base_template": 2, "preset": "soft", "tone": "light", "hero": "split", "header": "light", "motion": "subtle",
-                  "colors": colors, "fonts": {"heading": "Rubik", "body": "Assistant"}, "radius": 18, "custom_css": ""}
+                  "colors": colors, "fonts": {"heading": "Rubik", "body": "Assistant"}, "radius": 18,
+                  "custom_css": "@media (min-width: 1025px) { body.zs-p-soft .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(4rem, 6vw, 5.6rem); line-height: 1.02; } body.zs-p-soft .zs-hero--home .zs-hero__text .elementor-widget-text-editor { font-size: 1.3rem; } }"}
 
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site.json")
 json.dump(site, open(out, "w", encoding="utf8"), ensure_ascii=False, indent=1)

@@ -31,7 +31,7 @@ made-to-measure dairy kosher menu ("הכל אפשרי").
 | logo.png | research/img/logo-orig.png (old site, 1755px, transparent), trimmed | header |
 | brunch-table, garden-buffet, buffet-quiches | the brief's 3 home-page rotating images | home hero slider |
 | einat-spread | Einat beside a laid table (brief: about top image) | about hero, home about split |
-| dough | hands kneading dough (brief: about side image) | about split |
+| pastries-flowers, pastry-trays | pastry and sandwich trays from the old site (feettuccine.co.il) | about split, home about (replaced the dough photo at the user's request, 28/10) |
 | trays-*, cheese-*, caprese-salad, quiche-* | the מגשי אירוח photo set | menus, gallery, home |
 | event-tables | brief: "תכנון אירוע – להחליף אליה" | events menu |
 | event-courtyard, event-garden | client's general-use photos | gallery |
