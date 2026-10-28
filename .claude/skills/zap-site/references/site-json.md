@@ -15,16 +15,17 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 | `directions` | `{ "a": {...}, "b": {...}, "c": {...} }` partial `design` overrides for the gate preview; each has a `label` |
 | `form` | `title`, `text`, `button`, `thanks` – the footer lead form |
 | `footer` | `about` (one sentence), `links_title`, optional `ai_images_note` |
-| `header` | `cta_label` (mobile menu button), `topbar` (default true: dark utility bar with hours/email/phone), `topbar_text` (short line: areas + years) |
+| `header` | `cta_label` (mobile menu button), `topbar` (default true: dark utility bar with hours/email/phone), `topbar_text` (short line: areas + years), `mobile_call` (default true: phone icon in the mobile header; false only when the client asks) |
 | `content` | `disclaimer` (YMYL; shown under posts) |
 | `smtp` | normally omit (Zap relay defaults). `test_to`: internal address that receives staging test leads |
-| `logo` | `assets/logo.png` (PNG/WebP, transparent; not SVG). `logo_light`: optional light version for dark headers |
+| `logo` | `assets/logo.png` (PNG/WebP, transparent; not SVG). A logo with a small tagline: use a crop without it (the header shows it at 56px). `logo_light`: optional light version for dark headers |
+| `favicon` | `assets/favicon.png`: square PNG, 512px, from the logo's symbol (replaces the cloned base site's icon) |
 | `og_image` | image key for social sharing; default `__logo` |
 | `images` | `{ key: { "src": "assets/x.jpg", "alt": "what it shows", "ai": true?, "decorative": true? } }` |
 | `videos` | `{ key: { "src": "assets/hero-loop.mp4", "ai": true? } }` – hero loops only: mp4/webm, ≤ 6 MB, 4–8 s, no audio |
 | `nav` | `[{ "label", "href", "children": [...] }]` – primary menu |
 | `footer_nav` | flat list – the footer services column |
-| `categories` | `[{ "slug", "name", "description" (140–160 chars, it is the meta description) }]` |
+| `categories` | `[{ "slug" (Hebrew), "name", "description" (150–160 chars, it is the meta description) }]`; required when there is a blog page. Archives at `/<blog>/<slug>/` |
 | `pages` | below |
 | `posts` | below |
 
@@ -38,7 +39,7 @@ MedicalClinic, HVACBusiness, RoofingContractor, GeneralContractor, AutoRepair, B
 Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, `whatsapp_text`,
 `email_leads` (required), `email_public`, `address`, `street`, `city`, `postal_code`, `geo {lat,lng}`,
 `hours` (display lines), `opening_hours` (schema format `Su-Th 08:00-19:00`), `area_served` [],
-`founded`, `gmb_url`, `gmb_kgmid_url`, `dpz_customer_id`, `facebook`, `instagram`, `linkedin`, `youtube`,
+`founded`, `phone_is_virtual` (true when `phone_display` is a Zap virtual number: adds "מספר מקשר" + Zap's explanation popup), `phone_regular` (the business's own number, shown in that popup), `gmb_url`, `gmb_kgmid_url`, `dpz_customer_id`, `facebook`, `instagram`, `linkedin`, `youtube`,
 `author_name`, `author_credentials`.
 
 ## design

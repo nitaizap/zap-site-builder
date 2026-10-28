@@ -33,7 +33,7 @@ before doing the step — every one encodes mistakes already made.
 | design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
-| deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
+| before QA / deliver | `references/qa-rules.md` (everything Zap QA rejects, and what is on you), `references/novamira.md` (push) or `references/delivery.md` (zip) |
 | examples | `examples/sample-plumber/` (minimal, the engine test: schema only, never a look to copy) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
 
@@ -141,6 +141,10 @@ direction, say which and why in one line, and continue without waiting.
    reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
    site.json". Grep site.json for every prohibited word. Format: a table per brief section, one row per line of the brief.
 7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
+8. Go through `references/qa-rules.md` (Zap QA's rejections as rules): the "you" column is not automatic: the
+   home H1 is the client's name only, titles `<client> | <page>`, slug = H1 = menu label, no full stop on headings,
+   a legible logo without a tiny tagline, a favicon, 3 blog posts from the client's own material, `phone_is_virtual`
+   when the display number is a Zap number.
 
 ## 5 · Deliver — `references/novamira.md` (push) or `references/delivery.md` (zip)
 

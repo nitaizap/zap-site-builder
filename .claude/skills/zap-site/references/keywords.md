@@ -35,6 +35,8 @@
 ```
 
 - Keys are Hebrew, hyphenated, no Latin mixed in (a client complaint, and the validator blocks it).
+- **Slug = H1 = menu label** for service and hub pages (Zap QA): decide the page's name once and use it in the
+  key, the H1, the nav and the footer nav.
 - Services sit under their hub; static pages stay at one level on purpose.
 - Typical small business: home, 1 hub, 3–8 services, about, contact, blog with 2–3 launch posts.
   A larger tree is fine when the keyword research supports it; thin pages are not.
