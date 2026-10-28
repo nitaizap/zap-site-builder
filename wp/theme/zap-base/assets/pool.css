@@ -322,3 +322,7 @@ html body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-ghost .elemen
 html body .zs-split.zs-v-overlap .zs-b-primary .elementor-button { background: var(--c-dark-ink); color: var(--c-dark); border-color: var(--c-dark-ink); }
 /* checks: the eyebrow sits on the brand gradient */
 html body .e-con.zs-features.zs-v-checks .zs-eyebrow .elementor-heading-title { color: #fff; }
+/* phones: the photo hero's text spans the whole width, so the wash is even (the radial one fades where the text sits) */
+@media (max-width: 767px) {
+  body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media::after { background: rgb(8 10 14 / .66); }
+}
