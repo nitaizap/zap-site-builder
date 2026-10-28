@@ -330,3 +330,5 @@ html body .e-con.zs-features.zs-v-checks .zs-eyebrow .elementor-heading-title { 
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .e-con.zs-hero__media { position: absolute; inset: 0; height: auto !important; aspect-ratio: auto !important; }
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media img { width: 100%; height: 100% !important; object-fit: cover; }
+/* the light tone hides the hero wash (main.css); photo heroes always keep it, on inner pages too */
+html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__media::after { display: block; content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; }
