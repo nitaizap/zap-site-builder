@@ -355,10 +355,15 @@ def run_qa(site):
                 extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
                 if not (opened and closed):
                     errors += 1
-                ok_msg, saved, mailed = test_form(page, site)
-                extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
-                if not (ok_msg and saved == 1):
-                    errors += 1
+                if not data["business"].get("email_leads"):
+                    no_form = page.locator("form.zs-form").count() == 0
+                    extra.append(("calls-only site (no leads e-mail): no lead form rendered", no_form))
+                    errors += 0 if no_form else 1
+                else:
+                    ok_msg, saved, mailed = test_form(page, site)
+                    extra.append((f"lead form: thank-you shown, saved={saved}, mail={ {'yes': 'sent to the test address', 'no': 'FAILED', 'staging-skip': 'skipped on staging (correct)'}.get(mailed, 'n/a') }", ok_msg and saved == 1 and mailed != 'no'))
+                    if not (ok_msg and saved == 1):
+                        errors += 1
             # above the fold: the home hero's buttons are visible without scrolling on a short laptop / small phone
             # (browser bars deducted; on phones the fixed call bar too)
             fw, fh = (1280, 620) if vp == "desktop" else (360, 640)

@@ -40,3 +40,18 @@ Open: lead email (blocking), WhatsApp, kashrut body, privacy details, show price
 
 ## Assumptions
 - Dish names from the photo filenames can be used as menu highlights (they are the client's own dishes).
+
+## Decisions (user, round 2)
+- No leads e-mail in the brief → calls-only site (engine: forms replaced by call buttons). No WhatsApp (no source).
+- Prices: not in the brief → not shown. Kashrut: generic "כשר". Privacy: whatever found (legal name = brand, unconfirmed).
+- Platform: WordPress.
+- H1s kept exactly as the brief wrote them (validator warns the keyword is not in the H1; the keyword is in title/description/body).
+
+## Keyword map
+| page | keyword | H1 (brief) |
+|---|---|---|
+| / | מסעדה איטלקית כשרה בנהריה | בלה מארה – מטבח איטלקי כשר |
+| /אודות/ (+#events) | מסעדה לאירועים בנהריה | אודות בלה מארה |
+| /תפריט-ומשלוחים/ | משלוח פיצה בנהריה | התפריט שלנו |
+| /גלריה/ | גלריה בלה מארה | גלריה |
+| דברו איתנו | anchor /#contact on home | — |

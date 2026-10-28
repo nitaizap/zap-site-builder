@@ -656,7 +656,7 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 .zs-p-signature .zs-leadband { background: #0d0c0c; }
 .zs-p-signature .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-accent) 40%, transparent), transparent); opacity: .35; }
 .zs-p-signature .zs-leadband h2 { font-size: clamp(2rem, 1.2rem + 2.6vw, 3.6rem); font-weight: 900; letter-spacing: -.03em; }
-.zs-p-signature .zs-footer__mark { display: block; font-family: var(--f-head); font-weight: 900; font-style: italic; font-size: clamp(2.6rem, 9vw, 10.5rem); line-height: .82; letter-spacing: -.04em; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px rgb(255 255 255 / .16); text-align: center; padding-top: 8px; margin-bottom: -.12em; user-select: none; overflow: hidden; }
+.zs-p-signature .zs-footer__mark { display: block; font-family: var(--f-head); font-weight: 900; font-style: italic; font-size: clamp(2.6rem, 9vw, 10.5rem); line-height: .82; letter-spacing: -.04em; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px var(--c-accent);   /* QA: decorative text >= 3:1; accent is the bright colour on dark */ text-align: center; padding-top: 8px; margin-bottom: -.12em; user-select: none; overflow: hidden; }
 
 /* texture: fine grain on dark grounds */
 .zs-p-signature .zs-bg-dark.e-con, .zs-p-signature .e-con.zs-hero, .zs-p-signature .zs-leadband, .zs-p-signature .zs-footer { position: relative; }

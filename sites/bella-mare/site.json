@@ -1,0 +1,730 @@
+{
+ "site": {
+  "lang": "he",
+  "index": false,
+  "tagline": "מטבח איטלקי כשר"
+ },
+ "business": {
+  "name": "בלה מארה",
+  "legal_name": "בלה מארה",
+  "schema_type": "Restaurant",
+  "phone_display": "055-4309548",
+  "phone_e164": "+972554309548",
+  "email_leads": "",
+  "address": "השקד 47, נהריה",
+  "street": "השקד 47",
+  "city": "נהריה",
+  "geo": {
+   "lat": 32.98885,
+   "lng": 35.083578
+  },
+  "hours": [
+   "ראשון–חמישי 12:00–22:00",
+   "שישי: סגור",
+   "מוצאי שבת: עד 24:00"
+  ],
+  "opening_hours": [
+   "Su-Th 12:00-22:00"
+  ],
+  "area_served": [
+   "נהריה"
+  ],
+  "instagram": "https://www.instagram.com/__bella.mare/",
+  "facebook": "https://www.facebook.com/people/%D7%91%D7%9C%D7%94-%D7%9E%D7%90%D7%A8%D7%94-Bella-Mare/61571214143794/",
+  "dpz_customer_id": "80392812",
+  "author_name": "בלה מארה"
+ },
+ "standards": {
+  "privacy_url": "",
+  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
+ },
+ "design": {
+  "preset": "signature",
+  "hero": "image",
+  "header": "light",
+  "motion": "lively",
+  "colors": {
+   "primary": "#b0561c",
+   "primary_ink": "#ffffff",
+   "accent": "#e0a372",
+   "accent_ink": "#1d1410",
+   "ink": "#22170f",
+   "text": "#463a31",
+   "muted": "#6b5d52",
+   "bg": "#fbf8f4",
+   "surface": "#f8f3ed",
+   "line": "#e4d9cc",
+   "dark": "#1f1a17",
+   "dark_ink": "#f3ece3"
+  },
+  "fonts": {
+   "heading": "Rubik",
+   "body": "Assistant"
+  },
+  "radius": 2,
+  "custom_css": ""
+ },
+ "directions": {
+  "a": {
+   "label": "A · ערב בנאפולי — כהה וקולנועי: צילום השולחן המלא על כל המסך, נחושת מהלוגו, טיפוגרפיה כבדה",
+   "preset": "signature",
+   "hero": "image",
+   "motion": "lively",
+   "radius": 2,
+   "fonts": {
+    "heading": "Rubik",
+    "body": "Assistant"
+   }
+  },
+  "b": {
+   "label": "B · טרטוריה יוקרתית — בהיר ואלגנטי: שמנת ונחושת, כותרות סריף, סליידר מנות בהירות",
+   "preset": "editorial",
+   "tone": "light",
+   "hero": "split",
+   "motion": "subtle",
+   "radius": 4,
+   "fonts": {
+    "heading": "Frank Ruhl Libre",
+    "body": "Assistant"
+   },
+   "colors": {
+    "primary": "#8a3b0b",
+    "primary_ink": "#ffffff",
+    "accent": "#8a6a3a",
+    "accent_ink": "#ffffff",
+    "ink": "#22170f",
+    "text": "#463a31",
+    "muted": "#6b5d52",
+    "bg": "#fbf8f4",
+    "surface": "#f8f3ed",
+    "line": "#e4d9cc",
+    "dark": "#1f1a17",
+    "dark_ink": "#f3ece3"
+   }
+  },
+  "c": {
+   "label": "C · פיצרייה שכונתית — חם ומזמין: פינות רכות, טרקוטה, פונט עגול וכיפי",
+   "preset": "soft",
+   "hero": "split",
+   "motion": "lively",
+   "radius": 18,
+   "fonts": {
+    "heading": "Varela Round",
+    "body": "Assistant"
+   },
+   "colors": {
+    "primary": "#b0561c",
+    "primary_ink": "#ffffff",
+    "accent": "#e0a372",
+    "accent_ink": "#1d1410",
+    "ink": "#22170f",
+    "text": "#463a31",
+    "muted": "#6b5d52",
+    "bg": "#fbf8f4",
+    "surface": "#faf1e8",
+    "line": "#e4d9cc",
+    "dark": "#1f1a17",
+    "dark_ink": "#f3ece3"
+   }
+  }
+ },
+ "form": {
+  "title": "שולחן, משלוח או אירוע?",
+  "text": "התקשרו אלינו, ונשמח לעזור."
+ },
+ "footer": {
+  "about": "בלה מארה – מסעדה איטלקית ופיצרייה כשרה בנהריה. משלוחים, טייק אווי, הזמנת שולחן ואירועים עד 70 איש.",
+  "links_title": "באתר"
+ },
+ "header": {
+  "cta_label": "התקשרו אלינו",
+  "topbar_text": "מסעדה איטלקית ופיצרייה כשרה · השקד 47, נהריה"
+ },
+ "content": {
+  "disclaimer": ""
+ },
+ "logo": "assets/logo.png",
+ "og_image": "table-top",
+ "images": {
+  "table-top": {
+   "src": "assets/img/table-top.jpg",
+   "alt": "שולחן עגול ערוך במגוון מנות איטלקיות, פיצות ופסטות בבלה מארה, צילום מלמעלה"
+  },
+  "table-wide": {
+   "src": "assets/img/table-wide.jpg",
+   "alt": "שולחן מלא בפיצות, פסטות ומנות פתיחה עם כוסות יין בבלה מארה"
+  },
+  "table-wine": {
+   "src": "assets/img/table-wine.jpg",
+   "alt": "שולחן ערוך מול קיר בקבוקי היין בבלה מארה"
+  },
+  "table-side": {
+   "src": "assets/img/table-side.jpg",
+   "alt": "שולחן אירוח עם מבחר מנות איטלקיות בבלה מארה"
+  },
+  "margherita": {
+   "src": "assets/img/margherita.jpg",
+   "alt": "פיצה מרגריטה נפוליטנית מהטאבון"
+  },
+  "pizza-arugula-close": {
+   "src": "assets/img/pizza-arugula-close.jpg",
+   "alt": "תקריב של פיצה עם רוקט ושוליים חרוכים מהטאבון"
+  },
+  "pizza-artichoke": {
+   "src": "assets/img/pizza-artichoke.jpg",
+   "alt": "פיצה ארטישוק"
+  },
+  "pizza-mushroom": {
+   "src": "assets/img/pizza-mushroom.jpg",
+   "alt": "פיצה ביאנקה פטריות"
+  },
+  "pizza-potato": {
+   "src": "assets/img/pizza-potato.jpg",
+   "alt": "פיצה תפוח אדמה מדורה"
+  },
+  "pizza-onion": {
+   "src": "assets/img/pizza-onion.jpg",
+   "alt": "פיצה בצל קלמטה"
+  },
+  "pizza-close": {
+   "src": "assets/img/pizza-close.jpg",
+   "alt": "תקריב של פיצה עם עגבניות וזיתים"
+  },
+  "pizza-sweetpotato": {
+   "src": "assets/img/pizza-sweetpotato.jpg",
+   "alt": "פיצה ביאנקה בטטה, ערמונים וזעפרן"
+  },
+  "focaccia": {
+   "src": "assets/img/focaccia.jpg",
+   "alt": "פוקאצ׳ה קלאסית עם מטבלים"
+  },
+  "arancini": {
+   "src": "assets/img/arancini.jpg",
+   "alt": "ארנצ׳יני ברוטב רוזה"
+  },
+  "arancini-close": {
+   "src": "assets/img/arancini-close.jpg",
+   "alt": "תקריב של כדורי ארנצ׳יני עם גבינה מגוררת"
+  },
+  "tomatoes": {
+   "src": "assets/img/tomatoes.jpg",
+   "alt": "סלט עגבניות מגוונות"
+  },
+  "zucchini": {
+   "src": "assets/img/zucchini.jpg",
+   "alt": "זוקיני על קרם פרש"
+  },
+  "caesar": {
+   "src": "assets/img/caesar.jpg",
+   "alt": "סלט קיסר רומאי"
+  },
+  "anchovy": {
+   "src": "assets/img/anchovy.jpg",
+   "alt": "מנת אנשובי בשמן זית"
+  },
+  "fish-cigar": {
+   "src": "assets/img/fish-cigar.jpg",
+   "alt": "סיגר דג עם סלט ירוק ומטבל"
+  },
+  "beet": {
+   "src": "assets/img/beet.jpg",
+   "alt": "ברולה סלק"
+  },
+  "rigatoni": {
+   "src": "assets/img/rigatoni.jpg",
+   "alt": "ריגטוני חמאה, עגבניות ומסקרפונה"
+  },
+  "rigatoni-close": {
+   "src": "assets/img/rigatoni-close.jpg",
+   "alt": "תקריב של ריגטוני ברוטב עגבניות"
+  },
+  "linguine": {
+   "src": "assets/img/linguine.jpg",
+   "alt": "לינגוויני כמהין"
+  },
+  "pappardelle": {
+   "src": "assets/img/pappardelle.jpg",
+   "alt": "פפרדלה פלורנטין"
+  },
+  "tortellini": {
+   "src": "assets/img/tortellini.jpg",
+   "alt": "טורטליני קאצ׳ו א פפה"
+  },
+  "agnolotti": {
+   "src": "assets/img/agnolotti.jpg",
+   "alt": "אנלוטי תירס עם פטריות ואספרגוס"
+  },
+  "spaghetti": {
+   "src": "assets/img/spaghetti.jpg",
+   "alt": "ספגטי אלי אוליו"
+  },
+  "spaghetti-close": {
+   "src": "assets/img/spaghetti-close.jpg",
+   "alt": "תקריב של ספגטי עם פיסטוק"
+  },
+  "tiramisu": {
+   "src": "assets/img/tiramisu.jpg",
+   "alt": "טירמיסו מגירה"
+  }
+ },
+ "videos": {},
+ "nav": [
+  {
+   "label": "דף הבית",
+   "href": "page:"
+  },
+  {
+   "label": "אודות ואירועים",
+   "href": "page:אודות"
+  },
+  {
+   "label": "תפריט ומשלוחים",
+   "href": "page:תפריט-ומשלוחים"
+  },
+  {
+   "label": "גלריה",
+   "href": "page:גלריה"
+  },
+  {
+   "label": "דברו איתנו",
+   "href": "/#contact"
+  }
+ ],
+ "footer_nav": [
+  {
+   "label": "אודות",
+   "href": "page:אודות"
+  },
+  {
+   "label": "אירועים",
+   "href": "/אודות/#events"
+  },
+  {
+   "label": "תפריט ומשלוחים",
+   "href": "page:תפריט-ומשלוחים"
+  },
+  {
+   "label": "להזמנת משלוח",
+   "href": "https://www.mishlohim.co.il/menu/14504/"
+  },
+  {
+   "label": "להזמנת שולחן",
+   "href": "https://tabitisrael.co.il/site/bellamare"
+  },
+  {
+   "label": "גלריה",
+   "href": "page:גלריה"
+  }
+ ],
+ "categories": [],
+ "pages": [
+  {
+   "key": "",
+   "type": "home",
+   "title": "דף הבית",
+   "excerpt": "מסעדה איטלקית ופיצרייה כשרה בנהריה",
+   "seo": {
+    "title": "בלה מארה | מסעדה איטלקית ופיצרייה כשרה בנהריה",
+    "description": "בלה מארה – מסעדה איטלקית ופיצרייה כשרה בנהריה: פסטות, פיצות ומנות איטלקיות, משלוחים וטייק אווי בהזמנה אונליין, הזמנת שולחן ואירועים עד 70 איש.",
+    "keyword": "מסעדה איטלקית כשרה בנהריה"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "מסעדה איטלקית ופיצרייה כשרה · נהריה",
+     "title": "בלה מארה —\n*מטבח איטלקי כשר*.",
+     "lead": "פיצות, פסטות ומנות איטלקיות שמוגשות בדיוק כמו שצריך – במסעדה, בטייק אווי או במשלוח עד הבית.",
+     "cta": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "cta2": {
+      "label": "להזמנת שולחן",
+      "href": "https://tabitisrael.co.il/site/bellamare"
+     },
+     "points": [
+      "כשר",
+      "אירועים עד 70 איש",
+      "משלוחים וטייק אווי"
+     ],
+     "image": "table-top",
+     "images": [
+      "table-top",
+      "table-wide",
+      "table-side"
+     ]
+    },
+    {
+     "type": "trust",
+     "items": [
+      {
+       "value": "70",
+       "label": "סועדים במסעדה"
+      },
+      {
+       "value": "כשר",
+       "label": "מטבח איטלקי ופיצרייה"
+      },
+      {
+       "value": "טאבון",
+       "label": "פיצה נפוליטנית"
+      },
+      {
+       "value": "אונליין",
+       "label": "משלוחים, טייק אווי ושולחנות"
+      }
+     ]
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "פיצה מהטאבון",
+      "פסטה",
+      "פוקאצ׳ה",
+      "ארנצ׳יני",
+      "טירמיסו",
+      "כשר"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "המטבח",
+     "title": "איטליה על השולחן,\n*בכשרות מלאה*.",
+     "image": "margherita",
+     "image_side": "end",
+     "text": "<p>בבלה מארה נפגשים המטבח האיטלקי והפיצרייה: מפוקאצ׳ה ומנות פתיחה, דרך פסטות ופיצות במגוון סגנונות ועד קינוחים. אפשר לשבת ולהתארח במסעדה, לאסוף בטייק אווי או להזמין משלוח אונליין.</p>",
+     "cta": {
+      "label": "לתפריט",
+      "href": "page:תפריט-ומשלוחים"
+     },
+     "cta2": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     }
+    },
+    {
+     "type": "split",
+     "eyebrow": "מי אנחנו",
+     "title": "קצת *עלינו*.",
+     "image": "table-wine",
+     "image_side": "start",
+     "text": "<p>בלה מארה היא מסעדה איטלקית ופיצרייה כשרה, שמזמינה אתכם לארוחה איטלקית אמיתית – לארוחת צהריים, לערב עם חברים או לאירוע. המסעדה מכילה עד 70 סועדים ומארחת גם אירועים.</p>",
+     "badge": {
+      "title": "70",
+      "text": "סועדים, גם לאירועים"
+     },
+     "cta": {
+      "label": "לקריאה נוספת",
+      "href": "page:אודות"
+     }
+    },
+    {
+     "type": "gallery",
+     "eyebrow": "גלריה",
+     "title": "הצצה *למטבח*.",
+     "images": [
+      "pizza-arugula-close",
+      "rigatoni",
+      "arancini",
+      "pizza-mushroom",
+      "focaccia",
+      "tiramisu"
+     ],
+     "columns": 3
+    },
+    {
+     "type": "features",
+     "eyebrow": "למה אנחנו",
+     "title": "למה *בלה מארה*?",
+     "intro": "כל מה שצריך לארוחה איטלקית טובה – במקום אחד.",
+     "columns": 4,
+     "bg": "surface",
+     "items": [
+      {
+       "title": "מטבח איטלקי ופיצרייה",
+       "text": "פסטות, פיצות ומנות איטלקיות.",
+       "icon": "heart"
+      },
+      {
+       "title": "כשר",
+       "text": "כל התפריט בכשרות.",
+       "icon": "check"
+      },
+      {
+       "title": "אירועים עד 70 איש",
+       "text": "מקום לאירוע, לחגיגה או לארוחה משפחתית.",
+       "icon": "users"
+      },
+      {
+       "title": "משלוחים וטייק אווי",
+       "text": "הזמנה אונליין, משלוח עד הבית או איסוף עצמי.",
+       "icon": "car"
+      }
+     ]
+    },
+    {
+     "type": "faq",
+     "eyebrow": "שאלות",
+     "title": "שאלות *נפוצות*.",
+     "items": [
+      {
+       "q": "האם המסעדה כשרה?",
+       "a": "כן. בלה מארה היא מסעדה איטלקית ופיצרייה כשרה."
+      },
+      {
+       "q": "מה שעות הפעילות?",
+       "a": "ראשון–חמישי 12:00–22:00. ביום שישי המסעדה סגורה, ובמוצאי שבת פתוחה עד 24:00."
+      },
+      {
+       "q": "איך מזמינים משלוח או טייק אווי?",
+       "a": "בהזמנה אונליין, דרך הכפתור \"להזמנת משלוח\" באתר, או בטלפון."
+      },
+      {
+       "q": "אפשר לקיים אצלכם אירוע?",
+       "a": "כן. המסעדה מכילה עד 70 איש ומארחת אירועים. התקשרו אלינו לתיאום."
+      },
+      {
+       "q": "איך מזמינים שולחן?",
+       "a": "בהזמנת שולחן אונליין דרך הכפתור \"להזמנת שולחן\", או בטלפון."
+      }
+     ]
+    },
+    {
+     "type": "contact",
+     "anchor": "contact",
+     "eyebrow": "דברו איתנו",
+     "title": "דברו *איתנו*.",
+     "text": "רוצים להזמין שולחן, לתאם אירוע או לשאול שאלה? התקשרו אלינו, ונשמח לעזור."
+    }
+   ]
+  },
+  {
+   "key": "אודות",
+   "type": "about",
+   "title": "אודות",
+   "excerpt": "מסעדה איטלקית ופיצרייה כשרה, עד 70 סועדים ואירועים",
+   "seo": {
+    "title": "אודות בלה מארה | מסעדה איטלקית כשרה ואירועים",
+    "description": "הכירו את בלה מארה – מסעדה איטלקית ופיצרייה כשרה בנהריה, המכילה עד 70 סועדים ומארחת אירועים. פרטים ותיאום בטלפון.",
+    "keyword": "מסעדה לאירועים בנהריה"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "מי אנחנו",
+     "title": "אודות *בלה מארה*.",
+     "lead": "מסעדה איטלקית ופיצרייה כשרה בנהריה – לארוחה, לטייק אווי, למשלוח ולאירועים.",
+     "cta": {
+      "label": "להזמנת שולחן",
+      "href": "https://tabitisrael.co.il/site/bellamare"
+     },
+     "cta2": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "image": "table-wide"
+    },
+    {
+     "type": "split",
+     "eyebrow": "הסיפור",
+     "title": "מטבח איטלקי,\n*בכשרות*.",
+     "image": "pappardelle",
+     "image_side": "end",
+     "text": "<p>בלה מארה היא מסעדה איטלקית ופיצרייה כשרה. התפריט משלב את הקלאסיקות של המטבח האיטלקי – פוקאצ׳ה, מנות פתיחה, פסטות ופיצות במגוון סגנונות – לצד קינוחים איטלקיים.</p><p>אפשר ליהנות מהמנות במסעדה, לאסוף בטייק אווי או להזמין משלוח אונליין, והזמנת שולחן מתבצעת בקלות דרך האתר.</p>",
+     "cta": {
+      "label": "לתפריט",
+      "href": "page:תפריט-ומשלוחים"
+     }
+    },
+    {
+     "type": "split",
+     "anchor": "events",
+     "eyebrow": "אירועים",
+     "title": "מקום לאירוע\n*עד 70 איש*.",
+     "image": "table-side",
+     "image_side": "start",
+     "bg": "surface",
+     "text": "<p>מחפשים מקום לאירוע? המסעדה מכילה עד 70 איש ומארחת אירועים. דברו איתנו לתיאום.</p><p>מסעדה לאירועים בנהריה, עם מטבח איטלקי כשר ושולחנות מלאים בפיצות, פסטות ומנות פתיחה.</p>",
+     "badge": {
+      "title": "70",
+      "text": "איש באירוע"
+     },
+     "cta": {
+      "label": "לתיאום אירוע: 055-4309548",
+      "href": "tel"
+     }
+    },
+    {
+     "type": "cta",
+     "eyebrow": "הצעד הבא",
+     "title": "שולחן, משלוח *או אירוע*?",
+     "text": "הזמינו אונליין, או התקשרו ונשמח לעזור.",
+     "cta": {
+      "label": "להזמנת שולחן",
+      "href": "https://tabitisrael.co.il/site/bellamare"
+     },
+     "cta2": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "bg": "dark"
+    }
+   ]
+  },
+  {
+   "key": "תפריט-ומשלוחים",
+   "type": "page",
+   "title": "תפריט ומשלוחים",
+   "excerpt": "פיצות, פסטות, מנות פתיחה וקינוחים – משלוחים וטייק אווי",
+   "seo": {
+    "title": "תפריט בלה מארה | פיצות ופסטות – משלוחים וטייק אווי",
+    "description": "התפריט של בלה מארה – פיצות מהטאבון, פסטות, מנות פתיחה וקינוחים איטלקיים כשרים בנהריה. הזמינו משלוח עד הבית או טייק אווי אונליין, בקלות ובמהירות.",
+    "keyword": "משלוח פיצה בנהריה"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "משלוחים וטייק אווי",
+     "title": "התפריט *שלנו*.",
+     "lead": "פיצות, פסטות, מנות פתיחה וקינוחים מהמטבח האיטלקי. הזמינו אונליין – במשלוח עד הבית או באיסוף עצמי.",
+     "cta": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "cta2": {
+      "label": "להזמנת שולחן",
+      "href": "https://tabitisrael.co.il/site/bellamare"
+     },
+     "image": "pizza-close"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "התפריט",
+     "title": "מה *מגישים*.",
+     "intro": "טעימה מהתפריט. התפריט המלא וההזמנה – באתר ההזמנות.",
+     "layout": "bento",
+     "items": [
+      {
+       "title": "פיצות מהטאבון",
+       "text": "מרגריטה, מרינרה אנשובי, ארטישוק, ביאנקה פטריות, בצל קלמטה, תפוח אדמה מדורה, ביאנקה בטטה ערמונים וזעפרן.",
+       "image": "pizza-arugula-close",
+       "href": "https://www.mishlohim.co.il/menu/14504/"
+      },
+      {
+       "title": "פסטות",
+       "text": "ריגטוני חמאה עגבניות ומסקרפונה, לינגוויני כמהין, פפרדלה פלורנטין, טורטליני קאצ׳ו א פפה, אנלוטי תירס, ספגטי אלי אוליו.",
+       "image": "rigatoni-close",
+       "href": "https://www.mishlohim.co.il/menu/14504/"
+      },
+      {
+       "title": "פתיחה",
+       "text": "פוקאצ׳ה קלאסית ומטבלים, ארנצ׳יני, עגבניות מגוונות, זוקיני על קרם פרש, קיסר רומאי.",
+       "image": "arancini-close",
+       "href": "https://www.mishlohim.co.il/menu/14504/"
+      },
+      {
+       "title": "מהים",
+       "text": "סיגר דג, ברולה סלק ומנות דגים.",
+       "image": "fish-cigar",
+       "href": "https://www.mishlohim.co.il/menu/14504/"
+      },
+      {
+       "title": "קינוחים",
+       "text": "טירמיסו מגירה.",
+       "image": "tiramisu",
+       "href": "https://www.mishlohim.co.il/menu/14504/"
+      }
+     ]
+    },
+    {
+     "type": "gallery",
+     "eyebrow": "מהטאבון",
+     "title": "הפיצות *שלנו*.",
+     "images": [
+      "margherita",
+      "pizza-artichoke",
+      "pizza-mushroom",
+      "pizza-onion",
+      "pizza-potato",
+      "pizza-sweetpotato"
+     ],
+     "columns": 3
+    },
+    {
+     "type": "cta",
+     "eyebrow": "הזמנה",
+     "title": "רעבים? *מזמינים אונליין*.",
+     "text": "משלוח עד הבית או איסוף עצמי מהמסעדה בהשקד 47, נהריה.",
+     "cta": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "cta2": {
+      "label": "055-4309548",
+      "href": "tel"
+     },
+     "bg": "dark"
+    }
+   ]
+  },
+  {
+   "key": "גלריה",
+   "type": "page",
+   "title": "גלריה",
+   "excerpt": "המנות והאווירה בבלה מארה",
+   "seo": {
+    "title": "גלריה | בלה מארה – מסעדה איטלקית כשרה",
+    "description": "הצצה למנות ולאווירה בבלה מארה – פיצות מהטאבון, פסטות טריות, מנות פתיחה וקינוחים איטלקיים במסעדה והפיצרייה הכשרה ברחוב השקד בנהריה.",
+    "keyword": "גלריה בלה מארה"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "הצצה",
+     "title": "גלריה — *בלה מארה*.",
+     "lead": "המנות והאווירה – פיצות, פסטות וקינוחים איטלקיים.",
+     "cta": {
+      "label": "להזמנת שולחן",
+      "href": "https://tabitisrael.co.il/site/bellamare"
+     },
+     "cta2": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     },
+     "image": "table-wine"
+    },
+    {
+     "type": "gallery",
+     "images": [
+      "table-top",
+      "margherita",
+      "rigatoni",
+      "focaccia",
+      "pizza-mushroom",
+      "linguine",
+      "arancini",
+      "tomatoes",
+      "pizza-artichoke",
+      "pappardelle",
+      "zucchini",
+      "tortellini",
+      "pizza-potato",
+      "caesar",
+      "agnolotti",
+      "pizza-onion",
+      "beet",
+      "spaghetti",
+      "anchovy",
+      "pizza-sweetpotato",
+      "fish-cigar",
+      "spaghetti-close",
+      "table-side",
+      "tiramisu"
+     ],
+     "columns": 3
+    }
+   ]
+  }
+ ],
+ "posts": []
+}

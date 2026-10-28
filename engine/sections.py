@@ -122,6 +122,17 @@ def button(ctx, b, kind="primary"):
     return W(ctx, "button", s, f"zs-b zs-b-{k}")
 
 
+def has_form(ctx):
+    """No leads e-mail in the brief -> calls-only site: no form anywhere, call/WhatsApp buttons instead."""
+    return bool(ctx.site["business"].get("email_leads"))
+
+
+def call_buttons(ctx):
+    b = ctx.site["business"]
+    return buttons(ctx, {"label": b.get("phone_display", ""), "href": "tel"},
+                   {"label": "וואטסאפ", "href": "whatsapp"} if b.get("whatsapp_e164") else None)
+
+
 def buttons(ctx, *bs):
     items = [button(ctx, b, "primary" if i == 0 else "ghost") for i, b in enumerate(bs) if b]
     items = [i for i in items if i]
@@ -305,7 +316,8 @@ def cta(ctx, s):
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                 heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
-                s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"})),
+                s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"}))
+        if s.get("cta") or has_form(ctx) else call_buttons(ctx),
     ])
 
 
@@ -327,7 +339,8 @@ def posts(ctx, s):
 def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})])
+                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})
+                                       if has_form(ctx) else call_buttons(ctx)])
     right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
 
@@ -445,11 +458,11 @@ def footer_template(ctx):
     lead = C(ctx, "zs-leadband", [
         C(ctx, "zs-wrap zs-leadband__in", [
             C(ctx, "zs-leadband__text", [
-                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "h2", "zs-leadband__title"),
-                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
-                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם" if has_form(ctx) else "דברו איתנו"), "h2", "zs-leadband__title"),
+                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם." if has_form(ctx) else "")),
+                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or") if has_form(ctx) else None,
             ]),
-            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form"),
+            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
         ]),
     ], tag="section", inner=False)
     lead["settings"]["_element_id"] = "leave-details"
