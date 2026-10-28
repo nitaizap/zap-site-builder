@@ -48,17 +48,17 @@ add_shortcode('zap_map', function ($atts) {
     $a = shortcode_atts(['q' => zap_opt('business.address')], $atts);
     if (!$a['q']) return '';
     $src = 'https://www.google.com/maps?q=' . rawurlencode($a['q']) . '&output=embed&hl=iw';
-    return '<div class="zs-map"><iframe src="' . esc_url($src) . '" title="מפת הגעה — ' . esc_attr(zap_opt('business.name')) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>';
+    return '<div class="zs-map"><iframe src="' . esc_url($src) . '" title="מפת הגעה: ' . esc_attr(zap_opt('business.name')) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>';
 });
 
 /* Business contact details block. */
 add_shortcode('zap_nap', function () {
     $b = zap_opt('business', []);
     $o = '<ul class="zs-nap">';
-    if (!empty($b['phone_e164'])) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($b['phone_e164'])) . '">' . esc_html($b['phone_display']) . '</a></li>';
+    if (!empty($b['phone_e164'])) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($b['phone_e164'])) . '">' . esc_html($b['phone_display']) . '</a>' . (function_exists('zs_vnote_btn') ? zs_vnote_btn() : '') . '</li>';
     if (!empty($b['whatsapp_e164'])) $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($b['whatsapp_e164'], zap_opt('business.whatsapp_text', 'שלום, הגעתי מהאתר ואשמח לפרטים'))) . '" target="_blank" rel="noopener">וואטסאפ</a></li>';
     if (!empty($b['email_public'])) $o .= '<li>' . zs_icon('mail') . '<a href="mailto:' . esc_attr($b['email_public']) . '">' . esc_html($b['email_public']) . '</a></li>';
-    if (!empty($b['address'])) $o .= '<li>' . zs_icon('pin') . '<span>' . esc_html($b['address']) . '</span></li>';
+    if (!empty($b['address'])) $o .= '<li>' . zs_icon('pin') . (function_exists('zs_waze_href') ? '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($b['address']) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a>' : '<span>' . esc_html($b['address']) . '</span>') . '</li>';
     foreach ((array) ($b['hours'] ?? []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . (function_exists('zs_social_rows') ? zs_social_rows() : '') . '</ul>';
 });

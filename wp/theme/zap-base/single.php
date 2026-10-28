@@ -18,6 +18,18 @@ while (have_posts()) : the_post();
   <figure class="zs-wrap zs-wrap--narrow zs-post__hero"><?php the_post_thumbnail('zs-wide', ['loading' => 'eager', 'fetchpriority' => 'high']); ?></figure>
   <?php endif; ?>
   <div class="zs-wrap zs-wrap--narrow zs-prose"><?php the_content(); ?></div>
+  <?php $faq = json_decode((string) get_post_meta(get_the_ID(), '_zap_faq', true), true);
+  if ($faq) : // the post's FAQ is shown as well as in the FAQPage schema (the two must match) ?>
+  <section class="zs-wrap zs-wrap--narrow zs-post__faq zs-faq__list" aria-labelledby="zs-post-faq">
+    <h2 id="zs-post-faq">שאלות נפוצות</h2>
+    <div class="elementor-toggle">
+      <?php foreach ($faq as $f) : ?>
+      <details class="elementor-toggle-item"><summary class="elementor-tab-title"><?php echo esc_html($f['q'] ?? ''); ?></summary>
+        <div class="elementor-tab-content"><p><?php echo esc_html($f['a'] ?? ''); ?></p></div></details>
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
   <div class="zs-wrap zs-wrap--narrow">
     <?php if ($related && get_post_status($related) === 'publish') : ?>
     <aside class="zs-post__cta">

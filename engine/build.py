@@ -55,6 +55,15 @@ def chunks(items, n):
 
 
 
+def _privacy_desc(name):
+    """150-160 characters (Zap SEO checklist), whatever the length of the business name."""
+    d = f"מדיניות הפרטיות של {name}: איזה מידע נאסף בטופסי האתר, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו"
+    for extra in (" בכל עת", " בפנייה אלינו", ", בהתאם לחוק"):
+        if len(d) + len(extra) + 1 <= 160 and len(d) < 149:
+            d += extra
+    return (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+
+
 def privacy_html(data):
     """Zap's standard privacy policy for this business. Only the template's {{...}} fields are filled:
     the company (business.legal_name), the database paragraph (standards.privacy_database: true only when
@@ -72,6 +81,38 @@ def privacy_html(data):
     fill = {"name": _h.escape(b.get("legal_name") or b["name"]), "data": db,
             "more1": "\n".join(f"<li>{_h.escape(x)}</li>" for x in purposes),
             "mail": f'<a href="mailto:{_h.escape(mail)}" dir="ltr">{_h.escape(mail)}</a>'}
+    return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
+
+
+def _fit_desc(d):
+    """Pad/trim a generated meta description into the Zap SEO range (150-160 characters), ending with a period."""
+    for extra in (" באתר", " בכל עת", ", ונשמח לעזור"):
+        if len(d) + len(extra) + 1 <= 160 and len(d) < 149:
+            d += extra
+    return (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+
+
+def accessibility_html(data):
+    """Zap's standard accessibility statement as a page of the site (engine/templates/accessibility-he.html),
+    with the business name, its phone/e-mail for accessibility issues and, when given, the accessibility
+    coordinator (standards.accessibility_coordinator: {name, phone, email})."""
+    import html as _h
+    b, std = data["business"], data.get("standards", {})
+    t = (Path(__file__).parent / "templates" / "accessibility-he.html").read_text(encoding="utf-8")
+    t = re.sub(r"<!--.*?-->\s*", "", t, count=1, flags=re.S)
+    bits = []
+    if b.get("phone_display"):
+        bits.append(f'בטלפון <a href="tel:{_h.escape(b.get("phone_e164", ""))}" dir="ltr">{_h.escape(b["phone_display"])}</a>')
+    mail = b.get("email_public") or ""
+    if mail:
+        bits.append(f'במייל <a href="mailto:{_h.escape(mail)}" dir="ltr">{_h.escape(mail)}</a>')
+    contact = ("פנו אלינו " + " או ".join(bits) + ".") if bits else ""
+    co = std.get("accessibility_coordinator") or {}
+    coord = ""
+    if co.get("name"):
+        det = ", ".join(_h.escape(x) for x in (co.get("phone", ""), co.get("email", "")) if x)
+        coord = f"<h2>רכז/ת הנגישות</h2><p>{_h.escape(co['name'])}" + (f", {det}" if det else "") + ".</p>"
+    fill = {"name": _h.escape(b["name"]), "contact": contact, "coordinator": coord}
     return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
 
 
@@ -93,12 +134,28 @@ def build(site, only=None):
         b = data["business"]
         data["pages"].append({
             "key": "מדיניות-פרטיות", "type": "privacy", "title": "מדיניות פרטיות", "noindex": True,
-            "seo": {"title": f"מדיניות פרטיות | {b['name']}",
-                    "description": f"מדיניות הפרטיות של {b['name']}: איך נשמר ומשמש המידע שנמסר באתר."},
+            "seo": {"title": f"{b['name']} | מדיניות פרטיות",
+                    "description": _privacy_desc(b["name"])},
             "content": privacy_html(data),
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"
+    # Accessibility statement: Zap's standard text as the site's own page (the client's title and description,
+    # Zap QA), linked from the footer. A site that must link elsewhere sets standards.accessibility_url.
+    if not std.get("accessibility_url") or "zap.dbusiness.co" in std.get("accessibility_url", ""):
+        b = data["business"]
+        d = f"הצהרת הנגישות של {b['name']}: אילו התאמות נגישות קיימות באתר, איך משתמשים בתפריט הנגישות ולמי פונים כשנתקלים בקושי בגלישה"
+        for extra in (" באתר", " או בשירות", " שלנו", ", ונשמח לעזור"):   # 150-160 characters whatever the name's length
+            if len(d) + len(extra) <= 159 and len(d) < 150:
+                d += extra
+        d = (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+        data["pages"].append({
+            "key": "הצהרת-נגישות", "type": "privacy", "legal": "accessibility", "title": "הצהרת נגישות", "noindex": False,
+            "seo": {"title": f"{b['name']} | הצהרת נגישות", "description": d[:160]},
+            "content": accessibility_html(data),
+        })
+        std["accessibility_url"] = "/הצהרת-נגישות/"
+        data["_paths"]["הצהרת-נגישות"] = "/הצהרת-נגישות/"
 
     site.install_code()
     log = []
@@ -118,13 +175,15 @@ def build(site, only=None):
         images["__logo"] = {"src": data["logo"], "alt": data["business"]["name"], "keep_format": True}
     if data.get("logo_light"):
         images["__logo_light"] = {"src": data["logo_light"], "alt": data["business"]["name"], "keep_format": True}
+    if data.get("favicon"):   # square PNG from the client's logo symbol; replaces the cloned base site's icon
+        images["__favicon"] = {"src": data["favicon"], "alt": data["business"]["name"], "keep_format": True, "max_width": 512}
     prepared = []
     for key, im in images.items():
         src = site_dir / im["src"]
         if not src.exists():
             raise SystemExit(f"image '{key}': file not found: {src}")
         out_file, w, h = prepare_image(src, site.dir / "_media", keep_format=im.get("keep_format", False),
-                                       max_width=im.get("max_width", 1600))
+                                       max_width=im.get("max_width", 600 if im.get("keep_format") else 1600))
         prepared.append({"key": key, "file": str(out_file), "alt": im.get("alt", ""),
                          "title": im.get("title", ""), "ai": bool(im.get("ai")),
                          "hash": hashlib.sha1(out_file.read_bytes()).hexdigest()})
@@ -171,7 +230,7 @@ def build(site, only=None):
             "excerpt": p.get("excerpt", ""), "menu_order": p.get("order", 0),
             "elements": elements, "content": p.get("content", ""), "faq": ctx.faq,
             "seo": p.get("seo", {}), "image": media.get(p.get("featured_image") or "", {}).get("id"),
-            "noindex": bool(p.get("noindex")),
+            "noindex": bool(p.get("noindex")), "legal": p.get("legal", ""),
         })
     for x in payload:
         x["phash"] = hashlib.sha1(json.dumps(x, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
@@ -198,10 +257,20 @@ def build(site, only=None):
     log.append(run_php(site, "finish", {
         "nav": data.get("nav", []), "footer_nav": data.get("footer_nav", []),
         "logo": media.get("__logo", {}).get("id"),
+        "favicon": media.get("__favicon", {}).get("id"),
         "og_image": media.get(data.get("og_image") or "__logo", {}).get("id"),
         "business": data["business"], "design": data.get("design", {}),
         "blog_public": data.get("site", {}).get("index", False),
     }))
+    # Zap standard: the accessibility toolbar button on every page. Ally 4 hides its new widget until the site is
+    # connected to an Ally account; a site that is not connected runs Ally's classic toolbar instead (its "revert").
+    log.append("a11y: " + site.eval_php(
+        "if (!defined('EA11Y_VERSION') && !class_exists('\\EA11Y\\Plugin')) { echo 'Ally not active'; return; }"
+        "$c = class_exists('\\EA11Y\\Modules\\Connect\\Module') && \\EA11Y\\Modules\\Connect\\Module::is_connected();"
+        "if ($c) { echo 'Ally connected: widget'; return; }"
+        "update_option('ea11y_reverted', true); delete_option('ea11y_upgraded');"
+        "if (!get_option('pojo_a11y_customizer_options')) update_option('pojo_a11y_customizer_options', ['a11y_toolbar_enable' => 'enable']);"
+        "echo 'classic toolbar';").strip().splitlines()[-1])
     site.wp("rewrite", "flush", check=False)
     # Yoast 2x serves meta from its indexables table, not from the options we just wrote.
     site.wp("yoast", "index", "--reindex", "--skip-confirmation", check=False)

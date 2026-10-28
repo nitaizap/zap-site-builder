@@ -134,7 +134,7 @@ function zap_handle_lead() {
     if ($to) {
         $headers = [];
         if ($email) $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
-        $subject = 'פנייה חדשה מהאתר — ' . zap_opt('business.name', get_bloginfo('name'));
+        $subject = 'פנייה חדשה מהאתר: ' . zap_opt('business.name', get_bloginfo('name'));
         $ok = wp_mail($to, $subject, $body, $headers);
         update_post_meta($id, '_zap_mailed', $ok ? 'yes' : 'no');
     }

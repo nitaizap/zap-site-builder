@@ -1,0 +1,103 @@
+/* Zap QA standards: measured rules from Zap's site QA checklist. Loaded after every preset and the pool, so
+   no preset or variant can undo them. Each block names the checklist item it answers. */
+
+/* Section rhythm: about 80px between sections on desktop, 25-50px on phones (sections carry half each) */
+body .e-con.zs-sec:not(.zs-hero) { --sec-y: clamp(36px, 1.5rem + 1.6vw, 44px); }
+@media (max-width: 767px) { body .e-con.zs-sec:not(.zs-hero) { --sec-y: 20px; } }
+
+/* Side padding on phones: 20px */
+@media (max-width: 767px) { body { --gutter: 20px; } }
+
+/* Text: nothing under 16px, body text never Light (300) */
+body { font-weight: 400; }
+body :is(p, li, label, .elementor-widget-text-editor, .zs-card__text, .zs-footer, .zs-footer__copy, .zs-footer__legal a,
+  .zs-topbar, .zs-topbar a, .zs-form label, .zs-form__consent, .zs-hero__lead, .zs-sec__intro) { font-size: max(1rem, 1em); }
+body :is(.zs-footer__copy, .zs-footer__legal, .zs-topbar__list, .zs-form__consent, .zs-form label, .zs-card__text, .zs-footer__about) { font-size: 1rem; }
+body .zs-hero__lead, body .zs-hero__lead p { font-size: max(1rem, 1.05em); opacity: 1; font-weight: 400; }
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__lead { color: #fff; text-shadow: 0 1px 12px rgb(0 0 0 / .45); }
+
+/* Forms use the site's fonts, never the browser/plugin default */
+body :is(.zs-form, .zs-form input, .zs-form textarea, .zs-form select, .zs-form button, .search-form input, .search-form button) { font-family: var(--f-body); }
+
+/* The lead form's title is a paragraph styled as a heading (it is not a section heading) */
+body .zs-leadband__title .elementor-heading-title, body .zs-contact__title .elementor-heading-title { font-family: var(--f-head); font-size: var(--fs-h2); font-weight: var(--w-head, 700); line-height: var(--lh-head, 1.15); color: var(--c-ink); margin: 0; }
+
+/* One H1 scale on every page, always above H2 (home and inner pages alike) */
+body .zs-hero .zs-hero__title .elementor-heading-title { font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.6rem); line-height: 1.15; }
+@media (max-width: 767px) {
+  body .zs-hero .zs-hero__title .elementor-heading-title, body .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: 2.25rem; }
+  body .zs-sec__title .elementor-heading-title { font-size: 1.75rem; }
+}
+
+/* Hero buttons on phones: stacked, full width, one line each */
+@media (max-width: 767px) {
+  body .zs-hero .e-con.zs-btns { --flex-direction: column; flex-direction: column; --align-items: stretch; align-items: stretch; width: 100%; --width: 100%; }
+  body .zs-hero .e-con.zs-btns > .elementor-element { width: 100%; --container-widget-width: 100%; max-width: none; }
+  body .zs-hero .e-con.zs-btns .elementor-button { width: 100%; white-space: nowrap; justify-content: center; }
+}
+
+/* Tap targets: 44px minimum for links people tap on phones */
+@media (max-width: 767px) {
+  body :is(.zs-footer a, .zs-footer__links a, .zs-footer__legal a, .zs-footer__contact a, .zs-form__consent a, .zs-leadband__or a, .zs-nap a) {
+    display: inline-flex; align-items: center; min-height: 44px; }
+  body .zs-faq__list .elementor-toggle .elementor-tab-title { min-height: 56px; display: flex; align-items: center; }
+}
+
+/* The phone call bar never covers the footer's last line */
+@media (max-width: 767px) { body:has(.zs-fab) .zs-footer { padding-bottom: 88px; } }
+
+/* FAQ: hover state and a chevron that points down and turns when open */
+body .zs-faq__list .elementor-toggle .elementor-tab-title { cursor: pointer; transition: background-color .2s, color .2s; }
+body .zs-faq__list .elementor-toggle .elementor-tab-title:hover { background-color: color-mix(in srgb, var(--c-primary) 7%, transparent); color: var(--c-primary); }
+body .zs-faq__list .elementor-toggle .elementor-toggle-icon :is(svg, i) { display: none !important; }
+body .zs-faq__list .elementor-toggle .elementor-toggle-icon { width: 32px; height: 32px; display: grid; place-items: center; background: none; }
+body .zs-faq__list .elementor-toggle .elementor-toggle-icon::before { content: ""; width: 10px; height: 10px; border: solid currentColor; border-width: 0 2.5px 2.5px 0;
+  transform: translateY(-3px) rotate(45deg); transition: transform .25s; }
+body .zs-faq__list .elementor-toggle .elementor-tab-title.elementor-active .elementor-toggle-icon::before { transform: translateY(3px) rotate(-135deg); }
+body .zs-faq__list .elementor-toggle span.elementor-toggle-icon-closed::before, body .zs-faq__list .elementor-toggle span.elementor-toggle-icon-opened::before { content: none; }
+
+/* 404: styled search button and room between the actions and the "main pages" list */
+body .zs-404 :is(.search-submit, input[type=submit], button[type=submit]) { min-height: 48px; padding: 0 22px; border: 0; border-radius: var(--r-sm, 6px);
+  background: var(--c-primary); color: var(--c-primary-ink); font: 700 1rem var(--f-body); cursor: pointer; -webkit-appearance: none; appearance: none; }
+body .zs-404 .search-form label { flex: 1; display: flex; }
+body .zs-404 .search-form input[type=search] { width: 100%; }
+body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
+
+/* Gallery photos open in a lightbox */
+body .zs-gallery__img a { display: block; cursor: zoom-in; }
+
+/* Accessibility toolbar button on phones: small, in the start corner above the call bar, off the content */
+@media (max-width: 767px) {
+  body #pojo-a11y-toolbar { top: auto !important; bottom: 84px !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: auto !important; bottom: 0 !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; opacity: .92; }
+}
+
+/* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */
+body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 64px; max-width: 240px; }
+@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 50px; max-width: 180px; } }
+
+/* Header call button: the number in dark text on a light button with a brand-colour border (Zap QA) */
+body .zs-header__cta .elementor-button, body .zs-nav__cta { background: var(--c-bg, #fff); color: var(--c-ink); border: 2px solid var(--c-primary); box-shadow: none; }
+body .zs-header__cta .elementor-button:hover, body .zs-nav__cta:hover { background: var(--c-primary); color: var(--c-primary-ink); }
+body .zs-header__cta .elementor-button :is(svg, i) { fill: currentColor; color: currentColor; }
+body.zs-h-dark .zs-header__cta .elementor-button { background: transparent; color: var(--c-dark-ink); border-color: var(--c-dark-ink); }
+
+/* Post FAQ (details/summary): the same look and hover as the page FAQ */
+.zs-post__faq { margin-top: 40px; }
+.zs-post__faq details { border-bottom: 1px solid var(--c-line); }
+.zs-post__faq summary { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; font-weight: 700; list-style: none; transition: color .2s, background-color .2s; padding-inline: 8px; }
+.zs-post__faq summary::-webkit-details-marker { display: none; }
+.zs-post__faq summary:hover { color: var(--c-primary); background-color: color-mix(in srgb, var(--c-primary) 7%, transparent); }
+.zs-post__faq summary::after { content: ""; flex: none; width: 10px; height: 10px; border: solid currentColor; border-width: 0 2.5px 2.5px 0; transform: translateY(-3px) rotate(45deg); transition: transform .25s; }
+.zs-post__faq details[open] summary::after { transform: translateY(3px) rotate(-135deg); }
+.zs-post__faq .zs-faq__a { padding: 0 8px 16px; }
+
+/* Phone numbers never break across lines */
+body a[href^="tel:"] { white-space: nowrap; }
+
+/* Photo-behind heroes on phones: content centred, the hero as tall as its content (no empty top, buttons in view) */
+@media (max-width: 767px) {
+  body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: 0 !important; --min-height: 0; --padding-top: 0; --padding-bottom: 0; }
+  body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { min-height: 0 !important; justify-content: center !important; --padding-top: 36px; --padding-bottom: 36px; padding-block: 36px !important; }
+}
