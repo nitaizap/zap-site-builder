@@ -51,7 +51,9 @@ class Ctx:
         if not h:
             return ""
         if h.startswith("page:"):
-            return self.site["_paths"].get(h[5:], "/" + h[5:].strip("/") + "/")
+            key, _, frag = h[5:].partition("#")
+            path = self.site["_paths"].get(key, "/" + key.strip("/") + "/")
+            return path + ("#" + frag if frag else "")
         if h.startswith("post:"):
             return self.site["_post_paths"].get(h[5:], "/")
         if h == "tel":

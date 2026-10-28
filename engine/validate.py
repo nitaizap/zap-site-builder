@@ -102,11 +102,11 @@ def validate(d, site_dir):
                 E(f"{name}: FAQ needs at least 3 real questions (has {len(s.get('items', []))})")
             for it in s.get("items", []) if isinstance(s.get("items"), list) else []:
                 h = it.get("href", "") if isinstance(it, dict) else ""
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: link to missing page '{h}'")
             for bt in ("cta", "cta2", "more"):
                 h = (s.get(bt) or {}).get("href", "")
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: button links to missing page '{h}'")
         if p.get("sections") and not any(s.get("type") == "hero" for s in p["sections"]):
             E(f"{name}: page has sections but no hero (the hero carries the only H1)")
@@ -116,7 +116,7 @@ def validate(d, site_dir):
     for item in d.get("nav", []) + d.get("footer_nav", []):
         for it in [item] + item.get("children", []):
             h = it.get("href", "")
-            if h.startswith("page:") and h[5:] not in keys:
+            if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                 E(f"menu item '{it.get('label')}' links to missing page '{h}'")
 
     imgs = d.get("images", {})
