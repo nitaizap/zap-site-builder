@@ -273,7 +273,7 @@ def cards(ctx, s):
             ]),
         ]))
     lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""
-    style = s.get("style") or ("overlay" if not lay and all(i.get("image") for i in s["items"]) else "classic")
+    style = s.get("style") or ("overlay" if not lay and s.get("variant") != "framed" and all(i.get("image") for i in s["items"]) else "classic")   # framed = caption below the photo
     linked = " zs-cards--linked" if any(i.get("href") for i in s["items"]) else ""
     return section(ctx, s, f"zs-cards zs-cards--{style}{lay}{linked}", [
         *sec_head(ctx, s),
