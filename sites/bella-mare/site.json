@@ -173,97 +173,25 @@
   "motif": "rings",
   "radius": 2,
   "fonts": {
-   "heading": "Bellefair",
-   "body": "Miriam Libre"
+   "heading": "Noto Serif Hebrew",
+   "body": "Noto Sans Hebrew"
   },
   "colors": {
-   "primary": "#8a3b0b",
+   "primary": "#1d3349",
    "primary_ink": "#ffffff",
-   "accent": "#e6cdb6",
-   "accent_ink": "#262a2e",
-   "ink": "#262a2e",
-   "text": "#33373b",
-   "muted": "#4a4f54",
-   "bg": "#f2f0ed",
-   "surface": "#e8e5e0",
-   "line": "#d6d1ca",
-   "dark": "#2b3034",
-   "dark_ink": "#f2f0ed"
+   "accent": "#dcc7a1",
+   "accent_ink": "#14202e",
+   "ink": "#14202e",
+   "text": "#26323f",
+   "muted": "#434c55",
+   "bg": "#faf6ee",
+   "surface": "#efe5d3",
+   "line": "#dccdb2",
+   "dark": "#14202e",
+   "dark_ink": "#faf6ee"
   },
   "base_template": 2,
   "custom_css": ""
- },
- "directions": {
-  "a": {
-   "label": "A · אבן ונחושת: רקע אבן אפורה כמו בצילומי המנות, נחושת מהלוגו, כותרות דקות כמו אותיות הלוגו, מונוגרמה גדולה על צילום השולחן",
-   "preset": "editorial",
-   "tone": "light",
-   "radius": 2,
-   "fonts": {
-    "heading": "Bellefair",
-    "body": "Miriam Libre"
-   },
-   "colors": {
-    "primary": "#8a3b0b",
-    "primary_ink": "#ffffff",
-    "accent": "#e6cdb6",
-    "accent_ink": "#262a2e",
-    "ink": "#262a2e",
-    "text": "#33373b",
-    "muted": "#4a4f54",
-    "bg": "#f2f0ed",
-    "surface": "#e8e5e0",
-    "line": "#d6d1ca",
-    "dark": "#2b3034",
-    "dark_ink": "#f2f0ed"
-   }
-  },
-  "b": {
-   "label": "B · ערב בנהריה: צפחה כהה כמו קיר היינות, נחושת חמה, פינות מעוגלות קלות, הכול נשען על הצילומים הכהים",
-   "preset": "bold",
-   "radius": 10,
-   "fonts": {
-    "heading": "David Libre",
-    "body": "Alef"
-   },
-   "colors": {
-    "primary": "#a4521c",
-    "primary_ink": "#ffffff",
-    "accent": "#e2a774",
-    "accent_ink": "#1e2225",
-    "ink": "#1e2225",
-    "text": "#33373b",
-    "muted": "#4a4f54",
-    "bg": "#f6f4f1",
-    "surface": "#ebe7e2",
-    "line": "#d6d1ca",
-    "dark": "#262b2f",
-    "dark_ink": "#f2f0ed"
-   }
-  },
-  "c": {
-   "label": "C · פיצרייה מהטאבון: לבן נקי, ירוק בזיליקום לצד הנחושת, אותיות עבות ושמחות, פינות רכות",
-   "preset": "soft",
-   "radius": 20,
-   "fonts": {
-    "heading": "Suez One",
-    "body": "Assistant"
-   },
-   "colors": {
-    "primary": "#8a3b0b",
-    "primary_ink": "#ffffff",
-    "accent": "#3f5a2c",
-    "accent_ink": "#ffffff",
-    "ink": "#22261f",
-    "text": "#30352c",
-    "muted": "#454b40",
-    "bg": "#ffffff",
-    "surface": "#f0f3ec",
-    "line": "#dfe5d8",
-    "dark": "#2b3034",
-    "dark_ink": "#f2f0ed"
-   }
-  }
  },
  "form": {
   "title": "שולחן, משלוח או אירוע?",
