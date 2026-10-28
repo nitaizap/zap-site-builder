@@ -312,3 +312,11 @@ body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); 
 .zs-search__list h2 { font-size: 1.25rem; margin: 0 0 4px; }
 /* tiles: the action on the accent half reads in the accent's own ink (a primary button on an accent ground often blends) */
 body .zs-tile--b .zs-b-primary .elementor-button { background: var(--c-accent-ink); color: var(--c-accent); border-color: var(--c-accent-ink); }
+
+/* photo heroes keep a white ghost button under every tone (the light tone's ink ghost vanished on the photo) */
+html body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-ghost .elementor-button { color: #fff; border: 1.5px solid #fff; background: transparent; }
+html body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-b-ghost .elementor-button:hover { background: rgb(255 255 255 / .12); }
+/* overlap: the dark box carries a light button, so the primary never sits dark on dark */
+html body .zs-split.zs-v-overlap .zs-b-primary .elementor-button { background: var(--c-dark-ink); color: var(--c-dark); border-color: var(--c-dark-ink); }
+/* checks: the eyebrow sits on the brand gradient */
+html body .e-con.zs-features.zs-v-checks .zs-eyebrow .elementor-heading-title { color: #fff; }
