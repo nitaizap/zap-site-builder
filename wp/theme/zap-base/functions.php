@@ -91,6 +91,8 @@ add_action('wp_enqueue_scripts', function () {
     wp_add_inline_style('zs-main', zs_tokens_css());
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
+    // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
+    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 
@@ -228,6 +230,9 @@ function zs_wa_href($e164, $text = '') {
 }
 
 function zs_breadcrumbs() {
+    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
+    // a site that wants the visible trail sets header.breadcrumbs: true.
+    if (!zs_opt('header.breadcrumbs', false)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
@@ -274,7 +279,7 @@ function zs_part_topbar_meta() {
     $o = '<ul class="zs-topbar__list">';
     if ($hours) $o .= '<li>' . esc_html($hours[0]) . '</li>';
     if ($email) $o .= '<li><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></li>';
-    if ($tel)   $o .= '<li><a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
+    // no phone here: the header's call button already shows it (Zap QA: one phone per header)
     return $o . '</ul>';
 }
 
@@ -297,7 +302,7 @@ function zs_part_footer_contact() {
     $o = '<ul class="zs-footer__contact">';
     if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
-    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '</a></li>';
+    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . zs_social_rows() . '</ul>';
 }
@@ -350,9 +355,10 @@ function zs_part_copyright() {
 function zs_part_legal() {
     $privacy = zs_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
     $a11y = zs_opt('standards.accessibility_url', home_url('/הצהרת-נגישות/'));
-    // both open in a new tab (Zap checklist), so a visitor never loses the page they were on
-    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '" target="_blank" rel="noopener">מדיניות פרטיות</a></li>'
-         . '<li><a href="' . esc_url($a11y) . '" target="_blank" rel="noopener">הצהרת נגישות אתר</a></li></ul>';
+    // both legal links behave the same way: a new tab, so the visitor keeps their place (Zap QA)
+    $nt = ' target="_blank" rel="noopener"';
+    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '"' . $nt . '>מדיניות פרטיות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li>'
+         . '<li><a href="' . esc_url($a11y) . '"' . $nt . '>הצהרת נגישות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li></ul>';
 }
 
 function zs_part_group_logo() {

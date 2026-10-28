@@ -1503,3 +1503,9 @@ body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
   body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-left) .e-con.zs-hero__text { padding-left: 50px; }
   body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-right) .e-con.zs-hero__text { padding-right: 50px; }
 }
+
+/* phones: the accessibility toolbar (Ally / pojo) never sits on the header's menu button; it parks on the
+   start edge above the bottom call bar (where the Zap hosts already put it) */
+@media (max-width: 767px) {
+  body #pojo-a11y-toolbar { top: auto !important; bottom: 150px !important; }
+}

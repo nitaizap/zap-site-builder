@@ -156,7 +156,7 @@ def run_seo(site):
         for href in re.findall(r'href="tel:([^"]+)"', body):
             if _digits(href) != _digits(tel):
                 tbad.append(f"{path(u) or '/'}: tel:{href}")
-        for num in re.findall(r"(?<!\d)0\d{1,2}-?\d{7}(?!\d)", _text(body)):
+        for num in re.findall(r"(?<![\w-])0\d{1,2}-?\d{7}(?![\w])", _text(body)):   # not inside tokens/nonces ("c0775...")
             if _digits(num) not in (_digits(tel), _digits(wa)) and _digits(num) not in json.dumps(data, ensure_ascii=False):
                 shown_bad.append(f"{path(u) or '/'}: {num}")
     R("13", "כפתורים ויצירת קשר", "כפתור טלפון תואם למספר באתר", "FAIL" if tbad or shown_bad else "PASS",

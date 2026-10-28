@@ -5,16 +5,17 @@ the user sees at the gate is what ships.
 
 ## H1
 
-- H1 = the page's keyword from the map, in natural Hebrew. Exactly one per page (the hero title).
-- **Home: the client's name only** (Zap checklist; the validator enforces it). The home keyword goes in the hero
-  `lead` and the first H2.
-- About: brand name + secondary keyword. An H1 that ends with the brand name puts it on its own line.
+Zap QA rule (supersedes the old "H1 = keyword"): exactly one H1 per page (the hero title), one short line.
+- Home: the client's name only (`מים טובים אינסטלציה`). The head keyword opens the hero `lead`.
+- Inner pages: the page's name (`אודות`, `איתור נזילות`, `צרו קשר`). The page's keyword opens the `lead` and the
+  first paragraph and sits in the SEO title.
+- Never two lines joined into one H1 (`keyword\nbrand`), never a breadcrumb line above it.
 - No full stop at the end of any heading; nothing but a question mark (validator).
 - A slogan goes under the H1 (hero `lead`) or in a section title, never in the H1.
 
 ## Five checks before the gate
 
-1. H1 = keyword (home: the client's name only; about: + brand).
+1. H1 = client name (home) / page name (inner); keyword in the lead, first paragraph and SEO title.
 2. Brand name appears in: H1 or hero, the first paragraph, the `<title>`, the footer (automatic).
 3. Each H2 uses a variant (ה/ב/ל prefixes, plural, construct state) or a secondary keyword, never the exact
    H1 phrase again.
@@ -25,11 +26,12 @@ the user sees at the gate is what ships.
 
 | field | rule | example |
 |---|---|---|
-| `seo.title` | **client name first**: `<client> \| <page>` (Zap checklist, validator) · 30–60 chars | `מים טובים אינסטלציה \| איתור נזילות בחיפה` |
-| `seo.description` | 150–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
+| `seo.title` | Zap QA format, every page: `<site name> \| <page name>`; home: `<site name> \| <head keyword>` (validator) | `מים טובים אינסטלציה \| איתור נזילות` |
+| `seo.description` | 140–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
 | `seo.keyword` | the owned keyword (unique across the site) | `איתור נזילות בחיפה` |
 
-"<client> | keyword, N שנות ניסיון" works when N is a locked fact.
+Category descriptions are the category page's meta description and show on the blog page: 150–160 chars, a
+full sentence (a cut-off description shows as a stray fragment).
 
 ## Per page type
 

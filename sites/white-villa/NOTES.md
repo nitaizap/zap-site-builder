@@ -1,0 +1,36 @@
+# הוילה הלבנה ינוב — notes
+
+| fact | value | source |
+|---|---|---|
+| client no. | 80392936 (weekend 27824) | איפיון xlsx |
+| phone (site) | 055-4309532 | Weekend tracking number, from the user (weekend.co.il/villas/white-villa-yanuv). The business line 054-6666662 behind it stays off the site. No WhatsApp (not in the brief). |
+| email | shimon@ashrh.co.il | xlsx |
+| address | מורד התאנה 29, ינוב | xlsx |
+| Instagram | instagram.com/_the_white_villa | xlsx |
+| 3.5 dunam, 5 bedrooms, 22 beds, events ≤150, half-olympic pool + slide | xlsx copy |
+| Shabbat: no grill, no music | xlsx |
+| domain | thewhitevilla.co.il (requested) | xlsx |
+
+Images: only the client's Drive folder "להשתמש רק בתמונות בתקייה הזאת" (24 of 39 used) + logo.jfif (background made transparent) + WhatsApp video (6 s silent hero loop, desktop). No stock, no AI.
+Direction: A (light, Frank Ruhl Libre / Assistant, olive #3f4b39 + brass #8a6a3a) — chosen on autopilot.
+Staging: https://80392936.ussl.co.il — pushed, live QA 0 errors.
+
+## Redesign 22/10/2026 (team playbook + template pool)
+The user approved the pilot (`site/white-villa-pilot`) and asked for this build to look like it. site.json now
+carries the pilot's design and composition: base template 2, olive + jacaranda, Miriam Libre, inset hero with the
+pool video, `split:duo`, `gallery:stagger`, framed cards, `features:rows`, `tiles`, FAQ beside the jacaranda,
+`cta:photo`; descriptions 150-160 and a blog page (SEO checklist). Facts and copy unchanged. Local: `zs qa` 0
+errors, `zs seo` 0 FAIL. The garland and carousel sections stay in the engine, unused here.
+
+## Facts from Weekend Family (weekend-family.co.il/white-villa-yanuv, read 28.10.2026, approved source by the user)
+- Main unit 250 m², 5 bedrooms on two levels, up to 22 guests; 4 bathrooms
+- Kitchen: fridge, dishwasher, coffee machine + capsules, two sinks, water bar, large dining corner, microwave, hob, oven, freezer, kettle
+- Outside: half-olympic pool with attached slide, fenced for children's safety; private lawn + orchard; snooker + table tennis; outdoor kitchen; grill + seating; swings + hammocks; pergola; sunbeds, parasols, outdoor dining table
+- Safe room (מרחב מוגן) on site; free parking; Wi-Fi; air conditioning; balcony
+- Shabbat-observant guests: hot plate, urn, "Jewish bed", double sink, synagogue + mikveh within walking distance; on Shabbat no grill and no music
+- Extras to order: private massages; decorations, balloons, cake, spa treatments (by arrangement); event equipment (tables, chairs)
+- Events up to 150 guests; listed for: birthdays, shabbat chatan, bachelorette, pool party, team days
+- Check-in usually from 15:00, check-out 11:00 (flexible by arrangement); extra mattresses by arrangement
+- Nearby: activities for kids in Pardesiya, HaMeashena restaurant, coffee carts, supermarket, jeep tours, walking trails
+- Accepts reserve-duty (מילואים) vouchers
+- weekend.co.il listing itself is WAF-blocked from the session
