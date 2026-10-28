@@ -141,7 +141,7 @@ MEASURE_JS = r"""
   }
   // controls and outlines (WCAG 1.4.11): fill or border at least 3:1 against what is behind them
   const faint = new Map();
-  q('.elementor-button, .zs-btn, button:not(.zs-burger), .zs-pause, .zs-social a, input:not([type=hidden]):not([type=checkbox]), textarea, select').filter(vis).forEach(el => {
+  q('.elementor-button, .zs-btn, button:not(.zs-burger):not(.zs-vnote-btn), .zs-pause, .zs-social a, input:not([type=hidden]):not([type=checkbox]), textarea, select').filter(vis).forEach(el => {
     if (el.closest(skip)) return;
     const bg = behind(el); if (!bg) return;
     const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
