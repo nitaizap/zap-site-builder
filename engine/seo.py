@@ -154,7 +154,7 @@ def run_seo(site):
     tbad, shown_bad = [], []
     for u, (st, body) in pages.items():
         for href in re.findall(r'href="tel:([^"]+)"', body):
-            if _digits(href) != _digits(tel):
+            if _digits(href) != _digits(tel) and not (b.get("phone_is_virtual") and _digits(href) == _digits(b.get("phone_regular", ""))):   # Zap's "מספר מקשר" popup names the regular line
                 tbad.append(f"{path(u) or '/'}: tel:{href}")
         for num in re.findall(r"(?<![\w-])0\d{1,2}-?\d{7}(?![\w])", _text(body)):   # not inside tokens/nonces ("c0775...")
             if _digits(num) not in (_digits(tel), _digits(wa)) and _digits(num) not in json.dumps(data, ensure_ascii=False):
@@ -264,7 +264,8 @@ def run_seo(site):
     R("26", "עמוד 404", "קישור לעמוד הבית", "PASS" if re.search(rf'href="{re.escape(base)}/?"', nf_body) else "FAIL")
     contact = next((p for p in data["pages"] if p.get("type") == "contact"), None)
     curl = urllib.parse.quote(data["_paths"][contact["key"]]).lower() if contact else "#none"
-    R("27", "עמוד 404", "קישור לעמוד צור קשר", "PASS" if curl in nf_body.lower() else "FAIL")
+    R("27", "עמוד 404", "קישור לעמוד צור קשר", ("PASS" if curl in nf_body.lower() else "FAIL") if contact else "N/A",
+      "" if contact else "the brief has no contact page (contact is a section/anchor)")
     R("28", "עמוד 404", "שורת חיפוש בעמוד 404", "PASS" if 'type="search"' in nf_body else "FAIL")
     R("29", "עמוד 404", "קישורים פופולריים / קטגוריות", "PASS" if "zs-404__links" in nf_body else "FAIL")
     st, sr, _ = _get(base + "/?s=" + urllib.parse.quote(b["name"].split()[0]))
@@ -295,7 +296,7 @@ def run_seo(site):
     R("+7", "כללי", "שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות",
       "PASS" if pv and legal.split()[0] in pages[pv[0]][1] else "FAIL", f"legal name: {legal}")
     R("+8", "כללי", "מייל הטפסים ושם האתר מוגדרים נכון",
-      "PASS" if b.get("email_leads") else "FAIL",
+      "PASS" if b.get("email_leads") else "N/A",
       f"leads → {b.get('email_leads')}; subject carries the site name; staging never mails the client")
     hbad = []
     for u, (st, body) in pages.items():
