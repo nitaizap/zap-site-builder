@@ -355,3 +355,13 @@
     io.observe(draw);
   });
 })();
+
+/* "מספר מקשר": open Zap's virtual-number explanation */
+(function () {
+  var d = document.getElementById('zs-vnote'); if (!d || !d.showModal) return;
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-zs-vnote]'); if (!b) return;
+    e.preventDefault(); d.showModal();
+  });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+})();

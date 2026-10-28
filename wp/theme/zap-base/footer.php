@@ -8,7 +8,7 @@ $address = zs_opt('business.address');
 $hours   = (array) zs_opt('business.hours', []);
 $about   = zs_opt('footer.about');
 $privacy = zs_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
-$a11y    = zs_opt('standards.accessibility_url', 'https://zap.dbusiness.co/js/accessibility.html');
+$a11y    = zs_opt('standards.accessibility_url', home_url('/הצהרת-נגישות/'));
 $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) === 'contact';
 ?>
 </main>
@@ -17,7 +17,7 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
 <section class="zs-leadband" id="leave-details" aria-labelledby="zs-leadband-title">
   <div class="zs-wrap zs-leadband__in">
     <div class="zs-leadband__text">
-      <h2 id="zs-leadband-title"><?php echo esc_html(zs_opt('form.title', 'השאירו פרטים ונחזור אליכם')); ?></h2>
+      <p class="zs-leadband__h" id="zs-leadband-title"><?php echo esc_html(zs_opt('form.title', 'השאירו פרטים ונחזור אליכם')); ?></p>
       <p><?php echo esc_html(zs_opt('form.text', 'ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.')); ?></p>
       <?php echo zs_part_call_line(); ?>
     </div>
@@ -33,12 +33,12 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
     </div>
     <?php if (has_nav_menu('footer')) : ?>
     <nav class="zs-footer__col" aria-labelledby="zs-f-links">
-      <h2 class="zs-footer__title" id="zs-f-links"><?php echo esc_html(zs_opt('footer.links_title', 'השירותים שלנו')); ?></h2>
+      <p class="zs-footer__title" id="zs-f-links"><?php echo esc_html(zs_opt('footer.links_title', 'השירותים שלנו')); ?></p>
       <?php echo zs_part_menu('footer'); ?>
     </nav>
     <?php endif; ?>
     <div class="zs-footer__col">
-      <h2 class="zs-footer__title">יצירת קשר</h2>
+      <p class="zs-footer__title">יצירת קשר</p>
       <?php echo zs_part_footer_contact(); ?>
     </div>
   </div>

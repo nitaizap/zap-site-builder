@@ -88,7 +88,7 @@ body .e-con.zs-btns > .elementor-element { width: auto; --container-widget-width
 .admin-bar .zs-header { top: 32px; }
 .zs-header__in { display: flex; align-items: center; gap: 24px; min-height: var(--header-h); }
 .zs-brand { display: flex; align-items: center; flex: none; text-decoration: none; color: var(--c-ink); }
-.zs-brand .zs-brand__logo { height: 46px; width: auto; max-width: 220px; object-fit: contain; }
+.zs-brand .zs-brand__logo { height: 56px; width: auto; max-width: 280px; object-fit: contain; }
 .zs-brand__name { font-family: var(--f-head); font-weight: 800; font-size: 1.3rem; }
 .zs-nav { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
 .zs-menu { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 2px; }
@@ -117,7 +117,7 @@ body .e-con.zs-btns > .elementor-element { width: auto; --container-widget-width
 
 @media (max-width: 1024px) {
   :root { --header-h: 66px; }
-  .zs-brand .zs-brand__logo { height: 38px; }
+  .zs-brand .zs-brand__logo { height: 48px; }
   .zs-burger { display: flex; }
   .zs-header__cta { margin-inline-start: auto; min-height: 44px; padding: .5em 1em; font-size: .95rem; }
   .zs-nav { position: fixed; inset: var(--header-h) 0 0 0; margin: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 16px var(--gutter) 32px; background: var(--c-bg); overflow-y: auto; transform: translateX(100%); visibility: hidden; transition: transform .3s var(--ease), visibility .3s; }
@@ -354,7 +354,7 @@ body .e-con.zs-contact__info { --row-gap: 18px; }
 .zs-leadband { background: var(--c-ink); color: color-mix(in srgb, #fff 84%, transparent); padding: clamp(48px, 6vw, 88px) 0; position: relative; overflow: hidden; }
 .zs-leadband::before { content: ""; position: absolute; inset: -40% -10% auto auto; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 45%, transparent), transparent); opacity: .55; pointer-events: none; }
 .zs-leadband__in { position: relative; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
-.zs-leadband h2 { color: #fff; font-size: var(--fs-h2); }
+.zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title) { color: #fff; font-size: var(--fs-h2); }
 .zs-leadband__or a { color: #fff; font-weight: 700; direction: ltr; unicode-bidi: isolate; }
 @media (max-width: 900px) { .zs-leadband__in { grid-template-columns: 1fr; } }
 .zs-form { display: grid; gap: 14px; }
@@ -653,7 +653,7 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 /* lead band + footer */
 .zs-p-signature .zs-leadband { background: #0d0c0c; }
 .zs-p-signature .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-accent) 40%, transparent), transparent); opacity: .35; }
-.zs-p-signature .zs-leadband h2 { font-size: clamp(2rem, 1.2rem + 2.6vw, 3.6rem); font-weight: 900; letter-spacing: -.03em; }
+.zs-p-signature .zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title) { font-size: clamp(2rem, 1.2rem + 2.6vw, 3.6rem); font-weight: 900; letter-spacing: -.03em; }
 .zs-p-signature .zs-footer__mark { display: block; font-family: var(--f-head); font-weight: 900; font-style: italic; font-size: clamp(2.6rem, 9vw, 10.5rem); line-height: .82; letter-spacing: -.04em; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px rgb(255 255 255 / .16); text-align: center; padding-top: 8px; margin-bottom: -.12em; user-select: none; overflow: hidden; }
 
 /* texture: fine grain on dark grounds */
@@ -718,7 +718,7 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 .zs-p-signature .zs-leadband { background: var(--c-surface); color: var(--c-text); }
 .zs-p-signature .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-accent) 55%, transparent), transparent); opacity: .5; }
 .zs-p-signature .zs-leadband::after { display: none; }
-.zs-p-signature .zs-leadband h2, .zs-p-signature .zs-leadband__or a { color: var(--c-ink); }
+.zs-p-signature .zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title), .zs-p-signature .zs-leadband__or a { color: var(--c-ink); }
 .zs-p-signature .zs-leadband .zs-form { background: var(--c-bg); padding: clamp(20px, 3vw, 34px); border: 1px solid var(--c-line); border-radius: var(--r-sm); color: var(--c-ink); }
 .zs-p-signature .zs-leadband .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }
 .zs-p-signature .zs-leadband .zs-form__submit:hover { background: color-mix(in srgb, var(--c-primary) 86%, #000); color: var(--c-primary-ink); }
@@ -760,11 +760,11 @@ body .e-con.zs-topbar__in { --flex-direction: row; --justify-content: space-betw
 body .e-con.zs-header__in { --flex-direction: row; --align-items: center; --column-gap: 24px; --flex-wrap: nowrap; min-height: var(--header-h); }
 .e-con.zs-header__in > .zs-header__nav { margin-inline-start: auto; }
 .e-con.zs-header__in > .zs-header__nav > .elementor-widget-container, .e-con.zs-header__in > .zs-header__nav .elementor-shortcode { display: flex; align-items: center; gap: 8px; }
-.zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 46px; width: auto; max-width: 220px; object-fit: contain; display: block; }
+.zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 56px; width: auto; max-width: 280px; object-fit: contain; display: block; }
 .e-con.zs-header__in > .zs-brand { flex: none; }
 .e-con.zs-header__in > .zs-header__cta { flex: none; }
 @media (max-width: 1024px) {
-  .zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 38px; }
+  .zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 48px; }
   .e-con.zs-header__in > .zs-header__nav { order: 3; margin-inline-start: 0; }
   .e-con.zs-header__in > .zs-header__cta { margin-inline-start: auto; }
   .zs-header__cta .elementor-button { min-height: 44px; padding: .5em 1em; font-size: .95rem; }
@@ -1125,7 +1125,7 @@ body.zs-tone-light .zs-cta .zs-b-ghost .elementor-button { color: var(--zs-ink);
 /* lead band + footer: both light */
 body.zs-tone-light .zs-leadband, body.zs-tone-light .e-con.zs-leadband { background: var(--c-surface); }
 body.zs-tone-light .zs-leadband::before { opacity: .25; }
-body.zs-tone-light .zs-leadband h2, body.zs-tone-light .zs-leadband__title .elementor-heading-title { color: var(--zs-ink); font-weight: var(--w-head); }
+body.zs-tone-light .zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title), body.zs-tone-light .zs-leadband__title .elementor-heading-title { color: var(--zs-ink); font-weight: var(--w-head); }
 body.zs-tone-light .zs-footer, body.zs-tone-light .e-con.zs-footer { background: var(--c-bg); border-top: 1px solid var(--zs-line); color: var(--zs-text); }
 body.zs-tone-light .zs-footer a:hover { color: var(--c-primary); }
 body.zs-tone-light :is(.zs-footer__name, .zs-footer__title), body.zs-tone-light :is(.zs-footer__name, .zs-footer__title) .elementor-heading-title { color: var(--zs-ink); }
@@ -1249,7 +1249,7 @@ body { --zs-h1-cap: 9.4svh; }
   /* the two hero buttons side by side (one row), long labels may wrap to two lines */
   body .zs-hero--home .e-con.zs-btns { --flex-direction: row; flex-direction: row; flex-wrap: nowrap; gap: 8px; }
   body .zs-hero--home .zs-btns > .elementor-element { flex: 1 1 0; width: auto; min-width: 0; }
-  body .zs-hero--home .zs-btns .elementor-button { min-height: 50px; padding: 8px 10px; font-size: .95rem; line-height: 1.2; white-space: normal; text-align: center; }
+  body .zs-hero--home .zs-btns .elementor-button { min-height: 50px; padding: 8px 10px; font-size: 1rem; line-height: 1.2; white-space: normal; text-align: center; }
   body .zs-hero--home .zs-btns .elementor-button-icon { display: none; }
 }
 @media (max-width: 767px) and (max-height: 620px) {
@@ -1314,7 +1314,7 @@ body .e-con.zs-car__track { --flex-direction: row; --flex-wrap: nowrap; flex-dir
   width: 100vw; max-width: 100vw; margin-inline: calc(50% - 50vw); align-items: center; --align-items: center; }
 .zs-car__track::-webkit-scrollbar { display: none; }
 body .e-con.zs-car__slide { flex: 0 0 min(72vw, 460px); width: min(72vw, 460px); height: auto; align-self: center; --padding-top: 0; --padding-bottom: 0; --padding-left: 0; --padding-right: 0; padding: 0; --gap: 0; gap: 0; scroll-snap-align: start; position: relative;
-  border-radius: var(--r-lg); overflow: hidden; transform: scale(.88); opacity: .55; transition: transform .7s var(--ease), opacity .7s var(--ease); }
+  border-radius: var(--r-lg); overflow: hidden; transform: scale(.94); opacity: .85; transition: transform .7s var(--ease), opacity .7s var(--ease); }
 body .e-con.zs-car__slide.is-active { transform: scale(1); opacity: 1; }
 .zs-car__img, .zs-car__img .elementor-widget-container { margin: 0; line-height: 0; }
 body .zs-car__img img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block; transition: transform 6s linear; }
@@ -1359,14 +1359,9 @@ body.zs-hv-centered .zs-hero__slider { aspect-ratio: 21 / 8; height: auto; width
 /* phones: the fixed bottom call bar is the one call button; the header's phone icon would be a second (client note) */
 @media (max-width: 767px) {
   /* hidden, not removed: it keeps its slot so the menu button stays clear of the accessibility toolbar */
-  body:has(.zs-fab) .zs-header__cta, body:has(.zs-fab) .e-con.zs-header__in > .zs-header__cta { visibility: hidden; pointer-events: none; }
+  body.zs-no-mcall:has(.zs-fab) .zs-header__cta, body.zs-no-mcall:has(.zs-fab) .e-con.zs-header__in > .zs-header__cta { visibility: hidden; pointer-events: none; }
 }
 
-/* phones: the accessibility toolbar (Ally / pojo) never sits on the header's menu button; it parks on the
-   start edge above the bottom call bar (where the Zap hosts already put it) */
-@media (max-width: 767px) {
-  body #pojo-a11y-toolbar { top: auto !important; bottom: 150px !important; }
-}
 
 /* Long URLs/emails in body text (e.g. the privacy page) must wrap on phones */
 main p a, main li a { overflow-wrap: anywhere; word-break: break-word; }
@@ -1455,3 +1450,56 @@ body.zs-p-signature .zs-faq__list .elementor-toggle .elementor-toggle-icon { min
 /* same-ground neighbours (sections.py render_page): one band, not two paddings stacked */
 body .e-con.zs-sec.zs-sec--joined { --padding-top: calc(var(--sec-y) * .2); }
 body .e-con.zs-sec:has(+ .zs-sec--joined) { --padding-bottom: calc(var(--sec-y) * .55); }
+
+/* ---------- Zap QA round (26.10.2026): rules every site keeps ---------- */
+/* the form title and the footer column titles are not headings (they repeat on every page): styled, not <h2> */
+.zs-leadband__h, .zs-leadband__title .elementor-heading-title { font-family: var(--f-head); font-weight: var(--w-head, 800); line-height: var(--lh-head, 1.15); margin: 0 0 12px; }
+.zs-leadband__h { font-size: var(--fs-h2); }
+p.zs-footer__title, .zs-footer__title .elementor-heading-title { font-family: var(--f-body); font-size: 1.05rem; font-weight: 700; margin: 0 0 14px; }
+/* no visible text under 16px: top bar, small labels, form fields + consent, the whole footer, the copyright line */
+.zs-topbar, .zs-topbar :is(p, a, span, li), .zs-topbar .elementor-heading-title,
+.zs-trust__list span, .zs-badge__label, .zs-badge span, .zs-layers__spec .elementor-heading-title,
+.zs-field label, .zs-field input, .zs-field textarea, .zs-form__consent, .zs-form__consent :is(label, a, span),
+.zs-footer :is(p, li, a, span):not(.zs-footer__name), .zs-footer .elementor-widget-text-editor, .zs-footer__bar-in, .zs-footer__copy,
+.zs-crumbs, .zs-post__meta, .zs-disclaimer, .zs-eyebrow .elementor-heading-title, a.zs-eyebrow, .zs-header__cta .elementor-button,
+.zs-leadbar__box .zs-field label, .zs-car__count { font-size: max(1rem, 16px) !important; }
+/* body copy in the text colour, never the muted grey: intros, paragraphs, card and feature descriptions */
+:is(.zs-sec__intro, .zs-split__text, .zs-feature__text, .zs-layers__text, .zs-step__text) :is(p, .elementor-widget-container),
+.zs-cards:not(.zs-cards--overlay, .zs-cards--bento) .zs-card__text :is(p, .elementor-widget-container) { color: var(--c-text); }
+.zs-bg-dark :is(.zs-sec__intro, .zs-card__text, .zs-feature__text) p, .zs-bg-primary :is(.zs-sec__intro, .zs-card__text, .zs-feature__text) p { color: inherit; }
+/* titles on a dark ground are white; the accent marks them with a short rule instead of colouring the words */
+html body .zs-tile--a .zs-tile__title .elementor-heading-title { color: #fff; }
+body .zs-tile--a .zs-tile__title .elementor-heading-title::after { content: ""; display: block; width: 48px; height: 3px; margin: 14px auto 0; background: var(--c-accent); border-radius: 2px; }
+/* footer logo: links home; a dark logo on a dark footer sits on a white chip */
+.zs-footer__logo img { max-height: 64px; width: auto; }
+.zs-footer__logo--chip img { background: #fff; padding: 10px 16px; border-radius: var(--r, 8px); }
+body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
+/* header logo: 56px desktop / 48px phones by default (QA fails it under 46 / 40); a logo with a tagline needs a version without it */
+/* phones: the accessibility button sits just under the header on the start edge (over the hero photo band), never on the H1 or the buttons */
+/* (its box is ~300px tall with the closed panel inside and the button at its top, so it is placed by its top) */
+@media (max-width: 767px) { html body #pojo-a11y-toolbar { top: 76px !important; bottom: auto !important; } }
+/* "מספר מקשר" link + dialog */
+.zs-vnote-btn { background: none; border: 0; padding: 0 4px; font: inherit; font-size: 1rem; text-decoration: underline; color: inherit; cursor: pointer; opacity: .9; }
+.zs-vnote { max-width: min(92vw, 520px); border: 0; border-radius: var(--r-lg, 14px); padding: 28px 28px 22px; color: var(--c-text); box-shadow: 0 30px 80px rgb(0 0 0 / .3); }
+.zs-vnote::backdrop { background: rgb(10 15 30 / .55); }
+.zs-vnote__t { font-family: var(--f-head); font-weight: 700; font-size: 1.3rem; color: var(--c-ink); margin: 0 0 10px; }
+.zs-vnote p { font-size: 1rem; line-height: 1.7; }
+.zs-vnote__x { position: absolute; top: 10px; inset-inline-end: 12px; width: 40px; height: 40px; border: 0; background: none; font-size: 1.6rem; cursor: pointer; color: var(--c-ink); }
+
+/* post FAQ (single.php): native details, same look as the page FAQ */
+.zs-post__faq { margin-block: 40px; }
+.zs-post__faq details { border: 1px solid var(--c-line); border-radius: var(--r, 10px); margin-bottom: 10px; background: var(--c-bg); }
+.zs-post__faq summary { cursor: pointer; padding: 16px 20px; font-family: var(--f-head); font-weight: 700; color: var(--c-ink); }
+.zs-post__faq .elementor-tab-content { padding: 0 20px 16px; }
+/* phones, image hero (not cover/inset/curve): the photo is a band at the top and the text follows it directly,
+   never pushed to the bottom of a screen-tall block (Zap QA: "empty blue band between the photo and the H1") */
+@media (max-width: 767px) {
+  html body.zs-hv-image .e-con.zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: 0 !important; }
+  html body.zs-hv-image .zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner {
+    justify-content: flex-start; --justify-content: flex-start; padding-top: calc(clamp(104px, 22svh, 230px) + 22px) !important; padding-bottom: 36px !important; }
+}
+/* phones: hero text keeps clear of the accessibility button's column (it sits on the left edge under the header) */
+@media (max-width: 767px) {
+  body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-left) .e-con.zs-hero__text { padding-left: 50px; }
+  body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-right) .e-con.zs-hero__text { padding-right: 50px; }
+}

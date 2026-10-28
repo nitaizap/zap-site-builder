@@ -104,12 +104,32 @@ def validate(d, site_dir):
                 kw_owner[kw] = name
                 h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", "")).replace("*", "").replace(chr(10), " ")
                 core = kw.split()[0] if kw else ""
-                if core and core not in h1:
+                if core and core not in h1 and p.get("type") != "home":   # the home H1 is the client's name only
                     W(f"{name}: H1 '{h1}' does not contain the keyword '{kw}'")
-        if p.get("type") in ("home", "about") and b.get("name"):
-            h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
-            if b["name"].split()[0] not in h1:
-                W(f"{name}: the brand name should sit in the H1 on home/about")
+        hero_t = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
+        h1_plain = hero_t.replace("*", "").replace(chr(10), " ").strip()
+        if p.get("type") == "home" and b.get("name") and h1_plain != b["name"]:
+            E(f"home: the H1 is the client's name only ('{b['name']}', Zap checklist), not '{h1_plain}'; the keyword goes in the lead and the first H2")
+        if p.get("type") == "about" and b.get("name") and b["name"].split()[0] not in h1_plain:
+            W(f"{name}: the brand name should sit in the H1 on the about page")
+        # Zap title format: "<client> | <page>" on every page
+        st = seo.get("title", "")
+        if st and b.get("name") and not st.startswith(b["name"] + " | ") and key != "":
+            E(f"{name}: seo.title must read '{b['name']} | <page>' (Zap checklist), not '{st}'")
+        if key == "" and st and b.get("name") and not st.startswith(b["name"]):
+            E(f"home: seo.title starts with the client's name ('{b['name']} | ...'), not '{st}'")
+        # slug = H1 (service/hub pages): the URL repeats the page's heading
+        if p.get("type") in ("service", "hub") and h1_plain:
+            slug_words = key.split("/")[-1].replace("-", " ")
+            if slug_words != h1_plain.replace("־", " ").replace("'", "").replace('"', ""):
+                W(f"{name}: the URL '{key.split('/')[-1]}' should match the H1 '{h1_plain}' (Zap QA: slug = H1)")
+        # headings never end with a full stop (Zap QA); a question mark or nothing
+        heads = [hero_t] + [s.get("title", "") for s in p.get("sections", [])]
+        heads += [it.get("title", "") for s in p.get("sections", []) for it in (s.get("items") or []) if isinstance(it, dict)]
+        heads += re.findall(r"<h[2-4][^>]*>(.*?)</h[2-4]>", " ".join(s.get("html", "") for s in p.get("sections", [])) + p.get("html", ""))
+        for h in heads:
+            if isinstance(h, str) and h.rstrip("*").rstrip().endswith("."):
+                E(f"{name}: heading ends with a full stop: '{h.strip()[-40:]}' (headings take no period)")
         for s in p.get("sections", []):
             if s.get("type") == "faq" and len(s.get("items", [])) < 3:
                 E(f"{name}: FAQ needs at least 3 real questions (has {len(s.get('items', []))})")
@@ -125,6 +145,28 @@ def validate(d, site_dir):
             E(f"{name}: page has sections but no hero (the hero carries the only H1)")
         if key.startswith("post:") and p.get("related_page") and p["related_page"] not in keys:
             E(f"{name}: related_page '{p['related_page']}' does not exist")
+
+    # menu label = the page's name everywhere (Zap QA: "מדה ואיטום חדרים רטובים" in the menu, another H1 on the page)
+    h1_of = {p.get("key", ""): next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "").replace("*", "").replace(chr(10), " ")
+             for p in pages}
+    for item in d.get("nav", []):
+        for it in [item] + item.get("children", []):
+            h = it.get("href", "")
+            if h.startswith("page:") and h[5:] and h[5:] in h1_of and h1_of[h[5:]] and it.get("label") not in h1_of[h[5:]]:
+                W(f"menu item '{it.get('label')}' differs from that page's H1 '{h1_of[h[5:]]}': use one name")
+    # blog: Hebrew category slugs, at least 3 posts (Zap SEO checklist)
+    if any(p.get("type") == "blog" for p in pages):
+        if not d.get("categories"):
+            E("a blog page needs at least one category in site.json (else the base site's leftover category shows, e.g. /blog/)")
+        if len(d.get("posts", [])) < 3:
+            W(f"the blog has {len(d.get('posts', []))} posts; the Zap SEO checklist wants 3 (from the brief and the client's old site)")
+    for c in d.get("categories", []):
+        if not 150 <= len(c.get("description", "")) <= 160:
+            E(f"category '{c.get('slug')}': description is {len(c.get('description', ''))} chars; it is the archive's meta description (150-160)")
+        if re.search(r"[a-zA-Z]", c.get("slug", "")):
+            E(f"category slug '{c.get('slug')}' must be Hebrew (no Latin in URLs)")
+    if not d.get("favicon"):
+        W("no favicon in site.json: the cloned base site's icon stays; add a square PNG (512+) made from the client's logo symbol")
 
     for item in d.get("nav", []) + d.get("footer_nav", []):
         for it in [item] + item.get("children", []):

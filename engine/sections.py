@@ -94,9 +94,12 @@ def rich(t):
     t = html.escape(str(t), quote=False)
     t = re.sub(r"\*(.+?)\*", r'<span class="zs-hl">\1</span>', t)
     t = t.replace(chr(10), '<br class="zs-br">')
-    if t.endswith("."):
-        t = t[:-1] + '<span class="zs-dot">.</span>'
-    return t
+    return keep_together(t)
+
+
+def keep_together(t):
+    """Numbers never wrap away from their word: "מספר 1", "1.5 ק״ג", "30 שנה" (Zap QA: "המקצוען מספר / 1")."""
+    return re.sub(r"(?<=\S) (?=\d)|(?<=\d) (?=[^\s<\d])", "\u00a0", t)
 
 
 def text(ctx, body, classes=""):
@@ -172,8 +175,8 @@ def sec_head(ctx, s, tag="h2"):
 
 def _h1_markup(t, brand=""):
     """Two spans, the brand on its own line: 'keyword\nbrand', an H1 ending with the brand name, or legacy
-    'keyword — brand'. No dash is ever rendered; a visually hidden comma keeps the text readable for
-    screen readers and search engines."""
+    'keyword — brand'. No dash and no comma are rendered: a plain space separates them (Zap QA:
+    \"צור קשר עם, X\")."""
     a = b = ""
     if "\n" in t:
         a, _, b = t.partition("\n")
@@ -184,7 +187,7 @@ def _h1_markup(t, brand=""):
     if not b:
         return html.escape(t, quote=False)
     return (f'<span class="zs-h1__k">{html.escape(a, quote=False)}</span>'
-            f'<span class="zs-h1__sep">, </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
+            f'<span class="zs-h1__sep"> </span><span class="zs-h1__b">{html.escape(b, quote=False)}</span>')
 
 
 def hero(ctx, s):
@@ -626,13 +629,29 @@ def header_template(ctx):
     return els
 
 
+def footer_template_logo_key(ctx):
+    return "__logo_light" if "__logo_light" in ctx.media else "__logo"
+
+
+def footer_logo(ctx):
+    """The client's logo in the footer, linking home (Zap QA); a dark logo on a dark footer sits on a white chip."""
+    b, k = ctx.site["business"], footer_template_logo_key(ctx)
+    lg = ctx.media.get(k)
+    if not lg:
+        return heading(ctx, b["name"], "p", "zs-footer__name", link="page:")
+    chip = " zs-footer__logo--chip" if k == "__logo" else ""
+    return W(ctx, "image", {"image": {"url": lg["url"], "id": lg["id"], "alt": b["name"], "source": "library"},
+                            "image_size": "full", "link_to": "custom", "link": {"url": "/", "is_external": "", "nofollow": ""}},
+             "zs-footer__logo" + chip)
+
+
 def footer_template(ctx):
     d = ctx.site
     b, f, form = d["business"], d.get("footer", {}), d.get("form", {})
     lead = C(ctx, "zs-leadband", [
         C(ctx, "zs-wrap zs-leadband__in", [
             C(ctx, "zs-leadband__text", [
-                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "h2", "zs-leadband__title"),
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
                 text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
                 W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
             ]),
@@ -642,15 +661,15 @@ def footer_template(ctx):
     lead["settings"]["_element_id"] = "leave-details"
     cols = C(ctx, "zs-wrap zs-footer__grid", [
         C(ctx, "zs-footer__col zs-footer__brand", [
-            heading(ctx, b["name"], "p", "zs-footer__name"),
+            footer_logo(ctx),
             text(ctx, f.get("about", "")),
         ]),
         C(ctx, "zs-footer__col", [
-            heading(ctx, f.get("links_title", "השירותים שלנו"), "h2", "zs-footer__title"),
+            heading(ctx, f.get("links_title", "השירותים שלנו"), "p", "zs-footer__title"),
             W(ctx, "shortcode", {"shortcode": '[zap_menu location="footer"]'}),
         ], tag="nav"),
         C(ctx, "zs-footer__col", [
-            heading(ctx, "יצירת קשר", "h2", "zs-footer__title"),
+            heading(ctx, "יצירת קשר", "p", "zs-footer__title"),
             W(ctx, "shortcode", {"shortcode": "[zap_footer_contact]"}),
         ]),
     ])

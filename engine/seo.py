@@ -181,12 +181,16 @@ def run_seo(site):
             sbad.append(f"{k}: not Hebrew")
             continue
         h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", ""))
-        words = [w for w in last.split("-") if len(w) > 1]
-        hit = sum(1 for w in words if w.strip("׳'") in h1.replace("׳", "").replace("'", ""))
-        if words and hit < max(1, len(words) // 2):
-            sbad.append(f"{k}: H1 '{h1.replace(chr(10), ' ')}'")
+        core = h1.replace(chr(10), " ").replace("*", "").replace(b["name"], "").replace("׳", "").replace("'", "").strip(" ,")
+        # Zap QA: the slug is the H1 (service and hub pages word for word; others at least half the words)
+        if p.get("type") in ("service", "hub") and last.replace("-", " ") != core:
+            sbad.append(f"{k}: H1 '{core}'")
+        elif p.get("type") not in ("service", "hub"):
+            words = [w for w in last.split("-") if len(w) > 1]
+            if words and sum(1 for w in words if w.strip("׳'") in core) < max(1, len(words) // 2):
+                sbad.append(f"{k}: H1 '{core}'")
     R("15", "SEO טכני - URLs", "סלאגים בעברית ולפי ה-H1", "FAIL" if sbad else "PASS", "; ".join(sbad)[:500])
-    cats = [u for u in urls if "/category/" in u]
+    cats = [u for u in urls if "/category/" in u or "/%d7%a0%d7%95%d7%a9%d7%90/" in u.lower() or "/נושא/" in u]
     R("16", "SEO טכני - URLs", "הסרת /category/ מכתובות קטגוריות", "FAIL" if cats else "PASS",
       "; ".join(path(u) for u in cats)[:300] or "category base removed")
     blog = next((p for p in data["pages"] if p.get("type") == "blog"), None)
@@ -274,13 +278,17 @@ def run_seo(site):
           re.search(r'<a[^>]+zap[^>]+>\s*<img[^>]+zap', home, re.I | re.S)
     R("+2", "כללי", "לוגו זאפ בפוטר + קישור לאתר זאפ", "PASS" if zap else "FAIL")
     h1 = _text((re.search(r"<h1[^>]*>(.*?)</h1>", home, re.S) or [None, ""])[1])
-    R("+3", "כללי", "H1 בדף הבית כולל את שם הלקוח", "PASS" if b["name"].split()[0] in h1 else "FAIL", h1[:90])
+    R("+3", "כללי", "H1 בדף הבית = שם הלקוח בלבד", "PASS" if h1.strip() == b["name"] else "FAIL", h1[:90])
+    tbad = [f"{v[0]}: '{t_[:50]}'" for t_, v in titles.items() if t_ and not t_.startswith(b["name"] + " | ") and v[0] != "/"]
+    R("+7", "כללי", "פורמט Title: \"<לקוח> | <עמוד>\"", "FAIL" if tbad else "PASS", "; ".join(tbad)[:500] or "all titles start with the client name")
     R("+4", "כללי", "עמוד פנימי שונה מפוסט", "PASS" if not data.get("posts") or True else "MANUAL",
       "pages render through Elementor page layouts, posts through single.php")
     pv = [u for u in urls if re.search(r"פרטיות", path(u))]
     pt = _text((re.search(r"<title>(.*?)</title>", pages[pv[0]][1], re.S) or [None, ""])[1]) if pv else ""
+    av = [u for u in urls if re.search(r"נגישות", path(u))]
+    at = _text((re.search(r"<title>(.*?)</title>", pages[av[0]][1], re.S) or [None, ""])[1]) if av else ""
     R("+5", "כללי", "מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח",
-      "PASS" if pv and b["name"].split()[0] in pt else "FAIL", f"privacy title: {pt[:80]}; accessibility = Zap central page")
+      "PASS" if pv and av and b["name"].split()[0] in pt and b["name"].split()[0] in at else "FAIL", f"privacy title: {pt[:60]}; accessibility title: {at[:60] or 'no page'}")
     R("+6", "כללי", "נראות במובייל ובמחשב נייד 1280", "MANUAL",
       "zs qa measures 1440 + 390 and the hero at 1280×620; look at 1280 once by eye")
     legal = b.get("legal_name") or b["name"]
