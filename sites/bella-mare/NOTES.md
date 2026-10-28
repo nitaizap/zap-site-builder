@@ -55,3 +55,13 @@ Open: lead email (blocking), WhatsApp, kashrut body, privacy details, show price
 | /תפריט-ומשלוחים/ | משלוח פיצה בנהריה | התפריט שלנו |
 | /גלריה/ | גלריה בלה מארה | גלריה |
 | דברו איתנו | anchor /#contact on home | — |
+
+## Round 3: recomposed on the unified engine (no previous site as a model)
+Design brief
+- Subject: Neapolitan pizza from the taboon, handmade pasta; dishes shot on pale grey stone; the room is dark slate, wine wall, patterned floor tiles.
+- Audience and moment: Nahariya diners choosing tonight's dinner, ordering in, or planning an event (up to 70).
+- The page's job: order delivery (Mishlohim) or book a table (Tabit); otherwise call.
+Base template 2 (restaurant/events), package basic. Deviations: stone grey ground from the photos (not cream), slate ink from the wall, copper from the logo; Bellefair (thin caps like the logo); motif "rings" (the logo's double circle); bold element = the monogram over the full-table photo.
+Home: hero cover+logo → split card → carousel of dishes → tiles (pizza / pasta / events) → split overlap (about) → features checks → gallery mosaic → faq outline → contact. `zs pool`: no other client close.
+H1s follow Zap QA (home = name only, inner = page name); the brief's "בלה מארה – מטבח איטלקי כשר" moved into the lead (dash and two-part H1 are rejected by Zap QA).
+Not built: blog (not in the brief's tree; basic package) → zs seo #5 stays FAIL by design.

@@ -1,7 +1,7 @@
 # QA report — בלה מארה
 
-- Pages × viewports checked: **10** (5 URLs × 2)
-- Internal links tested: **8**, not 200: **0**
+- Pages × viewports checked: **12** (6 URLs × 2)
+- Internal links tested: **37**, not 200: **0**
 - Errors: **0** · Warnings: **2**
 
 - ✅ hero buttons above the fold at 1280×620
@@ -14,13 +14,15 @@
 
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
-| desktop | /מדיניות-פרטיות/ | 0 | 1 | 853 | meta description length 61 |
-| desktop | /אודות/ | 0 | 0 | 1039 |  |
-| desktop | /תפריט-ומשלוחים/ | 0 | 0 | 1547 |  |
-| desktop | /גלריה/ | 0 | 0 | 2155 |  |
-| desktop | / | 0 | 0 | 1900 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 1 | 853 | meta description length 61 |
-| mobile | /אודות/ | 0 | 0 | 877 |  |
-| mobile | /תפריט-ומשלוחים/ | 0 | 0 | 1478 |  |
-| mobile | /גלריה/ | 0 | 0 | 2088 |  |
-| mobile | / | 0 | 0 | 1483 |  |
+| desktop | /הצהרת-נגישות/ | 0 | 0 | 941 |  |
+| desktop | /מדיניות-פרטיות/ | 0 | 0 | 954 |  |
+| desktop | /אודות/ | 0 | 0 | 1393 |  |
+| desktop | /תפריט-ומשלוחים/ | 0 | 0 | 1444 |  |
+| desktop | /גלריה/ | 0 | 1 | 2233 | <title> length 16 |
+| desktop | / | 0 | 0 | 2064 |  |
+| mobile | /הצהרת-נגישות/ | 0 | 0 | 941 |  |
+| mobile | /מדיניות-פרטיות/ | 0 | 0 | 954 |  |
+| mobile | /אודות/ | 0 | 0 | 1240 |  |
+| mobile | /תפריט-ומשלוחים/ | 0 | 0 | 1330 |  |
+| mobile | /גלריה/ | 0 | 1 | 1767 | <title> length 16 |
+| mobile | / | 0 | 0 | 1758 |  |
