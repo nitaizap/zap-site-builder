@@ -33,6 +33,7 @@ before doing the step — every one encodes mistakes already made.
 | design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
+| before calling it done | `references/zap-qa.md` — every rejection Zap's QA team has made, as rules; most are enforced by `zs build` / `zs qa`, the rest are a checklist |
 | deliver | `references/novamira.md` (push) or `references/delivery.md` (zip) |
 | examples | `examples/white-villa-pilot/`, `examples/mehirut-haor-pilot/` (approved 22/10/2026: template pool + team playbook + SEO checklist; site.json, NOTES.md, SEO-QA.md) · `examples/mehirut-haor/` (older premium reference, predates the playbook) · `examples/sample-plumber/` (minimal, the engine test) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
@@ -45,8 +46,10 @@ before doing the step — every one encodes mistakes already made.
 2. **Measure, don't eyeball.** Done means `zs qa` reports **0 errors** and `zs seo` (the Zap SEO checklist,
    `references/seo-checklist.md`) **0 FAIL**. Screenshots are for taste, numbers
    are for correctness. Never report a page as finished from a screenshot or from memory.
-3. **One keyword owns one page.** The H1 is that keyword in natural Hebrew; home and about carry the brand
-   name in the H1 too. The validator stops cannibalisation.
+3. **One keyword owns one page; Zap QA decides the H1.** Home H1 = the client's name only. Inner H1 = the
+   page's name, one short line (never two lines joined). The keyword lives in the SEO title, the hero lead and
+   the first paragraph. SEO title = `<site name> | <page name>` on every page. The validator enforces all of it
+   (`references/zap-qa.md`).
 4. **One site per session, one branch per site** (`site/<slug>`, or the branch the session was given).
    Several sites = several sessions in parallel. Never mix two clients in one conversation.
 5. **Everything durable lives in `sites/<slug>/`** and is committed. `work/` and `dist/` are disposable:
