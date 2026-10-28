@@ -15,7 +15,7 @@
 |---|---|---|---|---|---|
 | desktop | /בלוג/ | 0 | 1 | 1093 | <title> length 15 |
 | desktop | /הצהרת-נגישות/ | 0 | 0 | 954 |  |
-| desktop | /תפריטים/ | 0 | 1 | 1227 | <title> length 18 |
+| desktop | /תפריטים/ | 0 | 1 | 1230 | <title> length 18 |
 | desktop | /גלריה/ | 0 | 1 | 1889 | <title> length 16 |
 | desktop | /צור-קשר/ | 0 | 1 | 843 | <title> length 18 |
 | desktop | /מדיניות-פרטיות/ | 0 | 0 | 966 |  |
@@ -27,7 +27,7 @@
 | desktop | /בלוג/אירוח-ואירועים/ | 0 | 0 | 1095 |  |
 | mobile | /בלוג/ | 0 | 1 | 1093 | <title> length 15 |
 | mobile | /הצהרת-נגישות/ | 0 | 0 | 954 |  |
-| mobile | /תפריטים/ | 0 | 1 | 1158 | <title> length 18 |
+| mobile | /תפריטים/ | 0 | 1 | 1117 | <title> length 18 |
 | mobile | /גלריה/ | 0 | 1 | 1757 | <title> length 16 |
 | mobile | /צור-קשר/ | 0 | 1 | 839 | <title> length 18 |
 | mobile | /מדיניות-פרטיות/ | 0 | 0 | 966 |  |
