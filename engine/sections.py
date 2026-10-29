@@ -27,8 +27,10 @@ def vehicle_svg(kind):
 class Ctx:
     """Per-page render context."""
 
-    def __init__(self, page_key, media, site):
+    def __init__(self, page_key, media, site, as_home=False):
         self.page_key = page_key
+        self.as_home = as_home      # a gate-preview copy of the home page (directions[k].home) renders as home
+        self.design = (site or {}).get("design", {}) if isinstance(site, dict) else {}
         self.media = media          # image key -> {"id": int, "url": str, "alt": str}
         self.site = site
         self.n = 0
@@ -215,7 +217,7 @@ def _h1_markup(t, brand=""):
 
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
-    is_home = ctx.page_key == ""
+    is_home = ctx.page_key == "" or ctx.as_home
     logo = None
     if s.get("logo"):      # the brand's logo above the H1 (cover heroes: restaurants, venues)
         lk = "__logo_light" if "__logo_light" in ctx.media else "__logo"
@@ -635,6 +637,36 @@ SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
 # Hero layout, preset, tone and motion are site-wide design levers; these are per section.
+# Style kits (design.kit): each changes the page skeleton, not only colours: header layout, section heads,
+# container width, image treatment, buttons, footer (wp/theme/zap-base/assets/kits.css) and the background rhythm
+# below (which grounds the sections take, in order). None = plain page ground.
+KITS = {
+    "atelier":  {"rhythm": [None]},                         # centred logo + menu, centred heads under a rule, narrow, framed photos
+    "magazine": {"rhythm": [None, None, "dark"]},           # ruled heads, wide grid, square photos, wordmark footer
+    "sidebar":  {"rhythm": [None, "surface"]},              # section title in a sticky side column, content beside it
+    "panels":   {"rhythm": [None]},                         # every section a rounded panel on a tinted page, pill header
+    "bands":    {"rhythm": [None, "primary"]},              # full colour bands, heavy heads, block buttons
+    "quiet":    {"rhythm": [None]},                         # no grounds, hairlines between sections, small heads, narrow
+    "frame":    {"rhythm": [None, "surface"]},              # the page inside a brand-colour frame, offset photo frames
+    "gallery":  {"rhythm": ["surface", None]},              # photo-led: full-bleed grids, hairline gaps, centred heads
+}
+
+# Home archetypes (design.archetype): the home page's story, chosen before any section. Each names its beats; the
+# sections and variants that tell them are the writer's choice (references/pool.md → Home archetypes).
+ARCHETYPES = {
+    "tour":      "a guided walk through the place: big photo opening, then one space per beat, practical facts last",
+    "statement": "type-led: one confident line opens the page, few photos, short proof, the action repeated",
+    "booking":   "the action first: the form or booking card in the opening, facts and prices next, proof after",
+    "proof":     "evidence first: certifications / clients right under the hero, numbers, work, the process",
+    "story":     "chapters of the owner's story: origin, method, people, the place, then the invitation",
+    "catalogue": "the offer as a list: listing cards or a price list high on the page, filters by need, then trust",
+    "gallery":   "pictures do the talking: a slider or mosaic opens, short captions, one paragraph of text",
+    "guide":     "answers first: the audience's questions lead, each answer links to the service that solves it",
+}
+
+# Sections built for a light ground (white panels, form fields, long text): a kit's colour band skips them.
+ON_LIGHT_ONLY = {"faq", "contact", "posts", "pricelist", "prose", "gallery", "facts", "team", "logos", "carousel", "video"}
+
 VARIANTS = {
     "hero": {"cover", "inset", "curve"},
     "split": {"frame", "overlap", "card", "duo"},
@@ -660,13 +692,20 @@ def render_page(ctx, sections):
     out = []
     plain_i = 0
     prev_bg = None
+    kit = KITS.get(ctx.design.get("kit") or "")
+    rhythm = kit["rhythm"] if kit else [None, "surface"]
+    if ctx.design.get("tone") == "light":   # tone light has no dark grounds: colour bands become tints
+        rhythm = [x if x in (None, "surface") else "surface" for x in rhythm]
     for s in sections:
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
         if t not in ("hero", "cta", "marquee", "trust", "tiles") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
-            s = {**s, "bg": "surface" if plain_i % 2 else None}
+            g = rhythm[plain_i % len(rhythm)]
+            if g in ("dark", "primary", "accent") and t in ON_LIGHT_ONLY:   # forms, lists and text panels stay on a light ground
+                g = "surface"
+            s = {**s, "bg": g}
             plain_i += 1
         el = SECTIONS[t](ctx, s)
         if el:

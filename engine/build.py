@@ -174,6 +174,17 @@ def build(site, only=None):
         std["accessibility_url"] = "/הצהרת-נגישות/"
         data["_paths"]["הצהרת-נגישות"] = "/הצהרת-נגישות/"
 
+    # Gate preview: a direction may carry its own home page (directions[k].home = sections), so the three directions
+    # differ in layout, not only in colour. Each is built as a hidden, noindexed page /zs-dir-<k>/ that renders as the
+    # home page under that direction. Local builds only: a pushed client site never gets them.
+    if not getattr(site, "remote", False):
+        for k, dv in (data.get("directions") or {}).items():
+            if isinstance(dv, dict) and dv.get("home"):
+                data["pages"].append({"key": f"zs-dir-{k}", "type": "page", "title": f"כיוון {k.upper()}", "noindex": True,
+                                      "_as_home": True, "sections": dv["home"],
+                                      "_design": {**data.get("design", {}), **{x: v for x, v in dv.items() if x not in ("home", "label")}},
+                                      "seo": {"title": f"{data['business']['name']} | כיוון {k.upper()}", "description": ""}})
+
     site.install_code()
     log = []
 
@@ -236,7 +247,9 @@ def build(site, only=None):
     pages = sorted(data.get("pages", []), key=lambda p: p["key"].count("/"))
     payload = []
     for p in pages:
-        ctx = Ctx(p["key"], media, data)
+        ctx = Ctx(p["key"], media, data, as_home=bool(p.get("_as_home")))
+        if p.get("_design"):
+            ctx.design = p["_design"]
         elements = render_page(ctx, p.get("sections", [])) if p.get("sections") else None
         if p.get("sections") and ctx.h1_count != 1:
             raise SystemExit(f"page '{p['key'] or 'home'}' renders {ctx.h1_count} H1s (must be exactly 1)")

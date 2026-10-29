@@ -92,7 +92,8 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
     // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
-    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
+    wp_enqueue_style('zs-kits', "$uri/assets/kits.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/kits.css"));
+    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-kits'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 
@@ -114,15 +115,23 @@ add_action('wp_head', function () {
     }
 }, 2);
 
-/** Active design: the build engine may store alternative directions for the gate-1 preview. */
+/** Active design: the build engine may store alternative directions for the gate-1 preview: ?zs_dir=<k> on any
+ * page, or the direction's own home page /zs-dir-<k>/ (directions[k].home, local builds only). */
+function zs_dir_key() {
+    if (wp_get_environment_type() === 'production') return '';
+    if (!empty($_GET['zs_dir'])) return sanitize_key($_GET['zs_dir']);
+    $o = function_exists('get_queried_object') ? get_queried_object() : null;
+    if ($o instanceof WP_Post && $o->post_type === 'page' && preg_match('/^zs-dir-([a-z0-9]+)$/', $o->post_name, $m)) return $m[1];
+    return '';
+}
 function zs_design() {
     $d = zs_opt('design', []);
     $dirs = zs_opt('directions', []);
-    if (!empty($_GET['zs_dir']) && is_array($dirs) && wp_get_environment_type() !== 'production') {
-        $k = sanitize_key($_GET['zs_dir']);
-        if (isset($dirs[$k]) && is_array($dirs[$k])) {
-            $d = array_replace_recursive($d, $dirs[$k]);
-        }
+    $k = zs_dir_key();
+    if ($k !== '' && is_array($dirs) && isset($dirs[$k]) && is_array($dirs[$k])) {
+        $dv = $dirs[$k];
+        unset($dv['home'], $dv['label']);
+        $d = array_replace_recursive($d, $dv);
     }
     return $d;
 }
@@ -153,7 +162,7 @@ function zs_tokens_css() {
     // global colour or font in Elementor changes the whole site. Kit variables live on body (.elementor-kit-N),
     // so the tokens are re-declared on body; :root keeps the plain values as the fallback. Gate previews
     // (?zs_dir=) show their own colours, so they skip this layer.
-    if (empty($_GET['zs_dir'])) {
+    if (zs_dir_key() === '') {
         $kit = ['primary' => 'primary', 'primary-ink' => 'zsprimaryink', 'accent' => 'accent', 'accent-ink' => 'zsaccentink',
                 'ink' => 'secondary', 'text' => 'text', 'muted' => 'zsmuted', 'bg' => 'zsbg', 'surface' => 'zssurf',
                 'line' => 'zsline', 'dark' => 'zsdark', 'dark-ink' => 'zsdarkink'];
@@ -193,6 +202,7 @@ add_filter('body_class', function ($classes) {
     if (!empty($col['accent']) && (zs_contrast($col['accent'], $col['primary'] ?? '#000') < 3 || zs_contrast($col['accent'], $col['dark'] ?? '#000') < 3))
         $classes[] = 'zs-accent-low';
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
+    if (!empty($d['kit'])) $classes[] = 'zs-k-' . sanitize_html_class($d['kit']);   // style kit: the page skeleton (kits.css)
     if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');

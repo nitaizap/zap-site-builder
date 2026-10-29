@@ -200,7 +200,8 @@ def urls_for(site, data):
         "foreach (get_posts(['post_type'=>['page','post'],'post_status'=>'publish','numberposts'=>-1,'meta_key'=>'_zs_key']) as $p) $u[] = get_permalink($p);"   # only what the build owns (not plugin pages on a client server)
         "foreach (get_terms(['taxonomy'=>'category','hide_empty'=>true]) as $t) $u[] = get_term_link($t);"
         "echo implode(\"\\n\", $u);")
-    urls = [u.strip() for u in out.splitlines() if u.strip().startswith("http")]
+    # /zs-dir-<k>/ are gate previews of other home layouts (local only), not part of the site
+    urls = [u.strip() for u in out.splitlines() if u.strip().startswith("http") and "/zs-dir-" not in u]
     return list(dict.fromkeys(urls))
 
 
@@ -234,8 +235,8 @@ def screenshots(site, paths, directions=False, mobile_only=False):
         name = "home" if p.strip("/") == "" else f"p{i:02d}" + (f"-{tail[:30]}" if tail else "")
         jobs.append((name, site.url + urllib.parse.quote(p)))
     if directions:
-        for k in data.get("directions", {}):
-            jobs.append((f"dir-{k}", site.url + "/?zs_dir=" + k))
+        for k, dv in data.get("directions", {}).items():   # a direction with its own home layout has its own page
+            jobs.append((f"dir-{k}", site.url + (f"/zs-dir-{k}/" if dv.get("home") else "/?zs_dir=" + k)))
     files = []
     with sync_playwright() as pw:
         b = _launch(pw)
@@ -277,15 +278,31 @@ def preview(site):
         w = 900 if "desktop" in f.name else 390
         im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
         im.save(out / (f.stem.replace("home", "dir-a") + ".jpg"), "JPEG", quality=72, optimize=True, progressive=True)
+    from fingerprint import take, similarity, TOO_CLOSE
+    import itertools
+    urls = {k: site.url + (f"/zs-dir-{k}/" if d.get("home") else f"/?zs_dir={k}") for k, d in dirs.items()} if data.get("directions") else {"a": site.url + "/"}
+    fps = take(urls)
+    (out / "fingerprints.json").write_text(json.dumps(fps, ensure_ascii=False), encoding="utf-8")
+    sims = {(a, b): similarity(fps[a], fps[b]) for a, b in itertools.combinations(fps, 2)}
+    close = [f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items() if v >= TOO_CLOSE]
+    for (a, b), v in sims.items():
+        if v >= TOO_CLOSE:
+            print(f"ERROR directions {a} and {b} look {v:.0%} alike (measured layout): change the kit, hero or section order of one")
     lines = [f"# כיווני עיצוב — {data['business']['name']}", "",
-             "אותו תוכן, אותו מבנה. משתנים רק צבעים, גופנים, פינות וסגנון ה-Hero. בוחרים אות אחת.", ""]
+             "כל כיוון הוא דף בית שלם משלו: מבנה, סדר הבלוקים, צבעים וגופנים. בוחרים אות אחת.", "",
+             "דמיון בין הכיוונים (מדוד מהדף עצמו): " + ", ".join(f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items()), ""]
+    base = data.get("design", {})
+    home = next((p.get("sections", []) for p in data.get("pages", []) if p.get("type") == "home"), [])
     for k, d in dirs.items():
-        f = d.get("fonts", data.get("design", {}).get("fonts", {}))
+        f = d.get("fonts", base.get("fonts", {}))
+        recipe = " → ".join(s.get("type", "") + (":" + s["variant"] if s.get("variant") else "") for s in (d.get("home") or home))
         lines += [f"## {k.upper()} · {d.get('label', '')}", "",
-                  f"סגנון `{d.get('preset', 'clean')}` · Hero `{d.get('hero', 'split')}` · גופנים {f.get('heading', '')} / {f.get('body', '')}", "",
+                  f"ערכה `{d.get('kit', base.get('kit', '-'))}` · סגנון `{d.get('preset', base.get('preset', 'clean'))}` · Hero `{d.get('hero', base.get('hero', 'split'))}` · גופנים {f.get('heading', '')} / {f.get('body', '')}", "",
+                  f"מבנה: {recipe}", "",
                   "| מחשב | נייד |", "|---|---|",
                   f"| <img src=\"dir-{k}-desktop.jpg\" width=\"620\"> | <img src=\"dir-{k}-mobile.jpg\" width=\"250\"> |", ""]
     (out / "PREVIEW.md").write_text("\n".join(lines), encoding="utf-8")
+    site._preview_close = close
     return out / "PREVIEW.md"
 
 

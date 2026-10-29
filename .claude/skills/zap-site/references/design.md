@@ -52,10 +52,12 @@ build-up, `route` for a journey, a spec table in `prose`), plus the logo's own s
 
 ## Make three directions that are actually different
 
-Vary what changes how the site feels, not just the colour:
+Every direction carries its own `home` (`site-json.md` → `directions`): its own sections, order, hero and variants.
+Three colourings of one page are not three directions. Then vary what changes how the site feels:
 
 | lever | options |
 |---|---|
+| **kit** (first) | `atelier` · `magazine` · `sidebar` · `panels` · `bands` · `quiet` · `frame` · `gallery` (`pool.md` → Style kits): the skeleton. Each direction a different kit |
 | preset | `signature` (dark full-bleed hero, display type, brand part of the H1 on its own line, bento tiles, image wipe-ins, grain, footer wordmark) · `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
 | hero | `split` (text + framed photo) · `image` (full-bleed photo with scrim – needs a strong photo) · `centered` (statement + wide photo band) |
 | header | `light` · `dark` (needs `logo_light`, or the logo sits on a white chip) |

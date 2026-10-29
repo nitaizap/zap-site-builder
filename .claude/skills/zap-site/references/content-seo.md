@@ -35,9 +35,10 @@ full sentence (a cut-off description shows as a stray fragment).
 
 ## Per page type
 
-**Home** (owns the head term): hero (H1, lead answering the audience's fear, CTA + phone, 3 proof points)
-→ trust strip (facts only) → services cards (keyword anchors) → process steps → why us (split) → FAQ
-(3–6) → blog teasers. 900–1,600 words of real coverage. Add `reviews` only with a real customer-id.
+**Home** (owns the head term): the order comes from the archetype (`pool.md` → Home archetypes), not from this
+file. What every home needs, wherever it sits: the hero (H1, a lead answering the audience's fear, the action),
+links to every service page with keyword anchors, an FAQ (3–6), 900–1,600 words of real coverage. Add `reviews`
+only with a real customer-id.
 
 **Service** (owns one term): hero (H1 = keyword, one-line answer) → `prose` whose first paragraph answers
 the query in 2–3 sentences, then H2s: what it is / signs or conditions / how it is done step by step /

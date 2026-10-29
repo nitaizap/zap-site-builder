@@ -12,7 +12,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 | `business` | facts (below) |
 | `standards` | `privacy_url` (empty → the page is built from Zap's standard privacy wording; set it only when the client has its own policy), `privacy_database` (true only when the client confirmed a database; adds the database paragraph), `privacy_purposes` (extra "השימוש במידע" items; default: answering the contact forms), `privacy_email` (default `business.email_public`), `privacy_confirmed` (the client confirmed these and `business.legal_name`; clears the launch blocker), `accessibility_url` (default Zap central statement) |
 | `design` | the active look (below) |
-| `directions` | `{ "a": {...}, "b": {...}, "c": {...} }` partial `design` overrides for the gate preview; each has a `label` |
+| `directions` | `{ "a": {...}, "b": {...}, "c": {...} }` for the gate preview: each is a partial `design` override + `label` + **`home`** (its own home-page `sections`, validated like the real home). With `home`, the build adds a hidden page `/zs-dir-<k>/` (local only, never pushed, outside QA) and `zs preview` shoots it, so the directions differ in layout, not only colour. After the pick: copy that direction's `home` into the home page's `sections` and its overrides into `design`, then drop `directions` |
 | `form` | `title`, `text`, `button`, `thanks` – the footer lead form |
 | `footer` | `about` (one sentence), `links_title`, optional `ai_images_note` |
 | `header` | `cta_label` (mobile menu button), `topbar` (default true: dark utility bar with hours/email/phone), `topbar_text` (short line: areas + years), `mobile_call` (default true: phone icon in the mobile header; false only when the client asks), `mobile_bar` (phones' fixed action bar after call + WhatsApp, up to 3 more cells in order: `"waze"`, `"email"`, `"instagram"`, `"facebook"`, or `{label, href, icon: calendar\|bag\|pin\|mail\|clock}` for booking / delivery / menu links; 3+ cells become icon-over-label tiles) |
@@ -45,7 +45,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ## design
 
 ```json
-{ "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
+{ "kit": "atelier|magazine|sidebar|panels|bands|quiet|frame|gallery (the page skeleton, pool.md → Style kits)", "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
   "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "motif": "gables (optional: the brand shape as eyebrow mark + roofline above the lead band; for roofers/builders)", "custom_css": "" }
 ```

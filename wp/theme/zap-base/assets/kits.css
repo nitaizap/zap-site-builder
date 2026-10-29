@@ -1,0 +1,110 @@
+/* Style kits (design.kit, body.zs-k-<kit>): each one changes the skeleton of the page, not only its colours:
+   header layout, section heads, container width, image treatment, buttons and footer. The background rhythm of
+   each kit is in engine/sections.py (KITS). Loaded after the presets and the pool, before standards.css, so Zap's
+   QA standards (spacing, text sizes, tap targets) still win. Desktop layouts only where noted: phones keep the
+   tested single-column skeleton. */
+
+/* ---------- atelier: centred logo and menu, centred heads under a hairline, narrow page, framed photos ---------- */
+body.zs-k-atelier { --wrap: 1080px; }
+@media (min-width: 1025px) {
+  body.zs-k-atelier .e-con.zs-header__in { --flex-wrap: wrap; flex-wrap: wrap; --justify-content: center; justify-content: center; row-gap: 0; padding-block: 10px; }
+  body.zs-k-atelier .e-con.zs-header__in > .zs-brand { flex: 0 0 100%; display: flex; justify-content: center; }
+  body.zs-k-atelier .e-con.zs-header__in > .zs-header__nav { margin-inline: 0; }
+  body.zs-k-atelier .e-con.zs-header__in > .zs-header__cta { position: absolute; inset-inline-end: var(--gutter); top: 18px; }
+  body.zs-k-atelier .zs-header { position: sticky; }
+  body.zs-k-atelier .e-con.zs-header__in { position: relative; }
+}
+body.zs-k-atelier .e-con.zs-head { --flex-direction: column; flex-direction: column; --align-items: center; align-items: center; text-align: center; }
+body.zs-k-atelier .zs-head :is(.zs-sec__title, .zs-sec__intro) { text-align: center; margin-inline: auto; max-width: 760px; }
+body.zs-k-atelier .zs-head__main::before { content: ""; display: block; width: 48px; height: 2px; margin: 0 auto 20px; background: var(--c-ink); }
+body.zs-k-atelier .zs-sec:not(.zs-hero) img { border-radius: 2px; }
+body.zs-k-atelier :is(.zs-split, .zs-features) .elementor-widget-image img { outline: 1px solid var(--c-ink); outline-offset: 10px; }
+body.zs-k-atelier .zs-b .elementor-button { border-radius: 999px; }
+body.zs-k-atelier .zs-card { box-shadow: none; }
+@media (min-width: 768px) {
+  body.zs-k-atelier .e-con.zs-footer__grid { --flex-direction: column; flex-direction: column; --align-items: center; align-items: center; text-align: center; }
+  body.zs-k-atelier .zs-footer__col { align-items: center; text-align: center; }
+}
+
+/* ---------- magazine: wide grid, heads on a heavy rule, big titles, square photos, wordmark footer ---------- */
+body.zs-k-magazine { --wrap: 1320px; --fs-h2: clamp(2.1rem, 1.2rem + 3vw, 3.9rem); }
+@media (min-width: 1025px) {
+  body.zs-k-magazine .e-con.zs-header__in > .zs-header__nav { margin-inline-start: 40px; margin-inline-end: auto; }
+}
+body.zs-k-magazine .zs-sec:not(.zs-hero) > .e-con-inner > .e-con.zs-head { border-top: 3px solid currentColor; padding-top: 22px; color: var(--c-ink); }
+body.zs-k-magazine .zs-sec__title .elementor-heading-title { letter-spacing: -.02em; line-height: 1.02; }
+body.zs-k-magazine .zs-sec:not(.zs-hero) img, body.zs-k-magazine .zs-card, body.zs-k-magazine .zs-card__img { border-radius: 0; }
+body.zs-k-magazine .zs-b .elementor-button { border-radius: 0; }
+body.zs-k-magazine .zs-card { box-shadow: none; }
+body.zs-k-magazine .zs-footer__mark { display: block; font-family: var(--f-head); font-weight: 800; font-size: clamp(2.6rem, 10vw, 10rem); line-height: .85; letter-spacing: -.04em;
+  white-space: nowrap; overflow: hidden; text-align: center; color: var(--c-dark-ink); padding-top: 12px; user-select: none; }
+body.zs-k-magazine.zs-tone-light .zs-footer__mark { color: var(--c-ink); -webkit-text-stroke: 0; }
+
+/* ---------- sidebar: the section title sits in a sticky side column, the content beside it ---------- */
+@media (min-width: 1100px) {
+  body.zs-k-sidebar { --wrap: 1280px; }
+  body.zs-k-sidebar .e-con.zs-sec:not(.zs-hero, .zs-cta, .zs-tiles, .zs-marquee, .zs-trust, .zs-leadbar, .zs-carousel, .zs-road):has(> .e-con-inner > .zs-head) > .e-con-inner {
+    display: grid !important; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: clamp(40px, 5vw, 88px); align-items: start; }
+  body.zs-k-sidebar .e-con.zs-sec:has(> .e-con-inner > .zs-head) > .e-con-inner > .e-con.zs-head {
+    grid-column: 1; grid-row: 1 / span 6; position: sticky; top: 120px; --flex-direction: column; flex-direction: column; --align-items: flex-start; align-items: flex-start; }
+  body.zs-k-sidebar .e-con.zs-sec:has(> .e-con-inner > .zs-head) > .e-con-inner > :not(.zs-head) { grid-column: 2; margin-top: 0; }
+  body.zs-k-sidebar .e-con.zs-sec:has(> .e-con-inner > .zs-head) > .e-con-inner > :not(.zs-head) ~ :not(.zs-head) { margin-top: 32px; }
+  body.zs-k-sidebar .zs-head .zs-sec__intro { max-width: none; margin-top: 8px; }
+  body.zs-k-sidebar .zs-head__main { border-inline-start: 3px solid var(--c-primary); padding-inline-start: 18px; }
+}
+body.zs-k-sidebar .zs-card { box-shadow: none; border: 1px solid var(--c-line); }
+
+/* ---------- panels: every section a rounded panel floating on a tinted page, pill-shaped header ---------- */
+@media (min-width: 768px) {
+  /* the tint shows only between the panels of an Elementor page; every section keeps its own ground */
+  body.zs-k-panels.zs-built { background: var(--c-surface); }
+  body.zs-k-panels.zs-built .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent, .zs-trust, .zs-cta, .zs-marquee, .zs-hero, .zs-tiles, .zs-leadbar, .zs-road) { background-color: var(--c-bg); }
+  body.zs-k-panels .e-con.zs-sec:not(.zs-hero) { width: calc(100% - 48px); max-width: 1400px; margin: 0 auto 18px; border-radius: var(--r-lg); overflow: hidden; }
+  body.zs-k-panels .e-con.zs-sec.zs-hero { width: calc(100% - 48px); max-width: 1400px; margin: 18px auto; border-radius: var(--r-lg); overflow: hidden; }
+  body.zs-k-panels .zs-header { width: calc(100% - 48px); max-width: 1400px; margin: 14px auto 0; border-radius: 999px; background: var(--c-bg); box-shadow: 0 10px 30px -22px rgb(0 0 0 / .45); }
+  body.zs-k-panels .zs-sec--joined { --padding-top: var(--sec-y); }
+  body.zs-k-panels .zs-footer { width: calc(100% - 48px); max-width: 1400px; margin: 0 auto 18px; border-radius: var(--r-lg); }
+}
+body.zs-k-panels .e-con.zs-sec.zs-bg-surface { background: var(--c-bg); }
+body.zs-k-panels .zs-card { box-shadow: none; background: var(--c-surface); }
+
+/* ---------- bands: full colour bands, heavy heads, block buttons ---------- */
+body.zs-k-bands { --w-head: 800; --fs-h2: clamp(2rem, 1.2rem + 2.8vw, 3.6rem); }
+body.zs-k-bands .zs-sec__title .elementor-heading-title { font-weight: 800; letter-spacing: -.015em; line-height: 1.05; }
+body.zs-k-bands .zs-b .elementor-button { border-radius: 0; padding-inline: 34px; }
+body.zs-k-bands .zs-sec:not(.zs-hero) img { border-radius: 0; }
+body.zs-k-bands .zs-card { border-radius: 0; box-shadow: none; }
+body.zs-k-bands .e-con.zs-head { border-bottom: 0; }
+body.zs-k-bands .zs-bg-primary .zs-card { background: rgb(255 255 255 / .06); }
+
+/* ---------- quiet: no grounds, hairlines between sections, small heads, narrow page ---------- */
+body.zs-k-quiet { --wrap: 980px; --fs-h2: clamp(1.55rem, 1.1rem + 1.3vw, 2.2rem); --shadow: none; --shadow-sm: none; --shadow-lg: none; }
+body.zs-k-quiet .e-con.zs-sec:not(.zs-hero) + .e-con.zs-sec:not(.zs-hero, .zs-tiles, .zs-cta) > .e-con-inner { border-top: 1px solid var(--c-line); padding-top: var(--sec-y); }
+body.zs-k-quiet .zs-sec--joined { --padding-top: 0px; }
+body.zs-k-quiet .zs-card { box-shadow: none; border: 1px solid var(--c-line); }
+body.zs-k-quiet .zs-sec__title .elementor-heading-title { font-weight: 600; }
+body.zs-k-quiet .zs-header { border-bottom: 1px solid var(--c-line); }
+
+/* ---------- frame: the page inside a brand-colour frame, heads with a side bar, photos in an offset frame ---------- */
+@media (min-width: 1025px) {
+  /* two fixed brand-colour strips at the page edges (decorative, under every control) */
+  body.zs-k-frame::before, body.zs-k-frame::after { content: ""; position: fixed; top: 0; bottom: 0; width: 12px; background: var(--c-primary); z-index: 90; pointer-events: none; }
+  body.zs-k-frame::before { left: 0; }
+  body.zs-k-frame::after { right: 0; }
+  body.zs-k-frame .zs-header { border-top: 6px solid var(--c-primary); }
+}
+body.zs-k-frame .zs-head__main { border-inline-start: 5px solid var(--c-primary); padding-inline-start: 18px; }
+body.zs-k-frame :is(.zs-split, .zs-features, .zs-faq) .elementor-widget-image img { outline: 1px solid var(--c-primary); outline-offset: 12px; }
+body.zs-k-frame .zs-card { box-shadow: none; }
+
+/* ---------- gallery: photo-led, full-bleed grids with hairline gaps, centred heads, menu in the middle ---------- */
+@media (min-width: 1025px) {
+  body.zs-k-gallery .e-con.zs-header__in > .zs-header__nav { margin-inline: auto; }
+}
+body.zs-k-gallery .e-con.zs-sec:is(.zs-gallery, .zs-cards) { --content-width: 100%; --padding-left: 0px; --padding-right: 0px; }
+body.zs-k-gallery .e-con.zs-sec:is(.zs-gallery, .zs-cards) .e-con.zs-head { padding-inline: var(--gutter); }
+body.zs-k-gallery .e-con.zs-sec:is(.zs-gallery, .zs-cards) :is(.zs-grid, .zs-gallery__grid, .elementor-image-gallery .gallery) { gap: 4px; --gap: 4px; }
+body.zs-k-gallery .zs-sec:not(.zs-hero) img, body.zs-k-gallery .zs-card, body.zs-k-gallery .zs-card__img { border-radius: 0; }
+body.zs-k-gallery .e-con.zs-head { --flex-direction: column; flex-direction: column; --align-items: center; align-items: center; text-align: center; }
+body.zs-k-gallery .zs-head :is(.zs-sec__title, .zs-sec__intro) { text-align: center; }
+body.zs-k-gallery .zs-card { box-shadow: none; }
