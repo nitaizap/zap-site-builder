@@ -63,6 +63,39 @@ def recent(slug):
     return [(o, k, a) for o, (t, k, a) in sorted(by.items(), key=lambda x: -x[1][0])[:RECENT]]
 
 
+def known(slug):
+    """Every other client's measured layout: fingerprints/<slug>.json on this checkout (the registry, sites on any
+    branch) overlaid by sites/<slug>/fingerprint.json on each site/* branch (newer). -> {slug: fingerprint}"""
+    from fingerprint import load
+    out = {}
+    for f in sorted((ROOT / "fingerprints").glob("*.json")):
+        if f.stem != slug:
+            fp = load(f.read_text(encoding="utf-8"))
+            if fp:
+                out[f.stem] = fp
+    for other, _d, fp in _others(slug, files=True):
+        if fp and "palette" in fp:
+            out[other] = fp
+    return out
+
+
+def check_measured(slug, fps):
+    """{name: fingerprint} of this site (home or gate directions) vs every other client -> ERROR/WARN lines."""
+    from fingerprint import CLOSE, TOO_CLOSE, similarity
+    out = []
+    if slug == "sample":   # the engine test site (examples/sample-plumber) is the engine's plain default, not a client
+        return out
+    for other, ofp in known(slug).items():
+        for name, fp in fps.items():
+            v = similarity(fp, ofp)
+            if v >= TOO_CLOSE:
+                out.append(f"ERROR {name} looks {v:.0%} like '{other}' (measured: palette, furniture, components, layout). Change "
+                           f"what the visitor sees first: the palette, the kit, the hero and the home's components (references/pool.md)")
+            elif v >= CLOSE:
+                out.append(f"WARN  {name} is {v:.0%} like '{other}' (measured)")
+    return out
+
+
 def compare(slug, d, src=None):
     """-> list of ERROR/WARN lines. The measured layout (fingerprint.json from zs qa, preview/fingerprints.json
     from zs preview) decides: ERROR when a home reads as another client's. Names of sections only warn."""
@@ -86,21 +119,11 @@ def compare(slug, d, src=None):
                 out.append(f"ERROR {name}: {lever} '{dz[lever]}' was used by {', '.join(hit)} (one of the last {RECENT} sites): pick another")
     if src is not None and not mine:
         out.append("WARN  no measured layout yet: run zs qa (or zs preview at the gate) first, then zs pool")
-    unmeasured = []
-    for other, od, ofp in _others(slug, files=True):
+    out += check_measured(slug, mine)
+    for other, od in _others(slug):
         if other in seen:
             continue
         seen.add(other)
-        if ofp:
-            for name, fp in mine.items():
-                v = similarity(fp, ofp)
-                if v >= TOO_CLOSE:
-                    out.append(f"ERROR {name} looks {v:.0%} like '{other}' (measured layout): change the kit, the hero or the "
-                               f"home's section order (references/pool.md → Style kits, Home archetypes)")
-                elif v >= CLOSE:
-                    out.append(f"WARN  {name} is {v:.0%} like '{other}' (measured layout)")
-        else:
-            unmeasured.append(other)
         o = recipe(od)
         sim = SequenceMatcher(None, me["home"], o["home"]).ratio()
         same = sum(a == b for a, b in zip(me["levers"], o["levers"]))
@@ -110,6 +133,4 @@ def compare(slug, d, src=None):
         if sim >= .75 and same >= 3:
             out.append(f"WARN  recipe too close to '{other}': home {sim:.0%} alike, {same}/5 design levers equal "
                        f"({', '.join(map(str, o['levers']))}). Swap variants or a lever (references/pool.md)")
-    if unmeasured:
-        out.append(f"WARN  not measured yet (no fingerprint.json on their branch; their next zs qa adds it): {', '.join(unmeasured)}")
     return out

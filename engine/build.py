@@ -138,6 +138,9 @@ def build(site, only=None):
     errors = [p for p in problems if p.startswith("ERROR")]
     for p in problems:
         print(p)
+    if errors and os.environ.get("ZS_MEASURE_ONLY") == "1":   # zs registry: measure an old site built before newer rules
+        print(f"ZS_MEASURE_ONLY: building despite {len(errors)} error(s), for measurement only")
+        errors = []
     if errors:
         raise SystemExit(f"site.json has {len(errors)} error(s); fix them and build again.")
 
