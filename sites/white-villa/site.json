@@ -48,7 +48,7 @@
   },
   "fonts": {
    "heading": "Miriam Libre",
-   "body": "Miriam Libre"
+   "body": "Assistant"
   },
   "custom_css": "\n/* white-villa: the logo leads the home hero (client note 9): big logo, smaller statement */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(15vw,19svh,230px);height:auto}\n@media (max-width:767px){body .e-con.zs-hero--home .zs-hero__logo img{width:min(44vw,170px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}"
  },
@@ -226,6 +226,10 @@
  },
  "nav": [
   {
+   "label": "דף הבית",
+   "href": "page:"
+  },
+  {
    "label": "אודות",
    "href": "page:אודות"
   },
@@ -251,6 +255,10 @@
   }
  ],
  "footer_nav": [
+  {
+   "label": "דף הבית",
+   "href": "page:"
+  },
   {
    "label": "אודות",
    "href": "page:אודות"
@@ -480,14 +488,6 @@
      "title": "וילה לנופש",
      "lead": "וילה לנופש בשרון: חופשה פרטית ובלעדית לכל המשפחה או החבר׳ה, על כ־3.5 דונם של טבע במושב ינוב.",
      "image": "villapanorama",
-     "cta": {
-      "label": "להזמנת הווילה",
-      "href": "tel"
-     },
-     "cta2": {
-      "label": "בדיקת תאריך פנוי",
-      "href": "#leave-details"
-     },
      "variant": "inset"
     },
     {
@@ -574,14 +574,6 @@
      "title": "מסיבות ואירועים",
      "lead": "מתחם לאירועים פרטיים בשרון: עד 150 אורחים במתחם פרטי וירוק עם בריכה ומדשאות.",
      "image": "palmpergola",
-     "cta": {
-      "label": "לתיאום אירוע",
-      "href": "tel"
-     },
-     "cta2": {
-      "label": "השאירו פרטים",
-      "href": "#leave-details"
-     },
      "variant": "inset"
     },
     {
@@ -603,7 +595,7 @@
       },
       {
        "title": "חינות",
-       "icon": "sparkle"
+       "icon": "henna"
       },
       {
        "title": "שבתות חתן",
@@ -694,13 +686,11 @@
      "images": [
       "poolpanorama",
       "slidepool",
-      "villapanorama",
       "villagarden",
       "playground",
       "playgroundswings",
       "roofterrace",
       "livingroom",
-      "livingtv",
       "dining",
       "staircase",
       "kitchenisland",

@@ -75,6 +75,8 @@ function zs_task_media($p) {
             update_post_meta($id, '_zs_hash', $it['hash']);
         }
         update_post_meta($id, '_wp_attachment_image_alt', wp_slash($it['alt']));
+        // the media title is what Elementor's lightbox shows as the caption: the Hebrew description, never the file name
+        if ($it['alt'] !== '' && get_the_title($id) !== $it['alt']) wp_update_post(['ID' => $id, 'post_title' => wp_slash($it['alt'])]);
         if (!empty($it['ai'])) {
             wp_update_post(['ID' => $id, 'post_content' => 'תמונה שנוצרה עבור האתר (AI) — אינה מתעדת את העסק בפועל.']);
         }

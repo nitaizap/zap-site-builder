@@ -52,7 +52,7 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
   </div>
 </footer>
 <?php endif; ?>
-<?php if ($tel || $wa) : ?>
+<?php if (($tel || $wa) && zs_opt('header.call_bar', false)) : /* the sticky call bar is opt-in (Zap QA rejects it by default) */ ?>
 <div class="zs-fab" aria-label="יצירת קשר מהירה">
   <?php if ($tel) : ?><a class="zs-fab__call" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span>התקשרו</span></a><?php endif; ?>
   <?php if ($wa) : ?><a class="zs-fab__wa" href="<?php echo esc_url(zs_wa_href($wa, $wa_text)); ?>" target="_blank" rel="noopener"><?php echo zs_icon('whatsapp'); ?><span>וואטסאפ</span></a><?php endif; ?>
