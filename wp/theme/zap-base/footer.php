@@ -52,10 +52,14 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
   </div>
 </footer>
 <?php endif; ?>
-<?php $extra = zs_mobile_bar_items(); $cells = (int) (bool) $tel + (int) (bool) $wa + count($extra); ?>
+<?php // the call bar (phone + extra buttons) is opt-in: header.mobile_bar or header.call_bar (Zap QA rejected it by
+      // default); a WhatsApp number always gets its floating button (Zap SEO checklist 12)
+      $bar = zs_opt('header.mobile_bar') || zs_opt('header.call_bar', false);
+      $extra = $bar ? zs_mobile_bar_items() : []; $tel_cell = $tel && $bar;
+      $cells = (int) $tel_cell + (int) (bool) $wa + count($extra); ?>
 <?php if ($cells) : ?>
 <div class="zs-fab zs-fab--n<?php echo $cells; ?>" aria-label="יצירת קשר מהירה">
-  <?php if ($tel) : ?><a class="zs-fab__call" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span>התקשרו</span></a><?php endif; ?>
+  <?php if ($tel_cell) : ?><a class="zs-fab__call" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span>התקשרו</span></a><?php endif; ?>
   <?php if ($wa) : ?><a class="zs-fab__wa" href="<?php echo esc_url(zs_wa_href($wa, $wa_text)); ?>" target="_blank" rel="noopener"><?php echo zs_icon('whatsapp'); ?><span>וואטסאפ</span></a><?php endif; ?>
   <?php foreach ($extra as [$label, $href, $icon, $ext]) : ?><a class="zs-fab__x" href="<?php echo esc_url($href); ?>"<?php echo $ext ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo zs_icon($icon); ?><span><?php echo esc_html($label); ?></span></a><?php endforeach; ?>
 </div>

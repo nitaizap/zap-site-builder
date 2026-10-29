@@ -36,7 +36,7 @@ before the gate and before delivery.
 - A BRIEF-CHECK ✅ means seen on the rendered page, never "it is in site.json" (a Facebook link once lived
   only in schema).
 - QA the inner pages on mobile, not only the home page (`zs shots <slug> all --mobile`).
-- Zap QA reviewers check a fixed list; it is in `qa-rules.md` / `zap-qa.md` and mostly enforced by the
+- Zap QA reviewers check a fixed list; it is in `qa-rules.md` and mostly enforced by the
   validator, `zs qa` and `zs seo`. Go through the rest before delivery.
 - The pushed site renders differently from the local build (font icons, caches, host plugins, third-party
   widgets such as the Dapei Zahav reviews): look at `zs shots --site` every time.

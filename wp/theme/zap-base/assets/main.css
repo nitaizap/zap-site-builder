@@ -1487,7 +1487,7 @@ body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
 /* header logo: 56px desktop / 48px phones by default (QA fails it under 46 / 40); a logo with a tagline needs a version without it */
 /* phones: the accessibility button sits just under the header on the start edge (over the hero photo band), never on the H1 or the buttons */
 /* (its box is ~300px tall with the closed panel inside and the button at its top, so it is placed by its top) */
-@media (max-width: 767px) { html body #pojo-a11y-toolbar { top: 76px !important; bottom: auto !important; } }
+/* (phones: the accessibility button sits in the header bar, standards.css) */
 /* "מספר מקשר" link + dialog */
 .zs-vnote-btn { background: none; border: 0; padding: 0 4px; font: inherit; font-size: 1rem; text-decoration: underline; color: inherit; cursor: pointer; opacity: .9; }
 .zs-vnote { max-width: min(92vw, 520px); border: 0; border-radius: var(--r-lg, 14px); padding: 28px 28px 22px; color: var(--c-text); box-shadow: 0 30px 80px rgb(0 0 0 / .3); }
@@ -1510,14 +1510,14 @@ body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
 }
 /* phones: hero text keeps clear of the accessibility button's column (it sits on the left edge under the header) */
 @media (max-width: 767px) {
-  body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-left) .e-con.zs-hero__text { padding-left: 50px; }
-  body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-right) .e-con.zs-hero__text { padding-right: 50px; }
+
+
 }
 
 /* phones: the accessibility toolbar (Ally / pojo) never sits on the header's menu button; it parks on the
    start edge above the bottom call bar (where the Zap hosts already put it) */
 @media (max-width: 767px) {
-  body #pojo-a11y-toolbar { top: auto !important; bottom: 150px !important; }
+  /* see standards.css: accessibility button in the header bar on phones */
 }
 
 /* motif "rings": a double ring before the eyebrow, from a round logo (design.motif: "rings") */
