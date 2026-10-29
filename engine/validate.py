@@ -150,11 +150,11 @@ def validate(d, site_dir):
                 E(f"{name}: FAQ needs at least 3 real questions (has {len(s.get('items', []))})")
             for it in s.get("items", []) if isinstance(s.get("items"), list) else []:
                 h = it.get("href", "") if isinstance(it, dict) else ""
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: link to missing page '{h}'")
             for bt in ("cta", "cta2", "more"):
                 h = (s.get(bt) or {}).get("href", "")
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: button links to missing page '{h}'")
         if p.get("sections") and not any(s.get("type") == "hero" for s in p["sections"]):
             E(f"{name}: page has sections but no hero (the hero carries the only H1)")
@@ -200,7 +200,7 @@ def validate(d, site_dir):
     for item in d.get("nav", []) + d.get("footer_nav", []):
         for it in [item] + item.get("children", []):
             h = it.get("href", "")
-            if h.startswith("page:") and h[5:] not in keys:
+            if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                 E(f"menu item '{it.get('label')}' links to missing page '{h}'")
 
     imgs = d.get("images", {})
@@ -255,6 +255,14 @@ def validate(d, site_dir):
                 E(f"{name}: basic package hero is one still photo (no video, no slider)")
             if ty == "tiles" and any(not it.get("image") for it in s.get("items", [])):
                 E(f"{name}: every tiles item needs an image")
+            if ty == "pricelist" and not (s.get("items") or any(g.get("items") for g in s.get("groups", []))):
+                E(f"{name}: pricelist needs items (or groups with items)")
+            if ty in ("facts", "team") and not s.get("items"):
+                E(f"{name}: {ty} needs items")
+            if ty == "facts" and any(not (it.get("label") and str(it.get("value", "")).strip()) for it in s.get("items", [])):
+                E(f"{name}: every facts item needs a label and a value")
+            if ty == "hero" and s.get("form") and p.get("type") == "contact":
+                E(f"{name}: no hero form on the contact page: it has its own full form (one form per page, Zap QA)")
             if v is None:
                 continue
             if ty in SECTIONS and v not in VARIANTS.get(ty, set()):

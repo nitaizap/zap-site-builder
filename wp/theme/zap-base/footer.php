@@ -52,10 +52,12 @@ $is_contact = is_page() && get_post_meta(get_the_ID(), '_zap_page_type', true) =
   </div>
 </footer>
 <?php endif; ?>
-<?php if ($tel || $wa) : ?>
-<div class="zs-fab" aria-label="יצירת קשר מהירה">
+<?php $extra = zs_mobile_bar_items(); $cells = (int) (bool) $tel + (int) (bool) $wa + count($extra); ?>
+<?php if ($cells) : ?>
+<div class="zs-fab zs-fab--n<?php echo $cells; ?>" aria-label="יצירת קשר מהירה">
   <?php if ($tel) : ?><a class="zs-fab__call" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo zs_icon('phone'); ?><span>התקשרו</span></a><?php endif; ?>
   <?php if ($wa) : ?><a class="zs-fab__wa" href="<?php echo esc_url(zs_wa_href($wa, $wa_text)); ?>" target="_blank" rel="noopener"><?php echo zs_icon('whatsapp'); ?><span>וואטסאפ</span></a><?php endif; ?>
+  <?php foreach ($extra as [$label, $href, $icon, $ext]) : ?><a class="zs-fab__x" href="<?php echo esc_url($href); ?>"<?php echo $ext ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo zs_icon($icon); ?><span><?php echo esc_html($label); ?></span></a><?php endforeach; ?>
 </div>
 <?php endif; ?>
 <?php wp_footer(); ?>
