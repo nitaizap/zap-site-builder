@@ -105,7 +105,10 @@ def validate(d, site_dir):
                 if kw in kw_owner:
                     E(f"keyword cannibalisation: '{kw}' is owned by both {kw_owner[kw]} and {name}")
                 kw_owner[kw] = name
-        hero_t = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
+        hero_s = next((s for s in p.get("sections", []) if s.get("type") == "hero"), None)
+        if hero_s and p.get("type") != "home" and (hero_s.get("cta") or hero_s.get("cta2")):
+            E(f"{name}: inner-page hero has buttons; Zap QA: buttons only in the home hero (the page and the lead form carry the action)")
+        hero_t = (hero_s or {}).get("title", "")
         h1_plain = hero_t.replace("*", "").replace(chr(10), " ").strip()
         if p.get("type") == "home" and b.get("name") and h1_plain != b["name"]:
             E(f"home: the H1 is the client's name only ('{b['name']}', Zap checklist), not '{h1_plain}'; the keyword goes in the lead and the first H2")
@@ -135,6 +138,9 @@ def validate(d, site_dir):
         if secs and secs[-1].get("type") == "cta" and p.get("type") not in ("contact",):
             E(f"{name}: page ends with a cta section and the lead form follows it: two calls to action in a row (Zap QA); drop the cta or move it up")
         for s_ in secs:
+            gk = s_.get("images") or []
+            if len(gk) != len(set(gk)):
+                E(f"{name}: {s_.get('type')} repeats a photo: {sorted({k for k in gk if gk.count(k) > 1})}")
             icons = [it.get("icon") for it in s_.get("items", []) if isinstance(it, dict) and it.get("icon")]
             dup = sorted({i for i in icons if icons.count(i) > 1})
             if dup:
@@ -191,8 +197,8 @@ def validate(d, site_dir):
     foot_order = [i.get("href") for i in d.get("footer_nav", []) if i.get("href") in nav_order]
     if foot_order != [h for h in nav_order if h in foot_order]:
         E("footer_nav lists the pages in a different order from nav (Zap QA: same order in both)")
-    if any(i.get("href") == "page:" for i in d.get("nav", [])):
-        W("nav has a 'home' item; Zap QA: the logo links home, the menu does not")
+    if d.get("nav") and d["nav"][0].get("href") != "page:":
+        E("nav must start with a 'דף הבית' item (Zap QA round 2: home is the first menu item, desktop and mobile)")
     for c in d.get("categories", []):
         if c.get("description") and not c["description"].rstrip().endswith((".", "!", "?")):
             E(f"category '{c.get('slug')}' description is cut mid-sentence (it shows on the blog page): end it with a full sentence")
@@ -203,7 +209,27 @@ def validate(d, site_dir):
             if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                 E(f"menu item '{it.get('label')}' links to missing page '{h}'")
 
+    body_font = ((d.get("design") or {}).get("fonts") or {}).get("body", "")
+    if body_font in ("Miriam Libre", "Frank Ruhl Libre", "Noto Serif Hebrew", "David Libre", "Bellefair", "Bona Nova",
+                     "Suez One", "Secular One", "Karantina", "Fredoka", "Varela Round"):
+        E(f"design.fonts.body '{body_font}' is a display/serif face; Zap QA: body text and forms in a readable sans "
+          "(Assistant, Heebo, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew, Alef); keep the character font for headings")
     imgs = d.get("images", {})
+    try:
+        from PIL import Image
+        hashes = {}
+        for k, v in imgs.items():
+            f = (site_dir / v.get("src", "")) if site_dir else None
+            if f and f.exists() and f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+                im = Image.open(f).convert("L").resize((9, 8))
+                px = list(im.getdata())
+                hashes[k] = sum(1 << i for i in range(64) if px[(i // 8) * 9 + i % 8] > px[(i // 8) * 9 + i % 8 + 1])
+        ks = list(hashes)
+        near = [(a, c) for i, a in enumerate(ks) for c in ks[i + 1:] if bin(hashes[a] ^ hashes[c]).count("1") <= 10]
+        for a, c in near:
+            W(f"images '{a}' and '{c}' look like the same shot; Zap QA flags the same view twice in one gallery: keep one")
+    except Exception:
+        pass
     used = set(re.findall(r'"(?:image|featured_image)":\s*"([^"]+)"', json.dumps(d, ensure_ascii=False)))
     for lst in re.findall(r'"images":\s*\[([^\]]*)\]', json.dumps(d, ensure_ascii=False)):
         used |= set(re.findall(r'"([^"]+)"', lst))

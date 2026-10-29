@@ -75,6 +75,8 @@ function zs_task_media($p) {
             update_post_meta($id, '_zs_hash', $it['hash']);
         }
         update_post_meta($id, '_wp_attachment_image_alt', wp_slash($it['alt']));
+        // the media title is what Elementor's lightbox shows as the caption: the Hebrew description, never the file name
+        if ($it['alt'] !== '' && get_the_title($id) !== $it['alt']) wp_update_post(['ID' => $id, 'post_title' => wp_slash($it['alt'])]);
         if (!empty($it['ai'])) {
             wp_update_post(['ID' => $id, 'post_content' => 'תמונה שנוצרה עבור האתר (AI) — אינה מתעדת את העסק בפועל.']);
         }
@@ -367,13 +369,20 @@ function zs_task_finish($p) {
 function zs_task_templates($p) {
     $pro = defined('ELEMENTOR_PRO_VERSION');
     $out = [];
-    foreach (['header', 'footer'] as $slot) {
+    // header/footer always; with Elementor Pro also the blog's Single post + Archive templates (Zap QA: system pages
+    // are Theme Builder templates, editable in Elementor, not theme PHP). Without Pro the theme's PHP renders them.
+    $slots = $pro ? ['header', 'footer', 'single-post', 'archive'] : ['header', 'footer'];
+    $conds = ['header' => ['include/general'], 'footer' => ['include/general'],
+              'single-post' => ['include/singular/post'], 'archive' => ['include/archive']];
+    $titles = ['header' => 'Header', 'footer' => 'Footer', 'single-post' => 'פוסט בבלוג', 'archive' => 'בלוג וקטגוריות'];
+    foreach ($slots as $slot) {
+        if (empty($p[$slot])) continue;
         $type = $pro ? $slot : 'section';
         $id = zs_find('elementor_library', "__tpl_$slot");
         if ($id && get_post_meta($id, '_elementor_template_type', true) !== $type) { wp_delete_post($id, true); $id = 0; }
         if (!$id) {
             $doc = \Elementor\Plugin::$instance->documents->create($type, [
-                'post_title' => ($slot === 'header' ? 'Header' : 'Footer') . ' — ' . $p['name'], 'post_status' => 'publish']);
+                'post_title' => $titles[$slot] . ': ' . $p['name'], 'post_status' => 'publish']);
             if (is_wp_error($doc) || !$doc) { fwrite(STDERR, "template create failed: $slot\n"); continue; }
             $id = $doc->get_main_id();
             update_post_meta($id, '_zs_key', "__tpl_$slot");
@@ -381,7 +390,7 @@ function zs_task_templates($p) {
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
         $doc->save(['elements' => $p[$slot]]);
         if ($pro) {
-            update_post_meta($id, '_elementor_conditions', ['include/general']);
+            update_post_meta($id, '_elementor_conditions', $conds[$slot]);
         }
         update_option("zs_tpl_$slot", $id);
         $out[] = "$slot=$id";

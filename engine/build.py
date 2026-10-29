@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 from images import prepare_image
-from sections import Ctx, footer_template, header_template, render_page
+from sections import Ctx, archive_template, footer_template, header_template, post_template, render_page
 from validate import validate
 
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
@@ -152,6 +152,7 @@ def build(site, only=None):
             "seo": {"title": f"{b['name']} | מדיניות פרטיות",
                     "description": _privacy_desc(b["name"])},
             "content": privacy_html(data),
+            "sections": [{"type": "hero", "title": "מדיניות פרטיות"}, {"type": "prose", "html": privacy_html(data), "bg": "plain"}],
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"
@@ -168,6 +169,7 @@ def build(site, only=None):
             "key": "הצהרת-נגישות", "type": "privacy", "legal": "accessibility", "title": "הצהרת נגישות", "noindex": False,
             "seo": {"title": f"{b['name']} | הצהרת נגישות", "description": d[:160]},
             "content": accessibility_html(data),
+            "sections": [{"type": "hero", "title": "הצהרת נגישות"}, {"type": "prose", "html": accessibility_html(data), "bg": "plain"}],
         })
         std["accessibility_url"] = "/הצהרת-נגישות/"
         data["_paths"]["הצהרת-נגישות"] = "/הצהרת-נגישות/"
@@ -258,6 +260,7 @@ def build(site, only=None):
     # 3b. header + footer as Elementor templates (Theme Builder header/footer where Elementor Pro runs)
     tctx = Ctx("__tpl", media, data)
     log.append(run_php(site, "templates", {"header": header_template(tctx), "footer": footer_template(tctx),
+                                           "single-post": post_template(tctx), "archive": archive_template(tctx),
                                            "name": data["business"]["name"]}))
 
     # 4. blog posts

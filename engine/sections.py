@@ -708,6 +708,36 @@ def header_template(ctx):
     return els
 
 
+def post_template(ctx):
+    """Theme Builder 'single-post' template (Elementor Pro): page hero with the post's title as H1 and its byline,
+    the featured image, the content, then FAQ / related page / author. Edited in Elementor like any page."""
+    hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
+        C(ctx, "zs-hero__text", [
+            W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
+            W(ctx, "shortcode", {"shortcode": "[zap_post_title]"}, "zs-hero__title"),
+        ])], tag="section", inner=False, boxed=True)
+    body = C(ctx, "zs-sec zs-post-body", [
+        C(ctx, "zs-wrap zs-wrap--narrow", [
+            W(ctx, "shortcode", {"shortcode": "[zap_post_image]"}, "zs-post__hero"),
+            W(ctx, "theme-post-content", {}, "zs-prose"),
+            W(ctx, "shortcode", {"shortcode": "[zap_post_extras]"}, "zs-post__extras"),
+        ])], tag="section", inner=False, boxed=True)
+    return [hero, body]
+
+
+def archive_template(ctx):
+    """Theme Builder 'archive' template (Elementor Pro): the blog page, categories and search. Hero with the
+    archive title as H1 and its intro, then the posts as cards."""
+    hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
+        C(ctx, "zs-hero__text", [
+            W(ctx, "shortcode", {"shortcode": "[zap_archive_title]"}, "zs-hero__title"),
+            W(ctx, "shortcode", {"shortcode": "[zap_archive_intro]"}, "zs-hero__lead"),
+        ])], tag="section", inner=False, boxed=True)
+    body = C(ctx, "zs-sec zs-archive-body", [W(ctx, "shortcode", {"shortcode": "[zap_archive_posts]"}, "zs-archive__posts")],
+             tag="section", inner=False, boxed=True)
+    return [hero, body]
+
+
 def footer_template_logo_key(ctx):
     return "__logo_light" if "__logo_light" in ctx.media else "__logo"
 
