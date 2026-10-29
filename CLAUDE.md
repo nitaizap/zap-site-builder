@@ -22,7 +22,7 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
 - No em dashes (—) in any site copy, ever (the validator stops the build).
 - No site may look like another client's. `zs qa`, `zs preview`, `zs push` and `zs package` measure the home page
   (palette, header/footer/form band/FAQ/icons, components, layout) against every client in `fingerprints/` and on
-  `site/*` branches, and stop at 45% alike. Fix it by redesigning (kit, palette, hero, components), never by tuning
+  `site/*` branches, and stop at 40% alike. Fix it by redesigning (kit, palette, hero, components), never by tuning
   the measure. The rules are in `.claude/skills/zap-site/references/pool.md`.
 - Never invent business facts; never mail the real client from staging; never print secrets.
 - Before calling anything done: go through `.claude/skills/zap-site/references/qa-rules.md` (what Zap QA rejects), then `bin/zs qa <slug>` with 0 errors and `bin/zs seo <slug>` (the Zap SEO
