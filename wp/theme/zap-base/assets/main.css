@@ -1605,7 +1605,7 @@ html body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { background-color: var
 .zs-postcard__more:hover, .zs-postcard__more:focus-visible { border-bottom-color: currentColor; gap: 10px; }
 /* Dapei Zahav widget: nothing under 16px either */
 .zs-reviews zap-reviews :is(p, span, a, div, li) { font-size: max(1rem, 16px) !important; }
-.zs-card__text p, .zs-card__text { font-size: 1rem; }
+body .zs-card__text, body .zs-card__text .elementor-widget-container, body .zs-card__text p { font-size: 1rem !important; }
 /* 404 on phones: the search button styled like the site, the three actions in equal widths */
 .zs-404 .search-form { display: flex; gap: 8px; max-width: 520px; margin: 24px auto 0; }
 .zs-404 .search-form label { flex: 1; }
@@ -1624,3 +1624,5 @@ html body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { background-color: var
   .zs-leadband__text, .zs-leadband__text :is(p, .elementor-heading-title), .zs-leadband__h { text-align: center; }
   body .e-con.zs-leadband__text { --align-items: center; align-items: center; }
 }
+.elementor .e-con.zs-cta > .e-con-inner { gap: 22px; }
+.elementor .e-con.zs-cta > .e-con-inner > .e-con, .elementor .e-con.zs-cta > .e-con-inner > .elementor-widget { flex: 0 0 auto !important; height: auto; min-height: 0; }

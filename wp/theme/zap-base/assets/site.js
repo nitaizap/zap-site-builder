@@ -268,8 +268,11 @@
     var nx = sec.querySelector('.zs-car__next'), pv = sec.querySelector('.zs-car__prev');
     // slides line up on the reading start (the right edge in RTL), first photo first
     var rtl = getComputedStyle(tr).direction === 'rtl';
-    function mid(el) { var r = el.getBoundingClientRect(); return rtl ? r.right : r.left; }
-    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0; return rtl ? r.right - pad : r.left + pad; }
+    // phones: the active photo sits in the middle of the screen (Zap QA), so slides are measured by their centres
+    var narrow = window.matchMedia('(max-width: 767px)');
+    function mid(el) { var r = el.getBoundingClientRect(); return narrow.matches ? (r.left + r.right) / 2 : (rtl ? r.right : r.left); }
+    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0;
+      return narrow.matches ? (r.left + r.right) / 2 : (rtl ? r.right - pad : r.left + pad); }
     function upd() {
       var c = edge(), best = 0, bd = 1e9;
       sl.forEach(function (s, i) { var d = Math.abs(mid(s) - c); if (d < bd) { bd = d; best = i; } });
@@ -288,7 +291,7 @@
     if (nx) nx.addEventListener('click', function () { go(cur + 1); });
     if (pv) pv.addEventListener('click', function () { go(cur - 1); });
     sl.forEach(function (s, i) { s.addEventListener('click', function () { if (i !== cur) go(i); }); });
-    setTimeout(upd, 60);
+    setTimeout(function () { if (narrow.matches) tr.scrollBy({ left: mid(sl[0]) - edge(), behavior: 'auto' }); upd(); }, 60);
     if (!motion) return;
     ['pointerenter', 'focusin'].forEach(function (e) { sec.addEventListener(e, function () { hold = true; }); });
     ['pointerleave', 'focusout'].forEach(function (e) { sec.addEventListener(e, function () { hold = false; }); });
