@@ -131,7 +131,6 @@ body .zs-trust.zs-v-giant .zs-trust__list span { color: var(--c-text) !important
 body .zs-trust.zs-v-giant .zs-trust__list li { color: var(--c-text); }
 body .e-con.zs-film__strip { --flex-direction: row !important; flex-direction: row !important; --flex-wrap: nowrap !important; flex-wrap: nowrap !important; align-items: flex-start; }
 body .e-con.zs-film__head { --flex-direction: row !important; flex-direction: row !important; }
-@media (max-width: 767px) { body .e-con.zs-film__head { --flex-direction: column !important; flex-direction: column !important; } }
 .zs-film .elementor-widget-image.zs-film__img { max-width: none !important; }
 body .zs-split.zs-v-interlude > .e-con-inner { align-items: stretch !important; }
 body .zs-split.zs-v-interlude .e-con.zs-split__text { height: 100%; align-self: stretch; }
@@ -142,4 +141,14 @@ body .zs-split.zs-v-interlude .e-con.zs-split__text { height: 100%; align-self: 
   /* the generic phone rule reserves room above image heroes; the stage hero puts its photo in the flow */
   html body:is(.zs-hv-image, .zs-hv-split, .zs-hv-centered) .e-con.zs-hero--home.zs-hero--img.zs-v-stage > .e-con-inner { padding-top: 0 !important; padding-bottom: 0 !important; }
   html body .e-con.zs-hero--home.zs-v-stage { --padding-top: 0px; min-height: 0 !important; }
+}
+
+/* film strip, centred: the head stacks centred over the strip, and on desktop the photos share the page width
+   (inside the margins, never running off one edge). Phones keep the swipeable strip. */
+body .e-con.zs-film__head { --flex-direction: column !important; flex-direction: column !important; align-items: center !important; text-align: center; gap: 10px; }
+.zs-film__head .zs-sec__title .elementor-heading-title, .zs-film__intro, .zs-film__intro p { text-align: center; }
+.zs-film__intro { margin-inline: auto; }
+@media (min-width: 768px) {
+  body .e-con.zs-film__strip { justify-content: center; overflow: visible; padding-inline: max(var(--gutter), calc((100% - var(--wrap)) / 2)); }
+  .zs-film .elementor-widget-image.zs-film__img { flex: 1 1 0 !important; width: auto !important; min-width: 0; }
 }
