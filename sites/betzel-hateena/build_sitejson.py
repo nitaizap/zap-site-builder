@@ -474,8 +474,37 @@ DES_SHADE = {"kit": "shade", "archetype": "tour", "preset": "editorial", "hero":
              "colors": C(primary="#5c2742", primary_ink="#ffffff", accent="#8a5a14", accent_ink="#ffffff", ink="#24161d", text="#3b2c33",
                          muted="#5a4950", bg="#efe6d8", surface="#e6dac7", line="#d3c4ae", dark="#2a1520", dark_ink="#efe6d8"),
              "fonts": {"heading": "Karantina", "body": "Noto Sans Hebrew"}}
-site["design"] = dict(DES_SHADE)
-home["sections"] = HOME_SHADE
+# Round 5: the user found round 4 hard to read (metaphors, ghost words, condensed type). Same look family, but every
+# section says plainly what it shows, readable serif headings, facts first, one action per part.
+HOME_CLEAR = [
+    {**HERO, "variant": "stage", "image": "pool-gable"},
+    {"type": "trust", "variant": "giant", "items": [
+        {"value": "2", "label": "יחידות אירוח"}, {"value": "70 מ\"ר", "label": "כל יחידה"},
+        {"value": "2", "label": "חדרי שינה ביחידה"}, {"value": "ג׳קוזי", "label": "בגינה של כל יחידה"}]},
+    {"type": "collage", "title": "שתי יחידות אירוח מרווחות",
+     "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות, \"טבע\" ו\"חופש\", 70 מ\"ר כל אחת. בכל יחידה שני חדרי שינה עם מיטה זוגית וספה נפתחת, ג׳קוזי, טלוויזיות, מטבחון מאובזר וחדר רחצה מרווח.</p><p>לכל יחידה גינה פרטית עם פינת ישיבה. ארוחת בוקר ומזרנים נוספים בתיאום מראש.</p>",
+     "image": "living-2", "image2": "bed-3", "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "overlay", "title": "בריכה מחוממת עם ג׳טים",
+     "text": "<p>בריכה מחוממת בעונה, עם ג׳טים לעיסוי, דק עץ וערסלי שמש.</p>",
+     "chips": ["מחוממת בעונה", "ג׳טים לעיסוי", "ערסלי שמש"], "image": "pool-sauna"},
+    {"type": "collage", "variant": "stack", "bg": "dark", "title": "סאונה, פרגולה ופינת BBQ",
+     "text": "<p>מטבח חוץ מושקע ופינת BBQ מתחת לפרגולת עץ, עם שולחן גדול לארוחה משותפת. ליד הבריכה סאונה מעץ.</p>",
+     "rows": [{"label": "מטבח חוץ ופינת BBQ", "value": "✓"}, {"label": "סאונה בחצר", "value": "✓"}, {"label": "פלטת שבת ומיחם", "value": "✓"}],
+     "images": ["pergola-bbq", "sauna-in", "sauna-bucket"]},
+    {"type": "split", "variant": "interlude", "title": "חדר הטיפולים ההוליסטי",
+     "text": "<p>עיסויים וטיפולי פנים מתקדמים בתוך המתחם. מתאמים מראש, יחד עם הזמנת החופשה.</p>",
+     "image": "spa-1", "cta": {"label": "לחדר הטיפולים", "href": "page:חדר-הטיפולים"}},
+    {"type": "filmstrip", "title": "גינה פרטית וג׳קוזי לכל יחידה",
+     "text": "לכל יחידה גינה משלה עם פינת ישיבה וג׳קוזי.",
+     "items": [{"image": "jacuzzi-2", "caption": "הג׳קוזי בגינה"}, {"image": "garden-3", "caption": "פינת ישיבה בצל העץ"},
+               {"image": "living-5", "caption": "הסלון נפתח אל הדשא"}, {"image": "wine-pool", "caption": "ערב ליד הבריכה"}],
+     "more": {"label": "לגלריה המלאה", "href": "page:גלריה"}},
+    {"type": "faq", "title": "שאלות נפוצות", "items": FAQ_HOME},
+    POSTS_S,
+]
+DES_CLEAR = {**DES_SHADE, "fonts": {"heading": "Frank Ruhl Libre", "body": "Assistant"}}
+site["design"] = dict(DES_CLEAR)
+home["sections"] = HOME_CLEAR
 
 json.dump(site, open(os.path.join(HERE, "site.json"), "w"), ensure_ascii=False, indent=2)
 print("ok")
