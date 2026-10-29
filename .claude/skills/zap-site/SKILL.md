@@ -30,9 +30,10 @@ before doing the step — every one encodes mistakes already made.
 | before a new site (once) | `references/playbook.md` — lessons paid for on earlier builds, as rules (no site to copy: every site is composed from its own brief and the pool) |
 | intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
-| design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
+| design + gate | `references/portfolio.md` (what Zap's real client sites do per industry: order, CTAs, styles, packages → tier; open `benchmark/portfolio/`), `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
-| SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
+| SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it; `zs seo` also writes the filled sheet `SEO-QA-<slug>.xlsx`) |
+| reviewer audit | `.claude/skills/bestlink-site-qa/SKILL.md`: the QA team's own audit (SEO sheet, sitewide fixes, Hebrew spelling, UX/UI at 1440/1280/390). Run it on the pushed site before you call it done, and fix what it finds |
 | before QA / deliver | `references/qa-rules.md` and `references/zap-qa.md` (everything Zap QA rejects, as rules; most are enforced by `zs build` / `zs qa`, the rest are on you), `references/novamira.md` (push) or `references/delivery.md` (zip) |
 | examples | `examples/sample-plumber/` (minimal, the engine test: schema only, never a look to copy) |
 | engine questions | `engine/sections.py` (what each section renders), `wp/theme/zap-base/assets/main.css` (how it looks) |
@@ -143,6 +144,8 @@ direction, say which and why in one line, and continue without waiting.
    reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
    site.json". Grep site.json for every prohibited word. Format: a table per brief section, one row per line of the brief.
 7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
+   Then audit the site the way the QA team will: `.claude/skills/bestlink-site-qa/SKILL.md` (spelling pass over every
+   page's visible text, the sitewide-fixes list, UX at three widths). Attach `SEO-QA-<slug>.xlsx` to the delivery message.
 8. Go through `references/qa-rules.md` (Zap QA's rejections as rules): the "you" column is not automatic: the
    home H1 is the client's name only, titles `<client> | <page>`, slug = H1 = menu label, no full stop on headings,
    a legible logo without a tiny tagline, a favicon, 3 blog posts from the client's own material, `phone_is_virtual`

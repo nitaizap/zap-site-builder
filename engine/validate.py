@@ -255,6 +255,14 @@ def validate(d, site_dir):
                 E(f"{name}: basic package hero is one still photo (no video, no slider)")
             if ty == "tiles" and any(not it.get("image") for it in s.get("items", [])):
                 E(f"{name}: every tiles item needs an image")
+            if ty == "pricelist" and not (s.get("items") or any(g.get("items") for g in s.get("groups", []))):
+                E(f"{name}: pricelist needs items (or groups with items)")
+            if ty in ("facts", "team") and not s.get("items"):
+                E(f"{name}: {ty} needs items")
+            if ty == "facts" and any(not (it.get("label") and str(it.get("value", "")).strip()) for it in s.get("items", [])):
+                E(f"{name}: every facts item needs a label and a value")
+            if ty == "hero" and s.get("form") and p.get("type") == "contact":
+                E(f"{name}: no hero form on the contact page: it has its own full form (one form per page, Zap QA)")
             if v is None:
                 continue
             if ty in SECTIONS and v not in VARIANTS.get(ty, set()):
