@@ -411,13 +411,37 @@ DES_C = {"kit": "panels", "archetype": "booking", "preset": "clean", "hero": "sp
                      muted="#4a5c5e", bg="#ffffff", surface="#eef5f5", line="#d8e6e6", dark="#0f2427", dark_ink="#eaf4f4"),
          "fonts": {"heading": "Rubik", "body": "Assistant"}}
 
-site["design"] = dict(DES_A)
-home["sections"] = HOME_A
-site["directions"] = {
-    "a": {"label": "סיור במתחם: אטלייה, סגול תאנה ועץ, תמונת פתיחה מלאה", **DES_A, "home": HOME_A},
-    "b": {"label": "התמונות מדברות: גלריה מקצה לקצה, אבן בזלת, סליידר פתיחה", **DES_B, "home": HOME_B},
-    "c": {"label": "קודם מזמינים: פאנלים, כחול בריכה, טופס כבר בפתיחה", **DES_C, "home": HOME_C},
-}
+
+# B, round 3: gallery kit + gallery archetype, redesigned against every previous client (measured):
+# no olive/green, burgundy, red or navy (white-villa, patoccina, mehirut-haor, nick-itum, bella-mare);
+# no cover hero, 8-photo mosaic, icon grid, tiles, split duo or FAQ-beside-a-photo (white-villa's components).
+# Palette from the photos themselves: the dry golden fields of the Golan (drone shots), basalt charcoal, warm wood.
+HOME_B = [
+    {**HERO, "images": ["pool-gable", "living-2", "jacuzzi-2"], "interval": 5, "image": "pool-gable"},
+    {"type": "carousel", "title": "הצצה ליחידות, לבריכה ולמתחם החוץ",
+     "items": [{"image": "living-5", "caption": "סלון וקיר זכוכית אל הגינה"}, {"image": "bed-3", "caption": "חדר השינה"},
+               {"image": "jacuzzi-1", "caption": "ג׳קוזי בגינה הפרטית"}, {"image": "sauna-out", "caption": "הסאונה בחצר"},
+               {"image": "pergola", "caption": "הפרגולה ומטבח החוץ"}, {"image": "bath-3", "caption": "חדר הרחצה"},
+               {"image": "spa-2", "caption": "חדר הטיפולים"}]},
+    {"type": "split", "variant": "frame", "title": "שתי יחידות, גינה פרטית לכל אחת",
+     "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות של 70 מ\"ר, \"טבע\" ו\"חופש\", כל אחת עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p><p>מסביב שדות הגולן הפתוחים, ובתוך המתחם בריכה מחוממת בעונה, סאונה וחדר טיפולים.</p>",
+     "image": "aerial-3", "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "features", "variant": "rows", "title": "כל מה שצריך לחופשה מפנקת בגולן", "items": [FEATURES[i] for i in (0, 1, 2, 3, 4, 6)]},
+    {"type": "gallery", "variant": "strip", "title": "ערבים במתחם", "images": ["wine-pool", "sauna-in", "bbq"],
+     "more": {"label": "לגלריה המלאה", "href": "page:גלריה"}},
+    {**FACTS, "title": "היחידה במספרים"},
+    {"type": "faq", "variant": "dark", "title": "שאלות על החופשה בצל התאנה", "items": FAQ_HOME},
+    POSTS_S,
+]
+DES_B = {"kit": "gallery", "archetype": "gallery", "preset": "editorial", "hero": "image", "header": "light", "motion": "subtle",
+         "radius": 0, "tone": "",
+         "colors": C(primary="#7a4e12", primary_ink="#ffffff", accent="#c99a3e", accent_ink="#1f1a12", ink="#1f1d1a", text="#3a3631",
+                     muted="#5a544b", bg="#ffffff", surface="#f7f2e8", line="#e7dfcf", dark="#26231f", dark_ink="#f7f2e8"),
+         "fonts": {"heading": "David Libre", "body": "Assistant"}}
+
+# The user chose B (29/10/2026). B is the site; the gate directions are gone.
+site["design"] = dict(DES_B)
+home["sections"] = HOME_B
 
 json.dump(site, open(os.path.join(HERE, "site.json"), "w"), ensure_ascii=False, indent=2)
 print("ok")
