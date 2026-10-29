@@ -738,9 +738,8 @@ def service_template(ctx, sample_image=None):
         elif e.get("widgetType") == "image" and "zs-hero__img" in st.get("_css_classes", ""):
             _dyn(ctx, e, "image", "zap-image")
     body = C(ctx, "zs-tpl-content", [W(ctx, "shortcode", {"shortcode": "[zap_page_content]"})], inner=False)
-    c = tpl.get("cta") or {"title": (d.get("form") or {}).get("title", "רוצים לשמוע עוד?"),
-                           "text": (d.get("form") or {}).get("text", "")}
-    return [h, body, cta(ctx, {"type": "cta", **c})]
+    # no closing CTA band: the lead form follows every page (Zap QA: two calls to action in a row)
+    return [h, body]
 
 
 def post_template(ctx, sample_image=None):

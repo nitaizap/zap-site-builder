@@ -17,7 +17,7 @@ Complete working example: `examples/sample-plumber/site.json`. Copy it, then rep
 | `footer` | `about` (one sentence), `links_title`, optional `ai_images_note` |
 | `header` | `cta_label` (mobile menu button), `topbar` (default false: Zap QA removed the utility strip; true brings back the bar with hours/email/phone), `topbar_text` (short line: areas + years), `mobile_call` (default true: phone icon in the mobile header; false only when the client asks), `mobile_bar` (phones' fixed action bar after call + WhatsApp, up to 3 more cells in order: `"waze"`, `"email"`, `"instagram"`, `"facebook"`, or `{label, href, icon: calendar\|bag\|pin\|mail\|clock}` for booking / delivery / menu links; 3+ cells become icon-over-label tiles) |
 | `content` | `disclaimer` (YMYL; shown under posts) |
-| `templates` | `shared` (default true: service pages and posts render through one Elementor template each), `service.cta` `{title, text}` (the closing band of every service page) |
+| `templates` | `shared` (default true: service pages and posts render through one Elementor template each) |
 | `smtp` | normally omit (Zap relay defaults). `test_to`: internal address that receives staging test leads |
 | `logo` | `assets/logo.png` (PNG/WebP, transparent; not SVG). A logo with a small tagline: use a crop without it (the header shows it at 56px). `logo_light`: optional light version for dark headers |
 | `favicon` | `assets/favicon.png`: square PNG, 512px, from the logo's symbol (replaces the cloned base site's icon) |

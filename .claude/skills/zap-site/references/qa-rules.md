@@ -54,7 +54,7 @@ your judgement.
 | | CTA band: title on top, then the text, then the buttons, centred | theme |
 | | No decorative arrows on cards | theme |
 | | Blog cards: title on one line, excerpt 16px, a "קרא עוד" link with a hover | plugin + theme |
-| **Templates** | Service pages share one Elementor template (hero from the page's title, excerpt and featured image; the closing CTA from `templates.service.cta`); a change there updates every service page. Posts share a post template: no category label above the H1, the body with its FAQ and related service, "מאמרים נוספים" beside it, images open in a lightbox | engine (`templates.shared`, default on) |
+| **Templates** | Service pages share one Elementor template (hero from the page's title, excerpt and featured image; no closing CTA band, the lead form follows); a change there updates every service page. Posts share a post template: no category label above the H1, the body with its FAQ and related service, "מאמרים נוספים" beside it, images open in a lightbox | engine (`templates.shared`, default on) |
 | **404** | Search button in the site's style and the field's height; the actions in equal widths (two per row, the phone full width under them) | theme |
 | **Footer** | Centred; the client's logo in white on a dark footer (generated from the logo when there is no `logo_light`), never on a white chip; "Powered by" as text beside Zap's logo | engine + theme |
 | **Copy** | Meta descriptions reach 150–160 characters with real content, never with filler endings ("צעד אחרי צעד.", "מדריך מעשי.", "ונשמח לעזור") | you (the engine's generated ones follow it) |
