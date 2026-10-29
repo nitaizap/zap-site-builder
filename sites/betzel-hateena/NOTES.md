@@ -29,5 +29,30 @@ Photos: Shirley's Google Drive folder 1os8A3O8iyqgB2jqQSdpZ_NE4rC6_0Z56 + ShareP
 - About text in the brief stops mid-sentence ("שומרי המסורת ימצאו ב"): completed from the Shabbat facts.
 - No existing site, Facebook or Instagram found. Do not confuse with "בצל עץ התאנה" in the Negev (a different zimmer).
 
-## Blocked by the session's network (29/10/2026)
+## Network (29/10/2026)
+Opened later the same day. d.co.il and weekend.co.il still answer "Request Rejected" (their WAF) to automated requests: nothing taken from them.
+Local build in a cloud session: WordPress needs WP_PROXY_HOST/PORT in wp-config and the proxy CA appended to wp-includes/certificates/ca-bundle.crt (work/ only).
+
+## Old note
 drive.google.com, *.ussl.co.il, www.d.co.il, www.weekend.co.il, wordpress.org: no photos, no Dapei Zahav check, no build, no push. Needs network access "Full".
+
+## Photos
+46 professional photos by Tomer Schlanger (Drive, Shirley), 44 used, resized to 1800px in `assets/`. ALT written in Hebrew from what each shows (the files carry camera names, so "ALT = file name" from the brief would be meaningless). The two living rooms differ (beige sofa / light-blue sofa), but nothing says which unit is "טבע" and which "חופש": captions don't name units. The Drive "3 סרטונים" folder came back empty to the session.
+No logo anywhere: header shows the name as text; favicon is a temporary "ב" in the brand colour, to replace when a logo exists.
+
+## Keyword map
+| page | keyword | H1 |
+|---|---|---|
+| home | צימר עם בריכה מחוממת ברמת הגולן | בצל התאנה |
+| אודות | צימר בקלע אלון | אודות בצל התאנה |
+| יחידות-האירוח | צימרים עם ג׳קוזי בגולן | יחידות האירוח |
+| חדר-הטיפולים | צימר עם עיסויים בגולן | חדר הטיפולים |
+| גלריה | תמונות צימר בקלע אלון | גלריה |
+| צרו-קשר | הזמנת צימר בקלע אלון | צרו קשר |
+| posts | צימר עם בריכה מחוממת בגולן / חופשה זוגית עם עיסוי בגולן / צימר לשומרי שבת ברמת הגולן | |
+The brief's H1 "חופשה רגועה בלב רמת הגולן" became the hero lead (Zap QA: home H1 = client name). SEO titles follow `<name> | <page>` (QA rule) instead of the brief's long titles; the brief's descriptions were kept and lengthened to 150-160.
+
+## Design
+Idea: the shade of the fig tree: fig-fruit purple, warm wood (pergola, sauna), basalt stone of the Golan (the house's walls).
+Base template 4 (wellness: curve hero, duo split, FAQ beside a photo); changed: palette, fonts, `tiles` for the compound.
+A fig purple + wood, soft, Bona Nova/Alef (recommended) · B basalt + leaf green, editorial, David Libre/Assistant · C pool blue, clean split hero, Rubik/Assistant.
