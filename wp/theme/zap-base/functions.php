@@ -403,7 +403,8 @@ function zs_part_legal() {
 
 function zs_part_group_logo() {
     // light footers carry Zap's colour logo (blue mark, navy word); dark footers the white credit image
-    if ((zs_design()['tone'] ?? '') === 'light') {
+    $d = zs_design();   // light footers: tone light, or a kit with light furniture (kits.css)
+    if (($d['tone'] ?? '') === 'light' || in_array($d['kit'] ?? '', ['atelier', 'gallery', 'quiet', 'panels', 'frame', 'shade'], true)) {
         return '<a class="zs-footer__zap zs-footer__zap--color" href="https://zapgroup.co.il/" target="_blank" rel="noopener">'
              . '<span class="zs-footer__zap-by">Powered by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
              . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
