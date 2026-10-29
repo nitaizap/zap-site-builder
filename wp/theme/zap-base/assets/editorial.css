@@ -179,3 +179,8 @@ body .zs-hero.zs-v-stage .zs-hero__points li::before { background-color: var(--c
 body .e-con.zs-hero--page.zs-v-stage > .e-con-inner { min-height: clamp(320px, 52vh, 520px); }
 body .zs-hero--page.zs-v-stage .zs-hero__title .elementor-heading-title { font-size: clamp(2.6rem, 1.6rem + 2.6vw, 4.4rem); }
 @media (max-width: 1024px) { body .e-con.zs-hero.zs-v-stage > .e-con-inner { grid-template-columns: 1fr; } body .e-con.zs-hero--page.zs-v-stage > .e-con-inner { min-height: 0; } }
+
+/* giant numbers: each fact centred in its column (number, rule, label) */
+body .zs-trust.zs-v-giant .zs-trust__list li { text-align: center !important; display: flex; flex-direction: column; align-items: center; padding-inline: clamp(14px, 2vw, 32px) !important; }
+body .zs-trust.zs-v-giant .zs-trust__list li::before, body .zs-trust.zs-v-giant .zs-trust__list li::after,
+body .zs-trust.zs-v-giant .zs-trust__list strong::after, body .zs-trust.zs-v-giant .zs-trust__list span::before { margin-inline: auto !important; inset-inline: 0 !important; }
