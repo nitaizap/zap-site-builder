@@ -30,6 +30,25 @@ require __DIR__ . '/inc/robots.php';
 
 // Zap SEO checklist: every image under 100 KB. The engine uploads light WebPs; keep WordPress's own resized copies light too.
 add_filter('wp_editor_set_quality', fn() => 60);
+// Detailed photos (HDR, foliage) can still pass 100 KB at 60: re-encode just those resized copies, lower each step.
+add_filter('wp_generate_attachment_metadata', function ($meta, $id) {
+    if (empty($meta['sizes']) || empty($meta['file'])) return $meta;
+    $dir = trailingslashit(dirname(get_attached_file($id)));
+    foreach ($meta['sizes'] as $name => $size) {
+        $path = $dir . $size['file'];
+        foreach ([50, 40, 32] as $q) {
+            if (!is_file($path) || filesize($path) <= 100 * 1024) break;
+            $ed = wp_get_image_editor($path);
+            if (is_wp_error($ed)) break;
+            $ed->set_quality($q);
+            $saved = $ed->save($path);
+            if (is_wp_error($saved)) break;
+            clearstatcache(true, $path);
+            $meta['sizes'][$name]['filesize'] = filesize($path);
+        }
+    }
+    return $meta;
+}, 20, 2);
 
 // One rewrite flush on the first request after a build: Yoast's category-base stripping only registers its rules
 // on a normal page load, so a flush inside the build itself leaves /<category>/ URLs as 404.
