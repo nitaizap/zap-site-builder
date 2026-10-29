@@ -505,6 +505,61 @@ HOME_CLEAR = [
 DES_CLEAR = {**DES_SHADE, "fonts": {"heading": "Frank Ruhl Libre", "body": "Assistant"}}
 site["design"] = dict(DES_CLEAR)
 home["sections"] = HOME_CLEAR
+home["sections"][0]["points"] = ["בריכה מחוממת עם ג׳טים", "ג׳קוזי וגינה פרטית בכל יחידה", "סאונה וחדר טיפולים במתחם"]
+
+# Round 6: every inner page gets the home page's treatment (stage hero, collages, overlay, film strip, plain titles).
+ABOUT_TXT = "<p>צימר בצל התאנה מזמין אתכם לחופשה רגועה בלב רמת הגולן, בקלע אלון השקטה. במקום שתי יחידות אירוח, \"טבע\" ו\"חופש\", המתאימות לזוגות ולמשפחות.</p><p>כל יחידה, בגודל 70 מ\"ר, כוללת שני חדרי שינה עם מיטה זוגית מפנקת וספה נפתחת, ג׳קוזי מרגיע, טלוויזיות בחדרים, מטבחון מאובזר וחדר רחצה מרווח עם תחליבים ומגבות. לכל יחידה גינה פרטית עם פינת ישיבה נוחה.</p>"
+about["sections"] = [
+    {"type": "hero", "variant": "stage", "title": "אודות בצל התאנה",
+     "lead": "צימר בקלע אלון, בלב רמת הגולן: שתי יחידות אירוח לזוגות ולמשפחות.", "image": "house"},
+    {"type": "collage", "title": "חופשה רגועה בקלע אלון", "text": ABOUT_TXT, "image": "living-1", "image2": "garden-1",
+     "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "overlay", "title": "בריכה, סאונה וחדר טיפולים",
+     "text": "<p>במתחם החוץ בריכה מחוממת בעונה עם ג׳טים לעיסוי, סאונה, מטבח חוץ מושקע ופינת BBQ. בחדר הטיפולים ההוליסטי אפשר להזמין עיסויים וטיפולי פנים, ובתיאום מראש גם ארוחת בוקר ומזרנים נוספים.</p>",
+     "chips": ["בריכה מחוממת", "סאונה", "חדר טיפולים"], "image": "pool-wide"},
+    {"type": "collage", "variant": "stack", "bg": "dark", "title": "לשומרי המסורת",
+     "text": "<p>הצימר מותאם גם לשומרי שבת.</p>",
+     "rows": [{"label": "פלטת שבת", "value": "✓"}, {"label": "מיחם מים חמים", "value": "✓"}, {"label": "בית כנסת במרחק הליכה", "value": "✓"}],
+     "images": ["living-3", "fruit", "wine"]},
+    {"type": "filmstrip", "title": "המתחם מלמעלה", "text": "קלע אלון ושדות הגולן מסביב.",
+     "items": [{"image": "aerial-2", "caption": "המתחם"}, {"image": "aerial-1", "caption": "הבריכה והגינות"},
+               {"image": "aerial-3", "caption": "הנוף מסביב"}]},
+]
+units["sections"] = [
+    {"type": "hero", "variant": "stage", "title": "יחידות האירוח",
+     "lead": "צימרים עם ג׳קוזי בגולן: שתי יחידות, \"טבע\" ו\"חופש\", 70 מ\"ר כל אחת.", "image": "living-2"},
+    {"type": "trust", "variant": "giant", "items": [
+        {"value": "70 מ\"ר", "label": "כל יחידה"}, {"value": "2", "label": "חדרי שינה"},
+        {"value": "1", "label": "חדר רחצה"}, {"value": "ג׳קוזי", "label": "בגינה הפרטית"}]},
+    {"type": "collage", "title": "מה יש בכל יחידה",
+     "text": "<p>בצל התאנה שתי יחידות אירוח, \"טבע\" ו\"חופש\", בגודל 70 מ\"ר כל אחת. אפשר להוסיף מזרנים בתיאום מראש.</p>"
+             "<ul><li>2 חדרי שינה עם מיטה זוגית מפנקת וספה נפתחת</li><li>ג׳קוזי מרגיע</li><li>טלוויזיות בחדרים</li><li>חדר רחצה מרווח עם תחליבים ומגבות</li><li>גינה פרטית עם פינת ישיבה נוחה</li></ul>",
+     "image": "bed-1", "image2": "bath-1"},
+    {"type": "collage", "variant": "stack", "bg": "dark", "title": "מטבחון מאובזר וסלון",
+     "text": "<p>בכל יחידה מטבחון עם כל מה שצריך לבוקר רגוע ולארוחה קלה, וסלון שנפתח אל הגינה.</p>",
+     "rows": [{"label": "מקרר ומיקרוגל", "value": "✓"}, {"label": "פינת קפה וחלב", "value": "✓"}, {"label": "כלי אוכל וכלי בישול", "value": "✓"}],
+     "images": ["living-4", "living-3", "living-6"]},
+    {"type": "filmstrip", "title": "הגינות הפרטיות", "text": "לכל יחידה גינה משלה עם פינת ישיבה וג׳קוזי.",
+     "items": [{"image": "garden-4", "caption": "חזית היחידה והגינה"}, {"image": "jacuzzi-3", "caption": "הג׳קוזי"},
+               {"image": "entry", "caption": "הכניסה ליחידה"}, {"image": "garden-5", "caption": "הדשא והעצים"}]},
+    {"type": "faq", "title": "שאלות על יחידות האירוח",
+     "items": [FAQ_HOME[0], FAQ_HOME[2], {"q": "יש ג׳קוזי בכל יחידה?", "a": "כן, בכל אחת משתי היחידות יש ג׳קוזי, ולכל יחידה גינה פרטית עם פינת ישיבה."}]},
+]
+spa["sections"] = [
+    {"type": "hero", "variant": "stage", "title": "חדר הטיפולים",
+     "lead": "צימר עם עיסויים בגולן: חדר טיפולים הוליסטי בתוך המתחם.", "image": "spa-2"},
+    {"type": "collage", "title": "עיסויים וטיפולי פנים",
+     "text": "<p>בחדר הטיפולים ההוליסטי שבצל התאנה אפשר להזמין עיסויים וטיפולי פנים מתקדמים ולהפוך את החופשה למפנקת עוד יותר. מתאמים את הטיפול מראש, יחד עם הזמנת החופשה.</p>",
+     "image": "spa-1", "image2": "spa-3"},
+    {"type": "overlay", "title": "אחרי הטיפול",
+     "text": "<p>אחרי הטיפול מחכים לכם הבריכה המחוממת בעונה עם ג׳טים לעיסוי והסאונה הנעימה, ובבוקר אפשר להזמין ארוחת בוקר בתיאום מראש.</p>",
+     "chips": ["בריכה מחוממת", "סאונה", "ארוחת בוקר בתיאום"], "image": "pool-pergola"},
+    {"type": "faq", "title": "שאלות על הטיפולים", "items": spa["sections"][-1]["items"]},
+]
+gallery["sections"][0] = {"type": "hero", "variant": "stage", "title": "גלריה",
+                          "lead": "תמונות צימר בקלע אלון: היחידות, הבריכה, הסאונה והגינות.", "image": "pool-wide"}
+contact["sections"][0] = {"type": "hero", "variant": "stage", "title": "צרו קשר",
+                          "lead": "הזמנת צימר בקלע אלון: התקשרו, שלחו וואטסאפ או השאירו פרטים.", "image": "garden-3"}
 
 json.dump(site, open(os.path.join(HERE, "site.json"), "w"), ensure_ascii=False, indent=2)
 print("ok")
