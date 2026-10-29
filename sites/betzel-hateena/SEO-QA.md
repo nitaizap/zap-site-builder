@@ -32,7 +32,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8546 · 39 rows: 33 pass, 0 fa
 | 28 | עמוד 404 | שורת חיפוש בעמוד 404 | ✅ PASS |  |
 | 29 | עמוד 404 | קישורים פופולריים / קטגוריות | ✅ PASS |  |
 | 30 | תבניות | טמפלט תוצאות חיפוש עם רשימת פוסטים | ✅ PASS | HTTP 200 |
-| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 052-4848123, nimrod@gesher-lab.co.il, קלע אלון 90; compare with the spec |
+| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 052-4848123, nimrod@gesher-lab.co.il, קלע אלון 90, רמת הגולן; compare with the spec |
 | +2 | כללי | לוגו זאפ בפוטר + קישור לאתר זאפ | ✅ PASS |  |
 | +3 | כללי | H1 בדף הבית = שם הלקוח בלבד | ✅ PASS | בצל התאנה |
 | +7 | כללי | פורמט Title: "<לקוח> | <עמוד>" | ✅ PASS | all titles start with the client name |

@@ -316,7 +316,7 @@ site = {
         "phone_display": PHONE, "phone_e164": "+972524848123", "whatsapp_e164": "+972524848123",
         "whatsapp_text": "היי, אשמח לפרטים על חופשה בצל התאנה",
         "email_leads": "nimrod@gesher-lab.co.il", "email_public": "nimrod@gesher-lab.co.il",
-        "address": "קלע אלון 90", "street": "קלע אלון 90", "city": "קלע אלון",
+        "address": "קלע אלון 90, רמת הגולן", "street": "קלע אלון 90", "city": "קלע אלון",
         "geo": {"lat": 33.13194, "lng": 35.68639},
         "area_served": ["רמת הגולן"], "dpz_customer_id": "80393074",
     },
