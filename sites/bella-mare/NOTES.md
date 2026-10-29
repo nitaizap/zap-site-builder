@@ -65,3 +65,7 @@ Base template 2 (restaurant/events), package basic. Deviations: stone grey groun
 Home: hero cover+logo → split card → carousel of dishes → tiles (pizza / pasta / events) → split overlap (about) → features checks → gallery mosaic → faq outline → contact. `zs pool`: no other client close.
 H1s follow Zap QA (home = name only, inner = page name); the brief's "בלה מארה – מטבח איטלקי כשר" moved into the lead (dash and two-part H1 are rejected by Zap QA).
 Not built: blog (not in the brief's tree; basic package) → zs seo #5 stays FAIL by design.
+
+## Delivery
+- 29/10/2026 pushed to https://80392812.ussl.co.il (Novamira, device code approved by the user). Backup kept locally in work/. Live QA 0 errors, 37 links OK.
+- Server page 1229 is not ours and was left untouched (REST closed, could not identify it): check it in wp-admin.
