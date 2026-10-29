@@ -17,9 +17,11 @@
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
   zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
-  zs pool <slug>                    this site's recipe vs every other client branch (anti-formula)
+  zs pool <slug>                    this site's measured look vs every other client (stops at 45% alike)
+  zs registry <slug>                measure the local build into fingerprints/<slug>.json (the client registry)
 """
 import argparse
+import os
 import json
 import sys
 from pathlib import Path
@@ -81,7 +83,14 @@ def cmd_preview(a):
     s = Site(a.slug)
     s.serve()
     print(preview(s))
-    if getattr(s, "_preview_close", None):
+    import json as _j
+    from pool import check_measured
+    pf = s.src / "preview" / "fingerprints.json"
+    fps = {f"direction {k}": v for k, v in _j.loads(pf.read_text(encoding="utf-8")).items()} if pf.exists() else {}
+    lines = check_measured(a.slug, fps)
+    if lines:
+        print("\n".join(lines))
+    if getattr(s, "_preview_close", None) or any(x.startswith("ERROR") for x in lines):
         sys.exit(2)
 
 
@@ -114,10 +123,28 @@ def cmd_connect(a):
     print(f"connected: token stored for this machine only ({f.name}, not committed). Next: zs push <slug> --site {a.site}")
 
 
+def _uniqueness_gate(slug):
+    """No site ships looking like another client's: the measured home (zs qa) against every known client."""
+    import json as _j
+    from pool import check_measured
+    src = ROOT / "sites" / slug
+    f = src / "fingerprint.json"
+    if not f.exists():
+        die(f"{slug}: no measured layout (sites/{slug}/fingerprint.json). Run `zs qa {slug}` on the local build first.")
+    fp = _j.loads(f.read_text(encoding="utf-8"))
+    if "palette" not in fp:
+        die(f"{slug}: the measured layout is from an older measure. Run `zs qa {slug}` again.")
+    errs = [w for w in check_measured(slug, {"home": fp}) if w.startswith("ERROR")]
+    if errs and os.environ.get("ZS_ALLOW_SIMILAR") != "1":
+        die("\n".join(errs) + "\nThis site reads as another client's. Redesign it (references/pool.md), or, only with the user's "
+            "explicit approval, set ZS_ALLOW_SIMILAR=1.")
+
+
 def cmd_push(a):
     """Build site.json directly into a client WordPress through Novamira: backup -> code -> content -> cleanup."""
     from build import build, load_site
     from remote import NovamiraError
+    _uniqueness_gate(a.slug)
     r = _remote(a)
     r.full = a.full      # --full: resend code, files and pages even if the server already has them
     live = not any(r.host == h.lstrip(".") or r.host.endswith(h) for h in STAGING_HOSTS)
@@ -240,12 +267,20 @@ def cmd_qa(a):
     if not getattr(a, "site", None):   # the measured layout of the home page, for zs pool (committed with the site)
         import json as _j
         from fingerprint import take
-        (s.src / "fingerprint.json").write_text(_j.dumps(take({"home": s.url + "/"})["home"], ensure_ascii=False), encoding="utf-8")
+        fp = take({"home": s.url + "/"})["home"]
+        (s.src / "fingerprint.json").write_text(_j.dumps(fp, ensure_ascii=False), encoding="utf-8")
+        from pool import check_measured
+        lines = check_measured(a.slug, {"home": fp})
+        if lines:
+            print("\n".join(lines))
+        if any(x.startswith("ERROR") for x in lines):   # a site that reads as another client's is not done
+            ok = False
     sys.exit(0 if ok else 2)
 
 
 def cmd_package(a):
     from package import package
+    _uniqueness_gate(a.slug)
     print(package(Site(a.slug), a.domain))
 
 
@@ -265,6 +300,20 @@ def cmd_seo(a):
     s = Site(a.slug)
     s.serve()
     sys.exit(0 if run_seo(s) else 2)
+
+
+def cmd_registry(a):
+    """Measure the local build of <slug> and store it in fingerprints/<slug>.json (the registry every new site is
+    compared with). Old sites that no longer pass today's validator: ZS_MEASURE_ONLY=1 zs build <slug> first."""
+    import json as _j
+    from fingerprint import take
+    s = Site(a.slug)
+    s.serve()
+    fp = take({"home": s.url + "/"})["home"]
+    out = ROOT / "fingerprints" / f"{a.slug}.json"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(_j.dumps(fp, ensure_ascii=False), encoding="utf-8")
+    print(out)
 
 
 def cmd_pool(a):
@@ -304,6 +353,7 @@ def main():
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
     x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
+    x = sub.add_parser("registry"); x.add_argument("slug"); x.set_defaults(f=cmd_registry)
     a = p.parse_args()
     a.f(a)
 

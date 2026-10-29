@@ -108,3 +108,81 @@ body.zs-k-gallery .zs-sec:not(.zs-hero) img, body.zs-k-gallery .zs-card, body.zs
 body.zs-k-gallery .e-con.zs-head { --flex-direction: column; flex-direction: column; --align-items: center; align-items: center; text-align: center; }
 body.zs-k-gallery .zs-head :is(.zs-sec__title, .zs-sec__intro) { text-align: center; }
 body.zs-k-gallery .zs-card { box-shadow: none; }
+
+/* =====================================================================================================
+   The furniture every page repeats (top bar, form band, footer, FAQ rows, icon chips). Before, these were the same
+   on every site whatever the kit, and they are what a visitor recognises first. Each kit now dresses them too.
+   ===================================================================================================== */
+
+/* light furniture for the light kits: the same rules tone: light uses, applied to the chrome only */
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) { --zs-ink: var(--c-ink); --zs-text: var(--c-text); --zs-muted: var(--c-muted); --zs-line: var(--c-line); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-footer, .e-con.zs-footer, .zs-leadband, .e-con.zs-leadband, .zs-topbar, .e-con.zs-topbar) {
+  --c-ink: var(--zs-ink); --c-text: var(--zs-text); --c-muted: var(--zs-muted); --c-line: var(--zs-line); color: var(--zs-text); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-footer, .zs-leadband)::after,
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-leadband::before { display: none; }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-leadband, .e-con.zs-leadband) { background: var(--c-surface); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title) { color: var(--zs-ink); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-footer, .e-con.zs-footer) { background: var(--c-bg); border-top: 1px solid var(--zs-line); color: var(--zs-text); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer a:hover { color: var(--c-primary); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-footer__name, .zs-footer__title), body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-footer__name, .zs-footer__title) .elementor-heading-title { color: var(--zs-ink); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.e-con.zs-footer__bar, .zs-footer__bar) { border-top: 1px solid var(--zs-line); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer .zs-social a { color: var(--zs-ink); background: transparent; }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer :is(.zs-ico, svg.zs-ico) { color: var(--c-primary); }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer__zap--color { display: inline-flex; align-items: center; gap: 10px; direction: ltr; color: var(--zs-ink); text-decoration: none; }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer__zap--color img { filter: none; }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) .zs-footer__logo--chip img { background: none; padding: 0; }
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame) :is(.zs-topbar, .e-con.zs-topbar) { background: var(--c-bg); color: var(--zs-text); border-bottom: 1px solid var(--zs-line); }
+/* the light kits drop the utility bar: the header already carries the phone */
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet) :is(.zs-topbar, .e-con.zs-topbar) { display: none; }
+
+/* atelier: the form band stacks centred under its title; FAQ as hairline rows; icons bare, no chip */
+body.zs-k-atelier .elementor .e-con.zs-leadband__in { grid-template-columns: 1fr; justify-items: center; text-align: center; max-width: 760px; margin-inline: auto; }
+body.zs-k-atelier .e-con.zs-leadband__text { --align-items: center; align-items: center; }
+body.zs-k-atelier .zs-leadband__form { width: 100%; }
+body.zs-k-atelier .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border-width: 0 0 1px; background: transparent; box-shadow: none; }
+body.zs-k-atelier .zs-faq__list .elementor-toggle .elementor-toggle-icon { background: transparent; border: 1px solid currentColor; }
+body.zs-k-atelier :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { background: transparent; padding: 0; width: 40px; height: 40px; border-radius: 0; }
+
+/* gallery: the form band reads as a caption row on white, form first; FAQ as open hairline rows; icons in thin rings */
+body.zs-k-gallery :is(.zs-leadband, .e-con.zs-leadband) { background: var(--c-bg); border-top: 1px solid var(--zs-line); }
+@media (min-width: 901px) { body.zs-k-gallery .elementor .e-con.zs-leadband__in { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); } body.zs-k-gallery .zs-leadband__text { order: 2; } }
+body.zs-k-gallery .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border-width: 1px 0 0; background: transparent; box-shadow: none; }
+body.zs-k-gallery .zs-faq__list .elementor-toggle .elementor-toggle-icon { background: transparent; border-radius: 0; }
+body.zs-k-gallery :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { background: transparent; border: 1px solid currentColor; border-radius: 50%; }
+body.zs-k-gallery .zs-feature { text-align: start; }
+body.zs-k-gallery :is(.zs-footer, .e-con.zs-footer) { border-top-width: 3px; border-top-color: var(--c-ink); }
+
+/* quiet: the form band narrow and stacked; FAQ hairline rows; icons small and bare */
+body.zs-k-quiet .elementor .e-con.zs-leadband__in { grid-template-columns: 1fr; max-width: 680px; margin-inline: auto; }
+body.zs-k-quiet :is(.zs-leadband, .e-con.zs-leadband) { background: var(--c-bg); border-top: 1px solid var(--zs-line); }
+body.zs-k-quiet .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border-width: 0 0 1px; background: transparent; box-shadow: none; }
+body.zs-k-quiet .zs-faq__list .elementor-toggle .elementor-toggle-icon { background: transparent; }
+body.zs-k-quiet :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { background: transparent; padding: 0; width: 34px; height: 34px; }
+
+/* panels: the form band is a rounded tinted panel; FAQ rows filled, no border; icons in filled circles */
+@media (min-width: 768px) { body.zs-k-panels :is(.zs-leadband, .e-con.zs-leadband) { width: calc(100% - 48px); max-width: 1400px; margin: 0 auto 18px; border-radius: var(--r-lg); } }
+body.zs-k-panels :is(.zs-leadband, .e-con.zs-leadband) { background: color-mix(in srgb, var(--c-primary) 9%, var(--c-bg)); }
+body.zs-k-panels .zs-faq__list .elementor-toggle .elementor-toggle-item { border: 0; background: var(--c-surface); border-radius: var(--r-lg); }
+body.zs-k-panels :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { border-radius: 50%; background: color-mix(in srgb, var(--c-primary) 14%, transparent); }
+
+/* frame: the form band and the footer carry the frame's colour as a thick rule */
+body.zs-k-frame :is(.zs-leadband, .e-con.zs-leadband) { border-top: 6px solid var(--c-primary); }
+body.zs-k-frame :is(.zs-footer, .e-con.zs-footer) { border-top: 6px solid var(--c-primary); }
+body.zs-k-frame :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { border-radius: 0; background: transparent; outline: 1px solid currentColor; outline-offset: 4px; }
+
+/* magazine: dark furniture kept, but square and ruled: FAQ rows under a heavy rule, square outlined icons */
+body.zs-k-magazine .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border-width: 2px 0 0; border-color: var(--c-ink); background: transparent; box-shadow: none; }
+body.zs-k-magazine .zs-faq__list .elementor-toggle .elementor-toggle-icon { border-radius: 0; background: transparent; }
+body.zs-k-magazine :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { border-radius: 0; background: transparent; border: 2px solid currentColor; }
+body.zs-k-magazine .zs-leadband::before { display: none; }
+
+/* bands: the form band and the utility bar in the brand colour; FAQ rows filled and square; icons in solid squares */
+body.zs-k-bands :is(.zs-leadband, .e-con.zs-leadband) { border-top: 10px solid var(--c-primary); }
+body.zs-k-bands .zs-leadband::before { display: none; }
+body.zs-k-bands :is(.zs-topbar, .e-con.zs-topbar) { border-bottom: 4px solid var(--c-primary); }
+body.zs-k-bands .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border: 0; background: var(--c-surface); }
+body.zs-k-bands :not(.zs-bg-primary, .zs-bg-dark) > * :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { border-radius: 0; background: var(--c-primary); color: var(--c-primary-ink); fill: var(--c-primary-ink); }
+
+/* sidebar: the form band splits like the sections (title column, form beside); icons in outlined circles */
+body.zs-k-sidebar .zs-leadband::before { display: none; }
+body.zs-k-sidebar :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor-icon) { border-radius: 50%; background: transparent; border: 1.5px solid currentColor; }

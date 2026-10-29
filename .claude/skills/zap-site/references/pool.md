@@ -197,9 +197,13 @@ order, and listing "באתר הקיים ↔ בעיצוב החדש" in NOTES.md.
   photo grids) back to back; one brand-colour band (`checks`, `leadbar`, `cta`, `marquee`) per screenful.
 - **At most two variants from the same template on one page**, so no site reads as a copy of one template.
 - **Every direction in the gate differs in at least one variant as well as preset/hero.**
-- **Measured, not named.** `zs qa` saves the home page's measured layout (`sites/<slug>/fingerprint.json`:
-  header arrangement, width, corners, title size, and per section its ground, height, photo share, columns and
-  where the heading sits); `zs preview` measures every direction (`preview/fingerprints.json`) and fails when two
-  directions are ≥ 85% alike. `bin/zs pool <slug>` (after `git fetch`) compares both with every other client's
-  fingerprint and **exits with ERROR at ≥ 85%** (WARN ≥ 75%). Commit `fingerprint.json` with the site. An ERROR
-  is fixed by changing the kit, the hero or the home's section order, never by renaming variants.
+- **Measured, not named, and enforced.** `zs qa` measures the home page (`sites/<slug>/fingerprint.json`): the
+  palette (button, header, footer, heading colours), the furniture every page repeats (top bar, form band, footer,
+  FAQ rows, icon chips, floating button), the components (section type + variant, in order) and the layout. It is
+  compared with every client in `fingerprints/` and on `site/*` branches: **45% or more alike is an ERROR** (38%
+  warns) in `zs qa`, `zs preview` (every direction), `zs pool`, `zs push` and `zs package`. The five sites the user
+  rejected as "all the same" measure 42-60% to each other. Commit `fingerprint.json` with the site.
+- What makes sites look alike, in the order a visitor notices it: **palette** (two dark olive/green sites read as one
+  brand), **furniture** (the same top bar, form band, footer and FAQ on every page), **components** (the same 8-photo
+  mosaic, icon grid and FAQ-beside-a-photo), then layout. Fix in that order. Before choosing, open the other
+  clients' home pages (`fingerprints/README.md` lists them) and pick what none of them has.
