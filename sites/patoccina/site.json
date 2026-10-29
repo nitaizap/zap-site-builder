@@ -53,6 +53,10 @@
   "links_title": "התפריטים"
  },
  "header": {
+  "mobile_bar": [
+   "waze",
+   "instagram"
+  ],
   "cta_label": "דברו איתנו",
   "topbar_text": "קייטרינג חלבי כשר · תפריט בהתאמה אישית"
  },

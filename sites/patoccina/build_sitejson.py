@@ -209,7 +209,7 @@ site = {
   "form": {"title": "בואו נתכנן יחד את האירוע שלכם", "text": "השאירו פרטים ונחזור אליכם בהקדם, או דברו איתנו ישירות בטלפון ובוואטסאפ.",
            "button": "שליחה", "thanks": "תודה! קיבלנו את הפרטים ונחזור אליכם בהקדם."},
   "footer": {"about": f"{B}, קייטרינג בוטיק חלבי כשר בטעמים איטלקיים: מגשי אירוח, קינוחים, בראנץ' ואירועים.", "links_title": "התפריטים"},
-  "header": {"cta_label": "דברו איתנו", "topbar_text": "קייטרינג חלבי כשר · תפריט בהתאמה אישית"},
+  "header": {"mobile_bar": ["waze", "instagram"], "cta_label": "דברו איתנו", "topbar_text": "קייטרינג חלבי כשר · תפריט בהתאמה אישית"},
   "content": {"disclaimer": ""},
   "logo": "assets/logo.png", "favicon": "assets/favicon.png", "og_image": "buffet-quiches",
   "images": images,
