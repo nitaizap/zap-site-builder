@@ -190,8 +190,8 @@ body.zs-k-sidebar :is(.zs-feature__icon, .zs-card__icon) :is(.zs-svg, .elementor
 /* ---------- shade: art-directed pages (stage hero, chapters, collages, film strip) ---------- */
 /* display face only where it is big; every small title reads in the body face */
 body.zs-k-shade :is(.zs-card__title, .zs-feature__title, .zs-step__title, .zs-faq__list .elementor-tab-title, .zs-facts__title, .zs-post-card__title, h3, h4) { font-family: var(--f-body); }
-body.zs-k-shade .zs-sec__title .elementor-heading-title { line-height: .95; }
-body.zs-k-shade .zs-eyebrow .elementor-heading-title { font-family: var(--f-body); letter-spacing: .25em; font-weight: 500; }
+body.zs-k-shade .zs-sec__title .elementor-heading-title { line-height: 1.12; }
+body.zs-k-shade .zs-eyebrow .elementor-heading-title { font-family: var(--f-body); letter-spacing: .02em; font-weight: 600; }
 /* the action in the sun colour (accent), round */
 body.zs-k-shade .zs-b-primary .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-accent); border-radius: 999px; font-weight: 700; }
 body.zs-k-shade .zs-b-ghost .elementor-button { border-radius: 999px; }
@@ -205,6 +205,6 @@ body.zs-k-shade .zs-brand__name .elementor-heading-title { font-family: var(--f-
 body.zs-k-shade :is(.zs-leadband, .e-con.zs-leadband) { background: var(--c-surface); }
 body.zs-k-shade .elementor .e-con.zs-leadband__in { background: color-mix(in srgb, var(--c-bg) 60%, #fff); padding: clamp(28px, 4vw, 56px); box-shadow: 0 40px 80px -50px rgb(0 0 0 / .45);
   border: 1px dashed color-mix(in srgb, var(--c-primary) 45%, transparent); outline: 10px solid color-mix(in srgb, var(--c-bg) 60%, #fff); }
-body.zs-k-shade .zs-leadband :is(.zs-leadband__title .elementor-heading-title) { font-family: var(--f-head); font-size: clamp(3rem, 2rem + 3vw, 5.4rem); line-height: .92; }
+body.zs-k-shade .zs-leadband :is(.zs-leadband__title .elementor-heading-title) { font-family: var(--f-head); font-size: clamp(2rem, 1.3rem + 1.8vw, 3rem); line-height: 1.12; }
 body.zs-k-shade :is(.zs-footer__name .elementor-heading-title, .zs-footer__name) { font-family: var(--f-head) !important; font-size: 2.6rem !important; line-height: 1; color: var(--c-primary); }
 body.zs-k-shade .zs-faq__list .elementor-toggle .elementor-toggle-item { border-radius: 0; border-width: 0 0 1px; background: transparent; box-shadow: none; }
