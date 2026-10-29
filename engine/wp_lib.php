@@ -364,13 +364,19 @@ function zs_task_finish($p) {
 function zs_task_templates($p) {
     $pro = defined('ELEMENTOR_PRO_VERSION');
     $out = [];
-    foreach (['header', 'footer'] as $slot) {
-        $type = $pro ? $slot : 'section';
+    $types = ['header' => 'header', 'footer' => 'footer', 'service' => 'single-page', 'post' => 'single-post'];
+    foreach (['header', 'footer', 'service', 'post'] as $slot) {
+        if (empty($p[$slot])) {   // a shared template this site no longer uses: retire it
+            if ($old = zs_find('elementor_library', "__tpl_$slot")) wp_delete_post($old, true);
+            delete_option("zs_tpl_$slot");
+            continue;
+        }
+        $type = $pro ? $types[$slot] : 'section';
         $id = zs_find('elementor_library', "__tpl_$slot");
         if ($id && get_post_meta($id, '_elementor_template_type', true) !== $type) { wp_delete_post($id, true); $id = 0; }
         if (!$id) {
             $doc = \Elementor\Plugin::$instance->documents->create($type, [
-                'post_title' => ($slot === 'header' ? 'Header' : 'Footer') . ' — ' . $p['name'], 'post_status' => 'publish']);
+                'post_title' => ['header' => 'Header', 'footer' => 'Footer', 'service' => 'עמוד שירות', 'post' => 'פוסט'][$slot] . ' | ' . $p['name'], 'post_status' => 'publish']);
             if (is_wp_error($doc) || !$doc) { fwrite(STDERR, "template create failed: $slot\n"); continue; }
             $id = $doc->get_main_id();
             update_post_meta($id, '_zs_key', "__tpl_$slot");
@@ -378,7 +384,13 @@ function zs_task_templates($p) {
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
         $doc->save(['elements' => $p[$slot]]);
         if ($pro) {
-            update_post_meta($id, '_elementor_conditions', ['include/general']);
+            $cond = ['include/general'];
+            if ($slot === 'service') { $cond = []; foreach ($p['service_keys'] ?? [] as $k) { if ($pid = zs_find('page', $k)) $cond[] = "include/singular/page/$pid"; } }
+            if ($slot === 'post') $cond = ['include/singular/post'];
+            update_post_meta($id, '_elementor_conditions', $cond);
+        }
+        if ($slot === 'service') {   // the theme renders it for these pages when Elementor Pro is not there
+            foreach ($p['service_keys'] ?? [] as $k) { if ($pid = zs_find('page', $k)) update_post_meta($pid, '_zs_tpl', 'service'); }
         }
         update_option("zs_tpl_$slot", $id);
         $out[] = "$slot=$id";

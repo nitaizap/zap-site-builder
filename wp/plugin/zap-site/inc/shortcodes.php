@@ -21,8 +21,9 @@ add_shortcode('zap_recent_posts', function ($atts) {
       <article class="zs-postcard">
         <a class="zs-postcard__img" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true"><?php if (has_post_thumbnail()) the_post_thumbnail('zs-card', ['loading' => 'lazy']); ?></a>
         <div class="zs-postcard__body">
-          <h3 class="zs-postcard__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+          <h3 class="zs-postcard__title"><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr(get_the_title()); ?>"><?php the_title(); ?></a></h3>
           <p><?php echo esc_html(get_the_excerpt()); ?></p>
+          <a class="zs-postcard__more" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr('קרא עוד: ' . get_the_title()); ?>">קרא עוד</a>
         </div>
       </article>
     <?php }

@@ -365,3 +365,21 @@
   });
   d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
 })();
+
+/* post images open in a lightbox */
+(function () {
+  var imgs = document.querySelectorAll('.zs-post__body img, .zs-post__hero img');
+  if (!imgs.length || !window.HTMLDialogElement) return;
+  var d = document.createElement('dialog'); d.className = 'zs-lightbox'; d.setAttribute('aria-label', 'תמונה מוגדלת');
+  d.innerHTML = '<button type="button" aria-label="סגירה">×</button><img alt="">';
+  document.body.appendChild(d);
+  var im = d.querySelector('img');
+  d.querySelector('button').addEventListener('click', function () { d.close(); });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  imgs.forEach(function (i) {
+    i.setAttribute('tabindex', '0'); i.setAttribute('role', 'button');
+    var open = function () { im.src = i.currentSrc || i.src; im.alt = i.alt; d.showModal(); };
+    i.addEventListener('click', open);
+    i.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+})();

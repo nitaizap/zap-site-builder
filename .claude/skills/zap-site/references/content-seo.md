@@ -26,7 +26,7 @@ the user sees at the gate is what ships.
 | field | rule | example |
 |---|---|---|
 | `seo.title` | **client name first**: `<client> \| <page>` (Zap checklist, validator) · 30–60 chars | `מים טובים אינסטלציה \| איתור נזילות בחיפה` |
-| `seo.description` | 150–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
+| `seo.description` | 150–160 chars of real content (never a filler ending added to hit the length) · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
 | `seo.keyword` | the owned keyword (unique across the site) | `איתור נזילות בחיפה` |
 
 "<client> | keyword, N שנות ניסיון" works when N is a locked fact.

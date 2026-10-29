@@ -312,3 +312,9 @@ body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); 
 .zs-search__list h2 { font-size: 1.25rem; margin: 0 0 4px; }
 /* tiles: the action on the accent half reads in the accent's own ink (a primary button on an accent ground often blends) */
 body .zs-tile--b .zs-b-primary .elementor-button { background: var(--c-accent-ink); color: var(--c-accent); border-color: var(--c-accent-ink); }
+/* split · card on phones: the card sits under the photo inside the page margins, never over the photo's badge
+   and never touching the screen edge (Zap QA) */
+@media (max-width: 900px) {
+  body .e-con.zs-split.zs-v-card .e-con.zs-split__text { margin: 16px 0 0 !important; width: 100% !important; max-width: 100%; box-sizing: border-box; }
+  body .e-con.zs-split.zs-v-card .zs-badge { z-index: 3; }
+}

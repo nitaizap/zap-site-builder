@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 from images import prepare_image
-from sections import Ctx, footer_template, header_template, render_page
+from sections import Ctx, footer_template, header_template, post_template, render_page, service_template
 from validate import validate
 
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
@@ -81,6 +81,8 @@ def privacy_html(data):
     fill = {"name": _h.escape(b.get("legal_name") or b["name"]), "data": db,
             "more1": "\n".join(f"<li>{_h.escape(x)}</li>" for x in purposes),
             "mail": f'<a href="mailto:{_h.escape(mail)}" dir="ltr">{_h.escape(mail)}</a>'}
+    # registration / social-login wording only on sites that have accounts (Zap QA: "there is no registration here")
+    t = re.sub(r"<!--acct-->(.*?)<!--/acct-->", (lambda m: m.group(1)) if std.get("privacy_accounts") else "", t, flags=re.S)
     return re.sub(r"\{\{(\w+)\}\}", lambda m: fill[m.group(1)], t).strip()
 
 
@@ -128,11 +130,14 @@ def build(site, only=None):
     # Zap QA), linked from the footer. A site that must link elsewhere sets standards.accessibility_url.
     if not std.get("accessibility_url") or "zap.dbusiness.co" in std.get("accessibility_url", ""):
         b = data["business"]
-        d = f"הצהרת הנגישות של {b['name']}: אילו התאמות נגישות קיימות באתר, איך משתמשים בתפריט הנגישות ולמי פונים כשנתקלים בקושי בגלישה"
-        for extra in (" באתר", " או בשירות", " שלנו", ", ונשמח לעזור"):   # 150-160 characters whatever the name's length
-            if len(d) + len(extra) <= 159 and len(d) < 150:
-                d += extra
-        d = (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+        # 150-160 characters from real content only (Zap QA rejects filler endings like "ונשמח לעזור"):
+        # a longer or shorter list of the statement's actual measures, whatever the name's length
+        parts = ["ניגודיות כהה ובהירה", "הדגשת כותרות וקישורים", "חלופה טקסטואלית לתמונות", "טפסים נגישים", "ניווט במקלדת"]
+        ends = ["תפריט הנגישות ופרטי הפנייה בנושא.", "איך משתמשים בתפריט הנגישות ולמי פונים בנושא נגישות."]
+        cands = [f"הצהרת הנגישות של {b['name']}: אמצעי הנגישות באתר ({', '.join(parts[:n])}), {e}"
+                 for n in range(len(parts), 0, -1) for e in ends]
+        fit = [c for c in cands if 150 <= len(c) <= 160]
+        d = fit[0] if fit else max((c for c in cands if len(c) <= 160), key=len, default=cands[-1][:160])
         data["pages"].append({
             "key": "הצהרת-נגישות", "type": "privacy", "legal": "accessibility", "title": "הצהרת נגישות", "noindex": False,
             "seo": {"title": f"{b['name']} | הצהרת נגישות", "description": d[:160]},
@@ -159,6 +164,15 @@ def build(site, only=None):
         images["__logo"] = {"src": data["logo"], "alt": data["business"]["name"], "keep_format": True}
     if data.get("logo_light"):
         images["__logo_light"] = {"src": data["logo_light"], "alt": data["business"]["name"], "keep_format": True}
+    elif data.get("logo") and (data.get("design") or {}).get("tone") != "light":
+        # a dark footer gets the logo in white (Zap QA: no logo on a white chip): the same artwork, recoloured
+        from PIL import Image
+        src = Image.open(site_dir / data["logo"]).convert("RGBA")
+        a = src.getchannel("A")
+        white = Image.new("RGBA", src.size, (255, 255, 255, 0)); white.putalpha(a)
+        out = site.dir / "_gen"; out.mkdir(parents=True, exist_ok=True)
+        white.save(out / "logo-light.png")
+        images["__logo_light"] = {"src": str(out / "logo-light.png"), "alt": data["business"]["name"], "keep_format": True}
     if data.get("favicon"):   # square PNG from the client's logo symbol; replaces the cloned base site's icon
         images["__favicon"] = {"src": data["favicon"], "alt": data["business"]["name"], "keep_format": True, "max_width": 512}
     prepared = []
@@ -201,11 +215,19 @@ def build(site, only=None):
 
     # 3. pages (parents first so children can attach)
     pages = sorted(data.get("pages", []), key=lambda p: p["key"].count("/"))
+    use_tpl = (data.get("templates") or {}).get("shared", True)   # service pages + posts through shared templates
     payload = []
     for p in pages:
         ctx = Ctx(p["key"], media, data)
-        elements = render_page(ctx, p.get("sections", [])) if p.get("sections") else None
-        if p.get("sections") and ctx.h1_count != 1:
+        secs = p.get("sections") or []
+        hero_s = next((s for s in secs if s.get("type") == "hero"), {})
+        shared = p.get("type") == "service" and use_tpl
+        if shared:   # the service template carries the hero (title, excerpt, image) and the closing CTA
+            secs = [s for s in secs if s.get("type") not in ("hero", "cta")]
+            p = {**p, "excerpt": hero_s.get("lead") or p.get("excerpt", ""),
+                 "featured_image": hero_s.get("image") or p.get("featured_image")}
+        elements = render_page(ctx, secs) if secs else None
+        if p.get("sections") and not shared and ctx.h1_count != 1:
             raise SystemExit(f"page '{p['key'] or 'home'}' renders {ctx.h1_count} H1s (must be exactly 1)")
         parent = p["key"].rsplit("/", 1)[0] if "/" in p["key"] else None
         payload.append({
@@ -226,8 +248,15 @@ def build(site, only=None):
 
     # 3b. header + footer as Elementor templates (Theme Builder header/footer where Elementor Pro runs)
     tctx = Ctx("__tpl", media, data)
-    log.append(run_php(site, "templates", {"header": header_template(tctx), "footer": footer_template(tctx),
-                                           "name": data["business"]["name"]}))
+    svc = [p for p in data.get("pages", []) if p.get("type") == "service"]
+    sample = next((s.get("image") for p in svc for s in p.get("sections", []) if s.get("type") == "hero" and s.get("image")), None)
+    tpls = {"header": header_template(tctx), "footer": footer_template(tctx), "name": data["business"]["name"]}
+    if use_tpl and svc:
+        tpls["service"] = service_template(Ctx("__tpl_service", media, data), sample)
+        tpls["service_keys"] = [p["key"] for p in svc]
+    if use_tpl and data.get("posts"):
+        tpls["post"] = post_template(Ctx("__tpl_post", media, data), data["posts"][0].get("image"))
+    log.append(run_php(site, "templates", tpls))
 
     # 4. blog posts
     posts = []
