@@ -311,7 +311,18 @@ def validate(d, site_dir, _dir=None):
             E(f"{path}: dash as punctuation ('{DASH.search(txt).group(0).strip()}'): rewrite with a comma, colon, period or a line break (house rule: no em/en dashes in site copy)")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
-    from sections import KITS
+    from sections import ARCHETYPES, KITS
+    des = d.get("design", {})
+    if d.get("tier") and _dir is None and not (des.get("kit") and des.get("archetype")):
+        W("design.kit and design.archetype are not set: every new site picks both (references/pool.md → Style kits, Home archetypes)")
+    for where, dz in [("design", des)] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
+        if dz.get("archetype") and dz["archetype"] not in ARCHETYPES:
+            E(f"{where}.archetype '{dz['archetype']}' is not an archetype: {', '.join(ARCHETYPES)}")
+    dirs = [v for v in (d.get("directions") or {}).values() if isinstance(v, dict)]
+    for lever in ("kit", "archetype"):
+        vals = [v.get(lever) or des.get(lever) for v in dirs]
+        if len(dirs) > 1 and all(vals) and len(set(vals)) < len(vals):
+            E(f"two gate directions share the same {lever} ({', '.join(vals)}): each direction is a different {lever}")
     for where, dz in [("design", d.get("design", {}))] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
         if dz.get("kit") and dz["kit"] not in KITS:
             E(f"{where}.kit '{dz['kit']}' is not a style kit: {', '.join(KITS)}")

@@ -19,6 +19,9 @@ Use it like the templates: **structure and conventions per industry**, never a l
 
 ## What every industry does (the conventions a client expects)
 
+The "home order seen" column is what those sites did, recorded as research: the CTAs and must-have blocks are
+conventions to keep, **the order is not a recipe**. The home order comes from the archetype (`pool.md`).
+
 **Everywhere (all 40 sites):** a fixed action bar on phones (call, WhatsApp, then Waze / booking / delivery) →
 `header.mobile_bar`; hamburger on one side, logo centred, round phone button on the other; a short form before the
 footer; Waze on the address.

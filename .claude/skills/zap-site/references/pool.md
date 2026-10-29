@@ -45,6 +45,29 @@ three gate directions use three different kits.**
 `KITS` in `engine/sections.py`. Adding a kit: one `KITS` entry + one block in kits.css, then the engine test
 under that kit (QA 0 errors, SEO 0 FAIL) and a look at desktop + 390.
 
+## Home archetypes (`design.archetype`): the home page's story, chosen before any section
+
+There is **no default home order**. The home page starts from an archetype, the story it tells, picked for this
+client's audience and material; the sections and variants are then chosen to tell each beat. Example section
+choices are a starting point, not a recipe: two sites on the same archetype still use different sections.
+
+| archetype | the story | beats (example sections) | suits |
+|---|---|---|---|
+| `tour` | walk the visitor through the place | cover hero → one space per beat (`tiles`, `split` with big photos) → `carousel` → `facts` card → practical FAQ → contact over a photo | zimmers, venues, restaurants, clinics with a space to show |
+| `statement` | one confident line, then proof | type-led hero (`centered`, little photo) → `quote` / `prose band` → one `split overlap` → `features checks` → `cta photo` | boutique professionals, brands with a strong line |
+| `booking` | the action first | hero with `form: true` or a `leadbar` → `facts` / `pricelist` → `gallery strip` → `reviews` → FAQ | appointments, rentals, events, delivery |
+| `proof` | evidence before claims | hero → `logos band` → `trust` card → work (`cards framed`, `gallery mosaic`) → `steps` / `route` → `reviews` | trades, contractors, B2B, installers |
+| `story` | chapters of the owner's story | `curve` hero → origin `split frame` → `quote` → method `steps cards` → `team` → place `gallery` | family businesses, craftsmen, farms, small hotels |
+| `catalogue` | the offer as a list | hero → listing `cards` (`price`, `meta`) or `pricelist tiles` high up → `features rows` → FAQ | real estate, shops, menus, fee lists |
+| `gallery` | pictures do the talking | hero `images` slider → `gallery mosaic` / `carousel` → one short `split card` → `faq aside` | photographers, designers, venues, food |
+| `guide` | the audience's questions lead | hero → FAQ or `prose` answers high on the page → each answer links to its service (`cards`) → `posts` | legal, medical, finance, anything people research |
+
+Rules (the validator and `zs pool` enforce them):
+- every new site sets `design.kit` and `design.archetype`;
+- the three gate directions use **three different kits and three different archetypes**, each with its own `home`;
+- a kit or archetype used by one of the **last 3 client sites** is not used again (`zs pool` ERROR);
+- the measured layout must stay under 85% alike against every other client and between the directions.
+
 ## Section variants (`variant` on a section)
 
 | type | variant | what it looks like | source | needs |
@@ -140,9 +163,9 @@ changed: palette (brand brass), hero `curve`, gallery `stagger`".
 
 Template screenshots: `benchmark/zap-template-<n>-full.jpg`.
 
-**The templates' shared language is the default:** header = logo, menu, phone; home order about → services →
-why us → FAQ → form → footer; footer = quick links / services / contact. Deviate on purpose, not by accident.
-Show what the client really has, and nothing they don't:
+**What the templates share is the furniture, not the order:** a header with logo, menu and phone; a form before the
+footer; a footer with quick links, services and contact. The home page's order comes from the archetype (above),
+never from a template. Show what the client really has, and nothing they don't:
 - the social bar shows only the networks the client really has (none → no bar);
 - a WhatsApp button only if there is a WhatsApp number;
 - "מספר מקשר" under the phone only if there is a Zap tracking number.
