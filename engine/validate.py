@@ -41,7 +41,7 @@ def _texts(obj, path=""):
         for k, v in obj.items():
             if k in ("src", "href", "image", "images", "icon", "type", "key", "slug", "anchor", "bg", "category",
                      "related_page", "featured_image", "youtube_url", "kind", "video", "colors", "fonts", "preset", "hero", "header",
-                     "variant", "tier"):
+                     "variant", "tier", "kit", "archetype"):
                 continue
             yield from _texts(v, f"{path}.{k}" if path else k)
     elif isinstance(obj, list):
@@ -311,6 +311,10 @@ def validate(d, site_dir, _dir=None):
             E(f"{path}: dash as punctuation ('{DASH.search(txt).group(0).strip()}'): rewrite with a comma, colon, period or a line break (house rule: no em/en dashes in site copy)")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
+    from sections import KITS
+    for where, dz in [("design", d.get("design", {}))] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
+        if dz.get("kit") and dz["kit"] not in KITS:
+            E(f"{where}.kit '{dz['kit']}' is not a style kit: {', '.join(KITS)}")
     # Gate directions with their own home page: the same checks as the real home, on a copy that uses it.
     if _dir is None:
         seen = set(out)

@@ -57,6 +57,7 @@ Three colourings of one page are not three directions. Then vary what changes ho
 
 | lever | options |
 |---|---|
+| **kit** (first) | `atelier` · `magazine` · `sidebar` · `panels` · `bands` · `quiet` · `frame` · `gallery` (`pool.md` → Style kits): the skeleton. Each direction a different kit |
 | preset | `signature` (dark full-bleed hero, display type, brand part of the H1 on its own line, bento tiles, image wipe-ins, grain, footer wordmark) · `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
 | hero | `split` (text + framed photo) · `image` (full-bleed photo with scrim – needs a strong photo) · `centered` (statement + wide photo band) |
 | header | `light` · `dark` (needs `logo_light`, or the logo sits on a white chip) |
