@@ -138,3 +138,12 @@ add_shortcode('zap_post_extras', function () {
     if ($d = zap_opt('content.disclaimer')) $o .= '<p class="zs-disclaimer">' . esc_html($d) . '</p>';
     return $o;
 });
+
+/* The archive's H1: the blog page's title on the posts page, the category name, or the search query. */
+add_shortcode('zap_archive_title', function () {
+    if (is_home())         $t = get_the_title((int) get_option('page_for_posts'));
+    elseif (is_category()) $t = single_cat_title('', false);
+    elseif (is_search())   $t = 'תוצאות חיפוש: ' . get_search_query();
+    else                   $t = wp_strip_all_tags(get_the_archive_title());
+    return '<h1 class="elementor-heading-title">' . esc_html($t) . '</h1>';
+});

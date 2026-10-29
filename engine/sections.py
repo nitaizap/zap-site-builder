@@ -578,7 +578,7 @@ def archive_template(ctx):
     archive title as H1 and its intro, then the posts as cards."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
-            W(ctx, "theme-archive-title", {"header_size": "h1"}, "zs-hero__title"),
+            W(ctx, "shortcode", {"shortcode": "[zap_archive_title]"}, "zs-hero__title"),
             W(ctx, "shortcode", {"shortcode": "[zap_archive_intro]"}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)
     body = C(ctx, "zs-sec zs-archive-body", [W(ctx, "shortcode", {"shortcode": "[zap_archive_posts]"}, "zs-archive__posts")],
