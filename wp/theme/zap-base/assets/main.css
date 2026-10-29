@@ -1507,6 +1507,8 @@ body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
   html body.zs-hv-image .e-con.zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: 0 !important; }
   html body.zs-hv-image .zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner {
     justify-content: flex-start; --justify-content: flex-start; padding-top: calc(clamp(104px, 22svh, 230px) + 22px) !important; padding-bottom: 36px !important; }
+  /* tone light: the photo is a band in the flow above the text (not behind it), so no space is reserved for it */
+  html body.zs-tone-light.zs-hv-image .zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { padding-top: 22px !important; }
 }
 /* phones: hero text keeps clear of the accessibility button's column (it sits on the left edge under the header) */
 @media (max-width: 767px) {
