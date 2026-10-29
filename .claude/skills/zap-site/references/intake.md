@@ -59,6 +59,29 @@ Only then ask, in one message, for what is left: the privacy-policy details (off
 (direction, Weave budget) and anything private. Every fact you found goes into NOTES.md with its source
 URL, marked "found", so the user sees what you verified.
 
+## Zap's own directories first — the customer id opens all of them
+
+The brief's "מספר לקוח NNNNNNNN" is a Zap customer id, and **every Zap property uses the same id**. Check
+all that fit the business type, every time, before writing a single "not found". Paid for: a restaurant
+reported as "no logo, no socials, no menu, no order link" had all four on rest.co.il and mishlohim.co.il.
+
+| property | URL | gives |
+|---|---|---|
+| Dapei Zahav | `https://www.d.co.il/<id>/` | phones (virtual = Zap tracking), hours, geo, tags |
+| Zap Rest (restaurants, cafés, bars, event halls) | `https://www.rest.co.il/rest/<id>/` | **logo + gallery** (ask WebFetch to list *every* image URL; the logo often sits in the gallery, not the header), own description, kashrut, Facebook/Instagram, delivery + reservation links, delivery phone |
+| Mishlohim (anything that delivers) | `https://www.mishlohim.co.il/menu/<restId>/` (linked from rest.co.il) | **full menu with prices**, delivery fee/time/hours, small logo |
+| links found there | Instagram, Facebook, Tabit, Wolt… | follow each one; Instagram/Facebook/Tabit usually block bots, so record the link and say what could not be read |
+
+- WebFetch summarises: ask it explicitly for "every image URL verbatim" and "every external link".
+- Directory hours/phones often differ from the brief. Show the conflict; the user decides (usually: phone
+  from Dapei Zahav = Zap tracking number, hours from the brief).
+- WebSearch is US-only and finds almost nothing for small Hebrew businesses. A failed search proves nothing.
+- Google Drive folders from the brief: if Drive search returns nothing, list the shared folder with
+  `curl -sL "https://drive.google.com/embeddedfolderview?id=<folderId>"` (recurse into subfolders) and
+  download with `https://drive.usercontent.google.com/download?id=<fileId>&export=download&confirm=t`.
+- "Not found" in a message to the user must name every place you looked. If the list above isn't
+  exhausted, you are not done researching.
+
 ## Research the business (read-only)
 
 The default is: **find it, cite it, then ask only what research could not settle.** Run this as a

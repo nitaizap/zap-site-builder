@@ -18,7 +18,9 @@
   "area_served": [
    "השרון"
   ],
-  "instagram": "https://www.instagram.com/_the_white_villa"
+  "instagram": "https://www.instagram.com/_the_white_villa",
+  "phone_is_virtual": true,
+  "phone_regular": "054-6666662"
  },
  "standards": {
   "privacy_url": "",
@@ -305,7 +307,7 @@
    "sections": [
     {
      "type": "hero",
-     "title": "הוילה הלבנה",
+     "title": "הוילה הלבנה ינוב",
      "lead": "וילה פרטית לנופש ואירועים בשרון: 3.5 דונם של טבע, בריכה חצי־אולימפית ופרטיות מלאה במושב ינוב.",
      "cta": {
       "label": "להזמנת הווילה",
@@ -740,7 +742,7 @@
    "sections": [
     {
      "type": "hero",
-     "title": "אודות",
+     "title": "אודות הוילה הלבנה",
      "lead": "מתחם נופש ואירועים בשרון: 3.5 דונם של טבע, מרחבים ופרטיות במושב ינוב הפסטורלי.",
      "image": "villagarden",
      "variant": "inset"
@@ -888,5 +890,6 @@
  ],
  "logo": "assets/logo.png",
  "tier": "standard",
- "logo_light": "assets/logo-light.png"
+ "logo_light": "assets/logo-light.png",
+ "favicon": "assets/favicon.png"
 }

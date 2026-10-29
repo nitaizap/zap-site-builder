@@ -1,6 +1,6 @@
 # SEO QA — הוילה הלבנה ינוב
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 31 pass, 0 fail, 5 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 39 rows: 32 pass, 0 fail, 5 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -8,7 +8,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 31 pass, 0 fa
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 2 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link /הצהרת-נגישות/ |
 | 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ✅ PASS | blog page yes, 3 posts |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 48 images |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 49 images |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 38 images, 0 marked AI; compare with the client's folder from the spec |
@@ -34,9 +34,10 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8740 · 38 rows: 31 pass, 0 fa
 | 30 | תבניות | טמפלט תוצאות חיפוש עם רשימת פוסטים | ✅ PASS | HTTP 200 |
 | +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 055-4309532, shimon@ashrh.co.il, מורד התאנה 29, ינוב; compare with the spec |
 | +2 | כללי | לוגו זאפ בפוטר + קישור לאתר זאפ | ✅ PASS |  |
-| +3 | כללי | H1 בדף הבית כולל את שם הלקוח | ✅ PASS | הוילה הלבנה |
+| +3 | כללי | H1 בדף הבית = שם הלקוח בלבד | ✅ PASS | הוילה הלבנה ינוב |
+| +7 | כללי | פורמט Title: "<לקוח> | <עמוד>" | ✅ PASS | all titles start with the client name |
 | +4 | כללי | עמוד פנימי שונה מפוסט | ✅ PASS | pages render through Elementor page layouts, posts through single.php |
-| +5 | כללי | מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח | ✅ PASS | privacy title: הוילה הלבנה ינוב / מדיניות פרטיות; accessibility = Zap central page |
+| +5 | כללי | מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח | ✅ PASS | privacy title: הוילה הלבנה ינוב / מדיניות פרטיות; accessibility title: הוילה הלבנה ינוב / הצהרת נגישות |
 | +6 | כללי | נראות במובייל ובמחשב נייד 1280 | 👁 MANUAL | zs qa measures 1440 + 390 and the hero at 1280×620; look at 1280 once by eye |
 | +7 | כללי | שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות | ✅ PASS | legal name: הוילה הלבנה ינוב |
 | +8 | כללי | מייל הטפסים ושם האתר מוגדרים נכון | ✅ PASS | leads → shimon@ashrh.co.il; subject carries the site name; staging never mails the client |

@@ -21,12 +21,15 @@ while (have_posts()) : the_post();
   <?php endif; ?>
   <div class="zs-wrap zs-wrap--narrow zs-prose"><?php the_content(); ?></div>
   <?php $faq = json_decode((string) get_post_meta(get_the_ID(), '_zap_faq', true), true);
-  if (is_array($faq) && $faq) : /* the same questions the FAQPage schema carries, shown on the page */ ?>
-  <section class="zs-wrap zs-wrap--narrow zs-post__faq" aria-labelledby="zs-post-faq">
+  if ($faq) : // the post's FAQ is shown as well as in the FAQPage schema (the two must match) ?>
+  <section class="zs-wrap zs-wrap--narrow zs-post__faq zs-faq__list" aria-labelledby="zs-post-faq">
     <h2 id="zs-post-faq">שאלות נפוצות</h2>
-    <?php foreach ($faq as $it) : ?>
-    <details class="zs-faq__item"><summary><?php echo esc_html($it['q'] ?? ''); ?></summary><div class="zs-faq__a"><?php echo wp_kses_post(wpautop($it['a'] ?? '')); ?></div></details>
-    <?php endforeach; ?>
+    <div class="elementor-toggle">
+      <?php foreach ($faq as $f) : ?>
+      <details class="elementor-toggle-item"><summary class="elementor-tab-title"><?php echo esc_html($f['q'] ?? ''); ?></summary>
+        <div class="elementor-tab-content"><p><?php echo esc_html($f['a'] ?? ''); ?></p></div></details>
+      <?php endforeach; ?>
+    </div>
   </section>
   <?php endif; ?>
   <div class="zs-wrap zs-wrap--narrow">

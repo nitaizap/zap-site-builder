@@ -137,7 +137,7 @@ body:not(.zs-p-signature) {
   /* lead band light: the page ends brand-colour CTA -> light form -> dark footer (never three dark blocks) */
   & .zs-leadband { background: var(--c-surface); color: var(--c-text); }
   & .zs-leadband::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 14%, transparent), transparent); opacity: 1; }
-  & .zs-leadband h2, & .zs-leadband__or a { color: var(--c-ink); }
+  & .zs-leadband :is(h2, .zs-leadband__h, .zs-leadband__title .elementor-heading-title), & .zs-leadband__or a { color: var(--c-ink); }
   & .zs-leadband .zs-form { background: var(--c-bg); padding: clamp(20px, 3vw, 34px); border-radius: var(--r-lg); box-shadow: var(--shadow); color: var(--c-ink); }
   & .zs-leadband .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }
   & .zs-leadband .zs-form__submit:hover { background: color-mix(in srgb, var(--c-primary) 86%, #000); color: var(--c-primary-ink); }

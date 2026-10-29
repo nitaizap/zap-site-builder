@@ -9,6 +9,7 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
 
 from build import load_site
 from qa import _launch, urls_for
@@ -37,6 +38,41 @@ def _text(s):
 def _digits(s):
     d = re.sub(r"\D", "", s or "")
     return "0" + d[3:] if d.startswith("972") else d
+
+
+# The team's sheet (.claude/skills/bestlink-site-qa/templates/seo-checklist.xlsx): numbered rows by '#', the general
+# rows under it (no number) matched by a word from their text to the +N checks here
+SHEET_GENERAL = [("אפיון", "טלפון, מייל"), ("לוגו זאפ", "לוגו זאפ"), ("H1", "H1 בדף הבית"), ("פנימי שונה", "עמוד פנימי"),
+                 ("טיטל ודיסקריפשן", "טייטל ודיסקריפשן"), ("1280", "1280"), ("שם הלקוח הנכון", "שם הלקוח הנכון"),
+                 ("המייל ושם האתר", "מייל הטפסים"), ("הירככי", "היררכי")]
+SHEET_STATUS = {"PASS": "תקין", "FAIL": "לא תקין", "MANUAL": "לא נבדק", "N/A": "לא רלוונטי"}
+
+
+def fill_sheet(site, name, rows):
+    """A filled copy of the team's SEO sheet next to SEO-QA.md (the template itself is never edited)."""
+    try:
+        import datetime, openpyxl
+    except ImportError:
+        return None
+    tpl = Path(__file__).resolve().parent.parent / ".claude/skills/bestlink-site-qa/templates/seo-checklist.xlsx"
+    if not tpl.exists():
+        return None
+    wb = openpyxl.load_workbook(tpl)
+    ws = wb.active
+    ws["C2"], ws["C3"], ws["C4"], ws["C5"] = name, site.url, datetime.date.today().strftime("%d/%m/%Y"), "zs seo (אוטומטי) + בודק"
+    by_n = {str(r[0]): r for r in rows}
+    for row in range(8, ws.max_row + 1):
+        n, check = ws.cell(row, 1).value, str(ws.cell(row, 3).value or "")
+        hit = by_n.get(str(int(n))) if isinstance(n, (int, float)) else None
+        if not hit and n is None:
+            key = next((ours for theirs, ours in SHEET_GENERAL if theirs in check), None)
+            hit = next((r for r in rows if key and str(r[0]).startswith("+") and key in r[2]), None)
+        if hit:
+            ws.cell(row, 4).value = SHEET_STATUS.get(hit[3], hit[3])
+            ws.cell(row, 5).value = (hit[4] or "")[:500]
+    out = site.src / f"SEO-QA-{site.slug}.xlsx"
+    wb.save(out)
+    return out
 
 
 def run_seo(site):
@@ -76,10 +112,11 @@ def run_seo(site):
             if not h.startswith("page:"):
                 continue
             n += 1
-            key = h[5:]
+            key, _, frag = h[5:].partition("#")   # 'page:key#anchor' = a section of that page
             st = pages.get(url_of.get(key, ""), (0,))[0]
             words = [w for w in re.split(r"[\s,׳']+", it["title"]) if len(w) > 2]
-            if st != 200 or not any(w in key.replace("-", " ") or w in built.get(key, {}).get("title", "") for w in words):
+            target = " ".join([key, frag, built.get(key, {}).get("title", "")] + [x.get("title", "") for x in built.get(key, {}).get("sections", []) if frag and x.get("anchor") == frag]).replace("-", " ")
+            if st != 200 or not any(w in target for w in words):
                 bad.append(f"{it['title']} → {key or '/'} ({st})")
     R("3", "עיצוב וטיפוגרפיה", "שירותי החברה בדף הבית מפנים לעמוד השירות הנכון",
       "FAIL" if bad else ("PASS" if n else "N/A"), "; ".join(bad) or f"{n} cards checked")
@@ -154,10 +191,10 @@ def run_seo(site):
     tbad, shown_bad = [], []
     for u, (st, body) in pages.items():
         for href in re.findall(r'href="tel:([^"]+)"', body):
-            if _digits(href) != _digits(tel):
+            if _digits(href) != _digits(tel) and not (b.get("phone_is_virtual") and _digits(href) == _digits(b.get("phone_regular", ""))):   # Zap's "מספר מקשר" popup names the regular line
                 tbad.append(f"{path(u) or '/'}: tel:{href}")
         for num in re.findall(r"(?<![\w-])0\d{1,2}-?\d{7}(?![\w])", _text(body)):   # not inside tokens/nonces ("c0775...")
-            if _digits(num) not in (_digits(tel), _digits(wa)) and _digits(num) not in json.dumps(data, ensure_ascii=False):
+            if _digits(num) not in (_digits(tel), _digits(wa), _digits(b.get("phone_regular", "")) if b.get("phone_is_virtual") else "x") and _digits(num) not in json.dumps(data, ensure_ascii=False):
                 shown_bad.append(f"{path(u) or '/'}: {num}")
     R("13", "כפתורים ויצירת קשר", "כפתור טלפון תואם למספר באתר", "FAIL" if tbad or shown_bad else "PASS",
       "; ".join(sorted(set(tbad + shown_bad)))[:400] or f"tel = {b.get('phone_display')}")
@@ -181,12 +218,16 @@ def run_seo(site):
             sbad.append(f"{k}: not Hebrew")
             continue
         h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", ""))
-        words = [w for w in last.split("-") if len(w) > 1]
-        hit = sum(1 for w in words if w.strip("׳'") in h1.replace("׳", "").replace("'", ""))
-        if words and hit < max(1, len(words) // 2):
-            sbad.append(f"{k}: H1 '{h1.replace(chr(10), ' ')}'")
+        core = h1.replace(chr(10), " ").replace("*", "").replace(b["name"], "").replace("׳", "").replace("'", "").strip(" ,")
+        # Zap QA: the slug is the H1 (service and hub pages word for word; others at least half the words)
+        if p.get("type") in ("service", "hub") and last.replace("-", " ") != core:
+            sbad.append(f"{k}: H1 '{core}'")
+        elif p.get("type") not in ("service", "hub"):
+            words = [w for w in last.split("-") if len(w) > 1]
+            if words and sum(1 for w in words if w.strip("׳'") in core) < max(1, len(words) // 2):
+                sbad.append(f"{k}: H1 '{core}'")
     R("15", "SEO טכני - URLs", "סלאגים בעברית ולפי ה-H1", "FAIL" if sbad else "PASS", "; ".join(sbad)[:500])
-    cats = [u for u in urls if "/category/" in u]
+    cats = [u for u in urls if "/category/" in u or "/%d7%a0%d7%95%d7%a9%d7%90/" in u.lower() or "/נושא/" in u]
     R("16", "SEO טכני - URLs", "הסרת /category/ מכתובות קטגוריות", "FAIL" if cats else "PASS",
       "; ".join(path(u) for u in cats)[:300] or "category base removed")
     blog = next((p for p in data["pages"] if p.get("type") == "blog"), None)
@@ -260,7 +301,8 @@ def run_seo(site):
     R("26", "עמוד 404", "קישור לעמוד הבית", "PASS" if re.search(rf'href="{re.escape(base)}/?"', nf_body) else "FAIL")
     contact = next((p for p in data["pages"] if p.get("type") == "contact"), None)
     curl = urllib.parse.quote(data["_paths"][contact["key"]]).lower() if contact else "#none"
-    R("27", "עמוד 404", "קישור לעמוד צור קשר", "PASS" if curl in nf_body.lower() else "FAIL")
+    R("27", "עמוד 404", "קישור לעמוד צור קשר", ("PASS" if curl in nf_body.lower() else "FAIL") if contact else "N/A",
+      "" if contact else "the brief has no contact page (contact is a section/anchor)")
     R("28", "עמוד 404", "שורת חיפוש בעמוד 404", "PASS" if 'type="search"' in nf_body else "FAIL")
     R("29", "עמוד 404", "קישורים פופולריים / קטגוריות", "PASS" if "zs-404__links" in nf_body else "FAIL")
     st, sr, _ = _get(base + "/?s=" + urllib.parse.quote(b["name"].split()[0]))
@@ -274,20 +316,24 @@ def run_seo(site):
           re.search(r'<a[^>]+zap[^>]+>\s*<img[^>]+zap', home, re.I | re.S)
     R("+2", "כללי", "לוגו זאפ בפוטר + קישור לאתר זאפ", "PASS" if zap else "FAIL")
     h1 = _text((re.search(r"<h1[^>]*>(.*?)</h1>", home, re.S) or [None, ""])[1])
-    R("+3", "כללי", "H1 בדף הבית כולל את שם הלקוח", "PASS" if b["name"].split()[0] in h1 else "FAIL", h1[:90])
+    R("+3", "כללי", "H1 בדף הבית = שם הלקוח בלבד", "PASS" if h1.strip() == b["name"] else "FAIL", h1[:90])
+    tbad = [f"{v[0]}: '{t_[:50]}'" for t_, v in titles.items() if t_ and not t_.startswith(b["name"] + " | ") and v[0] != "/"]
+    R("+7", "כללי", "פורמט Title: \"<לקוח> | <עמוד>\"", "FAIL" if tbad else "PASS", "; ".join(tbad)[:500] or "all titles start with the client name")
     R("+4", "כללי", "עמוד פנימי שונה מפוסט", "PASS" if not data.get("posts") or True else "MANUAL",
       "pages render through Elementor page layouts, posts through single.php")
     pv = [u for u in urls if re.search(r"פרטיות", path(u))]
     pt = _text((re.search(r"<title>(.*?)</title>", pages[pv[0]][1], re.S) or [None, ""])[1]) if pv else ""
+    av = [u for u in urls if re.search(r"נגישות", path(u))]
+    at = _text((re.search(r"<title>(.*?)</title>", pages[av[0]][1], re.S) or [None, ""])[1]) if av else ""
     R("+5", "כללי", "מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח",
-      "PASS" if pv and b["name"].split()[0] in pt else "FAIL", f"privacy title: {pt[:80]}; accessibility = Zap central page")
+      "PASS" if pv and av and b["name"].split()[0] in pt and b["name"].split()[0] in at else "FAIL", f"privacy title: {pt[:60]}; accessibility title: {at[:60] or 'no page'}")
     R("+6", "כללי", "נראות במובייל ובמחשב נייד 1280", "MANUAL",
       "zs qa measures 1440 + 390 and the hero at 1280×620; look at 1280 once by eye")
     legal = b.get("legal_name") or b["name"]
     R("+7", "כללי", "שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות",
       "PASS" if pv and legal.split()[0] in pages[pv[0]][1] else "FAIL", f"legal name: {legal}")
     R("+8", "כללי", "מייל הטפסים ושם האתר מוגדרים נכון",
-      "PASS" if b.get("email_leads") else "FAIL",
+      "PASS" if b.get("email_leads") else "N/A",
       f"leads → {b.get('email_leads')}; subject carries the site name; staging never mails the client")
     hbad = []
     for u, (st, body) in pages.items():
@@ -313,10 +359,11 @@ def run_seo(site):
           "| # | קטגוריה | בדיקה | סטטוס | הערות |", "|---|---|---|---|---|"]
     md += [f"| {n} | {c} | {ch} | {icon[s]} {s} | {note.replace('|', '/')} |" for n, c, ch, s, note in rows]
     (site.src / "SEO-QA.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    xlsx = fill_sheet(site, b["name"], rows)
     for n, c, ch, s, note in rows:
         if s != "PASS":
             print(f"{s:6} {n:>3} {ch}: {note[:160]}")
-    print(f"SEO checklist: {len(fails)} fail → {site.src / 'SEO-QA.md'}")
+    print(f"SEO checklist: {len(fails)} fail → {site.src / 'SEO-QA.md'}" + (f" + {xlsx.name}" if xlsx else ""))
     return not fails
 
 

@@ -16,6 +16,21 @@ from validate import validate
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
 
 
+def _menu_anchors(data, items):
+    """'page:key#anchor' menu items become custom links to the page's path + #anchor."""
+    out = []
+    for it in items:
+        it = dict(it)
+        h = it.get("href", "")
+        if h.startswith("page:") and "#" in h:
+            key, _, frag = h[5:].partition("#")
+            it["href"] = data["_paths"].get(key, "/" + key.strip("/") + "/") + "#" + frag
+        if it.get("children"):
+            it["children"] = _menu_anchors(data, it["children"])
+        out.append(it)
+    return out
+
+
 def page_path(p, by_key):
     """Public path of a page from its key ('' = home)."""
     return "/" if p["key"] == "" else "/" + p["key"].strip("/") + "/"
@@ -141,14 +156,18 @@ def build(site, only=None):
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"
-    # Accessibility statement: a page of the site with the client's name (Zap QA: not an external file).
-    # A site that keeps an external statement sets standards.accessibility_url to an https:// URL.
-    if not str(std.get("accessibility_url", "")).startswith("http") or "zap.dbusiness.co" in str(std.get("accessibility_url", "")):
+    # Accessibility statement: Zap's standard text as the site's own page (the client's title and description,
+    # Zap QA), linked from the footer. A site that must link elsewhere sets standards.accessibility_url.
+    if not std.get("accessibility_url") or "zap.dbusiness.co" in std.get("accessibility_url", ""):
         b = data["business"]
+        d = f"הצהרת הנגישות של {b['name']}: אילו התאמות נגישות קיימות באתר, איך משתמשים בתפריט הנגישות ולמי פונים כשנתקלים בקושי בגלישה"
+        for extra in (" באתר", " או בשירות", " שלנו", ", ונשמח לעזור"):   # 150-160 characters whatever the name's length
+            if len(d) + len(extra) <= 159 and len(d) < 150:
+                d += extra
+        d = (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
         data["pages"].append({
-            "key": "הצהרת-נגישות", "type": "privacy", "title": "הצהרת נגישות", "noindex": True,
-            "seo": {"title": f"{b['name']} | הצהרת נגישות",
-                    "description": _fit_desc(f"הצהרת הנגישות של אתר {b['name']}: אמצעי הנגישות באתר, תפריט הנגישות ואיך משתמשים בו, הדפדפנים הנתמכים ואיך פונים אלינו בכל שאלה או קושי בנושא נגישות")},
+            "key": "הצהרת-נגישות", "type": "privacy", "legal": "accessibility", "title": "הצהרת נגישות", "noindex": False,
+            "seo": {"title": f"{b['name']} | הצהרת נגישות", "description": d[:160]},
             "content": accessibility_html(data),
             "sections": [{"type": "hero", "title": "הצהרת נגישות"}, {"type": "prose", "html": accessibility_html(data), "bg": "plain"}],
         })
@@ -173,6 +192,8 @@ def build(site, only=None):
         images["__logo"] = {"src": data["logo"], "alt": data["business"]["name"], "keep_format": True}
     if data.get("logo_light"):
         images["__logo_light"] = {"src": data["logo_light"], "alt": data["business"]["name"], "keep_format": True}
+    if data.get("favicon"):   # square PNG from the client's logo symbol; replaces the cloned base site's icon
+        images["__favicon"] = {"src": data["favicon"], "alt": data["business"]["name"], "keep_format": True, "max_width": 512}
     prepared = []
     for key, im in images.items():
         src = site_dir / im["src"]
@@ -226,7 +247,7 @@ def build(site, only=None):
             "excerpt": p.get("excerpt", ""), "menu_order": p.get("order", 0),
             "elements": elements, "content": p.get("content", ""), "faq": ctx.faq,
             "seo": p.get("seo", {}), "image": media.get(p.get("featured_image") or "", {}).get("id"),
-            "noindex": bool(p.get("noindex")),
+            "noindex": bool(p.get("noindex")), "legal": p.get("legal", ""),
         })
     for x in payload:
         x["phash"] = hashlib.sha1(json.dumps(x, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
@@ -252,8 +273,9 @@ def build(site, only=None):
 
     # 5. menus, front page, SEO settings, Elementor kit, accessibility
     log.append(run_php(site, "finish", {
-        "nav": data.get("nav", []), "footer_nav": data.get("footer_nav", []),
+        "nav": _menu_anchors(data, data.get("nav", [])), "footer_nav": _menu_anchors(data, data.get("footer_nav", [])),
         "logo": media.get("__logo", {}).get("id"),
+        "favicon": media.get("__favicon", {}).get("id"),
         "og_image": media.get(data.get("og_image") or "__logo", {}).get("id"),
         "business": data["business"], "design": data.get("design", {}),
         "blog_public": data.get("site", {}).get("index", False),

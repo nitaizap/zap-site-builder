@@ -155,14 +155,21 @@ function zs_task_pages($p) {
             update_option('page_on_front', $id);
         }
         if ($pg['type'] === 'blog') update_option('page_for_posts', $id);
-        if ($pg['type'] === 'privacy') update_option('wp_page_for_privacy_policy', $id);
+        if ($pg['type'] === 'privacy' && empty($pg['legal'])) update_option('wp_page_for_privacy_policy', $id);
     }
-    // Report pages that exist on the site but are no longer in site.json (never auto-deleted).
+    // Report pages that exist on the site but are no longer in site.json (the engine's own pages are drafted below).
     $known = array_values($ids);
     foreach ($p['all_keys'] ?? [] as $k) { $kid = zs_find('page', $k); if ($kid) $known[] = $kid; }   // batched builds
     $orphans = get_posts(['post_type' => 'page', 'post_status' => 'publish', 'numberposts' => -1, 'fields' => 'ids',
                           'post__not_in' => $known ?: [0]]);
-    echo "pages: $made created, $updated updated" . ($orphans ? ', orphans not in site.json: ' . implode(',', $orphans) : '') . "\n";
+    // A page this engine built (it carries _zs_key) whose key left site.json (a renamed URL) goes to draft, so the
+    // old URL never stays live beside the new one; pages the engine did not build are only reported.
+    $drafted = [];
+    foreach ($orphans as $oid) {
+        if (get_post_meta($oid, '_zs_key', true) !== '') { wp_update_post(['ID' => $oid, 'post_status' => 'draft']); $drafted[] = $oid; }
+    }
+    $orphans = array_diff($orphans, $drafted);
+    echo "pages: $made created, $updated updated" . ($orphans ? ', orphans not in site.json: ' . implode(',', $orphans) : '') . ($drafted ? ', renamed/removed pages drafted: ' . implode(',', $drafted) : '') . "\n";
 }
 
 /* ---------------- posts ---------------- */
@@ -180,8 +187,14 @@ function zs_task_posts($p) {
         }
     }
     // 'Uncategorized' must not stay as an indexable archive.
-    $unc = get_term_by('slug', 'uncategorized', 'category');
-    if ($unc && $cats) { update_option('default_category', reset($cats)); wp_delete_term($unc->term_id, 'category'); }
+    // Nor may a category left over from the cloned base site (a Latin slug, e.g. /blog/) that site.json does not own.
+    if ($cats) {
+        update_option('default_category', reset($cats));
+        foreach (get_terms(['taxonomy' => 'category', 'hide_empty' => false]) as $t) {
+            if (in_array($t->term_id, $cats, true)) continue;
+            if ($t->slug === 'uncategorized' || preg_match('/^[a-z0-9-]+$/', urldecode($t->slug))) wp_delete_term($t->term_id, 'category');
+        }
+    }
 
     $n = 0;
     foreach ($p['posts'] as $po) {
@@ -239,6 +252,9 @@ function zs_menu($name, $location, $items) {
 }
 
 function zs_task_finish($p) {
+    // Elementor's per-document HTML cache can outlive a rebuild (a fresh site served its header without the
+    // menu and burger until it was cleared): drop it every build, Elementor regenerates it on the next view
+    delete_post_meta_by_key('_elementor_element_cache');
     if ($p['nav'])        zs_menu('ראשי', 'primary', $p['nav']);
     if ($p['footer_nav']) zs_menu('פוטר', 'footer', $p['footer_nav']);
 
@@ -249,6 +265,7 @@ function zs_task_finish($p) {
             update_option('site_icon', (int) $p['logo']);
         }
     }
+    if (!empty($p['favicon'])) update_option('site_icon', (int) $p['favicon']);   // never keep the clone's icon
     update_option('blog_public', $p['blog_public'] ? '1' : '0');
 
     // Hebrew URLs only (Zap checklist: no /category/, no English bases):
@@ -257,12 +274,11 @@ function zs_task_finish($p) {
     if ($blog) {
         $base = urldecode(get_post_field('post_name', $blog));
         update_option('permalink_structure', '/' . $base . '/%postname%/');
-        update_option('category_base', 'נושא');
+        update_option('category_base', '');   // no base in category URLs (Zap checklist); Yoast strips it
         update_option('tag_base', 'תגית');
     } else {
         update_option('permalink_structure', '/%postname%/');
     }
-    flush_rewrite_rules(true);
 
     // Yoast
     $b = $p['business'];
@@ -281,12 +297,16 @@ function zs_task_finish($p) {
         'disable-post_format' => true,
         'disable-attachment' => true,
         'noindex-tax-post_tag' => true,
-        'title-404-wpseo' => 'העמוד לא נמצא %%sep%% %%sitename%%',
-        'title-tax-category' => '%%term_title%% %%sep%% %%sitename%%',
+        'title-404-wpseo' => '%%sitename%% %%sep%% העמוד לא נמצא',
+        'title-tax-category' => '%%sitename%% %%sep%% %%term_title%%',   // Zap: "<client> | <page>"
+        'title-post' => '%%sitename%% %%sep%% %%title%%',
+        'title-page' => '%%sitename%% %%sep%% %%title%%',
         'metadesc-tax-category' => '%%category_description%%',
-        'stripcategorybase' => false,
+        'stripcategorybase' => true,
     ]);
     update_option('wpseo_titles', $t);
+    flush_rewrite_rules(true);   // after Yoast: stripcategorybase adds its own rules
+    update_option('zs_flush_rewrites', 1);   // and once more on the next request, when Yoast's rewrite filters are loaded
     $s = get_option('wpseo_social', []);
     if (!empty($p['og_image'])) {
         $s['og_default_image'] = wp_get_attachment_url((int) $p['og_image']);
