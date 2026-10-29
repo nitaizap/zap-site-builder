@@ -73,6 +73,14 @@ def export(site, out_zip=None):
             t = re.sub(r'<link rel="preload"[^>]+as="font"[^>]*>\s*', "", t)
             t = t.replace(base + "/", pre).replace(base.replace("/", "\\/") + "\\/", pre.replace("/", "\\/"))
             t = t.replace(base, pre or "./")
+            # links wget left as directories ('%D7..%/', 'x/#anchor'): point them at the exported index.html
+            def _dir_link(m, here=f.parent):
+                path, frag = m.group(2), m.group(3) or ""
+                local = urllib.parse.unquote(path)
+                if (here / local / "index.html").is_file():
+                    return f'{m.group(1)}="{local}index.html{frag}"'
+                return m.group(0)
+            t = re.sub(r'(href)="((?![a-z]+:|/|#)[^"#?]*/)(#[^"]*)?"', _dir_link, t)
             if NOTE not in t:
                 t = t.replace("</body>", NOTE + "</body>", 1)
         if t != o:

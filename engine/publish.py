@@ -20,7 +20,7 @@ GIT_LIMIT = 95 * 1048576     # GitHub rejects files over 100 MB
 
 
 def _latest_zip(slug):
-    zips = sorted(DIST.glob(f"{slug}-*.zip"), key=lambda p: p.stat().st_mtime)
+    zips = sorted((z for z in DIST.glob(f"{slug}-*.zip") if not z.name.endswith("-preview.zip")), key=lambda p: p.stat().st_mtime)
     if not zips:
         raise SystemExit(f"no package for {slug}. Run: zs package {slug} --domain https://...")
     return zips[-1]
