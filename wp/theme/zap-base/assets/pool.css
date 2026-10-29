@@ -298,7 +298,7 @@ body .zs-tile--a .zs-b-primary .elementor-button { background: var(--c-accent); 
 /* SEO checklist #12: a floating WhatsApp button on every page, desktop too (phones keep the call/WhatsApp bar) */
 @media (min-width: 768px) {
   .zs-fab:has(.zs-fab__wa) { display: block; position: fixed; inset: auto auto 24px 24px; z-index: 90; }
-  .zs-fab .zs-fab__call { display: none; }
+  .zs-fab :is(.zs-fab__call, .zs-fab__x) { display: none; }
   .zs-fab .zs-fab__wa { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: #157f3f; color: #fff; box-shadow: 0 10px 24px -8px rgb(0 0 0 / .45); }
   .zs-fab .zs-fab__wa svg { width: 28px; height: 28px; }
   .zs-fab .zs-fab__wa span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

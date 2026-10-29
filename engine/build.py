@@ -16,6 +16,21 @@ from validate import validate
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
 
 
+def _menu_anchors(data, items):
+    """'page:key#anchor' menu items become custom links to the page's path + #anchor."""
+    out = []
+    for it in items:
+        it = dict(it)
+        h = it.get("href", "")
+        if h.startswith("page:") and "#" in h:
+            key, _, frag = h[5:].partition("#")
+            it["href"] = data["_paths"].get(key, "/" + key.strip("/") + "/") + "#" + frag
+        if it.get("children"):
+            it["children"] = _menu_anchors(data, it["children"])
+        out.append(it)
+    return out
+
+
 def page_path(p, by_key):
     """Public path of a page from its key ('' = home)."""
     return "/" if p["key"] == "" else "/" + p["key"].strip("/") + "/"
@@ -255,7 +270,7 @@ def build(site, only=None):
 
     # 5. menus, front page, SEO settings, Elementor kit, accessibility
     log.append(run_php(site, "finish", {
-        "nav": data.get("nav", []), "footer_nav": data.get("footer_nav", []),
+        "nav": _menu_anchors(data, data.get("nav", [])), "footer_nav": _menu_anchors(data, data.get("footer_nav", [])),
         "logo": media.get("__logo", {}).get("id"),
         "favicon": media.get("__favicon", {}).get("id"),
         "og_image": media.get(data.get("og_image") or "__logo", {}).get("id"),

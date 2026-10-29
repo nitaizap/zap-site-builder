@@ -1,7 +1,8 @@
 # Zap SEO QA checklist — `zs seo`
 
 The team's SEO QA sheet ("צ'קליסט SEO", 22/10/2026), made executable. `bin/zs seo <slug>` crawls the built site
-and writes `sites/<slug>/SEO-QA.md`: every row of the sheet in order, ✅ PASS / ❌ FAIL / 👁 MANUAL / — N/A.
+and writes `sites/<slug>/SEO-QA.md` plus the team's own sheet filled in (`SEO-QA-<slug>.xlsx`, from
+`.claude/skills/bestlink-site-qa/templates/seo-checklist.xlsx`; status תקין / לא תקין / לא נבדק + notes): every row of the sheet in order, ✅ PASS / ❌ FAIL / 👁 MANUAL / — N/A.
 **Done = `zs qa` 0 errors AND `zs seo` 0 FAIL**, and every 👁 row looked at by you, with one line in NOTES.md.
 
 | # | row | how it is checked / what the engine does |

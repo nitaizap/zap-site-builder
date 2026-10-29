@@ -51,7 +51,9 @@ class Ctx:
         if not h:
             return ""
         if h.startswith("page:"):
-            return self.site["_paths"].get(h[5:], "/" + h[5:].strip("/") + "/")
+            key, _, frag = h[5:].partition("#")
+            path = self.site["_paths"].get(key, "/" + key.strip("/") + "/")
+            return path + ("#" + frag if frag else "")
         if h.startswith("post:"):
             return self.site["_post_paths"].get(h[5:], "/")
         if h == "tel":
@@ -297,7 +299,7 @@ def features(ctx, s):
     n = s.get("columns", 4 if len(s["items"]) % 4 == 0 else 3)
     items = [C(ctx, "zs-feature", [
         W(ctx, "icon", {"selected_icon": fa_icon(it.get("icon", "check"))}, "zs-feature__icon"),
-        heading(ctx, it["title"], "h3", "zs-feature__title"),
+        heading(ctx, it["title"], "p", "zs-feature__title"),   # advantages titles are not headings (Zap QA: no H3 in יתרונות)
         text(ctx, it.get("text"), "zs-feature__text"),
     ]) for it in s["items"]]
     if s.get("variant") == "aside":

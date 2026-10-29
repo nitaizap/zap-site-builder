@@ -1427,11 +1427,15 @@ body.zs-tone-light.zs-motif-gables .zs-eyebrow .elementor-heading-title::before 
 .zs-motif-gables .zs-leadband::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 16px; background: color-mix(in srgb, var(--c-primary) 22%, transparent); -webkit-mask: var(--zs-gables) top left / 44px 16px repeat-x; mask: var(--zs-gables) top left / 44px 16px repeat-x; transform: scaleY(-1); pointer-events: none; }
 
 /* accent too close to primary/dark (body.zs-accent-low, set from measured contrast in functions.php) */
-.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent, .zs-cta, .zs-hero--img, .zs-trust--band) .zs-eyebrow .elementor-heading-title,
-.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent, .zs-cta, .zs-hero--img, .zs-trust--band) .elementor-heading-title :is(.zs-hl, .zs-dot) { color: #fff; }
+/* the photo hero and the CTA band are dark grounds only outside tone: light (there they are ivory) */
+.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent, .zs-trust--band) .zs-eyebrow .elementor-heading-title,
+body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .zs-eyebrow .elementor-heading-title,
+.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent, .zs-trust--band) .elementor-heading-title :is(.zs-hl, .zs-dot),
+body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .elementor-heading-title :is(.zs-hl, .zs-dot) { color: #fff; }
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon { color: #fff; fill: #fff; }
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon svg { fill: #fff; }
-.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent, .zs-cta, .zs-hero--img) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; box-shadow: none; }
+.zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-b-primary .elementor-button,
+body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; box-shadow: none; }
 .zs-accent-low .zs-bg-accent .zs-b-primary .elementor-button { color: var(--c-accent); }
 
 /* phones: the image hero stacks photo + text, so a screen-height minimum only adds an empty band */
