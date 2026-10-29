@@ -27,13 +27,13 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | type | variant | what it looks like | source | needs |
 |---|---|---|---|---|
 | `split` | *(default)* | text + photo, optional badge, arch/square shape | engine | |
-| `hero` | `cover` *(per section; overrides the site's hero layout)* | full-bleed photo, centred statement, `logo: true` puts the logo above the H1 (white chip without `logo_light`) | kira, both Wix restaurant sites | `image` |
+| `hero` | `cover` *(per section; overrides the site's hero layout)* | full-bleed photo, centred statement, `logo: true` puts the logo above the H1 (white chip without `logo_light`) | basic-site references | `image` |
 | `hero` | `inset` | the cover hero as a rounded card inside the page margins | template 2 | `image` |
 | `hero` | `curve` | full-bleed photo hero with a curved bottom edge, text at the start side | template 4 | `image` |
 | `split` | `card` | light text card overlapping the photo (shadow, rounded) | templates 3, 5 | `image` |
 | `split` | `duo` | tall photo with a second smaller photo overlapping its corner + an accent block | template 4 | `image`, `image2` |
 | `split` | `image_shape: "hex"` *(shape, not a variant; combines with any split)* | hexagon-masked photo | template 6 | `image` |
-| `split` | `overlap` | dark centred text box overlapping the photo's edge, accent title | lacuccina | `image` |
+| `split` | `overlap` | dark centred text box overlapping the photo's edge, accent title | basic-site references | `image` |
 | `split` | `frame` | text in a panel inside a thin offset brand-colour frame, photo beside it | template 1 "קצת עלינו" | `image` |
 | `cards` | *(default)* `overlay` / `classic` / `layout: bento` | photo tiles with text over the photo / boxed cards / bento | engine | |
 | `cards` | `framed` | square photos each with an offset hairline frame, brand-colour caption below ("projects") | template 1 "גלריית פרויקטים" | images |
@@ -41,7 +41,7 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | `features` | `aside` | 3–4 icon rows stacked beside a framed photo ("למה לבחור בנו") | template 1 | `image` |
 | `features` | `checks` | white check tiles on a brand gradient ("יתרונות"), short titles only | template 1 | |
 | `gallery` | *(default)* | grid, first photo large when 5+ | engine | |
-| `gallery` | `strip` | one row of 3 tall photos (only the first 3 render) + `more` button to the gallery page | kira, wix1 | 3+ images, `more` |
+| `gallery` | `strip` | one row of 3 tall photos (only the first 3 render) + `more` button to the gallery page | basic-site references | 3+ images, `more` |
 | `gallery` | `stagger` | four tall photos, alternately raised and lowered | template 2 | exactly 4 images |
 | `gallery` | `mosaic` | tight 4-column square grid, no gaps (2 on mobile), 8 photos | template 1 "גלריה" | 4 or 8 images |
 | `faq` | *(default)* | soft cards, round +/- icon | engine | |
@@ -56,10 +56,17 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | `logos` | `band` | dark band: title on one side, white logo chips on the other | template 6 | logo images |
 | `contact` | *(default)* | NAP + form + map | engine | |
 | `contact` | `photo` | NAP + form beside a full-height photo, no map | template 1 | `image` |
-| `cta` | `photo` | half photo, half accent panel with the action ("להזמנת שולחן") | lacuccina | `image` |
-| `tiles` | *(type)* | edge-to-edge checkerboard: photo half + dark/accent half, sides alternate; `items: [{title, text, image, cta}]` | lacuccina, wix1 | every item an image |
+| `cta` | `photo` | half photo, half accent panel with the action ("להזמנת שולחן") | basic-site references | `image` |
+| `tiles` | *(type)* | edge-to-edge checkerboard: photo half + dark/accent half, sides alternate; `items: [{title, text, image, cta}]` | basic-site references | every item an image |
 | `leadbar` | *(type)* | rounded brand band with a one-row form (name, phone, email) mid-page | template 1 | once per page, not next to the footer lead band |
 | `leadbar` | `photo` | the same form centred over a full-bleed darkened photo | templates 3, 5 | `image` |
+| `hero` | `form: true` *(option, any hero)* | a one-row lead-form card (name, phone, email) along the hero's foot; hidden on phones (the hero buttons + footer form stay); not on the contact page | Zap portfolio: legal / medical ProX (17, 19, 20, 37, 56, 63) | `form.email_leads` |
+| `cards` | *(item fields)* `links` | several outline buttons per card (book / order / menu), stacked full width on phones | Zap portfolio: chains 26, food hall 28 | |
+| `cards` | *(item fields)* `price`, `meta` | listing cards: a price line and a row of spec chips under the title (rooms · floor · m², pack size) | Zap portfolio: real estate 52, products 29 / 11 | |
+| `pricelist` | *(type)* default | menu / fee list: groups of dotted-leader rows (name … price, a line under), two columns | Zap portfolio: restaurants (menus), notary fees | the client's own prices |
+| `pricelist` | `tiles` | one dark tile per item, the price in a chip | Zap portfolio: vet 36, opticians | |
+| `facts` | *(type)* | intro text beside a white fact card of label: value rows | Zap portfolio: zimmers 53, specs | real facts only |
+| `team` | *(type)* default / `rows` | round portraits on cards; one or two people (or `rows`) = wide bio rows | Zap portfolio: law firm 20, vets 36 | the people's own photos |
 
 Hero layouts (`split`, `image`, `centered`), `trust` styles, `marquee`, `road`, `route`, `steps` and the
 presets are documented in `site-json.md` and `design.md`; they are part of the pool too.
@@ -68,11 +75,10 @@ presets are documented in `site-json.md` and `design.md`; they are part of the p
 only if the arrangement truly needs it, CSS in `wp/theme/zap-base/assets/pool.css` scoped to `.zs-v-<name>`,
 a row in this table, then `zs build sample && zs qa sample` with 0 errors and a look at desktop + mobile.
 
-Sources so far: the six Zap Figma "תבניות" templates (`benchmark/zap-template-<n>-full.jpg`: 1 pergolas,
+Sources so far: Zap's own client portfolio (`portfolio.md`: 40 live sites by industry, packages, styles), the six Zap Figma "תבניות" templates (`benchmark/zap-template-<n>-full.jpg`: 1 pergolas,
 2 restaurant/events, 3 construction, 4 vet clinic, 5 metal works, 6 beauty clinic; each also has about,
 contact, services/service, blog/post pages in the file) and the
-basic-site references (`benchmark/basic-*.jpg`): lacuccina.co.il, kira.rest.co.il, zapgroup.wixsite.com/35424380
-(Patagonia) and /website-890 (Pizza & Pasta). What makes those read as "basic done well": one strong food/venue
+basic-site references (`benchmark/basic-*.jpg`: four restaurant sites on Zap's basic package). What makes those read as "basic done well": one strong food/venue
 photo per block, big centred statements, two or three colours (dark + one warm accent), very few words, a
 booking/order action repeated, and a centred contact block with hours. Their full-width map is not copied
 (it costs speed and adds little); `contact` keeps the map optional.
@@ -93,7 +99,7 @@ from the base templates, the pool and its own brief. What made the approved buil
 - no generated-look tells; motion `subtle`;
 - `zs qa` 0 errors and `zs seo` 0 FAIL before anyone sees it.
 
-## Base templates (from the team's method, Yuval's skill)
+## Base templates (from the team's method)
 
 Every site starts from **one of the six Zap templates** and names its deviations. Set `design.base_template`
 (1–6); `zs pool` reads it. A direction = base template + named deviations from the client's world: the palette,

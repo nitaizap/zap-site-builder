@@ -91,6 +91,8 @@ add_action('wp_enqueue_scripts', function () {
     wp_add_inline_style('zs-main', zs_tokens_css());
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
+    // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
+    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 
@@ -215,6 +217,21 @@ function zs_tel_href($e164) {
     return 'tel:' . preg_replace('/[^0-9+]/', '', (string) $e164);
 }
 
+/** The phones' fixed action bar (footer.php): call + WhatsApp, then `header.mobile_bar` items in order.
+    An item is "waze" / "email" / "instagram" / "facebook", or {label, href, icon} (booking, delivery, menu: Zap portfolio,
+    restaurants put הזמנת שולחן / משלוח / ניווט there). Up to 5 cells; with 3+ the cells turn into icon-over-label tiles. */
+function zs_mobile_bar_items() {
+    $out = [];
+    foreach ((array) zs_opt('header.mobile_bar', []) as $it) {
+        $k = is_array($it) ? ($it['type'] ?? '') : (string) $it;
+        if ($k === 'waze' && (zs_opt('business.address') || zs_opt('business.geo'))) $out[] = ['ניווט', zs_waze_href(), 'waze', true];
+        elseif ($k === 'email' && ($m = zs_opt('business.email_public'))) $out[] = ['מייל', 'mailto:' . $m, 'mail', false];
+        elseif (in_array($k, ['instagram', 'facebook'], true) && ($u = zs_opt('business.' . $k))) $out[] = [$k === 'instagram' ? 'אינסטגרם' : 'פייסבוק', $u, $k, true];
+        elseif (is_array($it) && !empty($it['label']) && !empty($it['href'])) $out[] = [$it['label'], $it['href'], $it['icon'] ?? 'calendar', str_starts_with($it['href'], 'http')];
+    }
+    return array_slice($out, 0, 3);
+}
+
 /** Waze navigation to the business: by coordinates when known, else by the address (Zap checklist: the address is a Waze link). */
 function zs_waze_href() {
     $g = (array) zs_opt('business.geo', []);
@@ -228,6 +245,9 @@ function zs_wa_href($e164, $text = '') {
 }
 
 function zs_breadcrumbs() {
+    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
+    // a site that wants the visible trail sets header.breadcrumbs: true.
+    if (!zs_opt('header.breadcrumbs', false)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
@@ -244,6 +264,10 @@ function zs_icon($name) {
         'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.2 6.8h.01"/>',
         'linkedin' => '<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M8 10.5V16M8 7.8v.01M11.5 16v-5.5M11.5 13c0-1.5 1-2.6 2.4-2.6s2.1 1 2.1 2.6V16"/>',
         'youtube' => '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5v5l4.3-2.5z"/>',
+        'badge' => '<circle cx="12" cy="9" r="6"/><path d="M9.5 9l1.8 1.8L15 7.2M8.5 14 7 21l5-2.5 5 2.5-1.5-7"/>',
+        'calendar' => '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+        'bag' => '<path d="M5 8h14l-1 12.5H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+        'waze' => '<path d="M5 15.5a7.5 7.5 0 1 1 13.6 1.9c-.6 1-1.6 1.6-2.6 1.6H9.6"/><circle cx="8" cy="19" r="1.6"/><circle cx="15" cy="19" r="1.6"/><path d="M10 10.5v.01M14.5 10.5v.01M10 13.5c1 .9 3.3.9 4.5 0"/>',
         'tiktok' => '<path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.3 4 4.5 4"/>',
     ];
     return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ($p[$name] ?? '') . '</svg>';
@@ -269,12 +293,22 @@ function zs_vnote_dialog() {
 }
 add_action('wp_footer', function () { echo zs_vnote_dialog(); }, 5);
 
+/** A kashrut certificate (business.kosher: {label: "כשר למהדרין בד״צ …", href: the certificate PDF/page}): a chip in the
+    top bar and a row in the contact list. Only the client's real certificate, with the authority's exact wording. */
+function zs_kosher_chip() {
+    $k = zs_opt('business.kosher', []);
+    if (empty($k['label'])) return '';
+    $t = zs_icon('badge') . '<span>' . esc_html($k['label']) . '</span>';
+    return !empty($k['href']) ? '<a class="zs-kosher" href="' . esc_url($k['href']) . '" target="_blank" rel="noopener">' . $t . '</a>' : '<span class="zs-kosher">' . $t . '</span>';
+}
+
 function zs_part_topbar_meta() {
     $tel = zs_opt('business.phone_e164'); $email = zs_opt('business.email_public'); $hours = (array) zs_opt('business.hours', []);
     $o = '<ul class="zs-topbar__list">';
+    if ($k = zs_kosher_chip()) $o .= '<li>' . $k . '</li>';
     if ($hours) $o .= '<li>' . esc_html($hours[0]) . '</li>';
     if ($email) $o .= '<li><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></li>';
-    if ($tel)   $o .= '<li><a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
+    // no phone here: the header's call button already shows it (Zap QA: one phone per header)
     return $o . '</ul>';
 }
 
@@ -297,7 +331,7 @@ function zs_part_footer_contact() {
     $o = '<ul class="zs-footer__contact">';
     if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
-    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '</a></li>';
+    if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . zs_social_rows() . '</ul>';
 }
@@ -350,9 +384,10 @@ function zs_part_copyright() {
 function zs_part_legal() {
     $privacy = zs_opt('standards.privacy_url', home_url('/מדיניות-פרטיות/'));
     $a11y = zs_opt('standards.accessibility_url', home_url('/הצהרת-נגישות/'));
-    // both open in a new tab (Zap checklist), so a visitor never loses the page they were on
-    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '" target="_blank" rel="noopener">מדיניות פרטיות</a></li>'
-         . '<li><a href="' . esc_url($a11y) . '" target="_blank" rel="noopener">הצהרת נגישות אתר</a></li></ul>';
+    // both legal links behave the same way: a new tab, so the visitor keeps their place (Zap QA)
+    $nt = ' target="_blank" rel="noopener"';
+    return '<ul class="zs-footer__legal"><li><a href="' . esc_url($privacy) . '"' . $nt . '>מדיניות פרטיות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li>'
+         . '<li><a href="' . esc_url($a11y) . '"' . $nt . '>הצהרת נגישות<span class="zs-sr"> (נפתח בחלון חדש)</span></a></li></ul>';
 }
 
 function zs_part_group_logo() {

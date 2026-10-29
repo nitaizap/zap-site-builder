@@ -8,19 +8,20 @@ directions cost one build, and why the chosen one is exactly what ships.
 The user compares our output with the best human designers in the team. "Clean and correct" reads as
 bland. Every site must have, measured by eye on the preview before the gate:
 
-- **One strong idea from the brand**, carried everywhere: for a courier it is speed (italic black type,
-  light trails, a moving road, a ticker); for a law office it is gravity (serif, hairlines, stillness).
-- **Display typography**: H1 at 5rem+ on desktop, weight 800–900, tight leading; the brand half of the
-  H1 on its own line in the accent colour (an H1 that ends with the brand name does this automatically).
-- **A cinematic hero**: a full-bleed photo shot for the brand's mood (night, golden hour, macro), 2K, and
-  where the budget allows a 2–4 s silent video loop (Veo image-to-video, then check every frame for
-  people, text and logos; trim and crossfade with ffmpeg rather than reroll).
-- **Rhythm with contrast**: dark ↔ light ↔ accent bands, never five white sections in a row; one
-  accent band (marquee / CTA) per page.
-- **Photo tiles, not boxed cards**, for services with images (`layout: "bento"`).
-- **Details** (one or two, not all): grain on dark, a wordmark in the
-  footer, plus/minus FAQ, image wipe-ins, word-by-word H1 entrance.
+- **One strong idea from this client's world**, carried everywhere, and different for every client: speed
+  for a delivery service, gravity for a law office, warmth and appetite for a restaurant, calm for a clinic.
+  Find it in the brief, the client's own photos and the logo, never in a previous site.
+- **Typography with a point of view**: the H1 is large and confident; the pairing fits the idea (see
+  *Hebrew type pairings*), and it is not the pairing the last site used.
+- **A hero built from the client's best real material**: the strongest photo they have, in the layout that
+  suits it (full-bleed, inset card, curve, split, cover with the logo). Video only when movement is the product.
+- **Rhythm with contrast**: grounds, shapes and densities alternate; never two neighbours alike (`pool.md` →
+  *Mixing rules*).
+- **Details** (one or two, not all), chosen for this client, not by habit.
 - **Brand colours exactly from the logo** (sample the pixels), with a darker primary only if contrast needs it.
+
+There is no house look. A stat band, a marquee, bento tiles, a dark full-bleed hero or a footer wordmark are
+tools in the pool, not a default sequence: use one only when this client's content calls for it.
 
 Start from the base template and `motion: subtle`, then tune. Use the calmer presets only when the
 client's audience calls for it (medical, legal, finance).
@@ -55,7 +56,7 @@ Vary what changes how the site feels, not just the colour:
 
 | lever | options |
 |---|---|
-| preset | `signature` (premium default: dark full-bleed hero, display type, brand part of the H1 on its own line, bento tiles, image wipe-ins, grain, footer wordmark) · `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
+| preset | `signature` (dark full-bleed hero, display type, brand part of the H1 on its own line, bento tiles, image wipe-ins, grain, footer wordmark) · `clean` (soft shadows, rounded, friendly-professional) · `bold` (heavy type, dark sections, strong accent) · `editorial` (serif headings, hairlines, airy, no shadows) · `soft` (pill buttons, pastel surfaces) · `industrial` (sharp, heavy, accent rules) |
 | hero | `split` (text + framed photo) · `image` (full-bleed photo with scrim – needs a strong photo) · `centered` (statement + wide photo band) |
 | header | `light` · `dark` (needs `logo_light`, or the logo sits on a white chip) |
 | palette | light base + deep accent · dark base + one bright accent · warm neutral + muted accent |
@@ -73,7 +74,7 @@ If the client's brand colours are given, all three directions use them (vary pre
 
 ## The finish — the team playbook (read before writing site.json)
 
-Since 22/10/2026 the team method (Yuval's `design-quality.md` A.1–A.5) is binding. Zap standards and
+Since 22/10/2026 the team's design-quality method (A.1–A.5) is binding. Zap standards and
 `content-seo.md` (H1 = keyword + brand) still win over taste: be distinctive inside those rules.
 
 **1 · Ground it in the client's world.** Before any direction, write three lines in NOTES.md → Design brief:

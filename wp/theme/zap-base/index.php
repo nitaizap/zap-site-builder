@@ -31,9 +31,7 @@ if (is_home()) {
       <?php endwhile; ?>
     </div>
     <?php the_posts_pagination(['mid_size' => 1, 'prev_text' => 'הקודם', 'next_text' => 'הבא']); ?>
-    <?php else : ?>
-    <p>עדיין אין כאן תוכן.</p>
-    <?php endif; ?>
+    <?php endif; /* no posts: no placeholder text on a live page (Zap QA); the validator requires posts for a blog page */ ?>
   </div>
 </section>
 <?php get_footer();

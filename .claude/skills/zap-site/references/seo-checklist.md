@@ -1,7 +1,8 @@
 # Zap SEO QA checklist — `zs seo`
 
 The team's SEO QA sheet ("צ'קליסט SEO", 22/10/2026), made executable. `bin/zs seo <slug>` crawls the built site
-and writes `sites/<slug>/SEO-QA.md`: every row of the sheet in order, ✅ PASS / ❌ FAIL / 👁 MANUAL / — N/A.
+and writes `sites/<slug>/SEO-QA.md` plus the team's own sheet filled in (`SEO-QA-<slug>.xlsx`, from
+`.claude/skills/bestlink-site-qa/templates/seo-checklist.xlsx`; status תקין / לא תקין / לא נבדק + notes): every row of the sheet in order, ✅ PASS / ❌ FAIL / 👁 MANUAL / — N/A.
 **Done = `zs qa` 0 errors AND `zs seo` 0 FAIL**, and every 👁 row looked at by you, with one line in NOTES.md.
 
 | # | row | how it is checked / what the engine does |
@@ -29,9 +30,9 @@ and writes `sites/<slug>/SEO-QA.md`: every row of the sheet in order, ✅ PASS /
 | 30 | search results template listing posts | theme `search.php`; measured with a real query |
 | +1 | phone, email, address match the spec | 👁 |
 | +2 | Zap logo in the footer + link to Zap | measured |
-| +3 | home H1 carries the client's name | measured (also a content rule: H1 = keyword + brand) |
+| +3 | home H1 is the client's name | validator (Zap QA: the name only) |
 | +4 | inner page differs from a post | pages are Elementor layouts, posts use the post template |
-| +5, +7 | privacy/accessibility carry the right client name in title and text | measured on the privacy page; the accessibility statement is Zap's central page |
+| +5, +7 | privacy/accessibility carry the right client name in title and text | both are pages of the site built from Zap's standard wording (`engine/templates/`), linked from the footer in a new tab |
 | +6 | mobile + 1280 laptop look right | `zs qa` measures 1440/390 and the hero at 1280×620; 👁 once at 1280 |
 | +8 | form email and site name set correctly | leads go to `business.email_leads`; staging never mails the client |
 | +9 | heading order H1 → H2 → H3, no H2 inside forms | measured on every page |

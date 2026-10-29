@@ -51,7 +51,9 @@ class Ctx:
         if not h:
             return ""
         if h.startswith("page:"):
-            return self.site["_paths"].get(h[5:], "/" + h[5:].strip("/") + "/")
+            key, _, frag = h[5:].partition("#")
+            path = self.site["_paths"].get(key, "/" + key.strip("/") + "/")
+            return path + ("#" + frag if frag else "")
         if h.startswith("post:"):
             return self.site["_post_paths"].get(h[5:], "/")
         if h == "tel":
@@ -125,18 +127,39 @@ def button(ctx, b, kind="primary"):
     return W(ctx, "button", s, f"zs-b zs-b-{k}")
 
 
+def has_form(ctx):
+    """No leads e-mail in the brief -> calls-only site: no form anywhere, call/WhatsApp buttons instead."""
+    return bool(ctx.site["business"].get("email_leads"))
+
+
+def call_buttons(ctx):
+    b = ctx.site["business"]
+    return buttons(ctx, {"label": b.get("phone_display", ""), "href": "tel"},
+                   {"label": "וואטסאפ", "href": "whatsapp"} if b.get("whatsapp_e164") else None)
+
+
+def lead_cta(ctx, s):
+    """The section's own buttons, or the default 'leave details' pair; calls-only sites get call buttons."""
+    if s.get("cta") or has_form(ctx):
+        return buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
+                       s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"}))
+    return call_buttons(ctx)
+
+
 def buttons(ctx, *bs):
     items = [button(ctx, b, "primary" if i == 0 else "ghost") for i, b in enumerate(bs) if b]
     items = [i for i in items if i]
     return C(ctx, "zs-btns", items) if items else None
 
 
-def image(ctx, key, classes="", size="large", eager=False):
+def image(ctx, key, classes="", size="large", eager=False, lightbox=False):
     m = ctx.img(key)
     if not m:
         return None
     s = {"image": {"url": m["url"], "id": m["id"], "alt": m.get("alt", ""), "source": "library"},
          "image_size": size}
+    if lightbox:    # gallery photos open full size in Elementor's lightbox (Zap QA), one slideshow per section
+        s.update({"link_to": "file", "open_lightbox": "yes"})
     return W(ctx, "image", s, classes + (" zs-eager" if eager else ""))
 
 
@@ -199,7 +222,6 @@ def hero(ctx, s):
         chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
         logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
-        W(ctx, "shortcode", {"shortcode": "[zap_breadcrumbs]"}, "zs-hero__crumbs") if not is_home else None,
         logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
@@ -228,10 +250,18 @@ def hero(ctx, s):
     if kind:
         ride = W(ctx, "html", {"html": f'<div class="zs-ride" aria-hidden="true"><span class="zs-ride__v">{vehicle_svg(kind)}</span></div>'},
                  "zs-hero__ride")
+    # `form: true` -> a lead-form card overlapping the hero's bottom edge (Zap portfolio: most legal/medical ProX
+    # sites). Same short form as the leadbar; phones keep the hero buttons and the footer form instead
+    fcard = None
+    if s.get("form") and has_form(ctx):
+        ft = s["form"] if isinstance(s["form"], str) else (ctx.site.get("form") or {}).get("title", "השאירו פרטים ונחזור אליכם")
+        fcard = C(ctx, "zs-hero__form", [heading(ctx, ft, "p", "zs-hero__form-title"),
+                                         W(ctx, "shortcode", {"shortcode": '[zap_form id="hero" message="no" email="yes"]'})])
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
+    vidc += " zs-hero--form" if fcard else ""
     slc = " zs-hero--slides zs-pausable" if len(keys) > 1 else ""
-    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [garland(ctx, s), txt, media, ride])
+    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [garland(ctx, s), txt, media, ride, fcard])
 
 
 def trust(ctx, s):
@@ -250,11 +280,15 @@ def cards(ctx, s):
             C(ctx, "zs-card__body", [
                 W(ctx, "icon", {"selected_icon": fa_icon(it["icon"])}, "zs-card__icon") if it.get("icon") and not it.get("image") else None,
                 heading(ctx, it["title"], s.get("item_tag", "h3"), "zs-card__title", link=it.get("href")),
+                heading(ctx, it.get("price"), "p", "zs-card__price"),
                 text(ctx, it.get("text"), "zs-card__text"),
+                text(ctx, '<ul class="zs-card__meta">' + "".join(f"<li>{html.escape(m, quote=False)}</li>" for m in it["meta"]) + "</ul>",
+                     "zs-card__metaw") if it.get("meta") else None,
+                C(ctx, "zs-card__links", [button(ctx, l, "ghost") for l in it["links"]]) if it.get("links") else None,   # branches: book / order / menu
             ]),
         ]))
     lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""
-    style = s.get("style") or ("overlay" if not lay and all(i.get("image") for i in s["items"]) else "classic")
+    style = s.get("style") or ("overlay" if not lay and s.get("variant") != "framed" and all(i.get("image") for i in s["items"]) else "classic")   # framed = caption below the photo
     linked = " zs-cards--linked" if any(i.get("href") for i in s["items"]) else ""
     return section(ctx, s, f"zs-cards zs-cards--{style}{lay}{linked}", [
         *sec_head(ctx, s),
@@ -267,7 +301,7 @@ def features(ctx, s):
     n = s.get("columns", 4 if len(s["items"]) % 4 == 0 else 3)
     items = [C(ctx, "zs-feature", [
         W(ctx, "icon", {"selected_icon": fa_icon(it.get("icon", "check"))}, "zs-feature__icon"),
-        heading(ctx, it["title"], "h3", "zs-feature__title"),
+        heading(ctx, it["title"], "p", "zs-feature__title"),   # advantages titles are not headings (Zap QA: no H3 in יתרונות)
         text(ctx, it.get("text"), "zs-feature__text"),
     ]) for it in s["items"]]
     if s.get("variant") == "aside":
@@ -298,7 +332,7 @@ def split(ctx, s):
     shape = s.get("image_shape", "")
     media = C(ctx, f"zs-split__media{' zs-shape-' + shape if shape else ''}",
               [image(ctx, s.get("image"), "zs-split__img", "large"),
-               image(ctx, s.get("image2"), "zs-split__img2", "medium") if s.get("variant") == "duo" else None,
+               image(ctx, s.get("image2"), "zs-split__img2", "large") if s.get("variant") == "duo" else None,
                badge]) if s.get("image") else None
     rev = " zs-split--rev" if s.get("image_side") == "end" else ""
     return section(ctx, s, f"zs-split{rev}{'' if media else ' zs-split--noimg'}", [txt, media])
@@ -332,24 +366,24 @@ def faq(ctx, s):
 
 
 def cta(ctx, s):
-    if s.get("variant") == "photo":     # half photo, half brand panel with the action (lacuccina "להזמנת שולחן")
+    if s.get("variant") == "photo":     # half photo, half brand panel with the action (basic-site references, e.g. "להזמנת שולחן")
         panel = C(ctx, "zs-cta__panel", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                          heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text")),
-                                         buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}), s.get("cta2"))])
+                                         lead_cta(ctx, s)])
         return section(ctx, {**s, "bg": s.get("bg")}, "zs-ctaph",
                        [C(ctx, "zs-ctaph__media", [image(ctx, s.get("image"), "zs-ctaph__img", "large")]), panel])
     return section(ctx, {**s, "bg": s.get("bg", "primary")}, "zs-cta", [
         garland(ctx, s),
         C(ctx, "zs-cta__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
                                 heading(ctx, s["title"], "h2", "zs-sec__title"), text(ctx, s.get("text"))]),
-        buttons(ctx, s.get("cta", {"label": "השאירו פרטים", "href": "#leave-details"}),
-                s.get("cta2", {"label": ctx.site["business"].get("phone_display", ""), "href": "tel"})),
+        lead_cta(ctx, s),
     ])
 
 
 def gallery(ctx, s):
     keys = s["images"][:3] if s.get("variant") == "strip" else s["images"]   # strip: a teaser row, `more` leads on
-    imgs = [image(ctx, k, "zs-gallery__img", "zs-card") for k in keys]
+    # "large" (1024 px), not the card crop: sharp on 2x phone screens (Zap QA)
+    imgs = [image(ctx, k, "zs-gallery__img", "large", lightbox=True) for k in keys]
     return section(ctx, s, "zs-gallery", [*sec_head(ctx, s), C(ctx, f"zs-grid zs-grid--{s.get('columns', 3)}", imgs),
                                           buttons(ctx, s.get("more"))])
 
@@ -369,9 +403,9 @@ def posts(ctx, s):
 
 
 def contact(ctx, s):
-    left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text")),
+    left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "p", "zs-sec__title zs-contact__title"), text(ctx, s.get("text")),
                                        W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact" email="yes"]'})])
+                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
     if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
         right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
     else:
@@ -381,7 +415,7 @@ def contact(ctx, s):
 
 def tiles(ctx, s):
     """Edge-to-edge checkerboard: each item is a photo half and a colour half, alternating sides row by row
-    (lacuccina, the Zap restaurant sites). Text halves are native widgets; grounds cycle dark / accent."""
+    (the Zap basic restaurant references). Text halves are native widgets; grounds cycle dark / accent."""
     rows = []
     for i, it in enumerate(s["items"]):
         panel = C(ctx, "zs-tile__panel", [heading(ctx, it.get("title"), "h3" if s.get("title") else "h2", "zs-tile__title"),
@@ -398,7 +432,7 @@ def leadbar(ctx, s):
     bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
     return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
         heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
-        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}),
+        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}) if has_form(ctx) else call_buttons(ctx),
     ])])
 
 
@@ -554,8 +588,50 @@ def carousel(ctx, s):
     return section(ctx, s, f"zs-carousel zs-pausable zs-int-{iv}", [*sec_head(ctx, s), C(ctx, "zs-car__track", slides), nav])
 
 
+def pricelist(ctx, s):
+    """A price list: `items: [{name, price, text}]`, or `groups: [{title, items}]` (a menu with categories).
+    Default: two columns of rows with a dotted leader between name and price (menus, notary fees);
+    `variant: "tiles"`: one tile per item with the price in a chip (vets, opticians, treatments).
+    Prices are the client's own published prices only; `price` may be empty (a menu without prices)."""
+    groups = s.get("groups") or [{"items": s.get("items", [])}]
+    kids = []
+    for g in groups:
+        rows = [C(ctx, "zs-price", [C(ctx, "zs-price__row", [heading(ctx, it["name"], "h3", "zs-price__name"),
+                                                             heading(ctx, it.get("price"), "p", "zs-price__val")]),
+                                    text(ctx, it.get("text"), "zs-price__text")]) for it in g["items"]]
+        kids.append(C(ctx, "zs-prices__group", [heading(ctx, g.get("title"), "h3" if s.get("title") else "h2", "zs-prices__gt"),
+                                                C(ctx, "zs-prices__list", rows)]))
+    return section(ctx, s, "zs-prices", [*sec_head(ctx, s), C(ctx, "zs-prices__groups", kids), text(ctx, s.get("note"), "zs-prices__note"),
+                                         buttons(ctx, s.get("cta"))])
+
+
+def facts(ctx, s):
+    """Intro text beside a fact card of label: value rows ("יחידות: 2", "אורחים: עד 6", "שטח: 120 מ״ר"):
+    zimmers and suites, venues, B2B specs (Zap portfolio: Tiffany zimmers). `card_title` heads the card."""
+    rows = "".join(f'<li><span class="zs-facts__k">{html.escape(it["label"], quote=False)}</span>'
+                   f'<strong class="zs-facts__v">{html.escape(str(it["value"]), quote=False)}</strong></li>' for it in s["items"])
+    card = C(ctx, "zs-facts__card", [heading(ctx, s.get("card_title"), "p", "zs-facts__title"),
+                                     text(ctx, f'<ul class="zs-facts__list">{rows}</ul>', "zs-facts__listw")])
+    body = C(ctx, "zs-facts__body", [*sec_head(ctx, {**s, "head": "stack"}), text(ctx, s.get("text")), buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-facts", [C(ctx, "zs-facts__wrap", [body, card])])
+
+
+def team(ctx, s):
+    """The people: `items: [{name, role, text, image}]` – partners of a law firm, a clinic's doctors, the vets.
+    Round portraits on cards; with one or two people the cards turn into wide bio rows (Zap portfolio: 20, 36).
+    Real people only, with their own photos; never AI portraits."""
+    items = [C(ctx, "zs-member" + (" zs-member--img" if it.get("image") else ""), [
+        image(ctx, it.get("image"), "zs-member__img", "medium"),
+        C(ctx, "zs-member__body", [heading(ctx, it["name"], "h3", "zs-member__name"), heading(ctx, it.get("role"), "p", "zs-member__role"),
+                                   text(ctx, it.get("text"), "zs-member__text")]),
+    ]) for it in s["items"]]
+    wide = " zs-team--wide" if len(items) <= 2 or s.get("variant") == "rows" else ""
+    return section(ctx, s, f"zs-team{wide}", [*sec_head(ctx, s), C(ctx, f"zs-team__list zs-grid zs-grid--{min(len(items), 4)}", items),
+                                              buttons(ctx, s.get("cta"))])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
@@ -575,6 +651,9 @@ VARIANTS = {
     "contact": {"photo"},
     "leadbar": {"photo"},
     "tiles": set(),
+    "pricelist": {"tiles"},
+    "facts": set(),
+    "team": {"rows"},
 }
 
 
@@ -707,11 +786,11 @@ def footer_template(ctx):
     lead = C(ctx, "zs-leadband", [
         C(ctx, "zs-wrap zs-leadband__in", [
             C(ctx, "zs-leadband__text", [
-                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
-                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם.")),
-                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or"),
+                heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם" if has_form(ctx) else "דברו איתנו"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
+                text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם." if has_form(ctx) else "")),
+                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or") if has_form(ctx) else None,
             ]),
-            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form"),
+            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
         ]),
     ], tag="section", inner=False)
     lead["settings"]["_element_id"] = "leave-details"

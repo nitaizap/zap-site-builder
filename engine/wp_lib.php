@@ -250,6 +250,9 @@ function zs_menu($name, $location, $items) {
 }
 
 function zs_task_finish($p) {
+    // Elementor's per-document HTML cache can outlive a rebuild (a fresh site served its header without the
+    // menu and burger until it was cleared): drop it every build, Elementor regenerates it on the next view
+    delete_post_meta_by_key('_elementor_element_cache');
     if ($p['nav'])        zs_menu('ראשי', 'primary', $p['nav']);
     if ($p['footer_nav']) zs_menu('פוטר', 'footer', $p['footer_nav']);
 

@@ -55,9 +55,11 @@ def validate(d, site_dir):
     W = lambda m: out.append("WARN  " + m)
 
     b = d.get("business", {})
-    for k in ("name", "phone_display", "phone_e164", "email_leads"):
+    for k in ("name", "phone_display", "phone_e164"):
         if not b.get(k):
             E(f"business.{k} is required")
+    if not b.get("email_leads"):
+        W("business.email_leads missing: calls-only site, every lead form is replaced by call/WhatsApp buttons")
     if b.get("phone_display") and b.get("phone_e164") and e164_from_display(b["phone_display"]) != b["phone_e164"]:
         E(f"phone_e164 {b['phone_e164']} does not dial the displayed number {b['phone_display']} "
           f"(expected {e164_from_display(b['phone_display'])})")
@@ -92,7 +94,8 @@ def validate(d, site_dir):
             pass
         else:
             t, ds, kw = seo.get("title", ""), seo.get("description", ""), seo.get("keyword", "")
-            if not (25 <= len(t) <= 65):
+            short_ok = bool(b.get("name")) and t.startswith(b.get("name", "") + " | ")   # "site | page" may be short
+            if not (25 <= len(t) <= 65) and not (short_ok and len(t) < 25):
                 (E if not t else W)(f"{name}: seo.title is {len(t)} chars (want 30-60)")
             if not (150 <= len(ds) <= 160):
                 (E if not ds else W)(f"{name}: seo.description is {len(ds)} chars (Zap SEO checklist: 150-160)")
@@ -102,10 +105,6 @@ def validate(d, site_dir):
                 if kw in kw_owner:
                     E(f"keyword cannibalisation: '{kw}' is owned by both {kw_owner[kw]} and {name}")
                 kw_owner[kw] = name
-                h1 = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), p.get("title", "")).replace("*", "").replace(chr(10), " ")
-                core = kw.split()[0] if kw else ""
-                if core and core not in h1 and p.get("type") != "home":   # the home H1 is the client's name only
-                    W(f"{name}: H1 '{h1}' does not contain the keyword '{kw}'")
         hero_t = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
         h1_plain = hero_t.replace("*", "").replace(chr(10), " ").strip()
         if p.get("type") == "home" and b.get("name") and h1_plain != b["name"]:
@@ -124,6 +123,22 @@ def validate(d, site_dir):
             if slug_words != h1_plain.replace("־", " ").replace("'", "").replace('"', ""):
                 W(f"{name}: the URL '{key.split('/')[-1]}' should match the H1 '{h1_plain}' (Zap QA: slug = H1)")
         # headings never end with a full stop (Zap QA); a question mark or nothing
+        # one short line: never "keyword\nbrand" joined into one H1 (Zap QA); posts are exempt
+        if hero_t and not key.startswith("post:"):
+            if chr(10) in h1_plain or chr(10) in hero_t or " — " in h1_plain:
+                E(f"{name}: H1 '{h1_plain}' joins two lines into one H1; use one short line (Zap QA)")
+            if len(h1_plain.split()) > 6:
+                W(f"{name}: H1 '{h1_plain}' is {len(h1_plain.split())} words; Zap QA wants the page name, short")
+        if p.get("type") == "blog" and len(d.get("posts", [])) < 3:
+            E(f"{name}: a blog page needs at least 3 published posts (has {len(d.get('posts', []))}); Zap QA rejects an empty blog")
+        secs = p.get("sections", [])
+        if secs and secs[-1].get("type") == "cta" and p.get("type") not in ("contact",):
+            E(f"{name}: page ends with a cta section and the lead form follows it: two calls to action in a row (Zap QA); drop the cta or move it up")
+        for s_ in secs:
+            icons = [it.get("icon") for it in s_.get("items", []) if isinstance(it, dict) and it.get("icon")]
+            dup = sorted({i for i in icons if icons.count(i) > 1})
+            if dup:
+                E(f"{name}: {s_.get('type')} section repeats icon(s) {dup}: one icon per item, matching its content (Zap QA)")
         heads = [hero_t] + [s.get("title", "") for s in p.get("sections", [])]
         heads += [it.get("title", "") for s in p.get("sections", []) for it in (s.get("items") or []) if isinstance(it, dict)]
         heads += re.findall(r"<h[2-4][^>]*>(.*?)</h[2-4]>", " ".join(s.get("html", "") for s in p.get("sections", [])) + p.get("html", ""))
@@ -135,11 +150,11 @@ def validate(d, site_dir):
                 E(f"{name}: FAQ needs at least 3 real questions (has {len(s.get('items', []))})")
             for it in s.get("items", []) if isinstance(s.get("items"), list) else []:
                 h = it.get("href", "") if isinstance(it, dict) else ""
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: link to missing page '{h}'")
             for bt in ("cta", "cta2", "more"):
                 h = (s.get(bt) or {}).get("href", "")
-                if h.startswith("page:") and h[5:] not in keys:
+                if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                     E(f"{name}: button links to missing page '{h}'")
         if p.get("sections") and not any(s.get("type") == "hero" for s in p["sections"]):
             E(f"{name}: page has sections but no hero (the hero carries the only H1)")
@@ -170,11 +185,25 @@ def validate(d, site_dir):
             E(f"category slug '{c.get('slug')}' must be Hebrew (no Latin in URLs)")
     if not d.get("favicon"):
         W("no favicon in site.json: the cloned base site's icon stays; add a square PNG (512+) made from the client's logo symbol")
+    # Zap QA: the blog is in the main menu; menu and footer list the pages in the same order
+    if any(p.get("type") == "blog" for p in pages):
+        bk = next(p.get("key") for p in pages if p.get("type") == "blog")
+        if not any(i.get("href") == f"page:{bk}" for i in d.get("nav", [])):
+            E("the blog page is missing from the main menu (nav)")
+    nav_order = [i.get("href") for i in d.get("nav", []) if i.get("href") != "page:"]
+    foot_order = [i.get("href") for i in d.get("footer_nav", []) if i.get("href") in nav_order]
+    if foot_order != [h for h in nav_order if h in foot_order]:
+        E("footer_nav lists the pages in a different order from nav (Zap QA: same order in both)")
+    if any(i.get("href") == "page:" for i in d.get("nav", [])):
+        W("nav has a 'home' item; Zap QA: the logo links home, the menu does not")
+    for c in d.get("categories", []):
+        if c.get("description") and not c["description"].rstrip().endswith((".", "!", "?")):
+            E(f"category '{c.get('slug')}' description is cut mid-sentence (it shows on the blog page): end it with a full sentence")
 
     for item in d.get("nav", []) + d.get("footer_nav", []):
         for it in [item] + item.get("children", []):
             h = it.get("href", "")
-            if h.startswith("page:") and h[5:] not in keys:
+            if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                 E(f"menu item '{it.get('label')}' links to missing page '{h}'")
 
     imgs = d.get("images", {})
@@ -229,6 +258,14 @@ def validate(d, site_dir):
                 E(f"{name}: basic package hero is one still photo (no video, no slider)")
             if ty == "tiles" and any(not it.get("image") for it in s.get("items", [])):
                 E(f"{name}: every tiles item needs an image")
+            if ty == "pricelist" and not (s.get("items") or any(g.get("items") for g in s.get("groups", []))):
+                E(f"{name}: pricelist needs items (or groups with items)")
+            if ty in ("facts", "team") and not s.get("items"):
+                E(f"{name}: {ty} needs items")
+            if ty == "facts" and any(not (it.get("label") and str(it.get("value", "")).strip()) for it in s.get("items", [])):
+                E(f"{name}: every facts item needs a label and a value")
+            if ty == "hero" and s.get("form") and p.get("type") == "contact":
+                E(f"{name}: no hero form on the contact page: it has its own full form (one form per page, Zap QA)")
             if v is None:
                 continue
             if ty in SECTIONS and v not in VARIANTS.get(ty, set()):

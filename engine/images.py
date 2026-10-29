@@ -39,10 +39,10 @@ def prepare_image(src: Path, out_dir: Path, keep_format=False, max_width=1600):
             break
         q -= 6
     q = MIN_QUALITY
-    while dst.stat().st_size > TARGET_KB * 1024:          # still heavy: lower quality, then shrink (long side ≥ 900)
-        if q > 45:
+    while dst.stat().st_size > TARGET_KB * 1024:          # still heavy: lower quality, then shrink (long side ≥ 720)
+        if q > 40:
             q -= 5
-        elif max(im.size) > 900:
+        elif max(im.size) > 720:
             im = im.resize((round(im.width * .85), round(im.height * .85)), Image.LANCZOS)
         else:
             break
