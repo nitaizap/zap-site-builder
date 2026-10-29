@@ -340,22 +340,83 @@ site = {
 }
 
 C = lambda **k: k
-site["design"] = {
-    "base_template": 4, "preset": "soft", "hero": "image", "header": "light", "motion": "subtle", "radius": 18, "tone": "light",
-    "colors": C(primary="#4a3346", primary_ink="#ffffff", accent="#8a6a3f", accent_ink="#ffffff", ink="#241a22", text="#3b3238",
-                muted="#5a4f56", bg="#ffffff", surface="#f6f2ee", line="#e6ded6", dark="#2b2128", dark_ink="#f6f2ee"),
-    "fonts": {"heading": "Bona Nova", "body": "Alef"},
-}
+LEAD = "חופשה רגועה בלב רמת הגולן: צימר עם בריכה מחוממת, ג׳קוזי וגינה פרטית."
+HERO = {"type": "hero", "title": "בצל התאנה", "lead": LEAD,
+        "cta": {"label": "להזמנת חופשה", "href": "tel"}, "cta2": {"label": "וואטסאפ", "href": "whatsapp"}}
+FACTS = {"type": "facts", "title": "צימרים עם ג׳קוזי בקלע אלון",
+         "text": "<p>צימר בצל התאנה מזמין אתכם לחופשה רגועה בקלע אלון שבלב רמת הגולן. שתי יחידות אירוח מרווחות, \"טבע\" ו\"חופש\", עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p><p>בחוץ מחכים בריכה מחוממת בעונה עם ג׳טים לעיסוי, סאונה ופינת BBQ, ובחדר הטיפולים ההוליסטי אפשר להתפנק בעיסויים ובטיפולי פנים.</p>",
+         "card_title": "היחידה במספרים", "items": UNIT_FACTS, "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}}
+POSTS_S = {"type": "posts", "title": "מהבלוג", "count": 3, "more": {"label": "לכל המאמרים", "href": "page:בלוג"}}
+
+# A · tour (atelier): a walk through the compound, one space per beat, facts at the end
+HOME_A = [
+    {**HERO, "variant": "cover", "image": "pool-gable"},
+    {"type": "split", "variant": "card", "title": "צימרים עם ג׳קוזי בקלע אלון",
+     "text": "<p>צימר בצל התאנה מזמין אתכם לחופשה רגועה בקלע אלון שבלב רמת הגולן. שתי יחידות אירוח מרווחות, \"טבע\" ו\"חופש\", עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p>",
+     "image": "garden-2", "image_side": "start", "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "tiles", "title": "סיור במתחם",
+     "items": [
+         {"title": "הסלון והמטבחון", "text": "תקרת עץ, קיר זכוכית אל הגינה ומטבחון מאובזר עם פינת קפה.", "image": "living-2"},
+         {"title": "בריכה מחוממת בעונה", "text": "בריכה עם ג׳טים לעיסוי, דק עץ וערסלי שמש מול גג האבן.", "image": "pool-pergola"},
+         {"title": "סאונה ליד הבריכה", "text": "תא סאונה מעץ בחצר, כמה צעדים מהמים.", "image": "sauna-in"},
+         {"title": "חדר הטיפולים", "text": "עיסויים וטיפולי פנים מתקדמים בתוך המתחם.", "image": "spa-1",
+          "cta": {"label": "לחדר הטיפולים", "href": "page:חדר-הטיפולים"}},
+     ]},
+    {"type": "carousel", "title": "בתוך היחידות",
+     "items": [{"image": "bed-1", "caption": "חדר שינה זוגי"}, {"image": "living-4", "caption": "סלון תחת תקרת עץ"},
+               {"image": "bath-1", "caption": "חדר הרחצה"}, {"image": "jacuzzi-2", "caption": "הג׳קוזי בגינה"},
+               {"image": "pergola-bbq", "caption": "מטבח החוץ"}, {"image": "living-3", "caption": "פינת הקפה"}]},
+    {**FACTS, "title": "כל הפרטים על החופשה"},
+    {"type": "faq", "variant": "outline", "title": "שאלות על החופשה בצל התאנה", "items": FAQ_HOME},
+    POSTS_S,
+]
+
+# B · gallery (gallery kit): the photographs lead, a slider opens, few words
+HOME_B = [
+    {**HERO, "images": ["pool-wide", "living-2", "jacuzzi-2"], "interval": 5, "image": "pool-wide"},
+    {"type": "gallery", "variant": "mosaic", "title": "הצצה ליחידות, לבריכה ולמתחם החוץ",
+     "images": ["living-5", "jacuzzi-1", "sauna-out", "bed-3", "pergola", "bath-3", "spa-2", "garden-3"]},
+    {"type": "split", "variant": "overlap", "title": "שתי יחידות, גינה פרטית לכל אחת",
+     "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות של 70 מ\"ר, \"טבע\" ו\"חופש\", כל אחת עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p>",
+     "image": "aerial-3", "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "features", "title": "כל מה שצריך לחופשה מפנקת בגולן", "columns": 3, "items": FEATURES[:6]},
+    {"type": "gallery", "variant": "stagger", "title": "ערבים במתחם", "images": ["wine-pool", "bbq", "sauna-bucket", "fruit"]},
+    {"type": "faq", "variant": "aside", "title": "שאלות על החופשה בצל התאנה", "items": FAQ_HOME, "image": "garden-5"},
+]
+
+# C · booking (panels): the action first, the facts next, proof after
+HOME_C = [
+    {**HERO, "image": "pool-sauna", "form": "תאמו חופשה"},
+    FACTS,
+    {"type": "features", "variant": "rows", "title": "מה כלול בחופשה", "items": [FEATURES[i] for i in (0, 1, 2, 3, 4, 6)]},
+    {"type": "split", "variant": "duo", "title": "חדר הטיפולים ההוליסטי",
+     "text": "<p>עיסויים וטיפולי פנים מתקדמים בחדר הטיפולים שבמתחם. מתאמים מראש, יחד עם הזמנת החופשה, ובבוקר אפשר להזמין גם ארוחת בוקר.</p>",
+     "image": "spa-1", "image2": "spa-3", "cta": {"label": "לחדר הטיפולים", "href": "page:חדר-הטיפולים"}},
+    {"type": "gallery", "variant": "strip", "title": "הצצה למתחם", "images": ["living-1", "jacuzzi-3", "pool-pergola"],
+     "more": {"label": "לגלריה", "href": "page:גלריה"}},
+    {"type": "faq", "variant": "dark", "title": "שאלות לפני שמזמינים", "items": FAQ_HOME},
+    POSTS_S,
+]
+
+DES_A = {"kit": "atelier", "archetype": "tour", "preset": "soft", "hero": "image", "header": "light", "motion": "subtle", "radius": 6, "tone": "light",
+         "colors": C(primary="#4a3346", primary_ink="#ffffff", accent="#8a6a3f", accent_ink="#ffffff", ink="#241a22", text="#3b3238",
+                     muted="#5a4f56", bg="#ffffff", surface="#f6f2ee", line="#e6ded6", dark="#2b2128", dark_ink="#f6f2ee"),
+         "fonts": {"heading": "Bona Nova", "body": "Alef"}}
+DES_B = {"kit": "gallery", "archetype": "gallery", "preset": "editorial", "hero": "image", "radius": 0, "tone": "",
+         "colors": C(primary="#2f3d3f", primary_ink="#ffffff", accent="#5d6f45", accent_ink="#ffffff", ink="#1c2526", text="#2f3a3b",
+                     muted="#4d5a5b", bg="#ffffff", surface="#f1f3f0", line="#dde2dc", dark="#1f2a2b", dark_ink="#eef2ef"),
+         "fonts": {"heading": "David Libre", "body": "Assistant"}}
+DES_C = {"kit": "panels", "archetype": "booking", "preset": "clean", "hero": "split", "radius": 22, "tone": "",
+         "colors": C(primary="#18525a", primary_ink="#ffffff", accent="#9a6b3c", accent_ink="#ffffff", ink="#132a2d", text="#2c3e40",
+                     muted="#4a5c5e", bg="#ffffff", surface="#eef5f5", line="#d8e6e6", dark="#0f2427", dark_ink="#eaf4f4"),
+         "fonts": {"heading": "Rubik", "body": "Assistant"}}
+
+site["design"] = dict(DES_A)
+home["sections"] = HOME_A
 site["directions"] = {
-    "a": {"label": "צל התאנה: סגול תאנה, עץ חם, רך ומואר", **site["design"]},
-    "b": {"label": "אבן בזלת: אפור בזלת וירוק עלה, עריכתי וחד", "base_template": 4, "preset": "editorial", "hero": "image", "radius": 4,
-          "colors": C(primary="#2f3d3f", primary_ink="#ffffff", accent="#5d6f45", accent_ink="#ffffff", ink="#1c2526", text="#2f3a3b",
-                      muted="#4d5a5b", bg="#ffffff", surface="#f1f3f0", line="#dde2dc", dark="#1f2a2b", dark_ink="#eef2ef"),
-          "fonts": {"heading": "David Libre", "body": "Assistant"}},
-    "c": {"label": "ספא ומים: כחול בריכה עמוק, נקי ומעוגל", "base_template": 4, "preset": "clean", "hero": "split", "radius": 22,
-          "colors": C(primary="#18525a", primary_ink="#ffffff", accent="#9a6b3c", accent_ink="#ffffff", ink="#132a2d", text="#2c3e40",
-                      muted="#4a5c5e", bg="#ffffff", surface="#eef5f5", line="#d8e6e6", dark="#0f2427", dark_ink="#eaf4f4"),
-          "fonts": {"heading": "Rubik", "body": "Assistant"}},
+    "a": {"label": "סיור במתחם: אטלייה, סגול תאנה ועץ, תמונת פתיחה מלאה", **DES_A, "home": HOME_A},
+    "b": {"label": "התמונות מדברות: גלריה מקצה לקצה, אבן בזלת, סליידר פתיחה", **DES_B, "home": HOME_B},
+    "c": {"label": "קודם מזמינים: פאנלים, כחול בריכה, טופס כבר בפתיחה", **DES_C, "home": HOME_C},
 }
 
 json.dump(site, open(os.path.join(HERE, "site.json"), "w"), ensure_ascii=False, indent=2)

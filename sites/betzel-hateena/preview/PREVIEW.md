@@ -1,26 +1,34 @@
 # כיווני עיצוב — בצל התאנה
 
-אותו תוכן, אותו מבנה. משתנים רק צבעים, גופנים, פינות וסגנון ה-Hero. בוחרים אות אחת.
+כל כיוון הוא דף בית שלם משלו: מבנה, סדר הבלוקים, צבעים וגופנים. בוחרים אות אחת.
 
-## A · צל התאנה: סגול תאנה, עץ חם, רך ומואר
+דמיון בין הכיוונים (מדוד מהדף עצמו): A–B 39%, A–C 38%, B–C 35%
 
-סגנון `soft` · Hero `image` · גופנים Bona Nova / Alef
+## A · סיור במתחם: אטלייה, סגול תאנה ועץ, תמונת פתיחה מלאה
+
+ערכה `atelier` · סגנון `soft` · Hero `image` · גופנים Bona Nova / Alef
+
+מבנה: hero:cover → split:card → tiles → carousel → facts → faq:outline → posts
 
 | מחשב | נייד |
 |---|---|
 | <img src="dir-a-desktop.jpg" width="620"> | <img src="dir-a-mobile.jpg" width="250"> |
 
-## B · אבן בזלת: אפור בזלת וירוק עלה, עריכתי וחד
+## B · התמונות מדברות: גלריה מקצה לקצה, אבן בזלת, סליידר פתיחה
 
-סגנון `editorial` · Hero `image` · גופנים David Libre / Assistant
+ערכה `gallery` · סגנון `editorial` · Hero `image` · גופנים David Libre / Assistant
+
+מבנה: hero → gallery:mosaic → split:overlap → features → gallery:stagger → faq:aside
 
 | מחשב | נייד |
 |---|---|
 | <img src="dir-b-desktop.jpg" width="620"> | <img src="dir-b-mobile.jpg" width="250"> |
 
-## C · ספא ומים: כחול בריכה עמוק, נקי ומעוגל
+## C · קודם מזמינים: פאנלים, כחול בריכה, טופס כבר בפתיחה
 
-סגנון `clean` · Hero `split` · גופנים Rubik / Assistant
+ערכה `panels` · סגנון `clean` · Hero `split` · גופנים Rubik / Assistant
+
+מבנה: hero → facts → features:rows → split:duo → gallery:strip → faq:dark → posts
 
 | מחשב | נייד |
 |---|---|

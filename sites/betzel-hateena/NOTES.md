@@ -52,7 +52,11 @@ No logo anywhere: header shows the name as text; favicon is a temporary "ב" in 
 | posts | צימר עם בריכה מחוממת בגולן / חופשה זוגית עם עיסוי בגולן / צימר לשומרי שבת ברמת הגולן | |
 The brief's H1 "חופשה רגועה בלב רמת הגולן" became the hero lead (Zap QA: home H1 = client name). SEO titles follow `<name> | <page>` (QA rule) instead of the brief's long titles; the brief's descriptions were kept and lengthened to 150-160.
 
-## Design
-Idea: the shade of the fig tree: fig-fruit purple, warm wood (pergola, sauna), basalt stone of the Golan (the house's walls).
-Base template 4 (wellness: curve hero, duo split, FAQ beside a photo); changed: palette, fonts, `tiles` for the compound.
-A fig purple + wood, soft, Bona Nova/Alef (recommended) · B basalt + leaf green, editorial, David Libre/Assistant · C pool blue, clean split hero, Rubik/Assistant.
+## Design (round 2, after the diversity engine work: kits + archetypes + own home per direction)
+Idea: the shade of the fig tree: fig purple, warm wood (pergola, sauna), Golan basalt (the house's walls).
+| dir | kit | archetype | home | palette / type |
+|---|---|---|---|---|
+| A (recommended) | atelier | tour | cover hero → unit split card → tiles tour of the spaces → carousel inside the units → facts → FAQ outline → posts | fig purple + wood, tone light, Bona Nova / Alef |
+| B | gallery | gallery | hero slider (3 photos) → mosaic of 8 → aerial overlap → amenities grid → stagger "evenings" → FAQ beside a photo | basalt + leaf green, editorial, David Libre / Assistant |
+| C | panels | booking | split hero with the lead form → fact card → amenities rows → treatment room duo → strip + gallery link → dark FAQ → posts | pool blue, clean, Rubik / Assistant |
+Measured layout between directions: A–B 39%, A–C 38%, B–C 35% (gate limit 85%). zs pool: no recent client used these kits or archetypes.
