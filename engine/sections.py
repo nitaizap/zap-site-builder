@@ -562,11 +562,11 @@ def post_template(ctx):
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
             W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
-            W(ctx, "theme-post-title", {"header_size": "h1"}, "zs-hero__title"),
+            W(ctx, "shortcode", {"shortcode": "[zap_post_title]"}, "zs-hero__title"),
         ])], tag="section", inner=False, boxed=True)
     body = C(ctx, "zs-sec zs-post-body", [
         C(ctx, "zs-wrap zs-wrap--narrow", [
-            W(ctx, "theme-post-featured-image", {"image_size": "large"}, "zs-post__hero"),
+            W(ctx, "shortcode", {"shortcode": "[zap_post_image]"}, "zs-post__hero"),
             W(ctx, "theme-post-content", {}, "zs-prose"),
             W(ctx, "shortcode", {"shortcode": "[zap_post_extras]"}, "zs-post__extras"),
         ])], tag="section", inner=False, boxed=True)

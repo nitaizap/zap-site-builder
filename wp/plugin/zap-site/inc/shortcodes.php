@@ -147,3 +147,11 @@ add_shortcode('zap_archive_title', function () {
     else                   $t = wp_strip_all_tags(get_the_archive_title());
     return '<h1 class="elementor-heading-title">' . esc_html($t) . '</h1>';
 });
+
+/* The post's H1 and featured image for the Theme Builder "Single post" template. */
+add_shortcode('zap_post_title', function () {
+    return '<h1 class="elementor-heading-title">' . esc_html(get_the_title()) . '</h1>';
+});
+add_shortcode('zap_post_image', function () {
+    return has_post_thumbnail() ? '<figure class="zs-post__img">' . get_the_post_thumbnail(null, 'large', ['loading' => 'eager', 'fetchpriority' => 'high']) . '</figure>' : '';
+});
