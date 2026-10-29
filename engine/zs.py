@@ -81,6 +81,8 @@ def cmd_preview(a):
     s = Site(a.slug)
     s.serve()
     print(preview(s))
+    if getattr(s, "_preview_close", None):
+        sys.exit(2)
 
 
 def cmd_image(a):
@@ -235,6 +237,10 @@ def cmd_qa(a):
         s = Site(a.slug)
         s.serve()
     ok = run_qa(s)
+    if not getattr(a, "site", None):   # the measured layout of the home page, for zs pool (committed with the site)
+        import json as _j
+        from fingerprint import take
+        (s.src / "fingerprint.json").write_text(_j.dumps(take({"home": s.url + "/"})["home"], ensure_ascii=False), encoding="utf-8")
     sys.exit(0 if ok else 2)
 
 
@@ -269,8 +275,9 @@ def cmd_pool(a):
     r = recipe(d)
     print("levers:", " · ".join(x or "-" for x in r["levers"]), f"· base template {r['base'] or '-'}")
     print("home:  ", " → ".join(r["home"]))
-    warns = compare(a.slug, d)
+    warns = compare(a.slug, d, s.src)
     print("\n".join(warns) if warns else "unique: no other client branch is close (git fetch first for the latest)")
+    sys.exit(2 if any(w.startswith("ERROR") for w in warns) else 0)
 
 
 def main():

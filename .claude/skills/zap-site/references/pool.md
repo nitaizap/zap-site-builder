@@ -174,6 +174,9 @@ order, and listing "באתר הקיים ↔ בעיצוב החדש" in NOTES.md.
   photo grids) back to back; one brand-colour band (`checks`, `leadbar`, `cta`, `marquee`) per screenful.
 - **At most two variants from the same template on one page**, so no site reads as a copy of one template.
 - **Every direction in the gate differs in at least one variant as well as preset/hero.**
-- Before the gate run `bin/zs pool <slug>`: it compares the home-page recipe and design levers with every
-  other client on a `site/*` branch (`git fetch` first). A "too close" warning means swap variants or a
-  lever, and write the reason for each choice in NOTES.md (one line per section).
+- **Measured, not named.** `zs qa` saves the home page's measured layout (`sites/<slug>/fingerprint.json`:
+  header arrangement, width, corners, title size, and per section its ground, height, photo share, columns and
+  where the heading sits); `zs preview` measures every direction (`preview/fingerprints.json`) and fails when two
+  directions are ≥ 85% alike. `bin/zs pool <slug>` (after `git fetch`) compares both with every other client's
+  fingerprint and **exits with ERROR at ≥ 85%** (WARN ≥ 75%). Commit `fingerprint.json` with the site. An ERROR
+  is fixed by changing the kit, the hero or the home's section order, never by renaming variants.

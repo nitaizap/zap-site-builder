@@ -278,8 +278,19 @@ def preview(site):
         w = 900 if "desktop" in f.name else 390
         im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
         im.save(out / (f.stem.replace("home", "dir-a") + ".jpg"), "JPEG", quality=72, optimize=True, progressive=True)
+    from fingerprint import take, similarity, TOO_CLOSE
+    import itertools
+    urls = {k: site.url + (f"/zs-dir-{k}/" if d.get("home") else f"/?zs_dir={k}") for k, d in dirs.items()} if data.get("directions") else {"a": site.url + "/"}
+    fps = take(urls)
+    (out / "fingerprints.json").write_text(json.dumps(fps, ensure_ascii=False), encoding="utf-8")
+    sims = {(a, b): similarity(fps[a], fps[b]) for a, b in itertools.combinations(fps, 2)}
+    close = [f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items() if v >= TOO_CLOSE]
+    for (a, b), v in sims.items():
+        if v >= TOO_CLOSE:
+            print(f"ERROR directions {a} and {b} look {v:.0%} alike (measured layout): change the kit, hero or section order of one")
     lines = [f"# כיווני עיצוב — {data['business']['name']}", "",
-             "כל כיוון הוא דף בית שלם משלו: מבנה, סדר הבלוקים, צבעים וגופנים. בוחרים אות אחת.", ""]
+             "כל כיוון הוא דף בית שלם משלו: מבנה, סדר הבלוקים, צבעים וגופנים. בוחרים אות אחת.", "",
+             "דמיון בין הכיוונים (מדוד מהדף עצמו): " + ", ".join(f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items()), ""]
     base = data.get("design", {})
     home = next((p.get("sections", []) for p in data.get("pages", []) if p.get("type") == "home"), [])
     for k, d in dirs.items():
@@ -291,6 +302,7 @@ def preview(site):
                   "| מחשב | נייד |", "|---|---|",
                   f"| <img src=\"dir-{k}-desktop.jpg\" width=\"620\"> | <img src=\"dir-{k}-mobile.jpg\" width=\"250\"> |", ""]
     (out / "PREVIEW.md").write_text("\n".join(lines), encoding="utf-8")
+    site._preview_close = close
     return out / "PREVIEW.md"
 
 
