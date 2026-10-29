@@ -203,7 +203,20 @@
  },
  "header": {
   "cta_label": "",
-  "topbar": false
+  "topbar": false,
+  "mobile_bar": [
+   {
+    "label": "משלוח",
+    "href": "https://www.mishlohim.co.il/menu/14504/",
+    "icon": "bag"
+   },
+   {
+    "label": "שולחן",
+    "href": "https://tabitisrael.co.il/site/bellamare",
+    "icon": "calendar"
+   },
+   "waze"
+  ]
  },
  "logo": "assets/logo.png",
  "logo_light": "assets/logo-light.png",
@@ -581,6 +594,114 @@
        "href": "https://tabitisrael.co.il/site/bellamare"
       }
      ]
+    },
+    {
+     "type": "pricelist",
+     "title": "התפריט",
+     "groups": [
+      {
+       "title": "פתיחה",
+       "items": [
+        {
+         "name": "פוקאצ׳ה קלאסית ומטבלים"
+        },
+        {
+         "name": "ארנצ׳יני גזעי"
+        },
+        {
+         "name": "עגבניות מגוונות"
+        },
+        {
+         "name": "זוקיני על קרם פרש"
+        },
+        {
+         "name": "קיסר רומאי"
+        }
+       ]
+      },
+      {
+       "title": "ים",
+       "items": [
+        {
+         "name": "ברולה סלק"
+        },
+        {
+         "name": "סיגר דג"
+        },
+        {
+         "name": "פילה לברק"
+        }
+       ]
+      },
+      {
+       "title": "פסטות",
+       "items": [
+        {
+         "name": "אנלוטי תירס"
+        },
+        {
+         "name": "טורטליני קאצ׳ו א פפה"
+        },
+        {
+         "name": "לינגוויני כמהין"
+        },
+        {
+         "name": "ספגטי אלי אוליו"
+        },
+        {
+         "name": "פפרדלה פלורנטין"
+        },
+        {
+         "name": "רביולי במילוי ערמונים"
+        },
+        {
+         "name": "ריגטוני חמאה, עגבניות ומסקרפונה"
+        }
+       ]
+      },
+      {
+       "title": "פיצות מהטאבון",
+       "items": [
+        {
+         "name": "מרגריטה"
+        },
+        {
+         "name": "מרינרה אנשובי"
+        },
+        {
+         "name": "ארטישוק"
+        },
+        {
+         "name": "ביאנקה פטריות"
+        },
+        {
+         "name": "ביאנקה בטטה, ערמונים וזעפרן"
+        },
+        {
+         "name": "בצל קלמטה"
+        },
+        {
+         "name": "בצלים"
+        },
+        {
+         "name": "תפוח אדמה מדורה"
+        }
+       ]
+      },
+      {
+       "title": "קינוחים",
+       "items": [
+        {
+         "name": "טירמיסו מגירה"
+        }
+       ]
+      }
+     ],
+     "note": "התפריט עשוי להשתנות. התפריט המעודכן וההזמנה באתר ההזמנות.",
+     "cta": {
+      "label": "להזמנת משלוח",
+      "href": "https://www.mishlohim.co.il/menu/14504/"
+     }
     },
     {
      "type": "cta",
