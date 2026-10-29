@@ -92,7 +92,8 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
     // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
-    wp_enqueue_style('zs-kits', "$uri/assets/kits.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/kits.css"));
+    wp_enqueue_style('zs-editorial', "$uri/assets/editorial.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/editorial.css"));
+    wp_enqueue_style('zs-kits', "$uri/assets/kits.css", ['zs-editorial'], ZS_THEME_VER . '-' . filemtime("$dir/assets/kits.css"));
     wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-kits'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);

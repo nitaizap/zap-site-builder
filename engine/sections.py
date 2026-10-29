@@ -631,8 +631,67 @@ def team(ctx, s):
                                               buttons(ctx, s.get("cta"))])
 
 
+# ---------- editorial sections (art-directed pages: chapters, collages, film strips) ----------
+
+def _ghost(ctx, word):
+    """A huge decorative word behind a section (aria-hidden; the text sits in a data attribute and is drawn by CSS,
+    so it is never read, indexed or measured as page text)."""
+    if not word:
+        return None
+    return W(ctx, "html", {"html": f'<span class="zs-ghost" aria-hidden="true" data-t="{html.escape(word, quote=True)}"></span>'}, "zs-ghost-w")
+
+
+def _rows(rows):
+    if not rows:
+        return ""
+    return '<ul class="zs-rows">' + "".join(f'<li><span>{html.escape(r["label"], quote=False)}</span><strong>{html.escape(str(r["value"]), quote=False)}</strong></li>'
+                                           for r in rows) + "</ul>"
+
+
+def chapters(ctx, s):
+    """A row of chapter links under the hero (the page's table of contents): a big word + a small label each."""
+    items = [C(ctx, "zs-chapter", [heading(ctx, it["title"], "p", "zs-chapter__t", link=it.get("href")),
+                                   heading(ctx, it.get("label", ""), "p", "zs-chapter__l")]) for it in s["items"]]
+    return section(ctx, s, "zs-chapters", [C(ctx, "zs-chapters__row", items)])
+
+
+def collage(ctx, s):
+    """Text beside overlapping photos. Default: a tall photo with a second smaller one crossing its edge.
+    variant stack: three photos stacked and offset, with `rows` (label: value) under the text."""
+    imgs = s.get("images") or [k for k in (s.get("image"), s.get("image2")) if k]
+    media = C(ctx, "zs-collage__media", [image(ctx, k, f"zs-collage__img zs-collage__img--{i + 1}", "large") for i, k in enumerate(imgs)])
+    body = C(ctx, "zs-collage__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"), heading(ctx, s["title"], "h2", "zs-sec__title"),
+                                       text(ctx, (s.get("text") or "") + _rows(s.get("rows"))), buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-collage", [_ghost(ctx, s.get("ghost")), C(ctx, "zs-collage__wrap", [media, body])])
+
+
+def overlay(ctx, s):
+    """A full-width photo with a text card cut into its lower edge; `chips` = short facts under the text."""
+    chips = "".join(f"<span>{html.escape(c, quote=False)}</span>" for c in s.get("chips", []))
+    card = C(ctx, "zs-overlay__card", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"), heading(ctx, s["title"], "h2", "zs-sec__title"),
+                                       text(ctx, (s.get("text") or "") + (f'<p class="zs-chips">{chips}</p>' if chips else "")),
+                                       buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-overlay", [C(ctx, "zs-overlay__media", [image(ctx, s["image"], "zs-overlay__img", "full")]), card])
+
+
+def filmstrip(ctx, s):
+    """A heading beside a short text, then a strip of tall photos stepping up and down, each with a caption."""
+    figs = []
+    for it in s["items"]:
+        k, cap = (it, "") if isinstance(it, str) else (it["image"], it.get("caption", ""))
+        im = image(ctx, k, "zs-film__img", "large")
+        if im and cap:
+            im["settings"].update({"caption_source": "custom", "caption": cap})
+        figs.append(im)
+    head = C(ctx, "zs-film__head", [C(ctx, "zs-film__t", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
+                                                           heading(ctx, s["title"], "h2", "zs-sec__title")]),
+                                    text(ctx, s.get("text"), "zs-film__intro")])
+    return section(ctx, s, "zs-film", [head, C(ctx, "zs-film__strip", figs)])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team,
+                                     chapters, collage, overlay, filmstrip)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
@@ -649,6 +708,8 @@ KITS = {
     "quiet":    {"rhythm": [None]},                         # no grounds, hairlines between sections, small heads, narrow
     "frame":    {"rhythm": [None, "surface"]},              # the page inside a brand-colour frame, offset photo frames
     "gallery":  {"rhythm": ["surface", None]},              # photo-led: full-bleed grids, hairline gaps, centred heads
+    "shade":    {"rhythm": [None]},                         # art-directed: transparent header over a stage hero, display type,
+                                                            # chapters, collages, dark night bands set per section, postcard form band
 }
 
 # Home archetypes (design.archetype): the home page's story, chosen before any section. Each names its beats; the
@@ -668,8 +729,13 @@ ARCHETYPES = {
 ON_LIGHT_ONLY = {"faq", "contact", "posts", "pricelist", "prose", "gallery", "facts", "team", "logos", "carousel", "video"}
 
 VARIANTS = {
-    "hero": {"cover", "inset", "curve"},
-    "split": {"frame", "overlap", "card", "duo"},
+    "hero": {"cover", "inset", "curve", "stage"},
+    "split": {"frame", "overlap", "card", "duo", "interlude"},
+    "trust": {"giant"},
+    "collage": {"stack"},
+    "chapters": set(),
+    "overlay": set(),
+    "filmstrip": set(),
     "cta": {"photo"},
     "cards": {"framed"},
     "features": {"aside", "checks", "rows"},
@@ -700,7 +766,7 @@ def render_page(ctx, sections):
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta", "marquee", "trust", "tiles") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee", "trust", "tiles", "chapters", "overlay") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
             g = rhythm[plain_i % len(rhythm)]
             if g in ("dark", "primary", "accent") and t in ON_LIGHT_ONLY:   # forms, lists and text panels stay on a light ground

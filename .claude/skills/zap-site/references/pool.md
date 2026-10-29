@@ -39,6 +39,7 @@ three gate directions use three different kits.**
 | `bands` | heavy heads, block buttons, square photos; alternate sections on full primary-colour bands (forms, FAQ and text stay light) | plain / primary | trades, transport, fitness, bold consumer brands |
 | `quiet` | no grounds at all; hairlines between sections; small heads; 980px page; no shadows | all plain | professionals, notaries, architects, luxury restraint |
 | `frame` | the page sits inside a brand-colour frame (desktop); heads with a side bar; photos in an offset frame | plain / surface | studios, galleries, design-led trades |
+| `shade` | art-directed: a `stage` hero under a dark header, display type only where it is big, chapters / collages / overlay / film strip, a postcard form band, accent buttons | set per section (`bg: dark` for night bands) | hospitality, venues, anything with strong photos and a story |
 | `gallery` | photo-led: gallery and card grids run edge to edge with 4px gaps, square corners; centred heads; menu in the middle | surface / plain | zimmers, venues, portfolios, food |
 
 `tone: light` turns every colour band into a tint. Kit CSS: `wp/theme/zap-base/assets/kits.css`; rhythm:
