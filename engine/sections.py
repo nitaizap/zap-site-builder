@@ -283,6 +283,7 @@ def cards(ctx, s):
                 text(ctx, it.get("text"), "zs-card__text"),
                 text(ctx, '<ul class="zs-card__meta">' + "".join(f"<li>{html.escape(m, quote=False)}</li>" for m in it["meta"]) + "</ul>",
                      "zs-card__metaw") if it.get("meta") else None,
+                C(ctx, "zs-card__links", [button(ctx, l, "ghost") for l in it["links"]]) if it.get("links") else None,   # branches: book / order / menu
             ]),
         ]))
     lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""

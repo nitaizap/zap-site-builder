@@ -25,7 +25,7 @@ footer; Waze on the address.
 
 | industry | home order seen | CTAs | engine recipe |
 |---|---|---|---|
-| **restaurants** (6–8 sections, Basix) | full-bleed food slideshow with the logo centred, H1 + 1–3 buttons → about split on a dark band → photo strip → gallery + "more" → contact band with **hours by day** and the buttons again → form | הזמנת שולחן, הזמנת משלוח, תכנון אירוע, Waze (every site), call | hero `cover` + `logo: true` + `images`; `split overlap`; `gallery strip`; `pricelist` (menu with categories; the client's own prices only); `tiles` for many short facts; `cta photo` "להזמנת שולחן"; `header.mobile_bar: ["waze", {label: "הזמנת שולחן", href: <Tabit/Ontopo>, icon: "calendar"}, {label: "משלוח", href: …, icon: "bag"}]` |
+| **restaurants** (6–8 sections, Basix) | full-bleed food slideshow with the logo centred, H1 + 1–3 buttons → about split on a dark band → photo strip → gallery + "more" → contact band with **hours by day** and the buttons again → form | הזמנת שולחן, הזמנת משלוח, תכנון אירוע, Waze (every site), call | hero `cover` + `logo: true` + `images`; `split overlap`; `gallery strip`; `pricelist` (menu with categories; the client's own prices only); `tiles` for many short facts; `cta photo` "להזמנת שולחן"; `header.mobile_bar: ["waze", {label: "הזמנת שולחן", href: <Tabit/Ontopo>, icon: "calendar"}, {label: "משלוח", href: …, icon: "bag"}]`; chains: `cards` with `links` per branch (book / order / menu); `business.kosher` for the certificate chip; hours by day = `business.hours` lines |
 | **legal** (ProX) | top info bar → portrait / justice hero with a **lead form card** → about (portrait + bio) → practice areas as zig-zag rows or icon cards on navy → why us → articles → form | לייעוץ ראשוני, לקביעת פגישה, WhatsApp | hero `form: true`; `split frame` about; `cards` (practice areas, linked) or `tiles`; `team` for partners; `posts`; navy + gold (`editorial` / Frank Ruhl Libre for boutique) |
 | **medical** (ProX) | hours bar → doctor hero + **form card** → credentials about (portrait, positions, memberships) → treatment cards → why us → testimonials → contact boxes | תיאום תור, לקביעת תורים + number | hero `form: true` + `variant: curve`; `split` about with `points` = credentials; `features`; `team` for clinics; `pricelist variant: tiles` for vets / opticians / treatments with public prices |
 | **trades / local services** | photo hero with call + WhatsApp → **authorised-dealer / client logos** → about → services (photo cards or zig-zag) → why us 3×2 on dark → gallery → reviews → form on a photo | the number as the button, WhatsApp, "לתיאום" | `logos variant: band` right under the hero; `cards` overlay; `features checks`; `leadbar photo`; `route`/`steps` for the process |
@@ -49,8 +49,7 @@ footer; Waze on the address.
 
 ## Seen, not built (yet)
 
-Branch / venue cards with several links each (chains: 26, 28), a kosher-certificate chip in the header (9, 21),
-day-by-day hours block inside the contact band, vertical service tabs (13), video testimonials (61), a comparison
+Vertical service tabs (13), video testimonials (61), a comparison
 table (use `prose` with an HTML table), property filters, gift-card floating button. Candidates for the pool when a
 client needs one: add them generically (`pool.md` → Adding to the pool).
 

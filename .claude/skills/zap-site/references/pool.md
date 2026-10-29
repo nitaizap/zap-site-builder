@@ -61,6 +61,7 @@ Basic sites must still meet every other rule (QA 0 errors, real facts, Zap stand
 | `leadbar` | *(type)* | rounded brand band with a one-row form (name, phone, email) mid-page | template 1 | once per page, not next to the footer lead band |
 | `leadbar` | `photo` | the same form centred over a full-bleed darkened photo | templates 3, 5 | `image` |
 | `hero` | `form: true` *(option, any hero)* | a one-row lead-form card (name, phone, email) along the hero's foot; hidden on phones (the hero buttons + footer form stay); not on the contact page | Zap portfolio: legal / medical ProX (17, 19, 20, 37, 56, 63) | `form.email_leads` |
+| `cards` | *(item fields)* `links` | several outline buttons per card (book / order / menu), stacked full width on phones | Zap portfolio: chains 26, food hall 28 | |
 | `cards` | *(item fields)* `price`, `meta` | listing cards: a price line and a row of spec chips under the title (rooms · floor · m², pack size) | Zap portfolio: real estate 52, products 29 / 11 | |
 | `pricelist` | *(type)* default | menu / fee list: groups of dotted-leader rows (name … price, a line under), two columns | Zap portfolio: restaurants (menus), notary fees | the client's own prices |
 | `pricelist` | `tiles` | one dark tile per item, the price in a chip | Zap portfolio: vet 36, opticians | |

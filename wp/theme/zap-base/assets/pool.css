@@ -410,3 +410,13 @@ body .zs-team--wide .e-con.zs-member--img { display: grid; grid-template-columns
   body .zs-team--wide .e-con.zs-member--img { grid-template-columns: 1fr; text-align: center; justify-items: center; }
   .elementor .zs-team--wide .zs-member__img img, .elementor .zs-member__img img { width: 128px; height: 128px; }
 }
+
+/* ---------- cards · links (branches / venues: several actions per card) ---------- */
+body .e-con.zs-card__links { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.zs-card__links .zs-b .elementor-button { padding: 10px 16px; min-height: 44px; font-size: 1rem; }
+@media (max-width: 767px) { body .e-con.zs-card__links { flex-direction: column; } .zs-card__links .zs-b, .zs-card__links .zs-b .elementor-button { width: 100%; } }
+
+/* ---------- kashrut chip (business.kosher): top bar + contact list ---------- */
+.zs-kosher { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: none; color: inherit; }
+.zs-kosher .zs-ico { width: 18px; height: 18px; }
+a.zs-kosher:hover { text-decoration: underline; }
