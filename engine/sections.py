@@ -247,10 +247,18 @@ def hero(ctx, s):
     if kind:
         ride = W(ctx, "html", {"html": f'<div class="zs-ride" aria-hidden="true"><span class="zs-ride__v">{vehicle_svg(kind)}</span></div>'},
                  "zs-hero__ride")
+    # `form: true` -> a lead-form card overlapping the hero's bottom edge (Zap portfolio: most legal/medical ProX
+    # sites). Same short form as the leadbar; phones keep the hero buttons and the footer form instead
+    fcard = None
+    if s.get("form") and has_form(ctx):
+        ft = s["form"] if isinstance(s["form"], str) else (ctx.site.get("form") or {}).get("title", "השאירו פרטים ונחזור אליכם")
+        fcard = C(ctx, "zs-hero__form", [heading(ctx, ft, "p", "zs-hero__form-title"),
+                                         W(ctx, "shortcode", {"shortcode": '[zap_form id="hero" message="no" email="yes"]'})])
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
+    vidc += " zs-hero--form" if fcard else ""
     slc = " zs-hero--slides zs-pausable" if len(keys) > 1 else ""
-    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [garland(ctx, s), txt, media, ride])
+    return section(ctx, s, f"zs-hero {kind} {'zs-hero--img' if media else 'zs-hero--noimg'}{vidc}{slc}", [garland(ctx, s), txt, media, ride, fcard])
 
 
 def trust(ctx, s):
@@ -269,7 +277,10 @@ def cards(ctx, s):
             C(ctx, "zs-card__body", [
                 W(ctx, "icon", {"selected_icon": fa_icon(it["icon"])}, "zs-card__icon") if it.get("icon") and not it.get("image") else None,
                 heading(ctx, it["title"], s.get("item_tag", "h3"), "zs-card__title", link=it.get("href")),
+                heading(ctx, it.get("price"), "p", "zs-card__price"),
                 text(ctx, it.get("text"), "zs-card__text"),
+                text(ctx, '<ul class="zs-card__meta">' + "".join(f"<li>{html.escape(m, quote=False)}</li>" for m in it["meta"]) + "</ul>",
+                     "zs-card__metaw") if it.get("meta") else None,
             ]),
         ]))
     lay = f" zs-cards--{s['layout']}" if s.get("layout") in ("bento", "rows") else ""
@@ -573,8 +584,50 @@ def carousel(ctx, s):
     return section(ctx, s, f"zs-carousel zs-pausable zs-int-{iv}", [*sec_head(ctx, s), C(ctx, "zs-car__track", slides), nav])
 
 
+def pricelist(ctx, s):
+    """A price list: `items: [{name, price, text}]`, or `groups: [{title, items}]` (a menu with categories).
+    Default: two columns of rows with a dotted leader between name and price (menus, notary fees);
+    `variant: "tiles"`: one tile per item with the price in a chip (vets, opticians, treatments).
+    Prices are the client's own published prices only; `price` may be empty (a menu without prices)."""
+    groups = s.get("groups") or [{"items": s.get("items", [])}]
+    kids = []
+    for g in groups:
+        rows = [C(ctx, "zs-price", [C(ctx, "zs-price__row", [heading(ctx, it["name"], "h3", "zs-price__name"),
+                                                             heading(ctx, it.get("price"), "p", "zs-price__val")]),
+                                    text(ctx, it.get("text"), "zs-price__text")]) for it in g["items"]]
+        kids.append(C(ctx, "zs-prices__group", [heading(ctx, g.get("title"), "h3" if s.get("title") else "h2", "zs-prices__gt"),
+                                                C(ctx, "zs-prices__list", rows)]))
+    return section(ctx, s, "zs-prices", [*sec_head(ctx, s), C(ctx, "zs-prices__groups", kids), text(ctx, s.get("note"), "zs-prices__note"),
+                                         buttons(ctx, s.get("cta"))])
+
+
+def facts(ctx, s):
+    """Intro text beside a fact card of label: value rows ("יחידות: 2", "אורחים: עד 6", "שטח: 120 מ״ר"):
+    zimmers and suites, venues, B2B specs (Zap portfolio: Tiffany zimmers). `card_title` heads the card."""
+    rows = "".join(f'<li><span class="zs-facts__k">{html.escape(it["label"], quote=False)}</span>'
+                   f'<strong class="zs-facts__v">{html.escape(str(it["value"]), quote=False)}</strong></li>' for it in s["items"])
+    card = C(ctx, "zs-facts__card", [heading(ctx, s.get("card_title"), "p", "zs-facts__title"),
+                                     text(ctx, f'<ul class="zs-facts__list">{rows}</ul>', "zs-facts__listw")])
+    body = C(ctx, "zs-facts__body", [*sec_head(ctx, {**s, "head": "stack"}), text(ctx, s.get("text")), buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-facts", [C(ctx, "zs-facts__wrap", [body, card])])
+
+
+def team(ctx, s):
+    """The people: `items: [{name, role, text, image}]` – partners of a law firm, a clinic's doctors, the vets.
+    Round portraits on cards; with one or two people the cards turn into wide bio rows (Zap portfolio: 20, 36).
+    Real people only, with their own photos; never AI portraits."""
+    items = [C(ctx, "zs-member" + (" zs-member--img" if it.get("image") else ""), [
+        image(ctx, it.get("image"), "zs-member__img", "medium"),
+        C(ctx, "zs-member__body", [heading(ctx, it["name"], "h3", "zs-member__name"), heading(ctx, it.get("role"), "p", "zs-member__role"),
+                                   text(ctx, it.get("text"), "zs-member__text")]),
+    ]) for it in s["items"]]
+    wide = " zs-team--wide" if len(items) <= 2 or s.get("variant") == "rows" else ""
+    return section(ctx, s, f"zs-team{wide}", [*sec_head(ctx, s), C(ctx, f"zs-team__list zs-grid zs-grid--{min(len(items), 4)}", items),
+                                              buttons(ctx, s.get("cta"))])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
@@ -594,6 +647,9 @@ VARIANTS = {
     "contact": {"photo"},
     "leadbar": {"photo"},
     "tiles": set(),
+    "pricelist": {"tiles"},
+    "facts": set(),
+    "team": {"rows"},
 }
 
 

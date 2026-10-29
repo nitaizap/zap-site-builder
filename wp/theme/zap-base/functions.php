@@ -217,6 +217,21 @@ function zs_tel_href($e164) {
     return 'tel:' . preg_replace('/[^0-9+]/', '', (string) $e164);
 }
 
+/** The phones' fixed action bar (footer.php): call + WhatsApp, then `header.mobile_bar` items in order.
+    An item is "waze" / "email" / "instagram" / "facebook", or {label, href, icon} (booking, delivery, menu: Zap portfolio,
+    restaurants put הזמנת שולחן / משלוח / ניווט there). Up to 5 cells; with 3+ the cells turn into icon-over-label tiles. */
+function zs_mobile_bar_items() {
+    $out = [];
+    foreach ((array) zs_opt('header.mobile_bar', []) as $it) {
+        $k = is_array($it) ? ($it['type'] ?? '') : (string) $it;
+        if ($k === 'waze' && (zs_opt('business.address') || zs_opt('business.geo'))) $out[] = ['ניווט', zs_waze_href(), 'waze', true];
+        elseif ($k === 'email' && ($m = zs_opt('business.email_public'))) $out[] = ['מייל', 'mailto:' . $m, 'mail', false];
+        elseif (in_array($k, ['instagram', 'facebook'], true) && ($u = zs_opt('business.' . $k))) $out[] = [$k === 'instagram' ? 'אינסטגרם' : 'פייסבוק', $u, $k, true];
+        elseif (is_array($it) && !empty($it['label']) && !empty($it['href'])) $out[] = [$it['label'], $it['href'], $it['icon'] ?? 'calendar', str_starts_with($it['href'], 'http')];
+    }
+    return array_slice($out, 0, 3);
+}
+
 /** Waze navigation to the business: by coordinates when known, else by the address (Zap checklist: the address is a Waze link). */
 function zs_waze_href() {
     $g = (array) zs_opt('business.geo', []);
@@ -249,6 +264,9 @@ function zs_icon($name) {
         'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.2 6.8h.01"/>',
         'linkedin' => '<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M8 10.5V16M8 7.8v.01M11.5 16v-5.5M11.5 13c0-1.5 1-2.6 2.4-2.6s2.1 1 2.1 2.6V16"/>',
         'youtube' => '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5v5l4.3-2.5z"/>',
+        'calendar' => '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+        'bag' => '<path d="M5 8h14l-1 12.5H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+        'waze' => '<path d="M5 15.5a7.5 7.5 0 1 1 13.6 1.9c-.6 1-1.6 1.6-2.6 1.6H9.6"/><circle cx="8" cy="19" r="1.6"/><circle cx="15" cy="19" r="1.6"/><path d="M10 10.5v.01M14.5 10.5v.01M10 13.5c1 .9 3.3.9 4.5 0"/>',
         'tiktok' => '<path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.3 4 4.5 4"/>',
     ];
     return '<svg class="zs-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ($p[$name] ?? '') . '</svg>';

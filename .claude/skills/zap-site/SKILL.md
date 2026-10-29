@@ -30,7 +30,7 @@ before doing the step — every one encodes mistakes already made.
 | before a new site (once) | `references/playbook.md` — lessons paid for on earlier builds, as rules (no site to copy: every site is composed from its own brief and the pool) |
 | intake | `references/intake.md` (research-first table), `references/zap-standards.md` |
 | plan | `references/keywords.md`, `references/content-seo.md`, `references/site-json.md` (schema + every section type) |
-| design + gate | `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
+| design + gate | `references/portfolio.md` (what Zap's real client sites do per industry: order, CTAs, styles, packages → tier; open `benchmark/portfolio/`), `references/pool.md` (packages, section variants, mixing rules), `references/design.md` (the bar, motion catalogue, brief words → features), `references/benchmark.md` (open the images) |
 | images / video | `references/images.md` (Weave models, credit gate, Veo loop) |
 | SEO QA | `references/seo-checklist.md` (the team's SEO sheet, row by row, and how `zs seo` checks it) |
 | before QA / deliver | `references/qa-rules.md` and `references/zap-qa.md` (everything Zap QA rejects, as rules; most are enforced by `zs build` / `zs qa`, the rest are on you), `references/novamira.md` (push) or `references/delivery.md` (zip) |

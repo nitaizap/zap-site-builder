@@ -408,6 +408,12 @@ body .e-con.zs-contact__info { --row-gap: 18px; }
   .zs-fab__call { background: var(--c-primary); color: var(--c-primary-ink); }
   .zs-fab__wa { background: #157f3f; color: #fff; }
   .zs-fab a:only-child { grid-column: 1 / -1; }
+  .zs-fab__x { background: var(--c-surface); color: var(--c-ink); border: 1px solid var(--c-line); }
+  /* 3-5 cells (header.mobile_bar): icon over a short label, equal tiles in one row */
+  .zs-fab:is(.zs-fab--n3, .zs-fab--n4, .zs-fab--n5) { grid-template-columns: repeat(var(--fab-n), minmax(0, 1fr)); gap: 6px; padding-inline: 6px; }
+  .zs-fab--n3 { --fab-n: 3; } .zs-fab--n4 { --fab-n: 4; } .zs-fab--n5 { --fab-n: 5; }
+  .zs-fab:is(.zs-fab--n3, .zs-fab--n4, .zs-fab--n5) a { flex-direction: column; gap: 2px; min-height: 56px; font-size: 1rem; line-height: 1.1; border-radius: 10px; padding: 4px 2px; text-align: center; }
+  .zs-fab:is(.zs-fab--n4, .zs-fab--n5) a .zs-ico { width: 18px; height: 18px; }
 }
 
 /* ---------- posts, pages, archive, 404 ---------- */
