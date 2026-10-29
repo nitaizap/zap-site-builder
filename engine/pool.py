@@ -42,6 +42,27 @@ def _others(slug, files=False):
                 yield other, d
 
 
+RECENT = 3   # a kit or archetype used by one of the last RECENT client sites is not used again
+
+
+def recent(slug):
+    """The last RECENT other clients (by their branch's latest commit) -> [(slug, kit, archetype)]."""
+    by = {}
+    for ref in _git("for-each-ref", "--format=%(refname:short)", "refs/remotes/origin/site/", "refs/heads/site/").split():
+        other = ref.rsplit("site/", 1)[1]
+        if other == slug or other.endswith("-pilot"):
+            continue
+        t = int((_git("log", "-1", "--format=%ct", ref).strip() or 0))
+        raw = _git("show", f"{ref}:sites/{other}/site.json")
+        try:
+            des = json.loads(raw).get("design", {}) if raw else {}
+        except ValueError:
+            continue
+        if t >= by.get(other, (0,))[0]:
+            by[other] = (t, des.get("kit"), des.get("archetype"))
+    return [(o, k, a) for o, (t, k, a) in sorted(by.items(), key=lambda x: -x[1][0])[:RECENT]]
+
+
 def compare(slug, d, src=None):
     """-> list of ERROR/WARN lines. The measured layout (fingerprint.json from zs qa, preview/fingerprints.json
     from zs preview) decides: ERROR when a home reads as another client's. Names of sections only warn."""
@@ -55,6 +76,14 @@ def compare(slug, d, src=None):
         if d.get("directions") and pf.exists():
             mine.update({f"direction {k}": v for k, v in (load(pf.read_text(encoding="utf-8")) or {}).items()})
     me, out, seen = recipe(d), [], set()
+    last = recent(slug)
+    des = d.get("design") or {}
+    opts = [("design", des)] + [(f"direction {k}", {**des, **v}) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]
+    for name, dz in (opts[1:] if d.get("directions") else opts[:1]):
+        for lever in ("kit", "archetype"):
+            hit = [o for o, k, a in last if dz.get(lever) and dz.get(lever) == (k if lever == "kit" else a)]
+            if hit:
+                out.append(f"ERROR {name}: {lever} '{dz[lever]}' was used by {', '.join(hit)} (one of the last {RECENT} sites): pick another")
     if src is not None and not mine:
         out.append("WARN  no measured layout yet: run zs qa (or zs preview at the gate) first, then zs pool")
     unmeasured = []

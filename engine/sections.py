@@ -651,6 +651,19 @@ KITS = {
     "gallery":  {"rhythm": ["surface", None]},              # photo-led: full-bleed grids, hairline gaps, centred heads
 }
 
+# Home archetypes (design.archetype): the home page's story, chosen before any section. Each names its beats; the
+# sections and variants that tell them are the writer's choice (references/pool.md → Home archetypes).
+ARCHETYPES = {
+    "tour":      "a guided walk through the place: big photo opening, then one space per beat, practical facts last",
+    "statement": "type-led: one confident line opens the page, few photos, short proof, the action repeated",
+    "booking":   "the action first: the form or booking card in the opening, facts and prices next, proof after",
+    "proof":     "evidence first: certifications / clients right under the hero, numbers, work, the process",
+    "story":     "chapters of the owner's story: origin, method, people, the place, then the invitation",
+    "catalogue": "the offer as a list: listing cards or a price list high on the page, filters by need, then trust",
+    "gallery":   "pictures do the talking: a slider or mosaic opens, short captions, one paragraph of text",
+    "guide":     "answers first: the audience's questions lead, each answer links to the service that solves it",
+}
+
 # Sections built for a light ground (white panels, form fields, long text): a kit's colour band skips them.
 ON_LIGHT_ONLY = {"faq", "contact", "posts", "pricelist", "prose", "gallery", "facts", "team", "logos", "carousel", "video"}
 
