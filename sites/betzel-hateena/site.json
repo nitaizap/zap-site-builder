@@ -32,8 +32,8 @@
     "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
   },
   "design": {
-    "kit": "gallery",
-    "archetype": "gallery",
+    "kit": "shade",
+    "archetype": "tour",
     "preset": "editorial",
     "hero": "image",
     "header": "light",
@@ -41,22 +41,22 @@
     "radius": 0,
     "tone": "",
     "colors": {
-      "primary": "#7a4e12",
+      "primary": "#5c2742",
       "primary_ink": "#ffffff",
-      "accent": "#c99a3e",
-      "accent_ink": "#1f1a12",
-      "ink": "#1f1d1a",
-      "text": "#3a3631",
-      "muted": "#5a544b",
-      "bg": "#ffffff",
-      "surface": "#f7f2e8",
-      "line": "#e7dfcf",
-      "dark": "#26231f",
-      "dark_ink": "#f7f2e8"
+      "accent": "#8a5a14",
+      "accent_ink": "#ffffff",
+      "ink": "#24161d",
+      "text": "#3b2c33",
+      "muted": "#5a4950",
+      "bg": "#efe6d8",
+      "surface": "#e6dac7",
+      "line": "#d3c4ae",
+      "dark": "#2a1520",
+      "dark_ink": "#efe6d8"
     },
     "fonts": {
-      "heading": "David Libre",
-      "body": "Assistant"
+      "heading": "Karantina",
+      "body": "Noto Sans Hebrew"
     }
   },
   "form": {
@@ -346,150 +346,153 @@
             "label": "וואטסאפ",
             "href": "whatsapp"
           },
-          "images": [
-            "pool-gable",
-            "living-2",
-            "jacuzzi-2"
-          ],
-          "interval": 5,
+          "variant": "stage",
           "image": "pool-gable"
         },
         {
-          "type": "carousel",
-          "title": "הצצה ליחידות, לבריכה ולמתחם החוץ",
+          "type": "chapters",
           "items": [
             {
-              "image": "living-5",
-              "caption": "סלון וקיר זכוכית אל הגינה"
+              "title": "בוקר",
+              "label": "היחידה",
+              "href": "#morning"
             },
             {
-              "image": "bed-3",
-              "caption": "חדר השינה"
+              "title": "צהריים",
+              "label": "הבריכה",
+              "href": "#noon"
             },
             {
-              "image": "jacuzzi-1",
-              "caption": "ג׳קוזי בגינה הפרטית"
+              "title": "ערב",
+              "label": "סאונה ופרגולה",
+              "href": "#evening"
             },
             {
-              "image": "sauna-out",
-              "caption": "הסאונה בחצר"
-            },
-            {
-              "image": "pergola",
-              "caption": "הפרגולה ומטבח החוץ"
-            },
-            {
-              "image": "bath-3",
-              "caption": "חדר הרחצה"
-            },
-            {
-              "image": "spa-2",
-              "caption": "חדר הטיפולים"
+              "title": "לילה",
+              "label": "ג׳קוזי וגינה",
+              "href": "#night"
             }
+          ]
+        },
+        {
+          "type": "collage",
+          "anchor": "morning",
+          "ghost": "בוקר",
+          "eyebrow": "בוקר · היחידה",
+          "title": "מתעוררים\nבגולן",
+          "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות, \"טבע\" ו\"חופש\", 70 מ\"ר כל אחת. שני חדרי שינה עם מיטה זוגית וספה נפתחת, מטבחון מאובזר עם פינת קפה, וגינה פרטית מחוץ לדלת.</p><p>ארוחת בוקר אפשר להזמין בתיאום מראש.</p>",
+          "image": "bed-3",
+          "image2": "fruit",
+          "cta": {
+            "label": "ליחידות האירוח",
+            "href": "page:יחידות-האירוח"
+          }
+        },
+        {
+          "type": "overlay",
+          "anchor": "noon",
+          "eyebrow": "צהריים · הבריכה",
+          "title": "מים חמימים",
+          "text": "<p>בריכה מחוממת בעונה, עם ג׳טים לעיסוי, דק עץ וערסלי שמש מול קיר אבן הבזלת.</p>",
+          "chips": [
+            "מחוממת בעונה",
+            "ג׳טים לעיסוי",
+            "ערסלי שמש"
+          ],
+          "image": "pool-sauna"
+        },
+        {
+          "type": "trust",
+          "variant": "giant",
+          "items": [
+            {
+              "value": "2",
+              "label": "יחידות אירוח"
+            },
+            {
+              "value": "70",
+              "label": "מ\"ר כל יחידה"
+            },
+            {
+              "value": "2",
+              "label": "חדרי שינה ביחידה"
+            },
+            {
+              "value": "1",
+              "label": "ג׳קוזי לכל יחידה"
+            }
+          ]
+        },
+        {
+          "type": "collage",
+          "variant": "stack",
+          "anchor": "evening",
+          "bg": "dark",
+          "ghost": "ערב",
+          "eyebrow": "ערב · סאונה ופרגולה",
+          "title": "האש נדלקת,\nהסאונה חמה",
+          "text": "<p>מטבח חוץ מושקע ופינת BBQ מתחת לפרגולת עץ, ושולחן ארוך לארוחה משותפת. כמה צעדים משם, סאונה מעץ בחצר.</p>",
+          "rows": [
+            {
+              "label": "מטבח חוץ",
+              "value": "BBQ"
+            },
+            {
+              "label": "סאונה",
+              "value": "בחצר"
+            },
+            {
+              "label": "שומרי שבת",
+              "value": "פלטה ומיחם"
+            }
+          ],
+          "images": [
+            "pergola-bbq",
+            "sauna-in",
+            "sauna-bucket"
           ]
         },
         {
           "type": "split",
-          "variant": "frame",
-          "title": "שתי יחידות, גינה פרטית לכל אחת",
-          "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות של 70 מ\"ר, \"טבע\" ו\"חופש\", כל אחת עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p><p>מסביב שדות הגולן הפתוחים, ובתוך המתחם בריכה מחוממת בעונה, סאונה וחדר טיפולים.</p>",
-          "image": "aerial-3",
+          "variant": "interlude",
+          "eyebrow": "הפסקה · חדר הטיפולים",
+          "title": "עיסוי בלי לצאת מהמתחם",
+          "text": "<p>בחדר הטיפולים ההוליסטי אפשר להזמין עיסויים וטיפולי פנים מתקדמים. מתאמים מראש, יחד עם החופשה.</p>",
+          "image": "spa-3",
           "cta": {
-            "label": "ליחידות האירוח",
-            "href": "page:יחידות-האירוח"
+            "label": "לחדר הטיפולים",
+            "href": "page:חדר-הטיפולים"
           }
         },
         {
-          "type": "features",
-          "variant": "rows",
-          "title": "כל מה שצריך לחופשה מפנקת בגולן",
+          "type": "filmstrip",
+          "anchor": "night",
+          "bg": "dark",
+          "eyebrow": "לילה · ג׳קוזי וגינה",
+          "title": "הגינה שלכם,\nהמים מבעבעים",
+          "text": "לכל יחידה גינה פרטית עם פינת ישיבה וג׳קוזי משלה.",
           "items": [
             {
-              "title": "מטבחון מאובזר",
-              "text": "בכל יחידה מקרר, מיקרוגל, פינת קפה, חלב, כלי אוכל וכלי בישול.",
-              "icon": "utensils"
+              "image": "jacuzzi-2",
+              "caption": "ג׳קוזי ליד קיר האבן"
             },
             {
-              "title": "ג׳קוזי ביחידה",
-              "text": "ג׳קוזי מרגיע בכל אחת משתי היחידות, לצד גינה פרטית עם פינת ישיבה.",
-              "icon": "heart"
+              "image": "wine-pool",
+              "caption": "על שפת הבריכה"
             },
             {
-              "title": "בריכה מחוממת בעונה",
-              "text": "במתחם החוץ בריכה מחוממת בעונה עם ג׳טים לעיסוי.",
-              "icon": "droplet"
+              "image": "garden-3",
+              "caption": "בצל העץ"
             },
             {
-              "title": "סאונה",
-              "text": "סאונה נעימה במתחם החוץ, כמה צעדים מהבריכה.",
-              "icon": "leaf"
-            },
-            {
-              "title": "מטבח חוץ ופינת BBQ",
-              "text": "מטבח חוץ מושקע ופינת BBQ לערבים משותפים מתחת לפרגולה.",
-              "icon": "cheers"
-            },
-            {
-              "title": "לשומרי שבת",
-              "text": "פלטת שבת, מיחם מים חמים ובית כנסת במרחק הליכה.",
-              "icon": "star-david"
+              "image": "living-5",
+              "caption": "הסלון אל הדשא"
             }
           ]
         },
         {
-          "type": "gallery",
-          "variant": "strip",
-          "title": "ערבים במתחם",
-          "images": [
-            "wine-pool",
-            "sauna-in",
-            "bbq"
-          ],
-          "more": {
-            "label": "לגלריה המלאה",
-            "href": "page:גלריה"
-          }
-        },
-        {
-          "type": "facts",
-          "title": "היחידה במספרים",
-          "text": "<p>צימר בצל התאנה מזמין אתכם לחופשה רגועה בקלע אלון שבלב רמת הגולן. שתי יחידות אירוח מרווחות, \"טבע\" ו\"חופש\", עם שני חדרי שינה, ג׳קוזי, מטבחון וגינה פרטית.</p><p>בחוץ מחכים בריכה מחוממת בעונה עם ג׳טים לעיסוי, סאונה ופינת BBQ, ובחדר הטיפולים ההוליסטי אפשר להתפנק בעיסויים ובטיפולי פנים.</p>",
-          "card_title": "היחידה במספרים",
-          "items": [
-            {
-              "label": "יישוב",
-              "value": "קלע אלון, רמת הגולן"
-            },
-            {
-              "label": "יחידות אירוח",
-              "value": "2: \"טבע\" ו\"חופש\""
-            },
-            {
-              "label": "גודל יחידה",
-              "value": "70 מ\"ר"
-            },
-            {
-              "label": "חדרי שינה",
-              "value": "2 בכל יחידה"
-            },
-            {
-              "label": "חדרי רחצה",
-              "value": "1 בכל יחידה"
-            },
-            {
-              "label": "מתאים ל",
-              "value": "זוגות ומשפחות"
-            }
-          ],
-          "cta": {
-            "label": "ליחידות האירוח",
-            "href": "page:יחידות-האירוח"
-          }
-        },
-        {
           "type": "faq",
-          "variant": "dark",
-          "title": "שאלות על החופשה בצל התאנה",
+          "title": "שאלות לפני שמגיעים",
           "items": [
             {
               "q": "כמה יחידות אירוח יש בצל התאנה?",

@@ -440,8 +440,42 @@ DES_B = {"kit": "gallery", "archetype": "gallery", "preset": "editorial", "hero"
          "fonts": {"heading": "David Libre", "body": "Assistant"}}
 
 # The user chose B (29/10/2026). B is the site; the gate directions are gone.
-site["design"] = dict(DES_B)
-home["sections"] = HOME_B
+# Round 4 (approved mock "a day in the shade", sites/betzel-hateena/mock): the home page is one day at the zimmer.
+HOME_SHADE = [
+    {**HERO, "variant": "stage", "image": "pool-gable"},
+    {"type": "chapters", "items": [
+        {"title": "בוקר", "label": "היחידה", "href": "#morning"}, {"title": "צהריים", "label": "הבריכה", "href": "#noon"},
+        {"title": "ערב", "label": "סאונה ופרגולה", "href": "#evening"}, {"title": "לילה", "label": "ג׳קוזי וגינה", "href": "#night"}]},
+    {"type": "collage", "anchor": "morning", "ghost": "בוקר", "eyebrow": "בוקר · היחידה", "title": "מתעוררים\nבגולן",
+     "text": "<p>צימר בצל התאנה בקלע אלון: שתי יחידות, \"טבע\" ו\"חופש\", 70 מ\"ר כל אחת. שני חדרי שינה עם מיטה זוגית וספה נפתחת, מטבחון מאובזר עם פינת קפה, וגינה פרטית מחוץ לדלת.</p><p>ארוחת בוקר אפשר להזמין בתיאום מראש.</p>",
+     "image": "bed-3", "image2": "fruit", "cta": {"label": "ליחידות האירוח", "href": "page:יחידות-האירוח"}},
+    {"type": "overlay", "anchor": "noon", "eyebrow": "צהריים · הבריכה", "title": "מים חמימים",
+     "text": "<p>בריכה מחוממת בעונה, עם ג׳טים לעיסוי, דק עץ וערסלי שמש מול קיר אבן הבזלת.</p>",
+     "chips": ["מחוממת בעונה", "ג׳טים לעיסוי", "ערסלי שמש"], "image": "pool-sauna"},
+    {"type": "trust", "variant": "giant", "items": [
+        {"value": "2", "label": "יחידות אירוח"}, {"value": "70", "label": "מ\"ר כל יחידה"},
+        {"value": "2", "label": "חדרי שינה ביחידה"}, {"value": "1", "label": "ג׳קוזי לכל יחידה"}]},
+    {"type": "collage", "variant": "stack", "anchor": "evening", "bg": "dark", "ghost": "ערב", "eyebrow": "ערב · סאונה ופרגולה",
+     "title": "האש נדלקת,\nהסאונה חמה",
+     "text": "<p>מטבח חוץ מושקע ופינת BBQ מתחת לפרגולת עץ, ושולחן ארוך לארוחה משותפת. כמה צעדים משם, סאונה מעץ בחצר.</p>",
+     "rows": [{"label": "מטבח חוץ", "value": "BBQ"}, {"label": "סאונה", "value": "בחצר"}, {"label": "שומרי שבת", "value": "פלטה ומיחם"}],
+     "images": ["pergola-bbq", "sauna-in", "sauna-bucket"]},
+    {"type": "split", "variant": "interlude", "eyebrow": "הפסקה · חדר הטיפולים", "title": "עיסוי בלי לצאת מהמתחם",
+     "text": "<p>בחדר הטיפולים ההוליסטי אפשר להזמין עיסויים וטיפולי פנים מתקדמים. מתאמים מראש, יחד עם החופשה.</p>",
+     "image": "spa-3", "cta": {"label": "לחדר הטיפולים", "href": "page:חדר-הטיפולים"}},
+    {"type": "filmstrip", "anchor": "night", "bg": "dark", "eyebrow": "לילה · ג׳קוזי וגינה", "title": "הגינה שלכם,\nהמים מבעבעים",
+     "text": "לכל יחידה גינה פרטית עם פינת ישיבה וג׳קוזי משלה.",
+     "items": [{"image": "jacuzzi-2", "caption": "ג׳קוזי ליד קיר האבן"}, {"image": "wine-pool", "caption": "על שפת הבריכה"},
+               {"image": "garden-3", "caption": "בצל העץ"}, {"image": "living-5", "caption": "הסלון אל הדשא"}]},
+    {"type": "faq", "title": "שאלות לפני שמגיעים", "items": FAQ_HOME},
+    POSTS_S,
+]
+DES_SHADE = {"kit": "shade", "archetype": "tour", "preset": "editorial", "hero": "image", "header": "light", "motion": "subtle", "radius": 0, "tone": "",
+             "colors": C(primary="#5c2742", primary_ink="#ffffff", accent="#8a5a14", accent_ink="#ffffff", ink="#24161d", text="#3b2c33",
+                         muted="#5a4950", bg="#efe6d8", surface="#e6dac7", line="#d3c4ae", dark="#2a1520", dark_ink="#efe6d8"),
+             "fonts": {"heading": "Karantina", "body": "Noto Sans Hebrew"}}
+site["design"] = dict(DES_SHADE)
+home["sections"] = HOME_SHADE
 
 json.dump(site, open(os.path.join(HERE, "site.json"), "w"), ensure_ascii=False, indent=2)
 print("ok")
