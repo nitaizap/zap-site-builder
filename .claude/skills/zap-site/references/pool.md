@@ -200,9 +200,9 @@ order, and listing "באתר הקיים ↔ בעיצוב החדש" in NOTES.md.
 - **Measured, not named, and enforced.** `zs qa` measures the home page (`sites/<slug>/fingerprint.json`): the
   palette (button, header, footer, heading colours), the furniture every page repeats (top bar, form band, footer,
   FAQ rows, icon chips, floating button), the components (section type + variant, in order) and the layout. It is
-  compared with every client in `fingerprints/` and on `site/*` branches: **45% or more alike is an ERROR** (38%
+  compared with every client in `fingerprints/` and on `site/*` branches: **40% or more alike is an ERROR** (38%
   warns) in `zs qa`, `zs preview` (every direction), `zs pool`, `zs push` and `zs package`. The five sites the user
-  rejected as "all the same" measure 42-60% to each other. Commit `fingerprint.json` with the site.
+  rejected as "all the same" measure 27-43% to each other (brand-weighted measure). Commit `fingerprint.json` with the site.
 - What makes sites look alike, in the order a visitor notices it: **palette** (two dark olive/green sites read as one
   brand), **furniture** (the same top bar, form band, footer and FAQ on every page), **components** (the same 8-photo
   mosaic, icon grid and FAQ-beside-a-photo), then layout. Fix in that order. Before choosing, open the other

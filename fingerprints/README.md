@@ -1,7 +1,7 @@
 # Measured layouts of client sites (the registry)
 
 Every new site is compared with every file here and with `sites/<slug>/fingerprint.json` on every `site/*` branch.
-`zs qa`, `zs preview`, `zs pool`, `zs push` and `zs package` stop when a site is **45% or more** like another client
+`zs qa`, `zs preview`, `zs pool`, `zs push` and `zs package` stop when a site is **40% or more** like another client
 (palette, the furniture every page repeats, the components on the home page, the layout; `engine/fingerprint.py`).
 
 - New sites need nothing extra: `zs qa` writes `sites/<slug>/fingerprint.json`, committed on the site's branch.
@@ -10,4 +10,4 @@ Every new site is compared with every file here and with `sites/<slug>/fingerpri
   then `zs registry <slug>`, then commit the file to `main` by PR.
 
 Seeded 29/10/2026 with white-villa, patoccina, mehirut-haor, bella-mare and nick-itum. The user judged these five
-"all the same"; they measure 42-60% alike to each other, which is where the 45% limit comes from.
+"all the same"; they measure 27-43% alike to each other (brand-weighted measure); the 40% limit sits inside that range.

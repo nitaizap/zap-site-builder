@@ -17,7 +17,7 @@
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
   zs list                           sites on this machine
   zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
-  zs pool <slug>                    this site's measured look vs every other client (stops at 45% alike)
+  zs pool <slug>                    this site's measured look vs every other client (stops at 40% alike)
   zs registry <slug>                measure the local build into fingerprints/<slug>.json (the client registry)
 """
 import argparse

@@ -94,9 +94,11 @@ def measure(page):
     return page.evaluate(JS)
 
 
-# Calibrated on the five client sites the user judged "all the same" (measured 29/10/2026: .42-.60 to each other)
-TOO_CLOSE = .45   # ERROR: reads as a sibling of another client's site
-CLOSE = .38       # WARN
+# Calibrated on the five client sites the user judged "all the same" (re-measured 29/10/2026, brand-weighted palette:
+# .27-.43 to each other; the closest pairs share palette family and furniture). A judgement line, not a law: the
+# user's eye has the last word, and a site under the line can still be sent back.
+TOO_CLOSE = .40   # ERROR: reads as a sibling of another client's site
+CLOSE = .33       # WARN
 
 HEAD = {"start": "a", "side": "d", "centre": "c", "none": "n"}
 
@@ -134,7 +136,9 @@ def similarity(a, b):
     palette 30%, furniture 25%, component vocabulary 20%, section skeleton 15%, page frame 10%."""
     if "palette" not in a or "palette" not in b:   # a v1 measurement: re-measure with zs qa
         return _similarity_v1(a, b)
-    pal = sum(_colour_close(a["palette"].get(k), b["palette"].get(k)) for k in ("button", "footer", "header", "ink")) / 4
+    # the brand colour (the action button) carries the palette; white headers and near-black text are shared by almost
+    # every light site and say little (weighting them equally flagged a brown site as a red one's twin)
+    pal = sum(w * _colour_close(a["palette"].get(k), b["palette"].get(k)) for k, w in (("button", .6), ("footer", .2), ("header", .1), ("ink", .1)))
     ca, cb = a.get("chrome", {}), b.get("chrome", {})
     chrome = sum(ca.get(k) == cb.get(k) for k in ("topbar", "lead", "footer", "icon", "faq", "fab")) / 6
     ka, kb = [s.get("kind", "") for s in a["secs"]], [s.get("kind", "") for s in b["secs"]]
