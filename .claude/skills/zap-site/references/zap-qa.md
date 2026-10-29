@@ -20,6 +20,7 @@ eye before delivery. Read this once per site, before calling it done.
 | Gallery photos open in a lightbox | engine (automatic on `gallery`) |
 | Every address links to Waze navigation | theme (footer + contact list) |
 | No leftover public pages from plugins/base installs (e.g. `/login-customizer/`) | you: after a first push, list published pages on the server and draft anything site.json does not own |
+| Every page is editable in Elementor: privacy and accessibility are Elementor pages (hero + text widgets); the blog's posts and archive (blog page, categories, search) are Elementor Pro Theme Builder templates ("פוסט בבלוג", "בלוג וקטגוריות"), like the header and footer. Theme PHP is only the fallback where Pro is missing | engine (`zs push` creates them; check Templates → Theme Builder after a first push) |
 | No placeholder text anywhere ("עדיין אין כאן תוכן", cut-off descriptions) | theme + validator |
 | Images < 100 KB WebP, large enough for 2x phone screens (gallery/duo images use the `large` size) | engine |
 
