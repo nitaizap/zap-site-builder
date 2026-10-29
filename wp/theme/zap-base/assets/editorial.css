@@ -152,3 +152,30 @@ body .e-con.zs-film__head { --flex-direction: column !important; flex-direction:
   body .e-con.zs-film__strip { justify-content: center; overflow: visible; padding-inline: max(var(--gutter), calc((100% - var(--wrap)) / 2)); }
   .zs-film .elementor-widget-image.zs-film__img { flex: 1 1 0 !important; width: auto !important; min-width: 0; }
 }
+
+/* collage, default: the main photo fills the frame and the second sits inside its lower corner, framed in the page
+   colour (both photos stay inside the section, aligned to the text, nothing hangs below) */
+@media (min-width: 901px) {
+  .zs-collage:not(.zs-v-stack) .e-con.zs-collage__media { display: block !important; position: relative; height: clamp(420px, 64vh, 620px); }
+  .zs-collage:not(.zs-v-stack) .zs-collage__img--1 { position: absolute !important; inset-block: 0 12%; inset-inline-start: 0; width: 80% !important; height: auto !important; margin: 0 !important; }
+  .zs-collage:not(.zs-v-stack) .zs-collage__img--2 { position: absolute !important; inset-block-end: 0; inset-inline-end: 0; width: 46% !important; height: 52% !important; margin: 0 !important;
+    border: 10px solid var(--c-bg); box-shadow: 0 24px 50px -30px rgb(0 0 0 / .45); }
+  .e-con.zs-collage__wrap { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+}
+@media (max-width: 900px) {
+  .zs-collage:not(.zs-v-stack) .e-con.zs-collage__media { display: block !important; position: relative; height: 62vh; }
+  .zs-collage:not(.zs-v-stack) .zs-collage__img--1 { position: absolute !important; inset: 0 0 18% 0; height: auto !important; width: 84% !important; margin: 0 !important; }
+  .zs-collage:not(.zs-v-stack) .zs-collage__img--2 { position: absolute !important; inset-block-end: 0; inset-inline-end: 0; width: 52% !important; height: 42% !important; margin: 0 !important; border: 8px solid var(--c-bg); }
+}
+
+/* stage hero: the text sits in the middle of its column, wider, so the dark side carries the page instead of an empty field */
+body .e-con.zs-hero.zs-v-stage > .e-con-inner { grid-template-columns: 44fr 56fr; }
+body .zs-hero.zs-v-stage .e-con.zs-hero__text { justify-content: center !important; --justify-content: center !important; padding-inline: clamp(28px, 4vw, 72px) !important; row-gap: 22px; }
+body .zs-hero.zs-v-stage .zs-hero__lead { max-width: 34ch; font-size: 1.25rem; }
+body .zs-hero.zs-v-stage .zs-hero__points .zs-checks { display: grid; gap: 8px; margin-top: 6px; }
+body .zs-hero.zs-v-stage .zs-hero__points li { color: var(--c-dark-ink); }
+body .zs-hero.zs-v-stage .zs-hero__points li::before { background-color: var(--c-dark-ink); }
+/* inner pages: the stage hero as a shorter banner */
+body .e-con.zs-hero--page.zs-v-stage > .e-con-inner { min-height: clamp(320px, 52vh, 520px); }
+body .zs-hero--page.zs-v-stage .zs-hero__title .elementor-heading-title { font-size: clamp(2.6rem, 1.6rem + 2.6vw, 4.4rem); }
+@media (max-width: 1024px) { body .e-con.zs-hero.zs-v-stage > .e-con-inner { grid-template-columns: 1fr; } body .e-con.zs-hero--page.zs-v-stage > .e-con-inner { min-height: 0; } }
