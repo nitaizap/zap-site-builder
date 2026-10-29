@@ -397,8 +397,9 @@ function zs_part_group_logo() {
              . '<span class="zs-footer__zap-by">Powered by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
              . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
     }
-    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'
-         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group.webp') . '" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
+    // dark footers: the words in text ("Powered by", Zap QA: the old credit image read "Power by") + Zap's logo in white
+    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><span class="zs-footer__zap-by">Powered by</span><img class="zs-zap-white" src="'
+         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg') . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
 }
 
 function zs_part_call_line() {
