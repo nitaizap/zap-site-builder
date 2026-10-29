@@ -22,6 +22,29 @@ every preset.
 Leave `tier` out only for legacy sites. The validator stops the build when a site breaks its package.
 Basic sites must still meet every other rule (QA 0 errors, real facts, Zap standards).
 
+## Style kits (`design.kit`): the skeleton, the first lever
+
+Presets mostly change colour and type. A **kit** changes the page's skeleton: header layout, how every section
+head sits, the container width, the background rhythm (which grounds the sections take, set in the engine),
+image treatment, buttons and footer. Two sites on different kits read as different sites even with the same
+sections; two sites on the same kit read as siblings whatever the colours. **Every new site sets a kit, and the
+three gate directions use three different kits.**
+
+| kit | skeleton | rhythm | suits |
+|---|---|---|---|
+| `atelier` | logo centred above a centred menu; heads centred under a short rule; 1080px page; photos with a hairline offset frame; pill buttons; centred footer | all plain | boutique, hospitality, beauty, crafts |
+| `magazine` | menu right after the logo; heads on a heavy rule, oversized titles; 1320px grid; square photos and buttons; the name as a huge footer wordmark | plain, plain, dark | restaurants, agencies, editorial brands, B2B with photos |
+| `sidebar` | each section's title in a sticky side column with a brand bar, the content beside it (desktop) | plain / surface | law, medical, consultants, anything with long explanations |
+| `panels` | the page is tinted; every section a rounded white panel; pill-shaped floating header; panel footer | all panels | clinics, kids, wellness, friendly services |
+| `bands` | heavy heads, block buttons, square photos; alternate sections on full primary-colour bands (forms, FAQ and text stay light) | plain / primary | trades, transport, fitness, bold consumer brands |
+| `quiet` | no grounds at all; hairlines between sections; small heads; 980px page; no shadows | all plain | professionals, notaries, architects, luxury restraint |
+| `frame` | the page sits inside a brand-colour frame (desktop); heads with a side bar; photos in an offset frame | plain / surface | studios, galleries, design-led trades |
+| `gallery` | photo-led: gallery and card grids run edge to edge with 4px gaps, square corners; centred heads; menu in the middle | surface / plain | zimmers, venues, portfolios, food |
+
+`tone: light` turns every colour band into a tint. Kit CSS: `wp/theme/zap-base/assets/kits.css`; rhythm:
+`KITS` in `engine/sections.py`. Adding a kit: one `KITS` entry + one block in kits.css, then the engine test
+under that kit (QA 0 errors, SEO 0 FAIL) and a look at desktop + 390.
+
 ## Section variants (`variant` on a section)
 
 | type | variant | what it looks like | source | needs |

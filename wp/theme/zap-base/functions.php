@@ -92,7 +92,8 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('zs-finish', "$uri/assets/finish.css", ['zs-main'], ZS_THEME_VER . '-' . filemtime("$dir/assets/finish.css"));
     wp_enqueue_style('zs-pool', "$uri/assets/pool.css", ['zs-finish'], ZS_THEME_VER . '-' . filemtime("$dir/assets/pool.css"));
     // Zap QA standards (spacing, minimum text size, tap targets, FAQ, forms): loaded last so every preset obeys them
-    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
+    wp_enqueue_style('zs-kits', "$uri/assets/kits.css", ['zs-pool'], ZS_THEME_VER . '-' . filemtime("$dir/assets/kits.css"));
+    wp_enqueue_style('zs-standards', "$uri/assets/standards.css", ['zs-kits'], ZS_THEME_VER . '-' . filemtime("$dir/assets/standards.css"));
     wp_enqueue_script('zs-site', "$uri/assets/site.js", [], ZS_THEME_VER . '-' . filemtime("$dir/assets/site.js"), ['strategy' => 'defer', 'in_footer' => true]);
 }, 20);
 
@@ -201,6 +202,7 @@ add_filter('body_class', function ($classes) {
     if (!empty($col['accent']) && (zs_contrast($col['accent'], $col['primary'] ?? '#000') < 3 || zs_contrast($col['accent'], $col['dark'] ?? '#000') < 3))
         $classes[] = 'zs-accent-low';
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
+    if (!empty($d['kit'])) $classes[] = 'zs-k-' . sanitize_html_class($d['kit']);   // style kit: the page skeleton (kits.css)
     if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');

@@ -45,7 +45,7 @@ Store, ProfessionalService…), `phone_display`, `phone_e164`, `whatsapp_e164`, 
 ## design
 
 ```json
-{ "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
+{ "kit": "atelier|magazine|sidebar|panels|bands|quiet|frame|gallery (the page skeleton, pool.md → Style kits)", "preset": "signature|clean|bold|editorial|soft|industrial", "hero": "split|image|centered", "header": "light|dark",
   "colors": { "primary", "primary_ink", "accent", "accent_ink", "ink", "text", "muted", "bg", "surface", "line", "dark", "dark_ink" },
   "fonts": { "heading": "...", "body": "..." }, "radius": 14, "motion": "none|subtle|lively", "tone": "light (optional: no dark grounds anywhere — hero, bands, CTA, footer; for luxury / \"no black\" requests)", "progress": "scooter|van|truck (optional: scroll bar with a riding vehicle)", "ride": "scooter|van|truck (optional: a vehicle on every page hero; hero.ride overrides, hero.ride: null removes)", "motif": "gables (optional: the brand shape as eyebrow mark + roofline above the lead band; for roofers/builders)", "custom_css": "" }
 ```
