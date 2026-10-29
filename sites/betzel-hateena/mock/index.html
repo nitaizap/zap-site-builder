@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בצל התאנה</title>
+<link rel="stylesheet" href="karantina.css">
+<link rel="stylesheet" href="noto-sans-hebrew.css">
+<link rel="stylesheet" href="frank-ruhl-libre.css">
+<style>
+:root{
+  --paper:#efe6d8; --paper2:#e6dac7; --ink:#24161d; --fig:#5c2742; --fig-d:#2a1520; --sun:#b9822a; --leaf:#4b5a36;
+  --text:#3b2c33; --muted:#6a5a60;
+  --disp:'Karantina',serif; --serif:'Frank Ruhl Libre',serif; --sans:'Noto Sans Hebrew',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--text);font-family:var(--sans);font-size:18px;line-height:1.75;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit}
+/* paper grain */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .42  0 0 0 0 .35  0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* dappled fig-leaf shade */
+.shade::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.55;
+  background:
+   radial-gradient(38% 26% at 18% 22%, rgba(42,21,32,.55), transparent 70%),
+   radial-gradient(22% 30% at 34% 8%, rgba(42,21,32,.45), transparent 70%),
+   radial-gradient(30% 20% at 8% 55%, rgba(42,21,32,.40), transparent 70%),
+   radial-gradient(16% 14% at 30% 40%, rgba(42,21,32,.30), transparent 70%)}
+
+/* ---------- header ---------- */
+.top{position:absolute;top:0;inset-inline:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:26px 5vw;color:var(--paper)}
+.top .brand{font-family:var(--disp);font-size:34px;font-weight:700;letter-spacing:.02em}
+.top nav{display:flex;gap:28px;font-size:15px;letter-spacing:.06em}
+.top nav a{text-decoration:none;opacity:.92}
+.top .call{font-family:var(--disp);font-size:28px;text-decoration:none;border-bottom:1px solid currentColor}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100vh;min-height:720px;display:grid;grid-template-columns:38fr 62fr;background:var(--fig-d)}
+.hero .ph{position:relative;grid-column:2;overflow:hidden}
+.hero .ph img{filter:saturate(.9) contrast(1.02)}
+.hero .ph::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(42,21,32,.0) 60%,rgba(42,21,32,.55));z-index:1}
+.hero .txt{grid-column:1;grid-row:1;position:relative;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;padding:0 5vw 9vh 0}
+.hero h1{font-family:var(--disp);font-weight:700;color:var(--paper);font-size:clamp(130px,17vw,300px);line-height:.78;letter-spacing:-.01em;
+  margin-inline-end:-24vw;position:relative}
+.hero h1 span{display:block}
+.hero h1 span:last-child{color:transparent;-webkit-text-stroke:2px var(--paper);margin-inline-start:9vw}
+.hero .lead{color:#e9dccd;max-width:30ch;font-size:19px;margin-top:38px;padding-inline-start:5vw}
+.hero .act{display:flex;gap:26px;align-items:center;margin-top:30px;padding-inline-start:5vw}
+.btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--disp);font-size:30px;line-height:1;padding:14px 26px 12px;text-decoration:none;border-radius:999px}
+.btn.solid{background:var(--sun);color:var(--fig-d)}
+.btn.line{color:var(--paper);border:1.5px solid rgba(239,230,216,.6)}
+.hero .meta{position:absolute;bottom:4vh;inset-inline-start:calc(38% + 3vw);z-index:6;color:var(--paper);font-size:13px;letter-spacing:.3em}
+.vlabel{position:absolute;writing-mode:vertical-rl;font-size:12px;letter-spacing:.4em;color:var(--paper);opacity:.85}
+
+/* ---------- day index ---------- */
+.index{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(36,22,29,.18)}
+.index a{text-decoration:none;padding:26px 5vw 22px;border-inline-start:1px solid rgba(36,22,29,.18);display:flex;justify-content:space-between;align-items:baseline}
+.index a b{font-family:var(--disp);font-size:46px;font-weight:700;color:var(--fig)}
+.index a i{font-style:normal;font-size:14px;color:var(--muted)}
+
+/* ---------- chapters ---------- */
+.ch{position:relative;padding:14vh 5vw}
+.ch .no{font-family:var(--disp);font-size:clamp(140px,22vw,340px);line-height:.7;color:var(--paper2);position:absolute;top:6vh;inset-inline-end:3vw;z-index:0;font-weight:700}
+.ch h2{font-family:var(--disp);font-weight:700;font-size:clamp(64px,7vw,120px);line-height:.9;color:var(--ink);position:relative;z-index:2}
+.ch h2 em{font-style:normal;color:var(--fig)}
+.ch p{max-width:44ch;position:relative;z-index:2}
+.kicker{font-size:13px;letter-spacing:.35em;color:var(--fig);margin-bottom:14px;display:block;position:relative;z-index:2}
+
+/* morning: collage */
+.morning{display:grid;grid-template-columns:5fr 4fr 3fr;gap:0 4vw;align-items:end}
+.morning .a{grid-column:1;height:78vh;position:relative}
+.morning .b{grid-column:2;height:46vh;margin-bottom:-10vh;position:relative;z-index:3;box-shadow:0 30px 60px -30px rgba(42,21,32,.6)}
+.morning .t{grid-column:3;align-self:center}
+.morning .t p{margin-top:24px}
+
+/* noon: the pool, full bleed with a cut-in text card */
+.noon{padding:0;display:grid;grid-template-columns:1fr;position:relative}
+.noon .wide{height:92vh;position:relative}
+.noon .card{position:absolute;bottom:-8vh;inset-inline-start:5vw;width:min(560px,40vw);background:var(--paper);padding:48px 44px;z-index:4}
+.noon .card h2{font-size:clamp(56px,5.6vw,96px)}
+.noon .card p{margin-top:18px}
+.noon .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.noon .chips span{border:1px solid rgba(36,22,29,.3);border-radius:999px;padding:4px 14px;font-size:15px}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);padding:22vh 5vw 12vh;gap:0}
+.nums div{border-inline-start:1px solid rgba(36,22,29,.2);padding:0 2.2vw}
+.nums div:first-child{border:0;padding-inline-start:0}
+.nums b{display:block;font-family:var(--disp);font-size:clamp(90px,10vw,170px);line-height:.85;color:var(--fig);font-weight:700}
+.nums span{font-size:16px;color:var(--muted)}
+
+/* evening: dark, sauna + pergola, staggered */
+.evening{background:var(--fig-d);color:#e9dccd;display:grid;grid-template-columns:4fr 5fr;gap:5vw;align-items:start}
+.evening h2{color:var(--paper)}
+.evening h2 em{color:var(--sun)}
+.evening .no{color:#3a2030}
+.evening .kicker{color:var(--sun)}
+.evening .stack{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.evening .stack .p1{grid-column:1/3;height:52vh}
+.evening .stack .p2{height:44vh;margin-top:-14vh;position:relative;z-index:2;border:10px solid var(--fig-d);border-inline-start:0}
+.evening .stack .p3{height:34vh;align-self:end}
+.evening .t p{margin-top:24px}
+.evening .t .row{margin-top:40px;border-top:1px solid rgba(233,220,205,.2)}
+.evening .t .row div{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(233,220,205,.2);font-size:16px}
+.evening .t .row b{font-family:var(--disp);font-size:30px;font-weight:400;color:var(--paper)}
+
+/* the treatment room: an interlude band */
+.interlude{display:grid;grid-template-columns:7fr 5fr;min-height:70vh}
+.interlude .ph{position:relative}
+.interlude .t{background:var(--paper2);padding:12vh 5vw;display:flex;flex-direction:column;justify-content:center}
+.interlude h2{font-family:var(--serif);font-weight:300;font-size:clamp(44px,4.4vw,72px);line-height:1.05;color:var(--ink)}
+.interlude h2 b{font-weight:700;color:var(--fig)}
+.interlude p{margin-top:22px;max-width:40ch}
+.interlude a{margin-top:26px;font-family:var(--disp);font-size:30px;color:var(--fig);text-decoration:none;border-bottom:1.5px solid}
+
+/* night: jacuzzi, film strip */
+.night{background:#1c0f16;color:#e9dccd;padding:16vh 0 0}
+.night .head{padding:0 5vw;display:flex;justify-content:space-between;align-items:end;gap:5vw}
+.night h2{color:var(--paper)}
+.night h2 em{color:var(--sun)}
+.night .kicker{color:var(--sun)}
+.night .strip{display:flex;gap:14px;margin-top:9vh;padding-inline-start:5vw;overflow:hidden}
+.night .strip figure{flex:0 0 26vw;height:58vh;position:relative}
+.night .strip figure:nth-child(2n){margin-top:8vh}
+.night .strip figcaption{position:absolute;bottom:14px;inset-inline-start:14px;font-size:13px;letter-spacing:.2em;color:var(--paper);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+
+/* postcard contact */
+.post{padding:16vh 5vw;display:grid;grid-template-columns:6fr 5fr;gap:0;align-items:stretch}
+.post .ph{height:70vh;position:relative}
+.post .card{background:#f7f1e6;padding:7vh 4vw;position:relative;box-shadow:0 40px 80px -50px rgba(42,21,32,.55)}
+.post .card h2{font-family:var(--disp);font-size:clamp(64px,6vw,104px);line-height:.9;color:var(--ink)}
+.post .stamp{position:absolute;top:28px;inset-inline-end:28px;width:118px;height:118px;border:2px dashed var(--fig);border-radius:50%;display:grid;place-items:center;text-align:center;font-family:var(--disp);font-size:24px;line-height:1;color:var(--fig);transform:rotate(-9deg)}
+.post form{margin-top:30px;display:grid;gap:14px}
+.post input{font:inherit;background:transparent;border:0;border-bottom:1px solid rgba(36,22,29,.35);padding:10px 2px}
+.post .lines{margin-top:28px;font-size:16px}
+.post .lines div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px dotted rgba(36,22,29,.3)}
+.post .btn.solid{margin-top:8px;justify-content:center}
+footer{display:flex;justify-content:space-between;padding:28px 5vw;border-top:1px solid rgba(36,22,29,.2);font-size:14px;color:var(--muted)}
+footer b{font-family:var(--disp);font-size:30px;color:var(--fig)}
+
+@media (max-width:820px){
+  body{font-size:17px}
+  .top{padding:18px 20px}.top nav{display:none}.top .call{font-size:24px}
+  .hero{grid-template-columns:1fr;grid-template-rows:58vh auto;height:auto;min-height:0}
+  .hero .ph{grid-column:1;grid-row:1}
+  .hero .txt{grid-column:1;grid-row:2;justify-content:flex-start;padding:0 0 44px}
+  .hero h1{font-size:31vw;margin:-24vw 0 0;padding:0 20px}
+  .hero h1 span:last-child{margin-inline-start:14vw}
+  .hero .lead,.hero .act{padding:0 20px}
+  .hero .bottom{grid-row:2;padding:26px 0 40px}
+  .hero .meta{display:none}
+  .index{grid-template-columns:repeat(2,1fr)}
+  .index a{padding:16px 20px}
+  .ch{padding:10vh 20px}
+  .morning,.evening,.interlude,.post{grid-template-columns:1fr}
+  .morning .a{height:56vh}.morning .b{grid-column:1;height:34vh;width:70%;margin:-12vh 0 0 auto}.morning .t{grid-column:1;margin-top:30px}
+  .noon .wide{height:60vh}.noon .card{position:relative;inset:auto;width:auto;margin:-10vh 20px 0;padding:30px 24px}
+  .nums{grid-template-columns:repeat(2,1fr);gap:30px 0;padding:14vh 20px 8vh}
+  .nums div:nth-child(3){border:0;padding-inline-start:0}
+  .evening .stack .p2{margin-inline-start:0}
+  .night .head{flex-direction:column;align-items:flex-start;padding:0 20px}
+  .night .strip{padding-inline-start:20px}.night .strip figure{flex-basis:66vw;height:46vh}
+  .post{padding:10vh 20px}.post .ph{height:40vh}
+  .post .stamp{width:90px;height:90px;font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">בצל התאנה</div>
+  <nav><a href="#">היחידות</a><a href="#">חדר הטיפולים</a><a href="#">גלריה</a><a href="#">בלוג</a><a href="#">צרו קשר</a></nav>
+  <a class="call" href="tel:+972524848123">052-4848123</a>
+</header>
+
+<section class="hero">
+  <div class="ph shade"><img src="img/pool-gable.jpg" alt="הבריכה מול הבית"></div>
+  <div class="txt">
+    <h1><span>בצל</span><span>התאנה</span></h1>
+    <p class="lead">חופשה רגועה בלב רמת הגולן: צימר עם בריכה מחוממת, ג׳קוזי וגינה פרטית.</p>
+    <div class="act">
+      <a class="btn solid" href="tel:+972524848123">להזמנת חופשה</a>
+      <a class="btn line" href="#">וואטסאפ</a>
+    </div>
+  </div>
+  <div class="meta">קלע אלון · רמת הגולן · שתי יחידות אירוח</div>
+</section>
+
+<nav class="index">
+  <a href="#morning"><b>בוקר</b><i>היחידה</i></a>
+  <a href="#noon"><b>צהריים</b><i>הבריכה</i></a>
+  <a href="#evening"><b>ערב</b><i>סאונה ופרגולה</i></a>
+  <a href="#night"><b>לילה</b><i>ג׳קוזי</i></a>
+</nav>
+
+<section class="ch morning" id="morning">
+  <div class="no">בוקר</div>
+  <div class="a shade"><img src="img/bed-3.jpg" alt=""></div>
+  <div class="b"><img src="img/fruit.jpg" alt=""></div>
+  <div class="t">
+    <span class="kicker">בוקר · היחידה</span>
+    <h2>מתעוררים<br><em>בגולן</em></h2>
+    <p>שתי יחידות, "טבע" ו"חופש", 70 מ"ר כל אחת. שני חדרי שינה עם מיטה זוגית וספה נפתחת, מטבחון מאובזר עם פינת קפה, וגינה פרטית מחוץ לדלת.</p>
+    <p>ארוחת בוקר אפשר להזמין בתיאום מראש.</p>
+  </div>
+</section>
+
+<section class="ch noon" id="noon">
+  <div class="wide"><img src="img/pool-sauna.jpg" alt=""></div>
+  <div class="card">
+    <span class="kicker">צהריים · הבריכה</span>
+    <h2>מים <em>חמימים</em></h2>
+    <p>בריכה מחוממת בעונה, עם ג׳טים לעיסוי, דק עץ וערסלי שמש מול קיר אבן הבזלת.</p>
+    <div class="chips"><span>מחוממת בעונה</span><span>ג׳טים לעיסוי</span><span>ערסלי שמש</span></div>
+  </div>
+</section>
+
+<section class="nums">
+  <div><b>2</b><span>יחידות אירוח</span></div>
+  <div><b>70</b><span>מ"ר כל יחידה</span></div>
+  <div><b>2</b><span>חדרי שינה ביחידה</span></div>
+  <div><b>1</b><span>ג׳קוזי לכל יחידה</span></div>
+</section>
+
+<section class="ch evening" id="evening">
+  <div class="no">ערב</div>
+  <div class="t">
+    <span class="kicker">ערב · סאונה ופרגולה</span>
+    <h2>האש נדלקת,<br><em>הסאונה חמה</em></h2>
+    <p>מטבח חוץ מושקע ופינת BBQ מתחת לפרגולת עץ, ושולחן ארוך לארוחה משותפת. כמה צעדים משם, סאונה מעץ בחצר.</p>
+    <div class="row">
+      <div><span>מטבח חוץ</span><b>BBQ</b></div>
+      <div><span>סאונה</span><b>בחצר</b></div>
+      <div><span>שומרי שבת</span><b>פלטה ומיחם</b></div>
+    </div>
+  </div>
+  <div class="stack">
+    <div class="p1"><img src="img/pergola-bbq.jpg" alt=""></div>
+    <div class="p2"><img src="img/sauna-in.jpg" alt=""></div>
+    <div class="p3"><img src="img/sauna-bucket.jpg" alt=""></div>
+  </div>
+</section>
+
+<section class="interlude">
+  <div class="ph shade"><img src="img/spa-3.jpg" alt=""></div>
+  <div class="t">
+    <span class="kicker">הפסקה · חדר הטיפולים</span>
+    <h2>עיסוי <b>בלי לצאת</b><br>מהמתחם</h2>
+    <p>בחדר הטיפולים ההוליסטי אפשר להזמין עיסויים וטיפולי פנים מתקדמים. מתאמים מראש, יחד עם החופשה.</p>
+    <a href="#">לחדר הטיפולים</a>
+  </div>
+</section>
+
+<section class="night" id="night">
+  <div class="head">
+    <div>
+      <span class="kicker">לילה · ג׳קוזי</span>
+      <h2 style="font-family:var(--disp);font-size:clamp(64px,7vw,120px);line-height:.9">הגינה שלכם<br><em>והמים הבועטים</em></h2>
+    </div>
+    <p style="max-width:40ch">לכל יחידה גינה פרטית עם פינת ישיבה וג׳קוזי משלה. מאוחר בערב זה המקום הכי שקט במושב.</p>
+  </div>
+  <div class="strip">
+    <figure><img src="img/jacuzzi-2.jpg" alt=""><figcaption>ג׳קוזי ליד קיר האבן</figcaption></figure>
+    <figure><img src="img/wine-pool.jpg" alt=""><figcaption>על שפת הבריכה</figcaption></figure>
+    <figure><img src="img/garden-3.jpg" alt=""><figcaption>בצל העץ</figcaption></figure>
+    <figure><img src="img/living-5.jpg" alt=""><figcaption>הסלון אל הדשא</figcaption></figure>
+  </div>
+</section>
+
+<section class="post">
+  <div class="ph"><img src="img/aerial-3.jpg" alt=""></div>
+  <div class="card">
+    <div class="stamp">קלע<br>אלון</div>
+    <span class="kicker">גלויה מהגולן</span>
+    <h2>רוצים<br>לבוא?</h2>
+    <form><input placeholder="שם"><input placeholder="טלפון"><a class="btn solid" href="#">שליחה</a></form>
+    <div class="lines">
+      <div><span>טלפון ווואטסאפ</span><b>052-4848123</b></div>
+      <div><span>כתובת</span><b>קלע אלון 90</b></div>
+    </div>
+  </div>
+</section>
+
+<footer><b>בצל התאנה</b><span>קלע אלון, רמת הגולן · מדיניות פרטיות · הצהרת נגישות</span></footer>
+</body>
+</html>
