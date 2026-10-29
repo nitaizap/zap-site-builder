@@ -27,8 +27,9 @@ def vehicle_svg(kind):
 class Ctx:
     """Per-page render context."""
 
-    def __init__(self, page_key, media, site):
+    def __init__(self, page_key, media, site, as_home=False):
         self.page_key = page_key
+        self.as_home = as_home      # a gate-preview copy of the home page (directions[k].home) renders as home
         self.media = media          # image key -> {"id": int, "url": str, "alt": str}
         self.site = site
         self.n = 0
@@ -215,7 +216,7 @@ def _h1_markup(t, brand=""):
 
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
-    is_home = ctx.page_key == ""
+    is_home = ctx.page_key == "" or ctx.as_home
     logo = None
     if s.get("logo"):      # the brand's logo above the H1 (cover heroes: restaurants, venues)
         lk = "__logo_light" if "__logo_light" in ctx.media else "__logo"

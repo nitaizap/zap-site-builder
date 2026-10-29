@@ -49,7 +49,7 @@ def _texts(obj, path=""):
             yield from _texts(v, f"{path}[{i}]")
 
 
-def validate(d, site_dir):
+def validate(d, site_dir, _dir=None):
     out = []
     E = lambda m: out.append("ERROR " + m)
     W = lambda m: out.append("WARN  " + m)
@@ -311,4 +311,23 @@ def validate(d, site_dir):
             E(f"{path}: dash as punctuation ('{DASH.search(txt).group(0).strip()}'): rewrite with a comma, colon, period or a line break (house rule: no em/en dashes in site copy)")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
+    # Gate directions with their own home page: the same checks as the real home, on a copy that uses it.
+    if _dir is None:
+        seen = set(out)
+        for k, dv in (d.get("directions") or {}).items():
+            if not isinstance(dv, dict) or "home" not in dv:
+                continue
+            if not isinstance(dv["home"], list) or not dv["home"]:
+                E(f"directions.{k}.home must be a non-empty list of sections")
+                continue
+            import copy
+            alt = copy.deepcopy(d)
+            alt.pop("directions", None)
+            alt["design"] = {**alt.get("design", {}), **{x: v for x, v in dv.items() if x not in ("home", "label")}}
+            for pg in alt.get("pages", []):
+                if pg.get("type") == "home":
+                    pg["sections"] = dv["home"]
+            for m in validate(alt, site_dir, _dir=k):
+                if m not in seen and m.startswith("ERROR"):
+                    out.append(m.replace("ERROR ", f"ERROR direction {k}: ", 1))
     return out

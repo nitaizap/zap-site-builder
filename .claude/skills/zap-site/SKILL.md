@@ -119,7 +119,7 @@ direction, say which and why in one line, and continue without waiting.
 
 ## 4 · Build
 
-1. Copy the chosen direction into `design` (and drop `directions`, or keep it for later comparison).
+1. Copy the chosen direction into `design` and its `home` into the home page's `sections`, then drop `directions`.
 2. Finish every page and post; generate or place the images.
 3. Loop until clean:
    ```bash

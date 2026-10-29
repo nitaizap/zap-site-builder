@@ -114,15 +114,23 @@ add_action('wp_head', function () {
     }
 }, 2);
 
-/** Active design: the build engine may store alternative directions for the gate-1 preview. */
+/** Active design: the build engine may store alternative directions for the gate-1 preview: ?zs_dir=<k> on any
+ * page, or the direction's own home page /zs-dir-<k>/ (directions[k].home, local builds only). */
+function zs_dir_key() {
+    if (wp_get_environment_type() === 'production') return '';
+    if (!empty($_GET['zs_dir'])) return sanitize_key($_GET['zs_dir']);
+    $o = function_exists('get_queried_object') ? get_queried_object() : null;
+    if ($o instanceof WP_Post && $o->post_type === 'page' && preg_match('/^zs-dir-([a-z0-9]+)$/', $o->post_name, $m)) return $m[1];
+    return '';
+}
 function zs_design() {
     $d = zs_opt('design', []);
     $dirs = zs_opt('directions', []);
-    if (!empty($_GET['zs_dir']) && is_array($dirs) && wp_get_environment_type() !== 'production') {
-        $k = sanitize_key($_GET['zs_dir']);
-        if (isset($dirs[$k]) && is_array($dirs[$k])) {
-            $d = array_replace_recursive($d, $dirs[$k]);
-        }
+    $k = zs_dir_key();
+    if ($k !== '' && is_array($dirs) && isset($dirs[$k]) && is_array($dirs[$k])) {
+        $dv = $dirs[$k];
+        unset($dv['home'], $dv['label']);
+        $d = array_replace_recursive($d, $dv);
     }
     return $d;
 }
@@ -153,7 +161,7 @@ function zs_tokens_css() {
     // global colour or font in Elementor changes the whole site. Kit variables live on body (.elementor-kit-N),
     // so the tokens are re-declared on body; :root keeps the plain values as the fallback. Gate previews
     // (?zs_dir=) show their own colours, so they skip this layer.
-    if (empty($_GET['zs_dir'])) {
+    if (zs_dir_key() === '') {
         $kit = ['primary' => 'primary', 'primary-ink' => 'zsprimaryink', 'accent' => 'accent', 'accent-ink' => 'zsaccentink',
                 'ink' => 'secondary', 'text' => 'text', 'muted' => 'zsmuted', 'bg' => 'zsbg', 'surface' => 'zssurf',
                 'line' => 'zsline', 'dark' => 'zsdark', 'dark-ink' => 'zsdarkink'];
