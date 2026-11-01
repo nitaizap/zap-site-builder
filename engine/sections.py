@@ -850,7 +850,9 @@ def archive_template(ctx):
 
 
 def footer_template_logo_key(ctx):
-    return "__logo_light" if "__logo_light" in ctx.media else "__logo"
+    # the light logo is for a dark footer only; the light tone has a light footer, where it would vanish
+    light_footer = ctx.site.get("design", {}).get("tone") == "light"
+    return "__logo_light" if "__logo_light" in ctx.media and not light_footer else "__logo"
 
 
 def footer_logo(ctx):
@@ -859,7 +861,7 @@ def footer_logo(ctx):
     lg = ctx.media.get(k)
     if not lg:
         return heading(ctx, b["name"], "p", "zs-footer__name", link="page:")
-    chip = " zs-footer__logo--chip" if k == "__logo" else ""
+    chip = " zs-footer__logo--chip" if k == "__logo" and ctx.site.get("design", {}).get("tone") != "light" else ""
     return W(ctx, "image", {"image": {"url": lg["url"], "id": lg["id"], "alt": b["name"], "source": "library"},
                             "image_size": "full", "link_to": "custom", "link": {"url": "/", "is_external": "", "nofollow": ""}},
              "zs-footer__logo" + chip)
