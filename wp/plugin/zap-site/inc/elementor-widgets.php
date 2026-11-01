@@ -30,6 +30,11 @@ add_action('elementor/widgets/register', function ($wm) {
                 $this->add_control('zs_note', ['type' => \Elementor\Controls_Manager::RAW_HTML,
                     'raw' => 'התוכן נלקח אוטומטית מהגדרות האתר (פרטי העסק, תפריטים, פוסטים).']);
             }
+            if (static::spec()[0] === 'form') {   // where the leads go, visible right in the editor (Zap QA)
+                $to = function_exists('zap_opt') ? zap_opt('business.email_leads') : '';
+                $this->add_control('zs_mail_note', ['type' => \Elementor\Controls_Manager::RAW_HTML,
+                    'raw' => 'פניות נשלחות אל: <strong dir="ltr">' . esc_html($to ?: 'לא הוגדר') . '</strong><br>שולח: <span dir="ltr">' . esc_html(function_exists('zap_opt') ? zap_opt('smtp.from', 'zapsites@d.co.il') : 'zapsites@d.co.il') . '</span><br>לשינוי: פניות מהאתר ← הגדרות טפסים.']);
+            }
             foreach ($controls as $key => [$type, $label, $default]) {
                 $c = ['label' => $label, 'default' => $default];
                 if ($type === 'switch') {
@@ -66,6 +71,7 @@ add_action('elementor/widgets/register', function ($wm) {
             'email' => [$yn, 'שדה אימייל', ''], 'button' => ['text', 'טקסט כפתור', '']]],
         'recent-posts'   => ['recent-posts', 'recent_posts', 'פוסטים אחרונים', 'eicon-posts-grid', [
             'count' => ['number', 'מספר פוסטים', 3], 'category' => ['text', 'קטגוריה (slug)', ''], 'exclude' => ['text', 'להחריג (ID)', '']]],
+        'logo'           => ['logo', 'logo', 'לוגו האתר', 'eicon-site-logo', ['where' => [['header' => 'הדר', 'footer' => 'פוטר', 'footer-dark' => 'פוטר כהה (לוגו בהיר)'], 'מיקום', 'header']]],
         'nap'            => ['nap', 'nap', 'פרטי העסק', 'eicon-info-box', []],
         'map'            => ['map', 'map', 'מפה', 'eicon-google-maps', ['q' => ['text', 'כתובת (ריק = כתובת העסק)', '']]],
         'reviews'        => ['reviews', 'reviews', 'ביקורות', 'eicon-review', []],
@@ -87,11 +93,14 @@ add_action('elementor/widgets/register', function ($wm) {
         'archive-title'  => ['archive-title', 'archive_title', 'כותרת ארכיון', 'eicon-archive-title', []],
         'archive-intro'  => ['archive-intro', 'archive_intro', 'פתיח ארכיון', 'eicon-text', []],
         'archive-posts'  => ['archive-posts', 'archive_posts', 'פוסטים בארכיון', 'eicon-archive-posts', []],
+        'page-content'   => ['page-content', 'page_content', 'תוכן העמוד (בטמפלט)', 'eicon-post-content', []],
+        'more-posts'     => ['more-posts', 'more_posts', 'מאמרים נוספים', 'eicon-post-list', ['count' => ['number', 'מספר מאמרים', 4]]],
     ];
     $GLOBALS['zap_widget_specs'] = $specs;
     // one small concrete class per widget: Elementor instantiates widgets by class name
     final class Zap_Widget_form extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['form']; } }
     final class Zap_Widget_recent_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['recent-posts']; } }
+    final class Zap_Widget_logo extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['logo']; } }
     final class Zap_Widget_nap extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['nap']; } }
     final class Zap_Widget_map extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['map']; } }
     final class Zap_Widget_reviews extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['reviews']; } }
@@ -113,6 +122,8 @@ add_action('elementor/widgets/register', function ($wm) {
     final class Zap_Widget_archive_title extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-title']; } }
     final class Zap_Widget_archive_intro extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-intro']; } }
     final class Zap_Widget_archive_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-posts']; } }
+    final class Zap_Widget_page_content extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['page-content']; } }
+    final class Zap_Widget_more_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['more-posts']; } }
     foreach (array_keys($specs) as $n) {
         $cls = 'Zap_Widget_' . str_replace('-', '_', $n);
         $wm->register(new $cls());

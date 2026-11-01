@@ -41,6 +41,7 @@ body .zs-hero .zs-hero__title .elementor-heading-title { font-size: clamp(2.1rem
 @media (max-width: 767px) {
   body :is(.zs-footer a, .zs-footer__links a, .zs-footer__legal a, .zs-footer__contact a, .zs-form__consent a, .zs-leadband__or a, .zs-nap a) {
     display: inline-flex; align-items: center; min-height: 44px; }
+  body :is(.zs-footer__links a, .zs-footer__contact a) { min-height: 34px; }   /* footer lists: compact (Zap QA), still above the 24px target minimum */
   body .zs-faq__list .elementor-toggle .elementor-tab-title { min-height: 56px; display: flex; align-items: center; }
 }
 
@@ -67,18 +68,21 @@ body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
 /* Gallery photos open in a lightbox */
 body .zs-gallery__img a { display: block; cursor: zoom-in; }
 
-/* Accessibility toolbar button on phones: in the header bar beside the menu button, never over content */
+/* Accessibility toolbar button on phones: low on the start edge, above the bottom action bar; never in the header
+   (it covered the logo) and never over the hero text. Zap QA, newest round: "התפריט נגישות נמצא בהדר .. לבטל".
+   The toolbar box is ~300px tall with its button at the top, so it is placed by its top; open, it moves up so
+   its panel fits on the screen. */
 @media (max-width: 767px) {
-  body #pojo-a11y-toolbar { position: fixed !important; top: 0 !important; bottom: auto !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: calc((var(--header-h, 72px) - 40px) / 2) !important; bottom: auto !important; }
-  body.admin-bar #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { margin-top: 46px; }
+  body #pojo-a11y-toolbar { position: fixed !important; top: calc(100svh - 170px) !important; bottom: auto !important; }
+  body #pojo-a11y-toolbar.pojo-a11y-toolbar-open { top: 80px !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: 0 !important; bottom: auto !important; }
   body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; }
-  body #pojo-a11y-toolbar.pojo-a11y-toolbar-left .pojo-a11y-toolbar-toggle { left: auto; right: -196px !important; }
 }
 
 /* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */
-body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 84px; max-width: 260px; }
-@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 60px; max-width: 190px; } }
+body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 96px; max-width: 280px; }
+@media (min-width: 768px) and (max-width: 1024px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 72px; max-width: 220px; } }
+@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 60px; max-width: 160px; } }
 
 /* Header call button: the number in dark text on a light button with a brand-colour border (Zap QA) */
 body .zs-header__cta .elementor-button, body .zs-nav__cta { background: var(--c-bg, #fff); color: var(--c-ink); border: 2px solid var(--c-primary); box-shadow: none; }
@@ -139,3 +143,46 @@ body .elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-c
 /* Slider pause button: top corner of the hero, never over the hero buttons */
 body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 14px; inset-block-end: auto; }
 @media (max-width: 767px) { body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 10px; } }
+
+/* ---------- Zap QA round 3 (פטוצ'ינה) ---------- */
+/* Phones/tablets: one header row, menu button + logo + a plain phone icon (no big round button) */
+@media (max-width: 1024px) {
+  body .zs-header__cta .elementor-button, body .zs-header__cta.zs-b .elementor-button { border: 0; background: transparent; color: var(--c-ink); box-shadow: none; width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 0; }
+  body .zs-header__cta .elementor-button :is(svg, i) { width: 24px; height: 24px; font-size: 24px; }
+  body .zs-header__cta .elementor-button-text { display: none; }
+  body.zs-h-dark .zs-header__cta .elementor-button { color: var(--c-dark-ink); background: transparent; }
+  /* open menu: white, thin dividers, active item marked by colour and a line only, sub-items indented without a ground, hover on every item */
+  body .zs-nav { background: #fff; }
+  body .zs-menu a, body .zs-menu .current-menu-item > a, body .zs-menu .current-menu-ancestor > a, body .zs-menu .sub-menu a { background: none !important; }
+  body .zs-menu .current-menu-item > a, body .zs-menu .current-menu-ancestor > a { color: var(--c-primary); box-shadow: inset -3px 0 0 var(--c-primary); padding-inline-start: 12px; }
+  body .zs-menu .sub-menu { padding: 0 20px 8px 0; }
+  body .zs-menu .sub-menu li + li { border-top: 1px solid color-mix(in srgb, var(--c-line) 70%, transparent); }
+  body .zs-menu a:hover, body .zs-menu a:focus-visible { color: var(--c-primary); text-decoration: underline; text-underline-offset: 6px; }
+}
+/* Footer: three equal columns; a bigger logo, centred with the about line in its column */
+@media (min-width: 901px) { body .zs-footer__grid, body .elementor .e-con.zs-footer__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+body .zs-footer__logo img { max-height: 96px; height: 96px; width: auto; }
+@media (min-width: 768px) { body .zs-footer .e-con.zs-footer__brand, body .zs-footer__brand { --align-items: center; align-items: center; text-align: center; } }
+@media (max-width: 767px) {
+  body .zs-footer__logo img { max-height: 80px; height: 80px; }
+  body .zs-footer__grid, body .elementor .e-con.zs-footer__grid { gap: 20px; padding-block: 32px; }
+  body .zs-footer :is(.zs-footer__contact li, .zs-menu li, .zs-footer__links li) { margin-block: 0; }
+}
+/* Contact page: air between the page head and the contact block */
+body .e-con.zs-hero--page + .e-con.zs-contact { --padding-top: calc(var(--sec-y) + 24px); }
+/* Linked cards: the whole card is the link; no corner arrow */
+body .zs-cards--linked .e-con.zs-card__body::after { content: none; }
+body .zs-cards--linked .e-con.zs-card__body { --padding-left: var(--padding-right, 24px); }
+/* split · card: the text card and the photo share the same top and bottom */
+body .elementor .e-con.zs-split.zs-v-card > .e-con-inner { align-items: center; }
+/* design.align: center: section heads (title + intro) stacked and centred, card content and inner-page heads centred */
+body.zs-align-center .e-con.zs-head, body.zs-align-center .e-con.zs-head.zs-head--split { display: flex; flex-direction: column; --flex-direction: column; align-items: center; --align-items: center; text-align: center; gap: 14px; }
+body.zs-align-center .e-con.zs-head :is(.zs-sec__title, .zs-sec__intro, .zs-eyebrow, .elementor-heading-title) { text-align: center; }
+body.zs-align-center .zs-sec__intro { max-width: 720px; margin-inline: auto; }
+body.zs-align-center .zs-cards .e-con.zs-card__body { align-items: center; --align-items: center; text-align: center; }
+body.zs-align-center .zs-cards .zs-card__icon .elementor-icon-wrapper { text-align: center; }
+body.zs-align-center .e-con.zs-hero--page .e-con.zs-hero__text { align-items: center; --align-items: center; text-align: center; }
+body.zs-align-center .zs-hero--page :is(.zs-hero__title, .zs-hero__lead) .elementor-heading-title, body.zs-align-center .zs-hero--page .zs-hero__lead { text-align: center; }
+body.zs-align-center .zs-gallery .e-con.zs-head, body.zs-align-center .zs-faq .e-con.zs-head { margin-inline: auto; }
+/* a title stacked over its intro gets air between them */
+body .e-con.zs-head:not(.zs-head--split) { row-gap: 14px; --row-gap: 14px; gap: 14px; }

@@ -240,6 +240,8 @@ function zs_menu($name, $location, $items) {
                 $args += ['menu-item-type' => 'taxonomy', 'menu-item-object' => 'category', 'menu-item-object-id' => $t->term_id];
             } else {
                 $args += ['menu-item-type' => 'custom', 'menu-item-url' => $h];
+                // another site (ordering, booking, socials) opens in a new tab, like the buttons (Zap QA)
+                if (preg_match('#^https?://#i', $h) && parse_url($h, PHP_URL_HOST) !== parse_url(home_url(), PHP_URL_HOST)) $args['menu-item-target'] = '_blank';
             }
             $iid = wp_update_nav_menu_item($mid, 0, $args);
             if (!empty($it['children'])) $add($it['children'], $iid);
@@ -366,18 +368,39 @@ function zs_task_finish($p) {
    Saved as Elementor documents so a person edits them in Elementor like any page. With Elementor Pro they are
    Theme Builder 'header'/'footer' templates shown site-wide (include/general); without Pro they are plain
    saved templates that the Zap Base theme renders in the same places. Stable by _zs_key, rebuilt in place. */
+function zs_site_logo_widget($els) {
+    foreach ($els as &$e) {
+        if (($e['widgetType'] ?? '') === 'image' && strpos($e['settings']['_css_classes'] ?? '', 'zs-brand') !== false) {
+            $e['widgetType'] = 'theme-site-logo';   // takes the logo from Site Identity; links home by default
+            unset($e['settings']['link_to'], $e['settings']['link']);
+        }
+        if (!empty($e['elements'])) $e['elements'] = zs_site_logo_widget($e['elements']);
+    }
+    return $els;
+}
+
 function zs_task_templates($p) {
     $pro = defined('ELEMENTOR_PRO_VERSION');
     $out = [];
     // header/footer always; with Elementor Pro also the blog's Single post + Archive templates (Zap QA: system pages
     // are Theme Builder templates, editable in Elementor, not theme PHP). Without Pro the theme's PHP renders them.
-    $slots = $pro ? ['header', 'footer', 'single-post', 'archive'] : ['header', 'footer'];
+    // 'service': every service page through one template (single-page with Pro; rendered by page.php without).
+    $slots = $pro ? ['header', 'footer', 'single-post', 'archive', 'service'] : ['header', 'footer', 'service'];
+    $svc = [];
+    foreach ($p['service_keys'] ?? [] as $k) { if ($pid = zs_find('page', $k)) $svc[] = $pid; }
     $conds = ['header' => ['include/general'], 'footer' => ['include/general'],
-              'single-post' => ['include/singular/post'], 'archive' => ['include/archive']];
-    $titles = ['header' => 'Header', 'footer' => 'Footer', 'single-post' => 'פוסט בבלוג', 'archive' => 'בלוג וקטגוריות'];
+              'single-post' => ['include/singular/post'], 'archive' => ['include/archive'],
+              'service' => array_map(fn($id) => "include/singular/page/$id", $svc)];
+    $titles = ['header' => 'Header', 'footer' => 'Footer', 'single-post' => 'פוסט בבלוג', 'archive' => 'בלוג וקטגוריות', 'service' => 'עמוד שירות'];
+    $types = ['service' => 'single-page'];
+    // an earlier engine's post template (slot 'post') is replaced by 'single-post'
+    if ($old = zs_find('elementor_library', '__tpl_post')) { wp_delete_post($old, true); delete_option('zs_tpl_post'); }
     foreach ($slots as $slot) {
-        if (empty($p[$slot])) continue;
-        $type = $pro ? $slot : 'section';
+        if (empty($p[$slot])) {
+            if ($slot === 'service' && ($old = zs_find('elementor_library', '__tpl_service'))) { wp_delete_post($old, true); delete_option('zs_tpl_service'); }
+            continue;
+        }
+        $type = $pro ? ($types[$slot] ?? $slot) : 'section';
         $id = zs_find('elementor_library', "__tpl_$slot");
         if ($id && get_post_meta($id, '_elementor_template_type', true) !== $type) { wp_delete_post($id, true); $id = 0; }
         if (!$id) {
@@ -387,10 +410,16 @@ function zs_task_templates($p) {
             $id = $doc->get_main_id();
             update_post_meta($id, '_zs_key', "__tpl_$slot");
         }
+        $els = $p[$slot];
+        // header logo = Elementor Pro's Site Logo widget (Zap QA: the header logo is the site-logo widget, linking home)
+        if ($pro && $slot === 'header') $els = zs_site_logo_widget($els);
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
-        $doc->save(['elements' => $p[$slot]]);
+        $doc->save(['elements' => $els]);
         if ($pro) {
             update_post_meta($id, '_elementor_conditions', $conds[$slot]);
+        }
+        if ($slot === 'service') {   // without Pro, page.php renders the template for these pages
+            foreach ($svc as $pid) update_post_meta($pid, '_zs_tpl', 'service');
         }
         update_option("zs_tpl_$slot", $id);
         $out[] = "$slot=$id";

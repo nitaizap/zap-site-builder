@@ -1,7 +1,9 @@
 <?php defined('ABSPATH') || exit;
 get_header();
 while (have_posts()) : the_post();
-    if (zs_is_elementor()) :
+    if (get_post_meta(get_the_ID(), '_zs_tpl', true) === 'service' && zs_render_tpl('service')) :
+        // shared service-page template (title, excerpt and image of this page; its body via [zap_page_content])
+    elseif (zs_is_elementor()) :
         the_content();
     else : ?>
     <div class="zs-wrap zs-page">
