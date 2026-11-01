@@ -322,6 +322,16 @@ function zs_part_topbar_meta() {
     return $o . '</ul>';
 }
 
+/* an in-page anchor in the menu ("/#contact") is never the current page (WordPress matches it to the home URL) */
+add_filter('nav_menu_css_class', function ($classes, $item) {
+    if (str_contains((string) $item->url, '#')) $classes = array_diff($classes, ['current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-menu-parent']);
+    return $classes;
+}, 10, 2);
+add_filter('nav_menu_link_attributes', function ($atts, $item) {
+    if (str_contains((string) $item->url, '#')) unset($atts['aria-current']);
+    return $atts;
+}, 10, 2);
+
 function zs_part_nav() {
     $tel = zs_opt('business.phone_e164'); $cta = zs_opt('header.cta_label', '');
     $o = '<nav id="zs-nav" class="zs-nav" aria-label="תפריט ראשי">';

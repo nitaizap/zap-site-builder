@@ -1530,6 +1530,8 @@ html body.zs-motif-rings .zs-eyebrow .elementor-heading-title { display: inline-
 html body.zs-motif-rings .zs-eyebrow .elementor-heading-title::before { content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%;
   background: none; border: 1.5px solid currentColor; outline: 1px solid currentColor; outline-offset: 2px; transform: none; }
 
+/* a page with its own contact section does not repeat the footer's lead/call band under it (Zap QA: two calls to action in a row) */
+body:has(.e-con.zs-contact) :is(.zs-leadband, .e-con.zs-leadband) { display: none; }
 /* ---------- shared post template (sections.py post_template) ---------- */
 body .e-con.zs-posthead { background: var(--c-surface); --padding-top: clamp(28px, 4vw, 56px); --padding-bottom: clamp(28px, 4vw, 48px); }
 body .e-con.zs-posthead__in { max-width: 1200px; margin-inline: auto; --gap: 12px; gap: 12px; }

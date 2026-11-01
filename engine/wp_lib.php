@@ -240,6 +240,8 @@ function zs_menu($name, $location, $items) {
                 $args += ['menu-item-type' => 'taxonomy', 'menu-item-object' => 'category', 'menu-item-object-id' => $t->term_id];
             } else {
                 $args += ['menu-item-type' => 'custom', 'menu-item-url' => $h];
+                // another site (ordering, booking, socials) opens in a new tab, like the buttons (Zap QA)
+                if (preg_match('#^https?://#i', $h) && parse_url($h, PHP_URL_HOST) !== parse_url(home_url(), PHP_URL_HOST)) $args['menu-item-target'] = '_blank';
             }
             $iid = wp_update_nav_menu_item($mid, 0, $args);
             if (!empty($it['children'])) $add($it['children'], $iid);
