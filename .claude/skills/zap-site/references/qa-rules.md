@@ -99,6 +99,21 @@ your judgement.
 | **Footer** | Compact link lists (small gaps); Zap's credit logo in its own colours (on a white chip over a dark footer), never recoloured | theme |
 | **Content** | Service pages need enough substance for the reviewer ("is this enough content?"): 450–800 words for trades, the client's own method, numbers and FAQ | you (`content-seo.md`) |
 
+## Round 3 (a venue site): typography, phone header, breadcrumbs, posts
+
+| area | rule | how it is kept |
+|---|---|---|
+| **Hebrew type** | No negative letter-spacing on Hebrew headings (heavy Hebrew letters touch); 0, at most -0.5px | theme |
+| | Body text near-black (the palette's ink), weight 400, 17px on desktop; never a light grey or Light (300) weight; the top bar 400 too | theme. You: keep `colors.text` / `muted` dark |
+| | Main menu weight 500 | theme |
+| **Hero** | The logo above the H1 is small (≈128px desktop / 104px phone) so it doesn't repeat the H1 at the same weight; drop it from the hero when the logo already spells the name the H1 says | you (`custom_css` size, or `logo: false`) |
+| **Phone header** | Reviewers differ on the phone icon: plain icon by default; `header.phone_round: true` puts it in a circle when a client's reviewer asks | theme option |
+| **Menu** | The header menu is the zap-nav widget over the WordPress menu "ראשי": pages added or renamed in Appearance → Menus show in the header without a rebuild | engine |
+| **Blog post** | Order: breadcrumbs, title, byline (author + date; the category is in the trail); centred on phones; air between prose headings and text | engine (post template), theme |
+| **Forms** | The consent line stays one sentence; the privacy link is underlined | theme |
+| **Two reviewers disagree** | Keep the newest note as the default for every site, and turn the other into a site option (`header.phone_round`, `header.breadcrumbs`, `header.topbar`), never a silent flip-flop | you |
+
+
 ## Before you hand a site to QA
 
 1. `bin/zs qa <slug>` 0 errors, `bin/zs seo <slug>` 0 FAIL, then the same on the pushed site (`--site`).

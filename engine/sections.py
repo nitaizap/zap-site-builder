@@ -864,8 +864,8 @@ def post_template(ctx):
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
             crumbs(ctx),
-            Z(ctx, "post-meta", {}, "zs-post__metaw"),
             Z(ctx, "post-title", {}, "zs-hero__title"),
+            Z(ctx, "post-meta", {}, "zs-post__metaw"),
         ])], tag="section", inner=False, boxed=True)
     # the post beside "מאמרים נוספים" (Zap QA: a post template distinct from an inner page, more posts at the side)
     body = C(ctx, "zs-sec zs-post-body", [
