@@ -1572,11 +1572,9 @@ body .e-con.zs-postbody__aside { position: sticky; top: 110px; background: var(-
   html body .zs-header__cta .elementor-button .elementor-button-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   html body .zs-header__cta .elementor-button svg, html body .zs-header__cta .elementor-button::before { width: 26px; height: 26px; }
 }
-/* accessibility button: brand colour; on phones low on the start edge, back under the header when its panel opens */
+/* accessibility button: brand colour (its place on phones is set in standards.css) */
 html body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { background-color: var(--c-primary) !important; color: #fff !important; }
 @media (max-width: 767px) {
-  html body #pojo-a11y-toolbar { top: calc(100svh - 170px) !important; bottom: auto !important; }
-  html body #pojo-a11y-toolbar.pojo-a11y-toolbar-open { top: 80px !important; }
   body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-left) .e-con.zs-hero__text, body:has(#pojo-a11y-toolbar.pojo-a11y-toolbar-right) .e-con.zs-hero__text { padding-left: 0; padding-right: 0; }
 }
 /* phones: everything centred except long text (prose, FAQ answers, forms, lists of rows) */
