@@ -170,6 +170,11 @@ body .zs-nav-el .elementor-nav-menu--dropdown a:hover, body .zs-nav-el .elemento
   /* menu button: round outline like the phone, two lines (a calmer icon than the default three-bar burger) */
   body :is(.elementor-menu-toggle, .zs-burger) { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--c-primary); background: transparent; color: var(--c-ink); display: grid; place-items: center; padding: 0; }
   body .elementor-menu-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+  /* Elementor's toggle icon replaced by the same two-and-a-half lines as the theme burger (closed state only) */
+  body .elementor-menu-toggle:not(.elementor-active) .elementor-menu-toggle__icon--open { display: none !important; }
+  body .elementor-menu-toggle:not(.elementor-active)::before { content: ""; width: 18px; height: 12px;
+    background: linear-gradient(currentColor 0 0) top / 18px 2px no-repeat, linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
+                linear-gradient(currentColor 0 0) bottom / 18px 2px no-repeat; }
   body .zs-burger { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
   body .zs-burger span { width: 18px; height: 2px; border-radius: 2px; flex: none; }
   body .zs-burger span:nth-child(2) { width: 12px; }
