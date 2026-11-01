@@ -105,3 +105,20 @@ your judgement.
 2. Look at desktop at 1280px and phones at 390px yourself: logo words readable, no overlaps, no empty bands.
 3. Read every heading once for punctuation, and every menu label against its page's H1.
 4. Write the delivery message with the human-only items (blog source, privacy fields, robots on launch).
+
+## Round 3 (פטוצ'ינה, 01/11/2026)
+
+| rule | how |
+|---|---|
+| No small title (eyebrow) above any H1 | enforced (validator error on `hero.eyebrow`) |
+| Header logo about 96 px on desktop, 72 tablet, 60 phones (at most 160 px wide on phones, clear of the a11y button); footer logo 96 px, centred with its line | theme |
+| The logo is global: header and footer read the one Site Identity logo (Elementor → Site Settings → Site Identity) | engine (`zap-logo` widget): change it once, both update |
+| Phones: one header row, menu button + logo + a plain phone icon (no big round button) | theme; QA accepts an icon-only control by its icon's contrast |
+| Open mobile menu: white, thin dividers, active item = colour + a line, sub-items indented with no ground, hover on every item | theme |
+| Footer: three equal columns on desktop; centred and tighter on phones | theme |
+| The whole card is the link; no corner arrow | theme |
+| Section heads and card content centred consistently, when the client's QA asks | `design.align: "center"` |
+| Consent line with a single space ("אני מאשר/ת את מדיניות הפרטיות") | plugin |
+| "Where is the form e-mail set?" | wp-admin → פניות מהאתר → הגדרות טפסים (recipient, sender, test address, staging state); also shown in the form widget's panel. A rebuild takes `business.email_leads` from site.json, so change it there too |
+| Breadcrumbs: this round asked for them sitewide, an earlier round rejected them | per site: `header.breadcrumbs: true` (one sitewide trail under the header); ask when unsure |
+
