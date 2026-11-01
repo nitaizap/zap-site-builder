@@ -83,6 +83,12 @@ def W(ctx, wtype, settings, classes=""):
     return {"id": ctx.uid(), "elType": "widget", "widgetType": wtype, "settings": s, "elements": []}
 
 
+def crumbs(ctx):
+    """Breadcrumbs above an inner page's H1 (Zap QA, two reviewers: "חסר פירורי לחם בכל האתר"); header.breadcrumbs:
+    false hides them where a client's reviewer asks."""
+    return Z(ctx, "breadcrumbs", {}, "zs-hero__crumbs") if (ctx.site.get("header") or {}).get("breadcrumbs", True) else None
+
+
 def Z(ctx, part, settings=None, classes=""):
     """A Zap part widget (registered by the zap-site plugin): native Elementor widget, no shortcode text."""
     return W(ctx, "zap-" + part, settings or {}, classes)
@@ -230,6 +236,7 @@ def hero(ctx, s):
         chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
         logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
+        crumbs(ctx) if not is_home else None,
         logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
@@ -858,6 +865,7 @@ def post_template(ctx):
     the featured image, the content, then FAQ / related page / author. Edited in Elementor like any page."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
+            crumbs(ctx),
             Z(ctx, "post-meta", {}, "zs-post__metaw"),
             Z(ctx, "post-title", {}, "zs-hero__title"),
         ])], tag="section", inner=False, boxed=True)
@@ -880,6 +888,7 @@ def archive_template(ctx):
     archive title as H1 and its intro, then the posts as cards."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
+            crumbs(ctx),
             Z(ctx, "archive-title", {}, "zs-hero__title"),
             Z(ctx, "archive-intro", {}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)

@@ -35,7 +35,8 @@
     var y = window.scrollY;
     var s = y > 8;
     if (h && s !== scrolled) { scrolled = s; h.classList.toggle('is-scrolled', s); }
-    if (hero && lively && !reduce && y < 900) hero.style.transform = 'translate3d(0,' + Math.round(y * 0.08) + 'px,0) scale(1.06)';
+    // no parallax on phones: the hero photo seemed to float away from the top while scrolling (Zap QA)
+    if (hero && lively && !reduce && y < 900 && window.innerWidth > 767) hero.style.transform = 'translate3d(0,' + Math.round(y * 0.08) + 'px,0) scale(1.06)';
     ticking = false;
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });

@@ -366,6 +366,17 @@ function zs_task_finish($p) {
    Saved as Elementor documents so a person edits them in Elementor like any page. With Elementor Pro they are
    Theme Builder 'header'/'footer' templates shown site-wide (include/general); without Pro they are plain
    saved templates that the Zap Base theme renders in the same places. Stable by _zs_key, rebuilt in place. */
+function zs_site_logo_widget($els) {
+    foreach ($els as &$e) {
+        if (($e['widgetType'] ?? '') === 'image' && strpos($e['settings']['_css_classes'] ?? '', 'zs-brand') !== false) {
+            $e['widgetType'] = 'theme-site-logo';   // takes the logo from Site Identity; links home by default
+            unset($e['settings']['link_to'], $e['settings']['link']);
+        }
+        if (!empty($e['elements'])) $e['elements'] = zs_site_logo_widget($e['elements']);
+    }
+    return $els;
+}
+
 function zs_task_templates($p) {
     $pro = defined('ELEMENTOR_PRO_VERSION');
     $out = [];
@@ -397,8 +408,11 @@ function zs_task_templates($p) {
             $id = $doc->get_main_id();
             update_post_meta($id, '_zs_key', "__tpl_$slot");
         }
+        $els = $p[$slot];
+        // header logo = Elementor Pro's Site Logo widget (Zap QA: the header logo is the site-logo widget, linking home)
+        if ($pro && $slot === 'header') $els = zs_site_logo_widget($els);
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
-        $doc->save(['elements' => $p[$slot]]);
+        $doc->save(['elements' => $els]);
         if ($pro) {
             update_post_meta($id, '_elementor_conditions', $conds[$slot]);
         }
