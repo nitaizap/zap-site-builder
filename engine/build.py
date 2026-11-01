@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 from images import prepare_image
@@ -51,7 +52,13 @@ def load_site(site_dir):
 def run_php(site, task, payload):
     """Call a function in wp_lib.php inside WordPress with a JSON payload."""
     f = site.dir / f"_payload_{task}.json"
-    f.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    raw = json.dumps(payload, ensure_ascii=False)
+    # house rule: no shortcodes in anything we write into WordPress (Elementor data, templates, post content).
+    # Dynamic parts use the zap-* Elementor widgets of the zap-site plugin.
+    if re.search(r'"widgetType":\s*"shortcode"|\[zap_[a-z_]+', raw):
+        hit = re.search(r'.{0,60}("widgetType":\s*"shortcode"|\[zap_[a-z_]+).{0,60}', raw).group(0)
+        sys.exit(f"stop: shortcode in the {task} payload (use a zap-* Elementor widget instead): {hit}")
+    f.write_text(raw, encoding="utf-8")
     remote = getattr(site, "remote", False)
     # a remote site (Novamira) gets the library and the payload uploaded first; paths are then server paths
     lib = site.put(PHP_LIB, name="zs-lib.txt") if remote else str(PHP_LIB)   # .php uploads are refused (sandbox); require() reads any name

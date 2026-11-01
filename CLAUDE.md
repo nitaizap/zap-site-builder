@@ -20,6 +20,10 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
   (mergeable), any CI on the head is green, and the engine test below passed (`qa` 0 errors, `seo` 0 FAIL). If there
   is a conflict, red CI or an open review thread, fix it first or ask. Never merge a `site/<slug>` branch into `main`.
 - No em dashes (—) in any site copy, ever (the validator stops the build).
+- No shortcodes on new sites, ever: build only with Elementor widgets and WordPress. Dynamic parts (form, menus, posts,
+  map, contact details, footer credits, blog templates) are the `zap-*` widgets the `zap-site` plugin registers.
+  `zs build` stops on a shortcode and `zs qa` flags a shortcode widget. Sites built earlier keep theirs (the legacy
+  `[zap_*]` shortcodes stay registered for them); do not add new ones.
 - No site may look like another client's. `zs qa`, `zs preview`, `zs push` and `zs package` measure the home page
   (palette, header/footer/form band/FAQ/icons, components, layout) against every client in `fingerprints/` and on
   `site/*` branches, and stop at 40% alike. Fix it by redesigning (kit, palette, hero, components), never by tuning
