@@ -287,6 +287,8 @@ def validate(d, site_dir, _dir=None):
                 E(f"{name}: {ty} needs items")
             if ty == "facts" and any(not (it.get("label") and str(it.get("value", "")).strip()) for it in s.get("items", [])):
                 E(f"{name}: every facts item needs a label and a value")
+            if ty == "hero" and s.get("eyebrow"):
+                E(f"{name}: no small title (eyebrow) above the H1 (Zap QA sitewide fixes: 'אין כותרת קטנה מעל ה-H1')")
             if ty == "hero" and s.get("form") and p.get("type") == "contact":
                 E(f"{name}: no hero form on the contact page: it has its own full form (one form per page, Zap QA)")
             if v is None:

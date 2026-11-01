@@ -204,7 +204,8 @@ add_filter('body_class', function ($classes) {
         $classes[] = 'zs-accent-low';
     $classes[] = 'zs-p-' . sanitize_html_class($d['preset'] ?? 'clean');
     if (!empty($d['kit'])) $classes[] = 'zs-k-' . sanitize_html_class($d['kit']);   // style kit: the page skeleton (kits.css)
-    if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);   // tone: light = no dark grounds anywhere
+    if (!empty($d['tone'])) $classes[] = 'zs-tone-' . sanitize_html_class($d['tone']);
+    if (($d['align'] ?? '') === 'center') $classes[] = 'zs-align-center';   // design.align: center = every section head, card and page head centred (Zap QA round 3)   // tone: light = no dark grounds anywhere
     $classes[] = 'zs-h-' . sanitize_html_class($d['header'] ?? 'light');
     $classes[] = 'zs-hv-' . sanitize_html_class($d['hero'] ?? 'split');
     $classes[] = 'zs-m-' . sanitize_html_class($d['motion'] ?? 'subtle');

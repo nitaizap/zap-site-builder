@@ -806,10 +806,8 @@ def header_template(ctx):
             ]),
         ], inner=False))
     logo = ctx.media.get("__logo")
-    brand = (W(ctx, "image", {"image": {"url": logo["url"], "id": logo["id"], "alt": b["name"], "source": "library"},
-                              "image_size": "full", "link_to": "custom",
-                              "link": {"url": "/", "is_external": "", "nofollow": ""}}, "zs-brand")
-             if logo else heading(ctx, b["name"], "p", "zs-brand zs-brand__name", link="page:"))
+    # global logo: one Site Identity logo feeds header and footer (changed once, in Elementor Site Settings)
+    brand = Z(ctx, "logo", {"where": "header"}, "zs-brand") if logo else heading(ctx, b["name"], "p", "zs-brand zs-brand__name", link="page:")
     tel = button(ctx, {"label": b.get("phone_display", ""), "href": "tel"}, "primary")
     if tel:
         tel["settings"]["_css_classes"] += " zs-header__cta"
@@ -860,9 +858,7 @@ def footer_logo(ctx):
     if not lg:
         return heading(ctx, b["name"], "p", "zs-footer__name", link="page:")
     chip = " zs-footer__logo--chip" if k == "__logo" else ""
-    return W(ctx, "image", {"image": {"url": lg["url"], "id": lg["id"], "alt": b["name"], "source": "library"},
-                            "image_size": "full", "link_to": "custom", "link": {"url": "/", "is_external": "", "nofollow": ""}},
-             "zs-footer__logo" + chip)
+    return Z(ctx, "logo", {"where": "footer"}, "zs-footer__logo" + chip)
 
 
 def footer_template(ctx):
