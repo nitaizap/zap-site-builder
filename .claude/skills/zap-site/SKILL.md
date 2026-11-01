@@ -61,6 +61,10 @@ before doing the step — every one encodes mistakes already made.
    Rewrite with a comma, colon, period, parentheses or a line break (`"keyword\nbrand"` puts the brand on its
    own H1 line). The validator stops the build on either character. Only Zap's verbatim privacy template keeps
    its legal citations as they are.
+7a. **No shortcodes, ever (standing rule).** Build only with Elementor widgets and WordPress. Dynamic and shared
+   parts are the plugin's native `zap-*` widgets (category "Zap" in the Elementor panel); never the shortcode
+   widget and never `[zap_*]` text in a page, template or post. `zs build` stops on one, `zs qa` reports one.
+   Sites built before the rule keep their shortcodes; do not reverse them unless asked.
 8. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
    a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
    this site locally **and on the pushed site**.
@@ -87,7 +91,9 @@ email do block.
 ## 2 · Plan — read `references/keywords.md`, `references/content-seo.md`, `references/design.md`
 
 - Keyword map and page tree (Ahrefs if connected, else SERP research). Table in NOTES.md.
-- Set the package (`tier`) and the base template (`design.base_template`, 1–6) from the brief, then compose the
+- Set the package (`tier`), then for each of the three directions a **different kit** (`design.kit`, the skeleton)
+  and a **different archetype** (`design.archetype`, the home's story), none used by the last 3 clients
+  (`references/pool.md` → Style kits, Home archetypes). Each direction gets its own `home`. Then compose the
   pages from the pool (`references/pool.md`): sections
   chosen for what this business must prove, a variant for each, no two clients alike (`bin/zs pool <slug>`).
 - Three **genuinely different** design directions anchored in the audience (`directions` in site.json).
@@ -106,6 +112,9 @@ bin/zs preview <slug>                   # → sites/<slug>/preview/PREVIEW.md (3
 git add sites/<slug> && git commit -m "<slug>: plan + preview" && git push -u origin site/<slug>
 ```
 
+`zs preview` and `bin/zs pool <slug>` must both exit 0 (measured layout: no two directions, and no direction
+and another client, ≥ 85% alike) before the user sees anything.
+
 Want to click through it? `bin/zs static <slug>` → `dist/<slug>-preview.zip` (open index.html, no server;
 Windows-safe names; the form and Dapei Zahav reviews only work live). Look at the preview images yourself first (Read them); fix anything ugly before the user sees it.
 Then send the user, in one message:
@@ -119,7 +128,7 @@ direction, say which and why in one line, and continue without waiting.
 
 ## 4 · Build
 
-1. Copy the chosen direction into `design` (and drop `directions`, or keep it for later comparison).
+1. Copy the chosen direction into `design` and its `home` into the home page's `sections`, then drop `directions`.
 2. Finish every page and post; generate or place the images.
 3. Loop until clean:
    ```bash

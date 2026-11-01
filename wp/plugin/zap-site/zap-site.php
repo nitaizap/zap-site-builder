@@ -24,29 +24,29 @@ function zap_opt($key = null, $default = '') {
 
 require __DIR__ . '/inc/leads.php';
 require __DIR__ . '/inc/schema.php';
-require __DIR__ . '/inc/shortcodes.php';
+require __DIR__ . '/inc/shortcodes.php';   // legacy: sites built before the no-shortcode rule
+require __DIR__ . '/inc/elementor-widgets.php';
 require __DIR__ . '/inc/hardening.php';
 require __DIR__ . '/inc/robots.php';
 
 // Zap SEO checklist: every image under 100 KB. The engine uploads light WebPs; keep WordPress's own resized copies light too.
 add_filter('wp_editor_set_quality', fn() => 60);
-// A very detailed photo can still produce a resized copy over 100 KB at quality 60 (Zap SEO checklist: every image
-// under 100 KB): re-encode just that copy, stepping the quality down until it fits.
+// Detailed photos (HDR, foliage) can still pass 100 KB at 60: re-encode just those resized copies, lower each step.
 add_filter('wp_generate_attachment_metadata', function ($meta, $id) {
     if (empty($meta['sizes']) || empty($meta['file'])) return $meta;
     $dir = trailingslashit(dirname(get_attached_file($id)));
-    foreach ($meta['sizes'] as $name => $s) {
-        $f = $dir . $s['file'];
-        if (!is_file($f) || filesize($f) <= 100 * 1024) continue;
-        foreach ([50, 42, 35] as $q) {
-            $ed = wp_get_image_editor($f);
+    foreach ($meta['sizes'] as $name => $size) {
+        $path = $dir . $size['file'];
+        foreach ([50, 40, 32] as $q) {
+            if (!is_file($path) || filesize($path) <= 100 * 1024) break;
+            $ed = wp_get_image_editor($path);
             if (is_wp_error($ed)) break;
             $ed->set_quality($q);
-            $ed->save($f);
-            clearstatcache(true, $f);
-            if (filesize($f) <= 100 * 1024) break;
+            $saved = $ed->save($path);
+            if (is_wp_error($saved)) break;
+            clearstatcache(true, $path);
+            $meta['sizes'][$name]['filesize'] = filesize($path);
         }
-        $meta['sizes'][$name]['filesize'] = filesize($f);
     }
     return $meta;
 }, 20, 2);

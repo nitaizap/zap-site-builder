@@ -765,7 +765,7 @@ body .e-con.zs-topbar__in { --flex-direction: row; --justify-content: space-betw
 /* header row: logo · menu · phone */
 body .e-con.zs-header__in { --flex-direction: row; --align-items: center; --column-gap: 24px; --flex-wrap: nowrap; min-height: var(--header-h); }
 .e-con.zs-header__in > .zs-header__nav { margin-inline-start: auto; }
-.e-con.zs-header__in > .zs-header__nav > .elementor-widget-container, .e-con.zs-header__in > .zs-header__nav .elementor-shortcode { display: flex; align-items: center; gap: 8px; }
+.e-con.zs-header__in > .zs-header__nav > .elementor-widget-container, .e-con.zs-header__in > .zs-header__nav .elementor-shortcode, .e-con.zs-header__in > .zs-header__nav .zs-part { display: flex; align-items: center; gap: 8px; }
 .zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 56px; width: auto; max-width: 280px; object-fit: contain; display: block; }
 .e-con.zs-header__in > .zs-brand { flex: none; }
 .e-con.zs-header__in > .zs-header__cta { flex: none; }
@@ -1435,13 +1435,16 @@ body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .elementor-he
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon { color: #fff; fill: #fff; }
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon svg { fill: #fff; }
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-b-primary .elementor-button,
-body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; box-shadow: none; }
+body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hv-image .zs-hero--img, .zs-hero--img:is(.zs-v-cover, .zs-v-inset, .zs-v-curve)) .zs-b-primary .elementor-button { background: #fff; color: var(--c-primary); border-color: #fff; box-shadow: none; }
 .zs-accent-low .zs-bg-accent .zs-b-primary .elementor-button { color: var(--c-accent); }
 
 /* phones: the image hero stacks photo + text, so a screen-height minimum only adds an empty band */
 @media (max-width: 767px) {
   body:not(.zs-tone-light).zs-hv-image .e-con.zs-hero--home.zs-hero--img { min-height: 0; }
 }
+/* an image hero keeps its dark ground under every preset (editorial's light home ground showed white text on white
+   on phones, where the photo is a band above the text) */
+body:not(.zs-tone-light).zs-hv-image .e-con.zs-hero--img { background: var(--c-dark); }
 
 /* motif mark beats the presets' dash (finish.css body:not(...) rule); bold pill gets even padding */
 html body.zs-motif-gables .zs-eyebrow .elementor-heading-title::before { width: 24px; height: 9px; background: linear-gradient(90deg, var(--c-accent) 50%, var(--c-primary) 50%); border-radius: 0; }
@@ -1507,6 +1510,8 @@ body.zs-tone-light .zs-footer__logo--chip img { background: none; padding: 0; }
   html body.zs-hv-image .e-con.zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: 0 !important; }
   html body.zs-hv-image .zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner {
     justify-content: flex-start; --justify-content: flex-start; padding-top: calc(clamp(104px, 22svh, 230px) + 22px) !important; padding-bottom: 36px !important; }
+  /* tone light: the photo is a band in the flow above the text (not behind it), so no space is reserved for it */
+  html body.zs-tone-light.zs-hv-image .zs-hero--home.zs-hero--img:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { padding-top: 22px !important; }
 }
 /* phones: hero text keeps clear of the accessibility button's column (it sits on the left edge under the header) */
 @media (max-width: 767px) {

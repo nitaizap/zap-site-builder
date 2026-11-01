@@ -52,7 +52,8 @@
    "heading": "Miriam Libre",
    "body": "Assistant"
   },
-  "custom_css": "\n/* white-villa: the logo sits above the H1 in the home hero, small enough not to repeat the H1's weight */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(9vw,13svh,128px);height:auto}\n@media (max-width:767px){body .e-con.zs-hero--home .zs-hero__logo img{width:min(30vw,104px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}"
+  "custom_css": "\n/* white-villa: the logo sits above the H1 in the home hero, small enough not to repeat the H1's weight */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(9vw,13svh,128px);height:auto}\n@media (max-width:767px){body .e-con.zs-hero--home .zs-hero__logo img{width:min(30vw,104px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}",
+  "archetype": "gallery"
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",
@@ -357,6 +358,30 @@
      "image2": "livingroom"
     },
     {
+     "type": "tiles",
+     "items": [
+      {
+       "title": "הבריכה",
+       "text": "בריכת שחייה חצי־אולימפית עם מגלשת מים, מוקפת מדשאות.",
+       "image": "slidepool"
+      },
+      {
+       "title": "הבוסתן והגינה",
+       "text": "עצי פרי, מדשאות ופינות ישיבה על כ־3.5 דונם של טבע.",
+       "image": "orchard"
+      },
+      {
+       "title": "שולחן לכולם",
+       "text": "מטבח מאובזר, פינת אוכל גדולה ואירוח של עד 150 אורחים.",
+       "image": "gardenbar",
+       "cta": {
+        "label": "על האירועים",
+        "href": "page:מסיבות-ואירועים"
+       }
+      }
+     ]
+    },
+    {
      "type": "gallery",
      "variant": "mosaic",
      "title": "הצצה למתחם",
@@ -431,30 +456,6 @@
      "columns": 3
     },
     {
-     "type": "tiles",
-     "items": [
-      {
-       "title": "הבריכה",
-       "text": "בריכת שחייה חצי־אולימפית עם מגלשת מים, מוקפת מדשאות.",
-       "image": "slidepool"
-      },
-      {
-       "title": "הבוסתן והגינה",
-       "text": "עצי פרי, מדשאות ופינות ישיבה על כ־3.5 דונם של טבע.",
-       "image": "orchard"
-      },
-      {
-       "title": "שולחן לכולם",
-       "text": "מטבח מאובזר, פינת אוכל גדולה ואירוח של עד 150 אורחים.",
-       "image": "gardenbar",
-       "cta": {
-        "label": "על האירועים",
-        "href": "page:מסיבות-ואירועים"
-       }
-      }
-     ]
-    },
-    {
      "type": "faq",
      "title": "שאלות נפוצות על הוילה הלבנה",
      "items": [
@@ -483,7 +484,7 @@
        "a": "ברחוב מורד התאנה 29 במושב ינוב שבשרון."
       }
      ],
-     "variant": "aside",
+     "variant": "outline",
      "image": "jacaranda"
     }
    ]

@@ -98,8 +98,8 @@ function zs_task_state($p) {
     echo wp_json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
 }
 
-/* Elementor Pro widgets the engine uses (nav-menu, breadcrumbs) carry a `_zs_fallback` shortcode: without Pro the
-   widget is swapped for that shortcode, so a site on free Elementor still gets a working menu / trail. */
+/* Elementor Pro widgets the engine uses (nav-menu, breadcrumbs) carry a `_zs_fallback` zap-* widget: without Pro
+   the widget is swapped for it, so a site on free Elementor still gets a working menu / trail. */
 function zs_pro_fallback($els) {
     $pro = defined('ELEMENTOR_PRO_VERSION');
     foreach ($els as &$e) {
@@ -107,9 +107,9 @@ function zs_pro_fallback($els) {
         $fb = $e['settings']['_zs_fallback'] ?? null;
         if ($fb === null) continue;
         unset($e['settings']['_zs_fallback']);
-        if (!$pro) {
-            $e['widgetType'] = 'shortcode';
-            $e['settings'] = ['shortcode' => $fb, '_css_classes' => $e['settings']['_css_classes'] ?? ''];
+        if (!$pro) {   // fallback = a zap-* widget of the plugin (native Elementor widget, no shortcode)
+            $e['widgetType'] = $fb;
+            $e['settings'] = ['_css_classes' => $e['settings']['_css_classes'] ?? ''];
         }
     }
     return $els;

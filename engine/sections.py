@@ -4,7 +4,8 @@ Rules that keep this robust:
   * Markup is fixed per section type; ALL visual styling lives in the theme CSS (zs-* classes).
     Elementor element settings carry content and semantics only, never colours or sizes.
   * Every element id is derived from the page key + position, so rebuilds are stable.
-  * Only free, classic widgets: heading, text-editor, image, button, accordion, shortcode, html, video.
+  * Only free, classic widgets: heading, text-editor, image, button, accordion, html, video,
+    plus the zap-* widgets the zap-site plugin registers. Never the shortcode widget (house rule).
 """
 import hashlib
 import html
@@ -27,8 +28,10 @@ def vehicle_svg(kind):
 class Ctx:
     """Per-page render context."""
 
-    def __init__(self, page_key, media, site):
+    def __init__(self, page_key, media, site, as_home=False):
         self.page_key = page_key
+        self.as_home = as_home      # a gate-preview copy of the home page (directions[k].home) renders as home
+        self.design = (site or {}).get("design", {}) if isinstance(site, dict) else {}
         self.media = media          # image key -> {"id": int, "url": str, "alt": str}
         self.site = site
         self.n = 0
@@ -78,6 +81,11 @@ def W(ctx, wtype, settings, classes=""):
     if classes:
         s["_css_classes"] = classes
     return {"id": ctx.uid(), "elType": "widget", "widgetType": wtype, "settings": s, "elements": []}
+
+
+def Z(ctx, part, settings=None, classes=""):
+    """A Zap part widget (registered by the zap-site plugin): native Elementor widget, no shortcode text."""
+    return W(ctx, "zap-" + part, settings or {}, classes)
 
 
 def heading(ctx, text, tag="h2", classes="", link=None, raw=False):
@@ -215,7 +223,7 @@ def _h1_markup(t, brand=""):
 
 def hero(ctx, s):
     """One markup, three looks: the layout comes from the design direction (body.zs-hv-*)."""
-    is_home = ctx.page_key == ""
+    is_home = ctx.page_key == "" or ctx.as_home
     logo = None
     if s.get("logo"):      # the brand's logo above the H1 (cover heroes: restaurants, venues)
         lk = "__logo_light" if "__logo_light" in ctx.media else "__logo"
@@ -256,7 +264,7 @@ def hero(ctx, s):
     if s.get("form") and has_form(ctx):
         ft = s["form"] if isinstance(s["form"], str) else (ctx.site.get("form") or {}).get("title", "השאירו פרטים ונחזור אליכם")
         fcard = C(ctx, "zs-hero__form", [heading(ctx, ft, "p", "zs-hero__form-title"),
-                                         W(ctx, "shortcode", {"shortcode": '[zap_form id="hero" message="no" email="yes"]'})])
+                                         Z(ctx, "form", {"id": "hero", "message": "", "email": "yes"})])
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
     vidc += " zs-hero--form" if fcard else ""
@@ -398,18 +406,18 @@ def logos(ctx, s):
 
 
 def posts(ctx, s):
-    sc = f'[zap_recent_posts count="{int(s.get("count", 3))}"' + (f' category="{s["category"]}"' if s.get("category") else "") + "]"
-    return section(ctx, s, "zs-posts", [*sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": sc}), buttons(ctx, s.get("more"))])
+    z = Z(ctx, "recent-posts", {"count": int(s.get("count", 3)), "category": s.get("category", "")})
+    return section(ctx, s, "zs-posts", [*sec_head(ctx, s), z, buttons(ctx, s.get("more"))])
 
 
 def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "p", "zs-sec__title zs-contact__title"), text(ctx, s.get("text")),
-                                       W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
+                                       Z(ctx, "nap"),
+                                       Z(ctx, "form", {"id": "contact"}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
     if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
         right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
     else:
-        right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
+        right = C(ctx, "zs-contact__map", [Z(ctx, "map")]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
 
 
@@ -432,7 +440,7 @@ def leadbar(ctx, s):
     bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
     return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
         heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
-        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}) if has_form(ctx) else call_buttons(ctx),
+        Z(ctx, "form", {"id": fid, "message": "", "email": "yes"}) if has_form(ctx) else call_buttons(ctx),
     ])])
 
 
@@ -440,7 +448,7 @@ def reviews(ctx, s):
     if not ctx.site["business"].get("dpz_customer_id"):
         return None   # no real source -> no reviews block at all
     bgimg = image(ctx, s.get("image"), "zs-reviews__bg", "full") if s.get("variant") == "photo" else None
-    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
+    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), Z(ctx, "reviews")])
 
 
 def video(ctx, s):
@@ -630,15 +638,111 @@ def team(ctx, s):
                                               buttons(ctx, s.get("cta"))])
 
 
+# ---------- editorial sections (art-directed pages: chapters, collages, film strips) ----------
+
+def _ghost(ctx, word):
+    """A huge decorative word behind a section (aria-hidden; the text sits in a data attribute and is drawn by CSS,
+    so it is never read, indexed or measured as page text)."""
+    if not word:
+        return None
+    return W(ctx, "html", {"html": f'<span class="zs-ghost" aria-hidden="true" data-t="{html.escape(word, quote=True)}"></span>'}, "zs-ghost-w")
+
+
+def _rows(rows):
+    if not rows:
+        return ""
+    return '<ul class="zs-rows">' + "".join(f'<li><span>{html.escape(r["label"], quote=False)}</span><strong>{html.escape(str(r["value"]), quote=False)}</strong></li>'
+                                           for r in rows) + "</ul>"
+
+
+def chapters(ctx, s):
+    """A row of chapter links under the hero (the page's table of contents): a big word + a small label each."""
+    items = [C(ctx, "zs-chapter", [heading(ctx, it["title"], "p", "zs-chapter__t", link=it.get("href")),
+                                   heading(ctx, it.get("label", ""), "p", "zs-chapter__l")]) for it in s["items"]]
+    return section(ctx, s, "zs-chapters", [C(ctx, "zs-chapters__row", items)])
+
+
+def collage(ctx, s):
+    """Text beside overlapping photos. Default: a tall photo with a second smaller one crossing its edge.
+    variant stack: three photos stacked and offset, with `rows` (label: value) under the text."""
+    imgs = s.get("images") or [k for k in (s.get("image"), s.get("image2")) if k]
+    media = C(ctx, "zs-collage__media", [image(ctx, k, f"zs-collage__img zs-collage__img--{i + 1}", "large") for i, k in enumerate(imgs)])
+    body = C(ctx, "zs-collage__text", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"), heading(ctx, s["title"], "h2", "zs-sec__title"),
+                                       text(ctx, (s.get("text") or "") + _rows(s.get("rows"))), buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-collage", [_ghost(ctx, s.get("ghost")), C(ctx, "zs-collage__wrap", [media, body])])
+
+
+def overlay(ctx, s):
+    """A full-width photo with a text card cut into its lower edge; `chips` = short facts under the text."""
+    chips = "".join(f"<span>{html.escape(c, quote=False)}</span>" for c in s.get("chips", []))
+    card = C(ctx, "zs-overlay__card", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"), heading(ctx, s["title"], "h2", "zs-sec__title"),
+                                       text(ctx, (s.get("text") or "") + (f'<p class="zs-chips">{chips}</p>' if chips else "")),
+                                       buttons(ctx, s.get("cta"), s.get("cta2"))])
+    return section(ctx, s, "zs-overlay", [C(ctx, "zs-overlay__media", [image(ctx, s["image"], "zs-overlay__img", "full")]), card])
+
+
+def filmstrip(ctx, s):
+    """A heading beside a short text, then a strip of tall photos stepping up and down, each with a caption."""
+    figs = []
+    for it in s["items"]:
+        k, cap = (it, "") if isinstance(it, str) else (it["image"], it.get("caption", ""))
+        im = image(ctx, k, "zs-film__img", "large")
+        if im and cap:
+            im["settings"].update({"caption_source": "custom", "caption": cap})
+        figs.append(im)
+    head = C(ctx, "zs-film__head", [C(ctx, "zs-film__t", [heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
+                                                           heading(ctx, s["title"], "h2", "zs-sec__title")]),
+                                    text(ctx, s.get("text"), "zs-film__intro")])
+    return section(ctx, s, "zs-film", [head, C(ctx, "zs-film__strip", figs)])
+
+
 SECTIONS = {f.__name__: f for f in (hero, trust, cards, features, steps, split, prose, faq, cta, gallery,
-                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team)}
+                                     logos, posts, contact, leadbar, tiles, reviews, video, quote, road, route, marquee, carousel, layers, pricelist, facts, team,
+                                     chapters, collage, overlay, filmstrip)}
 
 
 # The pool: every look a section type can take, set per section with `variant` (see references/pool.md).
 # Hero layout, preset, tone and motion are site-wide design levers; these are per section.
+# Style kits (design.kit): each changes the page skeleton, not only colours: header layout, section heads,
+# container width, image treatment, buttons, footer (wp/theme/zap-base/assets/kits.css) and the background rhythm
+# below (which grounds the sections take, in order). None = plain page ground.
+KITS = {
+    "atelier":  {"rhythm": [None]},                         # centred logo + menu, centred heads under a rule, narrow, framed photos
+    "magazine": {"rhythm": [None, None, "dark"]},           # ruled heads, wide grid, square photos, wordmark footer
+    "sidebar":  {"rhythm": [None, "surface"]},              # section title in a sticky side column, content beside it
+    "panels":   {"rhythm": [None]},                         # every section a rounded panel on a tinted page, pill header
+    "bands":    {"rhythm": [None, "primary"]},              # full colour bands, heavy heads, block buttons
+    "quiet":    {"rhythm": [None]},                         # no grounds, hairlines between sections, small heads, narrow
+    "frame":    {"rhythm": [None, "surface"]},              # the page inside a brand-colour frame, offset photo frames
+    "gallery":  {"rhythm": ["surface", None]},              # photo-led: full-bleed grids, hairline gaps, centred heads
+    "shade":    {"rhythm": [None]},                         # art-directed: transparent header over a stage hero, display type,
+                                                            # chapters, collages, dark night bands set per section, postcard form band
+}
+
+# Home archetypes (design.archetype): the home page's story, chosen before any section. Each names its beats; the
+# sections and variants that tell them are the writer's choice (references/pool.md → Home archetypes).
+ARCHETYPES = {
+    "tour":      "a guided walk through the place: big photo opening, then one space per beat, practical facts last",
+    "statement": "type-led: one confident line opens the page, few photos, short proof, the action repeated",
+    "booking":   "the action first: the form or booking card in the opening, facts and prices next, proof after",
+    "proof":     "evidence first: certifications / clients right under the hero, numbers, work, the process",
+    "story":     "chapters of the owner's story: origin, method, people, the place, then the invitation",
+    "catalogue": "the offer as a list: listing cards or a price list high on the page, filters by need, then trust",
+    "gallery":   "pictures do the talking: a slider or mosaic opens, short captions, one paragraph of text",
+    "guide":     "answers first: the audience's questions lead, each answer links to the service that solves it",
+}
+
+# Sections built for a light ground (white panels, form fields, long text): a kit's colour band skips them.
+ON_LIGHT_ONLY = {"faq", "contact", "posts", "pricelist", "prose", "gallery", "facts", "team", "logos", "carousel", "video"}
+
 VARIANTS = {
-    "hero": {"cover", "inset", "curve"},
-    "split": {"frame", "overlap", "card", "duo"},
+    "hero": {"cover", "inset", "curve", "stage"},
+    "split": {"frame", "overlap", "card", "duo", "interlude"},
+    "trust": {"giant"},
+    "collage": {"stack"},
+    "chapters": set(),
+    "overlay": set(),
+    "filmstrip": set(),
     "cta": {"photo"},
     "cards": {"framed"},
     "features": {"aside", "checks", "rows"},
@@ -661,13 +765,20 @@ def render_page(ctx, sections):
     out = []
     plain_i = 0
     prev_bg = None
+    kit = KITS.get(ctx.design.get("kit") or "")
+    rhythm = kit["rhythm"] if kit else [None, "surface"]
+    if ctx.design.get("tone") == "light":   # tone light has no dark grounds: colour bands become tints
+        rhythm = [x if x in (None, "surface") else "surface" for x in rhythm]
     for s in sections:
         t = s.get("type")
         if t not in SECTIONS:
             raise ValueError(f"unknown section type '{t}' on page '{ctx.page_key}'. Known: {', '.join(SECTIONS)}")
-        if t not in ("hero", "cta", "marquee", "trust", "tiles") and "bg" not in s:
+        if t not in ("hero", "cta", "marquee", "trust", "tiles", "chapters", "overlay") and "bg" not in s:
             # quiet rhythm: alternate plain and surface backgrounds after the hero
-            s = {**s, "bg": "surface" if plain_i % 2 else None}
+            g = rhythm[plain_i % len(rhythm)]
+            if g in ("dark", "primary", "accent") and t in ON_LIGHT_ONLY:   # forms, lists and text panels stay on a light ground
+                g = "surface"
+            s = {**s, "bg": g}
             plain_i += 1
         el = SECTIONS[t](ctx, s)
         if el:
@@ -681,24 +792,24 @@ def render_page(ctx, sections):
 
 
 # ---------- site templates: header + footer as editable Elementor documents ----------
-# Native widgets for everything a client edits (logo, phone button, texts, titles); shortcodes only for the
+# Native widgets for everything a client edits (logo, phone button, texts, titles); Zap part widgets (zap-*) for the
 # parts that are behaviour or Zap standards (menu + burger, contact list, lead form, legal line, Zap logo).
 
 def nav_widget(ctx):
     """The main menu as Elementor Pro's Nav Menu widget over the WordPress menu "ראשי" (edit pages in Appearance →
-    Menus or in Elementor and the header follows). Without Pro it falls back to the theme's menu shortcode."""
+    Menus or in Elementor and the header follows). Without Pro it falls back to the plugin's zap-nav widget."""
     return W(ctx, "nav-menu", {
         "menu": "%d7%a8%d7%90%d7%a9%d7%99",            # sanitize_title("ראשי"): the menu the build creates for 'primary'
         "layout": "horizontal", "align_items": "center", "pointer": "underline", "animation_line": "fade",
         "dropdown": "tablet", "full_width": "stretch", "text_align": "center",
         "toggle": "burger", "toggle_align": "center",
-        "_zs_fallback": "[zap_nav]",
+        "_zs_fallback": "zap-nav",
     }, "zs-header__nav zs-nav-el")
 
 
 def breadcrumbs_widget(ctx, classes="zs-crumbsw"):
-    """Elementor Pro's Breadcrumbs widget (it prints Yoast's trail, so Yoast settings apply); theme shortcode without Pro."""
-    return W(ctx, "breadcrumbs", {"html_tag": "nav", "align": "center", "_zs_fallback": "[zap_breadcrumbs]"}, classes)
+    """Elementor Pro's Breadcrumbs widget (it prints Yoast's trail, so Yoast settings apply); the plugin's zap-breadcrumbs widget without Pro."""
+    return W(ctx, "breadcrumbs", {"html_tag": "nav", "align": "center", "_zs_fallback": "zap-breadcrumbs"}, classes)
 
 
 def header_template(ctx):
@@ -709,7 +820,7 @@ def header_template(ctx):
         els.append(C(ctx, "zs-topbar", [
             C(ctx, "zs-wrap zs-topbar__in", [
                 heading(ctx, h.get("topbar_text") or d.get("site", {}).get("tagline", ""), "p", "zs-topbar__text"),
-                W(ctx, "shortcode", {"shortcode": "[zap_topbar_meta]"}, "zs-topbar__meta"),
+                Z(ctx, "topbar-meta", {}, "zs-topbar__meta"),
             ]),
         ], inner=False))
     logo = ctx.media.get("__logo")
@@ -732,14 +843,14 @@ def post_template(ctx):
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
             breadcrumbs_widget(ctx, "zs-hero__crumbs"),
-            W(ctx, "shortcode", {"shortcode": "[zap_post_title]"}, "zs-hero__title"),
-            W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
+            Z(ctx, "post-title", {}, "zs-hero__title"),
+            Z(ctx, "post-meta", {}, "zs-post__metaw"),
         ])], tag="section", inner=False, boxed=True)
     body = C(ctx, "zs-sec zs-post-body", [
         C(ctx, "zs-wrap zs-wrap--narrow", [
-            W(ctx, "shortcode", {"shortcode": "[zap_post_image]"}, "zs-post__hero"),
+            Z(ctx, "post-image", {}, "zs-post__hero"),
             W(ctx, "theme-post-content", {}, "zs-prose"),
-            W(ctx, "shortcode", {"shortcode": "[zap_post_extras]"}, "zs-post__extras"),
+            Z(ctx, "post-extras", {}, "zs-post__extras"),
         ])], tag="section", inner=False, boxed=True)
     return [hero, body]
 
@@ -750,10 +861,10 @@ def archive_template(ctx):
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
             breadcrumbs_widget(ctx, "zs-hero__crumbs"),
-            W(ctx, "shortcode", {"shortcode": "[zap_archive_title]"}, "zs-hero__title"),
-            W(ctx, "shortcode", {"shortcode": "[zap_archive_intro]"}, "zs-hero__lead"),
+            Z(ctx, "archive-title", {}, "zs-hero__title"),
+            Z(ctx, "archive-intro", {}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)
-    body = C(ctx, "zs-sec zs-archive-body", [W(ctx, "shortcode", {"shortcode": "[zap_archive_posts]"}, "zs-archive__posts")],
+    body = C(ctx, "zs-sec zs-archive-body", [Z(ctx, "archive-posts", {}, "zs-archive__posts")],
              tag="section", inner=False, boxed=True)
     return [hero, body]
 
@@ -782,9 +893,9 @@ def footer_template(ctx):
             C(ctx, "zs-leadband__text", [
                 heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם" if has_form(ctx) else "דברו איתנו"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
                 text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם." if has_form(ctx) else "")),
-                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or") if has_form(ctx) else None,
+                Z(ctx, "call-line", {}, "zs-leadband__or") if has_form(ctx) else None,
             ]),
-            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
+            Z(ctx, "form", {"id": "footer"}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
         ]),
     ], tag="section", inner=False)
     lead["settings"]["_element_id"] = "leave-details"
@@ -795,19 +906,19 @@ def footer_template(ctx):
         ]),
         C(ctx, "zs-footer__col", [
             heading(ctx, f.get("links_title", "השירותים שלנו"), "p", "zs-footer__title"),
-            W(ctx, "shortcode", {"shortcode": '[zap_menu location="footer"]'}),
+            Z(ctx, "menu", {"location": "footer"}),
         ], tag="nav"),
         C(ctx, "zs-footer__col", [
             heading(ctx, "יצירת קשר", "p", "zs-footer__title"),
-            W(ctx, "shortcode", {"shortcode": "[zap_footer_contact]"}),
+            Z(ctx, "footer-contact"),
         ]),
     ])
     mark = W(ctx, "html", {"html": f'<div class="zs-footer__mark" aria-hidden="true">{html.escape(b["name"])}</div>'}, "zs-footer__mark-w")
     bar = C(ctx, "zs-footer__bar", [
         C(ctx, "zs-wrap zs-footer__bar-in", [
-            W(ctx, "shortcode", {"shortcode": "[zap_copyright]"}),
-            W(ctx, "shortcode", {"shortcode": "[zap_legal]"}),
-            W(ctx, "shortcode", {"shortcode": "[zap_group_logo]"}),
+            Z(ctx, "copyright"),
+            Z(ctx, "legal"),
+            Z(ctx, "group-logo"),
         ]),
     ])
     foot = C(ctx, "zs-footer", [cols, mark, bar], tag="footer", inner=False)
