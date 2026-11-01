@@ -395,18 +395,32 @@ def run_qa(site):
                 warns += len(m["warn"])
             if vp == "mobile":
                 page.goto(site.url + "/", wait_until="networkidle")
-                page.click(".zs-burger")
-                page.wait_for_timeout(450)
-                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
-                                       # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
-                                       " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
-                                       " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
-                page.keyboard.press("Escape")
-                page.wait_for_timeout(350)
-                closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
-                extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
-                if not (opened and closed):
-                    errors += 1
+                el_menu = page.locator(".elementor-menu-toggle").count() > 0   # Elementor Pro Nav Menu in the header
+                if el_menu:
+                    page.click(".elementor-menu-toggle")
+                    page.wait_for_timeout(450)
+                    opened = page.evaluate("(() => { const d = document.querySelector('.elementor-nav-menu--dropdown'); if (!d) return false;"
+                                           " const r = d.getBoundingClientRect(); return getComputedStyle(d).display !== 'none' && r.height > 150"
+                                           " && document.querySelector('.elementor-menu-toggle').getAttribute('aria-expanded') === 'true'; })()")
+                    page.click(".elementor-menu-toggle")
+                    page.wait_for_timeout(350)
+                    closed = page.evaluate("document.querySelector('.elementor-menu-toggle').getAttribute('aria-expanded') === 'false'")
+                    extra.append(("mobile menu (Elementor Nav Menu) opens / closes", opened and closed))
+                    if not (opened and closed):
+                        errors += 1
+                else:
+                    page.click(".zs-burger")
+                    page.wait_for_timeout(450)
+                    opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
+                                           # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
+                                           " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
+                                           " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
+                    page.keyboard.press("Escape")
+                    page.wait_for_timeout(350)
+                    closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
+                    extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
+                    if not (opened and closed):
+                        errors += 1
                 if not data["business"].get("email_leads"):
                     no_form = page.locator("form.zs-form").count() == 0
                     extra.append(("calls-only site (no leads e-mail): no lead form rendered", no_form))
