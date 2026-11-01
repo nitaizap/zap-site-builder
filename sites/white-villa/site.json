@@ -74,156 +74,172 @@
  "og_image": "poolpanorama",
  "images": {
   "poolpanorama": {
-   "src": "assets/pool-panorama.jpg",
-   "alt": "הבריכה של הוילה הלבנה עם מגלשת המים, המבנה ומרפסת הגג"
+   "src": "assets/poolpanorama.jpg",
+   "alt": "הבריכה של הוילה הלבנה, המגלשה ומבנה הווילה, ביום שמש"
+  },
+  "villapanorama": {
+   "src": "assets/villapanorama.jpg",
+   "alt": "מבנה הווילה והבריכה, עם כורסת שיזוף מעץ על שפת המים"
   },
   "slidepool": {
-   "src": "assets/slide-pool.jpg",
-   "alt": "מגדל מגלשת המים הלבן ליד הבריכה, עם פינת ישיבה מברזל"
+   "src": "assets/slidepool.jpg",
+   "alt": "בריכת השחייה עם מגלשת המים הלבנה ושמשיות בגינה"
   },
-  "playground": {
-   "src": "assets/playground.jpg",
-   "alt": "מתקני משחק, נדנדות ומגלשה על מדשאה בין עצי דקל"
+  "slidevertical": {
+   "src": "assets/slidevertical.jpg",
+   "alt": "מגלשת המים הלבנה נכנסת לבריכה, שמשיות ופרגולת סכך ברקע"
   },
-  "playgroundswings": {
-   "src": "assets/playground-swings.jpg",
-   "alt": "נדנדה אדומה ומתקני כושר לילדים בין עצי זית"
+  "poolwater": {
+   "src": "assets/poolwater.jpg",
+   "alt": "גלגלי ים צבעוניים צפים במי הבריכה הצלולים"
+  },
+  "villapoolfence": {
+   "src": "assets/villapoolfence.jpg",
+   "alt": "הבריכה עם מפל המים, הגדר הלבנה ומבנה הווילה"
+  },
+  "olivegarden": {
+   "src": "assets/olivegarden.jpg",
+   "alt": "הבריכה והמגלשה מלמעלה, בין עצי הדקל"
   },
   "villagarden": {
-   "src": "assets/villa-garden.jpg",
-   "alt": "מבנה הווילה בשני מפלסים מול מדשאה ירוקה ועצים"
-  },
-  "livingroom": {
-   "src": "assets/living-room.jpg",
-   "alt": "סלון הווילה עם ספות עור שחורות ושטיח מעוצב"
-  },
-  "dining": {
-   "src": "assets/dining.jpg",
-   "alt": "פינת אוכל עם שולחן שיש ארוך בסלון הווילה"
-  },
-  "staircase": {
-   "src": "assets/staircase.jpg",
-   "alt": "גרם המדרגות לקומה השנייה עם קיר אבן וזכוכית"
-  },
-  "kitchenisland": {
-   "src": "assets/kitchen-island.jpg",
-   "alt": "אי המטבח עם כיסאות בר מעץ"
-  },
-  "kitchen": {
-   "src": "assets/kitchen.jpg",
-   "alt": "מטבח מאובזר עם מקרר גדול וארונות בגוון כהה"
-  },
-  "bedrooma": {
-   "src": "assets/bedroom-a.jpg",
-   "alt": "חדר שינה עם שתי מיטות ווילונות לבנים"
-  },
-  "bedroomb": {
-   "src": "assets/bedroom-b.jpg",
-   "alt": "חדר שינה בעליית הגג עם שלוש מיטות וטלוויזיה"
-  },
-  "bedroomc": {
-   "src": "assets/bedroom-c.jpg",
-   "alt": "חדר שינה מרווח עם מיטות ומקלחת צמודה"
-  },
-  "bathrooma": {
-   "src": "assets/bathroom-a.jpg",
-   "alt": "חדר רחצה לבן עם מקלחון זכוכית"
-  },
-  "bathroomb": {
-   "src": "assets/bathroom-b.jpg",
-   "alt": "חדר רחצה מחופה אריחי שיש כהים"
-  },
-  "roofterrace": {
-   "src": "assets/roof-terrace.jpg",
-   "alt": "מרפסת גג מדשאה עם נוף לעצי הדקל"
-  },
-  "hostingtable": {
-   "src": "assets/hosting-table.jpg",
-   "alt": "שולחן אירוח ארוך מעץ תחת פרגולה, מול הגינה"
-  },
-  "palmpergola": {
-   "src": "assets/palm-pergola.jpg",
-   "alt": "פרגולת סכך עם שולחנות משחק בין עצי הדקל"
-  },
-  "snooker": {
-   "src": "assets/snooker.jpg",
-   "alt": "שולחן סנוקר תחת הפרגולה בגינה"
-  },
-  "tabletennis": {
-   "src": "assets/table-tennis.jpg",
-   "alt": "שולחן טניס תחת פרגולת הסכך"
-  },
-  "gardenbar": {
-   "src": "assets/garden-bar.jpg",
-   "alt": "פינת ישיבה עם שולחן עגול ובר בגינה"
+   "src": "assets/villagarden.jpg",
+   "alt": "מבנה הווילה בשני מפלסים מול המדשאה והעצים"
   },
   "orchard": {
    "src": "assets/orchard.jpg",
-   "alt": "מדשאה מוצלת בין עצי הפרי בבוסתן"
+   "alt": "הבוסתן והמדשאה בצל עצי הפרי"
   },
-  "entrance": {
-   "src": "assets/entrance.jpg",
-   "alt": "שביל הכניסה המרוצף לווילה בין צמחייה"
-  },
-  "swing": {
-   "src": "assets/swing.jpg",
-   "alt": "נדנדה אדומה עם כיסא תינוק על המדשאה"
+  "gardenbar": {
+   "src": "assets/gardenbar.jpg",
+   "alt": "שולחן אוכל ופינת ישיבה מעץ בצל עצי הבוסתן"
   },
   "gardentrees": {
-   "src": "assets/garden-trees.jpg",
-   "alt": "מדשאה ירוקה בצל עצי הפרי"
-  },
-  "villaentrance": {
-   "src": "assets/villa-entrance.jpg",
-   "alt": "חזית הווילה מעל המדשאה, עם שולחן ישיבה ליד הכניסה"
-  },
-  "olivejar": {
-   "src": "assets/olive-jar.jpg",
-   "alt": "עץ זית עתיק וכד חרס בגינה"
+   "src": "assets/gardentrees.jpg",
+   "alt": "פינת ישיבה מרופדת על המדשאה בין עצי הזית"
   },
   "lawn": {
    "src": "assets/lawn.jpg",
-   "alt": "מדשאה רחבה בין העצים, עם מגלשת המים ברקע"
+   "alt": "ספות גן וכורסאות על המדשאה, תחת פרגולת הסכך"
   },
-  "fitnesscorner": {
-   "src": "assets/fitness-corner.jpg",
-   "alt": "מתקני משחק וכושר בין עצי הזית"
+  "swing": {
+   "src": "assets/swing.jpg",
+   "alt": "ספסל נדנדה מעץ עם גג סכך בגינה"
   },
-  "poolpatio": {
-   "src": "assets/pool-patio.jpg",
-   "alt": "מרפסת השיש המקורה ליד הבריכה, עם הנדנדה ומגלשת המים"
+  "playground": {
+   "src": "assets/playground.jpg",
+   "alt": "מגדל המשחקים עם המגלשות על המדשאה, ליד הבריכה"
   },
-  "stonecottage": {
-   "src": "assets/stone-cottage.jpg",
-   "alt": "מבנה אבן לבן מול מדשאה מוצלת"
+  "playgroundswings": {
+   "src": "assets/playgroundswings.jpg",
+   "alt": "מתקני משחק ונדנדות לילדים על המדשאה"
+  },
+  "hostingtable": {
+   "src": "assets/hostingtable.jpg",
+   "alt": "שולחן אירוח ארוך מעץ תחת פרגולת הסכך"
+  },
+  "palmpergola": {
+   "src": "assets/palmpergola.jpg",
+   "alt": "פרגולת הסכך ושולחנות עץ בגינה הירוקה"
   },
   "jacaranda": {
    "src": "assets/jacaranda.jpg",
-   "alt": "עצי זית וסיגליון מעל המדשאה, עם ספסל נדנדה"
+   "alt": "פינת אוכל תחת הפרגולה, מול הבריכה"
   },
-  "olivegarden": {
-   "src": "assets/olive-garden.jpg",
-   "alt": "עץ זית ופרחים אדומים בגינה"
+  "snooker": {
+   "src": "assets/snooker.jpg",
+   "alt": "שולחן סנוקר תחת פרגולת הסכך"
   },
-  "villapoolfence": {
-   "src": "assets/villa-pool-fence.jpg",
-   "alt": "הבריכה המגודרת מול מבנה הווילה ומרפסת הגג"
+  "tabletennis": {
+   "src": "assets/tabletennis.jpg",
+   "alt": "שולחן טניס תחת פרגולת הסכך, מול הגינה"
   },
-  "slidevertical": {
-   "src": "assets/slide-vertical.jpg",
-   "alt": "מגלשת המים הלבנה מעל הבריכה"
+  "poolpatio": {
+   "src": "assets/poolpatio.jpg",
+   "alt": "המרפסת המקורה לאורך הווילה, מול הבריכה"
+  },
+  "roofterrace": {
+   "src": "assets/roofterrace.jpg",
+   "alt": "מרפסת הגג עם דשא, מעל הגינה"
+  },
+  "stonecottage": {
+   "src": "assets/stonecottage.jpg",
+   "alt": "פינת ישיבה במרפסת הגג, עם נוף לגינה"
+  },
+  "entrance": {
+   "src": "assets/entrance.jpg",
+   "alt": "שביל הכניסה לווילה בין הצמחייה"
+  },
+  "villaentrance": {
+   "src": "assets/villaentrance.jpg",
+   "alt": "המבואה, עם פינת הקפה והמטבח ברקע"
+  },
+  "livingroom": {
+   "src": "assets/livingroom.jpg",
+   "alt": "הסלון עם ספות העור השחורות והתמונות על הקיר"
   },
   "livingtv": {
-   "src": "assets/living-tv.jpg",
-   "alt": "הסלון עם טלוויזיה גדולה, ופינת האוכל והמטבח ברקע"
+   "src": "assets/livingtv.jpg",
+   "alt": "הסלון עם הטלוויזיה הגדולה ודלתות הזכוכית לגינה"
   },
-  "villapanorama": {
-   "src": "assets/villa-panorama.jpg",
-   "alt": "מבנה הווילה מעל מדשאה ירוקה בין עצים"
+  "dining": {
+   "src": "assets/dining.jpg",
+   "alt": "פינת האוכל עם שולחן השיש הארוך, והסלון ברקע"
   },
-  "poolwater": {
-   "src": "assets/pool-water.jpg",
-   "alt": "מי הבריכה הצלולים מול המרפסת"
+  "diningkitchen": {
+   "src": "assets/diningkitchen.jpg",
+   "alt": "שולחן האוכל השחור ליד המטבח והמדרגות"
+  },
+  "staircase": {
+   "src": "assets/staircase.jpg",
+   "alt": "המבואה וגרם המדרגות לקומה השנייה"
+  },
+  "kitchen": {
+   "src": "assets/kitchen.jpg",
+   "alt": "המטבח המאובזר עם האי וכיסאות הבר"
+  },
+  "kitchenisland": {
+   "src": "assets/kitchenisland.jpg",
+   "alt": "אי המטבח עם כיסאות בר מעץ"
+  },
+  "bedrooma": {
+   "src": "assets/bedrooma.jpg",
+   "alt": "חדר שינה עם שלוש מיטות וטלוויזיה"
+  },
+  "bedroomb": {
+   "src": "assets/bedroomb.jpg",
+   "alt": "חדר שינה עם ארבע מיטות וחלון גג"
+  },
+  "bedroomc": {
+   "src": "assets/bedroomc.jpg",
+   "alt": "חדר שינה מרווח עם מיטה זוגית וטלוויזיה"
+  },
+  "bedroomd": {
+   "src": "assets/bedroomd.jpg",
+   "alt": "חדר שינה עם מיטות נפרדות ומדפים"
+  },
+  "fitnesscorner": {
+   "src": "assets/fitnesscorner.jpg",
+   "alt": "חדר שינה עם שלוש מיטות ומזגן"
+  },
+  "olivejar": {
+   "src": "assets/olivejar.jpg",
+   "alt": "חדר שינה עם ארון מראה גדול"
+  },
+  "bedroomgarden": {
+   "src": "assets/bedroomgarden.jpg",
+   "alt": "חדר שינה עם חלון גדול לגינה"
+  },
+  "bathrooma": {
+   "src": "assets/bathrooma.jpg",
+   "alt": "חדר רחצה לבן עם מקלחון"
+  },
+  "bathroomb": {
+   "src": "assets/bathroomb.jpg",
+   "alt": "חדר רחצה מחופה אריחי שיש כהים"
+  },
+  "shower": {
+   "src": "assets/shower.jpg",
+   "alt": "מקלחון מחופה שיש כהה"
   }
  },
  "nav": [
@@ -370,7 +386,7 @@
        "title": "מסיבות ואירועים",
        "text": "בריתות, חינות, ימי הולדת, בר ובת מצווה ועוד, עד 150 אורחים.",
        "href": "page:מסיבות-ואירועים",
-       "image": "poolpanorama"
+       "image": "jacaranda"
       }
      ],
      "columns": 2,
@@ -687,41 +703,45 @@
      "title": "המתחם בתמונות",
      "images": [
       "poolpanorama",
+      "villapanorama",
       "slidepool",
+      "slidevertical",
+      "poolwater",
+      "villapoolfence",
+      "olivegarden",
       "villagarden",
+      "orchard",
+      "gardenbar",
+      "gardentrees",
+      "lawn",
+      "swing",
       "playground",
       "playgroundswings",
+      "hostingtable",
+      "palmpergola",
+      "jacaranda",
+      "snooker",
+      "tabletennis",
+      "poolpatio",
       "roofterrace",
+      "stonecottage",
+      "entrance",
+      "villaentrance",
       "livingroom",
+      "livingtv",
       "dining",
+      "diningkitchen",
       "staircase",
-      "kitchenisland",
       "kitchen",
+      "kitchenisland",
       "bedrooma",
       "bedroomb",
       "bedroomc",
+      "bedroomd",
+      "bedroomgarden",
       "bathrooma",
       "bathroomb",
-      "hostingtable",
-      "palmpergola",
-      "snooker",
-      "tabletennis",
-      "gardenbar",
-      "orchard",
-      "entrance",
-      "villaentrance",
-      "villapoolfence",
-      "slidevertical",
-      "poolwater",
-      "poolpatio",
-      "swing",
-      "fitnesscorner",
-      "gardentrees",
-      "lawn",
-      "jacaranda",
-      "olivegarden",
-      "olivejar",
-      "stonecottage"
+      "shower"
      ],
      "columns": 4
     }
