@@ -62,7 +62,7 @@ add_shortcode('zap_form', function ($atts) {
   <?php if ($a['message'] === 'yes') : ?>
   <p class="zs-field"><label for="<?php echo $uid; ?>-msg">במה נוכל לעזור?</label><textarea id="<?php echo $uid; ?>-msg" name="zf_message" rows="3"></textarea></p>
   <?php endif; ?>
-  <p class="zs-form__consent"><label><input type="checkbox" name="zf_consent" value="1" required> אני מאשר/ת את <a href="<?php echo esc_url($privacy); ?>" target="_blank" rel="noopener">מדיניות הפרטיות</a></label></p>
+  <p class="zs-form__consent"><label><input type="checkbox" name="zf_consent" value="1" required> <span>אני מאשר/ת את <a href="<?php echo esc_url($privacy); ?>" target="_blank" rel="noopener">מדיניות הפרטיות</a></span></label></p>
   <p><button class="zs-btn zs-btn--primary zs-form__submit" type="submit"><?php echo esc_html($button); ?></button></p>
 </form>
 <?php return ob_get_clean();
@@ -154,4 +154,52 @@ add_action('phpmailer_init', function ($m) {
     $m->SMTPSecure = '';      // relay offers no TLS; forcing it fails every send
     $m->SMTPAutoTLS = false;
     $m->Timeout = 10;
+});
+
+/* ---------- where the leads go: a settings screen under "פניות מהאתר" (Zap QA asked where the form e-mail is set) ---------- */
+add_action('admin_menu', function () {
+    add_submenu_page('edit.php?post_type=zap_lead', 'הגדרות טפסים', 'הגדרות טפסים', 'manage_options', 'zap-form-settings', 'zap_form_settings_page');
+});
+
+function zap_form_settings_page() {
+    if (!current_user_can('manage_options')) return;
+    $staging = wp_get_environment_type() !== 'production' || get_option('zs_staging_lock');
+    $saved = isset($_GET['saved']);
+    ?>
+<div class="wrap" dir="rtl">
+  <h1>הגדרות טפסים</h1>
+  <?php if ($saved) : ?><div class="notice notice-success"><p>נשמר.</p></div><?php endif; ?>
+  <p>כל הטפסים באתר (פוטר, צור קשר, טפסים בעמודים) הם אותו טופס, ושולחים לכתובת שכאן. כל פנייה נשמרת גם ב"פניות מהאתר".</p>
+  <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+    <input type="hidden" name="action" value="zap_form_settings">
+    <?php wp_nonce_field('zap_form_settings'); ?>
+    <table class="form-table" role="presentation">
+      <tr><th scope="row"><label for="zfs-to">נמען (המייל של הלקוח)</label></th>
+          <td><input id="zfs-to" name="email_leads" type="email" class="regular-text" dir="ltr" value="<?php echo esc_attr(zap_opt('business.email_leads')); ?>"></td></tr>
+      <tr><th scope="row">שולח</th>
+          <td><code dir="ltr"><?php echo esc_html(zap_opt('smtp.from', 'zapsites@d.co.il')); ?></code> · שם השולח: <?php echo esc_html(zap_opt('business.name', get_bloginfo('name'))); ?></td></tr>
+      <tr><th scope="row"><label for="zfs-test">כתובת לבדיקות (אתר בדיקה בלבד)</label></th>
+          <td><input id="zfs-test" name="test_to" type="email" class="regular-text" dir="ltr" value="<?php echo esc_attr(zap_opt('smtp.test_to')); ?>">
+          <p class="description">באתר בדיקה לא נשלח מייל ללקוח. פניות נשלחות לכתובת הזו אם מולאה.</p></td></tr>
+      <tr><th scope="row">מצב</th>
+          <td><?php echo $staging ? '<strong>אתר בדיקה:</strong> מיילים ללקוח מושבתים עד העלייה לאוויר.' : '<strong>אתר חי:</strong> כל פנייה נשלחת לנמען.'; ?></td></tr>
+    </table>
+    <p class="description">הערה: בבנייה מחדש מה-site.json הנמען נלקח משם (business.email_leads). עדכנו גם שם.</p>
+    <?php submit_button('שמירה'); ?>
+  </form>
+</div>
+<?php
+}
+
+add_action('admin_post_zap_form_settings', function () {
+    if (!current_user_can('manage_options')) wp_die('אין הרשאה');
+    check_admin_referer('zap_form_settings');
+    $o = get_option('zap_site', []);
+    $o['business'] = $o['business'] ?? [];
+    $o['smtp'] = $o['smtp'] ?? [];
+    $o['business']['email_leads'] = sanitize_email(wp_unslash($_POST['email_leads'] ?? ''));
+    $o['smtp']['test_to'] = sanitize_email(wp_unslash($_POST['test_to'] ?? ''));
+    update_option('zap_site', $o);
+    wp_safe_redirect(add_query_arg(['post_type' => 'zap_lead', 'page' => 'zap-form-settings', 'saved' => 1], admin_url('edit.php')));
+    exit;
 });
