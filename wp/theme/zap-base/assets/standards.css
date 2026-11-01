@@ -41,6 +41,7 @@ body .zs-hero .zs-hero__title .elementor-heading-title { font-size: clamp(2.1rem
 @media (max-width: 767px) {
   body :is(.zs-footer a, .zs-footer__links a, .zs-footer__legal a, .zs-footer__contact a, .zs-form__consent a, .zs-leadband__or a, .zs-nap a) {
     display: inline-flex; align-items: center; min-height: 44px; }
+  body :is(.zs-footer__links a, .zs-footer__contact a) { min-height: 34px; }   /* footer lists: compact (Zap QA), still above the 24px target minimum */
   body .zs-faq__list .elementor-toggle .elementor-tab-title { min-height: 56px; display: flex; align-items: center; }
 }
 
@@ -67,13 +68,21 @@ body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
 /* Gallery photos open in a lightbox */
 body .zs-gallery__img a { display: block; cursor: zoom-in; }
 
-/* Accessibility on phones: not a floating icon in the header or over content; an "נגישות" item in the phone menu
-   opens the toolbar (site.js adds it). Desktop keeps the toolbar's own button. */
-@media (max-width: 1024px) { body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { display: none !important; } }
+/* Accessibility toolbar button on phones: low on the start edge, above the bottom action bar; never in the header
+   (it covered the logo) and never over the hero text. Zap QA, newest round: "התפריט נגישות נמצא בהדר .. לבטל".
+   The toolbar box is ~300px tall with its button at the top, so it is placed by its top; open, it moves up so
+   its panel fits on the screen. */
+@media (max-width: 767px) {
+  body #pojo-a11y-toolbar { position: fixed !important; top: calc(100svh - 170px) !important; bottom: auto !important; }
+  body #pojo-a11y-toolbar.pojo-a11y-toolbar-open { top: 80px !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: 0 !important; bottom: auto !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; }
+}
 
 /* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */
-body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 84px; max-width: 260px; }
-@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 60px; max-width: 190px; } }
+body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 96px; max-width: 280px; }
+@media (min-width: 768px) and (max-width: 1024px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 72px; max-width: 220px; } }
+@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 60px; max-width: 160px; } }
 
 /* Header call button: the number in dark text on a light button with a brand-colour border (Zap QA) */
 body .zs-header__cta .elementor-button, body .zs-nav__cta { background: var(--c-bg, #fff); color: var(--c-ink); border: 2px solid var(--c-primary); box-shadow: none; }
@@ -135,82 +144,74 @@ body .elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-c
 body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 14px; inset-block-end: auto; }
 @media (max-width: 767px) { body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 10px; } }
 
-/* ---------- Zap QA round 3 ---------- */
+/* ---------- Zap QA round 3 (הוילה הלבנה): typography, breadcrumbs, post, consent ---------- */
 /* Hebrew headings: no negative tracking (heavy Hebrew letters touch); -0.5px at most */
 body :is(h1, h2, h3, h4, h5, h6, .elementor-heading-title, .zs-hero__title .elementor-heading-title) { letter-spacing: 0 !important; }
-
-/* Body text: near-black, regular weight, 17px on desktop */
-/* only text on light grounds: dark bands, photo heroes, photo cards, the top bar and the footer keep their own light text */
+/* Body text near-black, regular weight, 17px on desktop; only text on light grounds */
 body .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-cta, .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve))
   :is(.zs-split__text, .zs-sec__intro, .zs-prose, .zs-faq__list, .zs-feature, .zs-cards--classic .zs-card__body, .zs-contact__info, .zs-hero__lead) :is(p, li) { color: var(--c-ink); font-weight: 400; }
 body .zs-post-body .zs-prose :is(p, li) { color: var(--c-ink); font-weight: 400; }
 @media (min-width: 768px) { body :is(.zs-sec p, .zs-sec li, .zs-prose p, .zs-prose li) { font-size: 1.0625rem; } }
 body .zs-topbar :is(.elementor-heading-title, li, a, span) { font-weight: 400; }
-
-/* Main menu at weight 500 (both the Elementor Nav Menu widget and the fallback menu) */
-body :is(.zs-menu > li > a, .elementor-nav-menu--main .elementor-item) { font-weight: 500; }
-
-/* Elementor Pro Nav Menu in the header: centred on desktop, brand colours, phone dropdown full width */
-body .zs-nav-el .elementor-nav-menu--main .elementor-item { color: var(--c-ink); padding-inline: 14px; }
-body .zs-nav-el .elementor-nav-menu--main .elementor-item:hover, body .zs-nav-el .elementor-nav-menu--main .elementor-item.elementor-item-active { color: var(--c-primary); }
-body .zs-nav-el .elementor-nav-menu--main .elementor-item::after { background-color: var(--c-primary); }
-body .zs-nav-el .elementor-nav-menu--dropdown { background: var(--c-bg); box-shadow: 0 12px 24px -12px rgb(0 0 0 / .25); }
-body .zs-nav-el .elementor-nav-menu--dropdown a { color: var(--c-ink); font-weight: 500; justify-content: center; min-height: 48px; font-size: 1.05rem; }
-body .zs-nav-el .elementor-nav-menu--dropdown a:hover, body .zs-nav-el .elementor-nav-menu--dropdown a.elementor-item-active { background: var(--c-surface); color: var(--c-primary); }
-
-/* Phone header: menu button on the start side (right in Hebrew), logo centred, round phone button on the end side */
-@media (max-width: 1024px) {
-  body .e-con.zs-header__in { --flex-wrap: nowrap; flex-wrap: nowrap; align-items: center; --align-items: center; justify-content: space-between; }
-  body .e-con.zs-header__in > .zs-header__nav { order: 0; flex: 0 0 auto; width: auto; margin: 0; }
-  body .e-con.zs-header__in > .zs-brand { order: 1; flex: 1 1 auto; text-align: center; display: flex; justify-content: center; }
-  body .e-con.zs-header__in > .zs-header__cta { order: 2; flex: 0 0 auto; visibility: visible !important; pointer-events: auto !important; }
-  body .zs-header__cta .elementor-button { width: 46px; height: 46px; padding: 0; border-radius: 50% !important; display: grid; place-items: center; }
-  body .zs-header__cta .elementor-button-text { display: none; }
-  body .zs-header__cta .elementor-button :is(.elementor-button-icon, svg) { margin: 0; }
-  /* menu button: round outline like the phone, two lines (a calmer icon than the default three-bar burger) */
-  body :is(.elementor-menu-toggle, .zs-burger) { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--c-primary); background: transparent; color: var(--c-ink); display: grid; place-items: center; padding: 0; }
-  body .elementor-menu-toggle svg { width: 20px; height: 20px; fill: currentColor; }
-  /* Elementor's toggle icon replaced by the same two-and-a-half lines as the theme burger (closed state only) */
-  body .elementor-menu-toggle:not(.elementor-active) .elementor-menu-toggle__icon--open { display: none !important; }
-  body .elementor-menu-toggle:not(.elementor-active)::before { content: ""; width: 18px; height: 12px;
-    background: linear-gradient(currentColor 0 0) top / 18px 2px no-repeat, linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
-                linear-gradient(currentColor 0 0) bottom / 18px 2px no-repeat; }
-  body .zs-burger { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
-  body .zs-burger span { width: 18px; height: 2px; border-radius: 2px; flex: none; }
-  body .zs-burger span:nth-child(2) { width: 12px; }
-  body.zs-nav-open .zs-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  body.zs-nav-open .zs-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-}
-
-/* Breadcrumbs above the H1 on inner pages and the blog (Elementor Breadcrumbs widget / Yoast trail), centred on phones */
-body :is(.zs-hero__crumbs, .zs-crumbsw) { font-size: .95rem; margin-bottom: 8px; }
-body :is(.zs-hero__crumbs, .zs-crumbsw) :is(a, span) { color: inherit; }
-body :is(.zs-hero__crumbs, .zs-crumbsw) a { text-decoration: none; }
-body :is(.zs-hero__crumbs, .zs-crumbsw) a:hover { text-decoration: underline; }
-body .zs-hero:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw) { color: var(--c-ink); opacity: .85; }
-@media (max-width: 767px) { body :is(.zs-hero__crumbs, .zs-crumbsw), body :is(.zs-hero__crumbs, .zs-crumbsw) .elementor-widget-container { text-align: center; justify-content: center; } }
-
-/* Blog post: breadcrumbs, title, byline in that order, centred on phones; air between headings and text */
+/* Main menu weight 500 */
+body .zs-menu > li > a { font-weight: 500; }
+/* Breadcrumbs above the H1: small, centred on phones, white on photo heroes */
+body .zs-hero__crumbs { font-size: .95rem; margin-bottom: 8px; }
+body .zs-hero__crumbs :is(a, span) { color: inherit; }
+body .zs-hero__crumbs a { text-decoration: none; }
+body .zs-hero__crumbs a:hover { text-decoration: underline; }
+@media (max-width: 767px) { body .zs-hero__crumbs, body .zs-hero__crumbs :is(.elementor-widget-container, nav, p) { text-align: center; justify-content: center; } }
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__crumbs, body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__crumbs :is(a, span, p, nav) { color: #fff !important; text-shadow: 0 1px 8px rgb(0 0 0 / .45); }
+/* Blog post: breadcrumbs, title, byline; centred on phones; air between prose headings and text */
 @media (max-width: 767px) { body .zs-post-hero .zs-hero__text, body .zs-post-hero :is(.zs-hero__title, .zs-post__meta) { text-align: center; align-items: center; --align-items: center; } }
 body .zs-prose :is(h2, h3) { margin-top: 1.6em; margin-bottom: .5em; line-height: 1.3; }
 body .zs-prose :is(p, ul, ol) { margin-bottom: 1em; line-height: 1.75; }
-
-/* Footer: tighter, bigger logo */
-body .zs-footer__logo img { max-height: 104px; }
-@media (max-width: 767px) {
-  body .zs-footer__logo img { max-height: 88px; }
-  body .zs-footer :is(.zs-footer__links, .zs-footer__contact) li { margin: 0; }
-  body .zs-footer :is(.zs-footer__links a, .zs-footer__contact a) { min-height: 36px; padding-block: 0; }
-  body .zs-footer :is(.zs-footer__links, .zs-footer__contact) { gap: 2px; row-gap: 2px; display: flex; flex-direction: column; align-items: center; }
-  body .zs-footer__title { margin: 10px 0 4px; }
-  body .zs-footer .e-con { --gap: 14px; gap: 14px; }
-  body .e-con.zs-footer, body .zs-footer :is(.zs-footer__grid) { --padding-top: 28px; }
+/* Form consent: one sentence, the privacy link underlined */
+body .zs-form__consent a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+/* Option: header.phone_round: true (a client's reviewer asked for the phone in a circle on phones) */
+@media (max-width: 1024px) {
+  body.zs-phone-round .zs-header__cta .elementor-button, body.zs-phone-round .zs-header__cta.zs-b .elementor-button { border: 2px solid var(--c-primary) !important; border-radius: 50% !important; }
 }
 
-/* Form consent: one line where it fits, the privacy link underlined, never split from its sentence */
-body .zs-form__consent label { display: inline; line-height: 1.6; }
-body .zs-form__consent a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
-
-@media (min-width: 1025px) { body .zs-a11y-item { display: none; } }
-/* breadcrumbs on photo heroes: white (Elementor Pro's widget sets its own dark text colour) */
-body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw), body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw) :is(a, span, p, nav, .elementor-widget-container, #breadcrumbs) { color: #fff !important; opacity: 1; text-shadow: 0 1px 8px rgb(0 0 0 / .45); }
+/* ---------- Zap QA round 3 (פטוצ'ינה) ---------- */
+/* Phones/tablets: one header row, menu button + logo + a plain phone icon (no big round button) */
+@media (max-width: 1024px) {
+  body .zs-header__cta .elementor-button, body .zs-header__cta.zs-b .elementor-button { border: 0; background: transparent; color: var(--c-ink); box-shadow: none; width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 0; }
+  body .zs-header__cta .elementor-button :is(svg, i) { width: 24px; height: 24px; font-size: 24px; }
+  body .zs-header__cta .elementor-button-text { display: none; }
+  body.zs-h-dark .zs-header__cta .elementor-button { color: var(--c-dark-ink); background: transparent; }
+  /* open menu: white, thin dividers, active item marked by colour and a line only, sub-items indented without a ground, hover on every item */
+  body .zs-nav { background: #fff; }
+  body .zs-menu a, body .zs-menu .current-menu-item > a, body .zs-menu .current-menu-ancestor > a, body .zs-menu .sub-menu a { background: none !important; }
+  body .zs-menu .current-menu-item > a, body .zs-menu .current-menu-ancestor > a { color: var(--c-primary); box-shadow: inset -3px 0 0 var(--c-primary); padding-inline-start: 12px; }
+  body .zs-menu .sub-menu { padding: 0 20px 8px 0; }
+  body .zs-menu .sub-menu li + li { border-top: 1px solid color-mix(in srgb, var(--c-line) 70%, transparent); }
+  body .zs-menu a:hover, body .zs-menu a:focus-visible { color: var(--c-primary); text-decoration: underline; text-underline-offset: 6px; }
+}
+/* Footer: three equal columns; a bigger logo, centred with the about line in its column */
+@media (min-width: 901px) { body .zs-footer__grid, body .elementor .e-con.zs-footer__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+body .zs-footer__logo img { max-height: 96px; height: 96px; width: auto; }
+@media (min-width: 768px) { body .zs-footer .e-con.zs-footer__brand, body .zs-footer__brand { --align-items: center; align-items: center; text-align: center; } }
+@media (max-width: 767px) {
+  body .zs-footer__logo img { max-height: 80px; height: 80px; }
+  body .zs-footer__grid, body .elementor .e-con.zs-footer__grid { gap: 20px; padding-block: 32px; }
+  body .zs-footer :is(.zs-footer__contact li, .zs-menu li, .zs-footer__links li) { margin-block: 0; }
+}
+/* Contact page: air between the page head and the contact block */
+body .e-con.zs-hero--page + .e-con.zs-contact { --padding-top: calc(var(--sec-y) + 24px); }
+/* Linked cards: the whole card is the link; no corner arrow */
+body .zs-cards--linked .e-con.zs-card__body::after { content: none; }
+body .zs-cards--linked .e-con.zs-card__body { --padding-left: var(--padding-right, 24px); }
+/* split · card: the text card and the photo share the same top and bottom */
+body .elementor .e-con.zs-split.zs-v-card > .e-con-inner { align-items: center; }
+/* design.align: center: section heads (title + intro) stacked and centred, card content and inner-page heads centred */
+body.zs-align-center .e-con.zs-head, body.zs-align-center .e-con.zs-head.zs-head--split { display: flex; flex-direction: column; --flex-direction: column; align-items: center; --align-items: center; text-align: center; gap: 14px; }
+body.zs-align-center .e-con.zs-head :is(.zs-sec__title, .zs-sec__intro, .zs-eyebrow, .elementor-heading-title) { text-align: center; }
+body.zs-align-center .zs-sec__intro { max-width: 720px; margin-inline: auto; }
+body.zs-align-center .zs-cards .e-con.zs-card__body { align-items: center; --align-items: center; text-align: center; }
+body.zs-align-center .zs-cards .zs-card__icon .elementor-icon-wrapper { text-align: center; }
+body.zs-align-center .e-con.zs-hero--page .e-con.zs-hero__text { align-items: center; --align-items: center; text-align: center; }
+body.zs-align-center .zs-hero--page :is(.zs-hero__title, .zs-hero__lead) .elementor-heading-title, body.zs-align-center .zs-hero--page .zs-hero__lead { text-align: center; }
+body.zs-align-center .zs-gallery .e-con.zs-head, body.zs-align-center .zs-faq .e-con.zs-head { margin-inline: auto; }
+/* a title stacked over its intro gets air between them */
+body .e-con.zs-head:not(.zs-head--split) { row-gap: 14px; --row-gap: 14px; gap: 14px; }

@@ -21,8 +21,9 @@ add_shortcode('zap_recent_posts', function ($atts) {
       <article class="zs-postcard">
         <a class="zs-postcard__img" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true"><?php if (has_post_thumbnail()) the_post_thumbnail('zs-card', ['loading' => 'lazy']); ?></a>
         <div class="zs-postcard__body">
-          <h3 class="zs-postcard__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+          <h3 class="zs-postcard__title"><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr(get_the_title()); ?>"><?php the_title(); ?></a></h3>
           <p><?php echo esc_html(get_the_excerpt()); ?></p>
+          <a class="zs-postcard__more" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr('קרא עוד: ' . get_the_title()); ?>">קרא עוד</a>
         </div>
       </article>
     <?php }
@@ -62,6 +63,20 @@ add_shortcode('zap_nap', function () {
     if (function_exists('zs_kosher_chip') && ($k = zs_kosher_chip())) $o .= '<li>' . $k . '</li>';
     foreach ((array) ($b['hours'] ?? []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . (function_exists('zs_social_rows') ? zs_social_rows() : '') . '</ul>';
+});
+
+/* The site logo, global: one logo (Elementor Site Settings → Site Identity = WordPress custom_logo) feeds the header
+   and the footer, so it is changed once (Zap QA: the logo is global like colours and fonts). A dark header or footer
+   uses the light version when the site has one (zap_site.logo_light_id). */
+add_shortcode('zap_logo', function ($atts) {
+    $a = shortcode_atts(['where' => 'header'], $atts);
+    $name = zap_opt('business.name', get_bloginfo('name'));
+    $id = (int) get_theme_mod('custom_logo');
+    $dark = $a['where'] === 'footer-dark' || ($a['where'] === 'header' && (function_exists('zs_design') ? (zs_design()['header'] ?? 'light') : 'light') === 'dark');
+    if ($dark && zap_opt('logo_light_id')) $id = (int) zap_opt('logo_light_id');
+    $img = $id ? wp_get_attachment_image($id, 'full', false, ['class' => 'zs-logo__img', 'alt' => $name, 'loading' => $a['where'] === 'header' ? 'eager' : 'lazy', 'decoding' => 'async'])
+               : '<span class="zs-brand__name">' . esc_html($name) . '</span>';
+    return '<a class="zs-logo" href="' . esc_url(home_url('/')) . '" rel="home" aria-label="' . esc_attr($name) . ' - דף הבית">' . $img . '</a>';
 });
 
 add_shortcode('zap_breadcrumbs', function () {
