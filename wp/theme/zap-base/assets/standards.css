@@ -212,3 +212,5 @@ body .zs-form__consent label { display: inline; line-height: 1.6; }
 body .zs-form__consent a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 
 @media (min-width: 1025px) { body .zs-a11y-item { display: none; } }
+/* breadcrumbs on photo heroes: white (Elementor Pro's widget sets its own dark text colour) */
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw), body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw) :is(a, span, p, nav, .elementor-widget-container, #breadcrumbs) { color: #fff !important; opacity: 1; text-shadow: 0 1px 8px rgb(0 0 0 / .45); }
