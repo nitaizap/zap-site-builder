@@ -51,7 +51,14 @@ class Site:
     def exists(self):
         return (self.wp_dir / "wp-config.php").exists()
 
+    def _guard_port(self):
+        if self._answers() and not self._own_pid_alive():
+            raise RuntimeError(f"{self.url} is answered by a server that this checkout did not start (another clone or "
+                               f"worktree serving '{self.slug}', sharing its database `{self.db}`): run "
+                               f"`bin/zs stop {self.slug}` there, then try again")
+
     def create(self, title, locale="he_IL"):
+        self._guard_port()   # before the database is dropped: it is shared by every checkout building this slug
         self.dir.mkdir(parents=True, exist_ok=True)
         (self.src / "assets").mkdir(parents=True, exist_ok=True)
         if not (self.wp_dir / "wp-load.php").exists():
@@ -165,9 +172,7 @@ class Site:
     def serve(self):
         if self.running():
             return self.url
-        if self._answers():
-            raise RuntimeError(f"{self.url} is answered by a server that this checkout did not start (another clone or "
-                               f"worktree serving '{self.slug}'): run `bin/zs stop {self.slug}` there, then try again")
+        self._guard_port()
         router = Path(__file__).with_name("router.php")
         log = open(self.dir / "server.log", "ab")
         kw = {}
