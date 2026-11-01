@@ -40,8 +40,8 @@
    "accent": "#d9c9a3",
    "accent_ink": "#1f241b",
    "ink": "#1f241b",
-   "text": "#3a4034",
-   "muted": "#5a6152",
+   "text": "#1f241b",
+   "muted": "#3a3f36",
    "bg": "#ffffff",
    "surface": "#f4f2ec",
    "line": "#e2dfd5",
@@ -52,7 +52,7 @@
    "heading": "Miriam Libre",
    "body": "Assistant"
   },
-  "custom_css": "\n/* white-villa: the logo leads the home hero (client note 9): big logo, smaller statement */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(15vw,19svh,230px);height:auto}\n@media (max-width:767px){body .e-con.zs-hero--home .zs-hero__logo img{width:min(44vw,170px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}"
+  "custom_css": "\n/* white-villa: the logo sits above the H1 in the home hero, small enough not to repeat the H1's weight */\nbody .e-con.zs-hero--home .zs-hero__logo img{max-height:none;width:min(9vw,13svh,128px);height:auto}\n@media (max-width:767px){body .e-con.zs-hero--home .zs-hero__logo img{width:min(30vw,104px)}}\n@media (max-height:700px) and (min-width:768px){body .e-con.zs-hero--home .zs-hero__text{row-gap:8px;--row-gap:8px}}"
  },
  "form": {
   "title": "השאירו פרטים ונחזור אליכם",

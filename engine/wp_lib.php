@@ -98,6 +98,23 @@ function zs_task_state($p) {
     echo wp_json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
 }
 
+/* Elementor Pro widgets the engine uses (nav-menu, breadcrumbs) carry a `_zs_fallback` shortcode: without Pro the
+   widget is swapped for that shortcode, so a site on free Elementor still gets a working menu / trail. */
+function zs_pro_fallback($els) {
+    $pro = defined('ELEMENTOR_PRO_VERSION');
+    foreach ($els as &$e) {
+        if (!empty($e['elements'])) $e['elements'] = zs_pro_fallback($e['elements']);
+        $fb = $e['settings']['_zs_fallback'] ?? null;
+        if ($fb === null) continue;
+        unset($e['settings']['_zs_fallback']);
+        if (!$pro) {
+            $e['widgetType'] = 'shortcode';
+            $e['settings'] = ['shortcode' => $fb, '_css_classes' => $e['settings']['_css_classes'] ?? ''];
+        }
+    }
+    return $els;
+}
+
 /* ---------------- pages ---------------- */
 function zs_yoast_meta($seo, $noindex = false) {
     $m = [];
@@ -143,7 +160,7 @@ function zs_task_pages($p) {
         if (is_array($pg['elements'])) {
             $doc = \Elementor\Plugin::$instance->documents->get($id, false);
             $doc->set_is_built_with_elementor(true);
-            $ok = $doc->save(['elements' => $pg['elements'], 'settings' => ['template' => 'default']]);
+            $ok = $doc->save(['elements' => zs_pro_fallback($pg['elements']), 'settings' => ['template' => 'default']]);
             if (!$ok) fwrite(STDERR, "elementor save refused for page '{$pg['key']}'\n");
         } else {
             delete_post_meta($id, '_elementor_edit_mode');
@@ -388,7 +405,7 @@ function zs_task_templates($p) {
             update_post_meta($id, '_zs_key', "__tpl_$slot");
         }
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
-        $doc->save(['elements' => $p[$slot]]);
+        $doc->save(['elements' => zs_pro_fallback($p[$slot])]);
         if ($pro) {
             update_post_meta($id, '_elementor_conditions', $conds[$slot]);
         }

@@ -222,6 +222,7 @@ def hero(ctx, s):
         chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
         logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
+        breadcrumbs_widget(ctx, "zs-hero__crumbs") if not is_home else None,   # trail above the H1 on inner pages
         logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
@@ -683,6 +684,23 @@ def render_page(ctx, sections):
 # Native widgets for everything a client edits (logo, phone button, texts, titles); shortcodes only for the
 # parts that are behaviour or Zap standards (menu + burger, contact list, lead form, legal line, Zap logo).
 
+def nav_widget(ctx):
+    """The main menu as Elementor Pro's Nav Menu widget over the WordPress menu "ראשי" (edit pages in Appearance →
+    Menus or in Elementor and the header follows). Without Pro it falls back to the theme's menu shortcode."""
+    return W(ctx, "nav-menu", {
+        "menu": "%d7%a8%d7%90%d7%a9%d7%99",            # sanitize_title("ראשי"): the menu the build creates for 'primary'
+        "layout": "horizontal", "align_items": "center", "pointer": "underline", "animation_line": "fade",
+        "dropdown": "tablet", "full_width": "stretch", "text_align": "center",
+        "toggle": "burger", "toggle_align": "center",
+        "_zs_fallback": "[zap_nav]",
+    }, "zs-header__nav zs-nav-el")
+
+
+def breadcrumbs_widget(ctx, classes="zs-crumbsw"):
+    """Elementor Pro's Breadcrumbs widget (it prints Yoast's trail, so Yoast settings apply); theme shortcode without Pro."""
+    return W(ctx, "breadcrumbs", {"html_tag": "nav", "align": "center", "_zs_fallback": "[zap_breadcrumbs]"}, classes)
+
+
 def header_template(ctx):
     d = ctx.site
     b, h = d["business"], d.get("header", {})
@@ -703,7 +721,7 @@ def header_template(ctx):
     if tel:
         tel["settings"]["_css_classes"] += " zs-header__cta"
     els.append(C(ctx, "zs-header", [
-        C(ctx, "zs-wrap zs-header__in", [brand, W(ctx, "shortcode", {"shortcode": "[zap_nav]"}, "zs-header__nav"), tel]),
+        C(ctx, "zs-wrap zs-header__in", [brand, nav_widget(ctx), tel]),
     ], tag="header", inner=False))
     return els
 
@@ -713,8 +731,9 @@ def post_template(ctx):
     the featured image, the content, then FAQ / related page / author. Edited in Elementor like any page."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
-            W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
+            breadcrumbs_widget(ctx, "zs-hero__crumbs"),
             W(ctx, "shortcode", {"shortcode": "[zap_post_title]"}, "zs-hero__title"),
+            W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
         ])], tag="section", inner=False, boxed=True)
     body = C(ctx, "zs-sec zs-post-body", [
         C(ctx, "zs-wrap zs-wrap--narrow", [
@@ -730,6 +749,7 @@ def archive_template(ctx):
     archive title as H1 and its intro, then the posts as cards."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
+            breadcrumbs_widget(ctx, "zs-hero__crumbs"),
             W(ctx, "shortcode", {"shortcode": "[zap_archive_title]"}, "zs-hero__title"),
             W(ctx, "shortcode", {"shortcode": "[zap_archive_intro]"}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)

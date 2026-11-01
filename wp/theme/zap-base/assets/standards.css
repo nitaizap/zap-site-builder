@@ -67,14 +67,9 @@ body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
 /* Gallery photos open in a lightbox */
 body .zs-gallery__img a { display: block; cursor: zoom-in; }
 
-/* Accessibility toolbar button on phones: in the header bar beside the menu button, never over content */
-@media (max-width: 767px) {
-  body #pojo-a11y-toolbar { position: fixed !important; top: 0 !important; bottom: auto !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: calc((var(--header-h, 72px) - 40px) / 2) !important; bottom: auto !important; }
-  body.admin-bar #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { margin-top: 46px; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; }
-  body #pojo-a11y-toolbar.pojo-a11y-toolbar-left .pojo-a11y-toolbar-toggle { left: auto; right: -196px !important; }
-}
+/* Accessibility on phones: not a floating icon in the header or over content; an "נגישות" item in the phone menu
+   opens the toolbar (site.js adds it). Desktop keeps the toolbar's own button. */
+@media (max-width: 1024px) { body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { display: none !important; } }
 
 /* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */
 body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 84px; max-width: 260px; }
@@ -139,3 +134,76 @@ body .elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-c
 /* Slider pause button: top corner of the hero, never over the hero buttons */
 body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 14px; inset-block-end: auto; }
 @media (max-width: 767px) { body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 10px; } }
+
+/* ---------- Zap QA round 3 ---------- */
+/* Hebrew headings: no negative tracking (heavy Hebrew letters touch); -0.5px at most */
+body :is(h1, h2, h3, h4, h5, h6, .elementor-heading-title, .zs-hero__title .elementor-heading-title) { letter-spacing: 0 !important; }
+
+/* Body text: near-black, regular weight, 17px on desktop */
+/* only text on light grounds: dark bands, photo heroes, photo cards, the top bar and the footer keep their own light text */
+body .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-cta, .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve))
+  :is(.zs-split__text, .zs-sec__intro, .zs-prose, .zs-faq__list, .zs-feature, .zs-cards--classic .zs-card__body, .zs-contact__info, .zs-hero__lead) :is(p, li) { color: var(--c-ink); font-weight: 400; }
+body .zs-post-body .zs-prose :is(p, li) { color: var(--c-ink); font-weight: 400; }
+@media (min-width: 768px) { body :is(.zs-sec p, .zs-sec li, .zs-prose p, .zs-prose li) { font-size: 1.0625rem; } }
+body .zs-topbar :is(.elementor-heading-title, li, a, span) { font-weight: 400; }
+
+/* Main menu at weight 500 (both the Elementor Nav Menu widget and the fallback menu) */
+body :is(.zs-menu > li > a, .elementor-nav-menu--main .elementor-item) { font-weight: 500; }
+
+/* Elementor Pro Nav Menu in the header: centred on desktop, brand colours, phone dropdown full width */
+body .zs-nav-el .elementor-nav-menu--main .elementor-item { color: var(--c-ink); padding-inline: 14px; }
+body .zs-nav-el .elementor-nav-menu--main .elementor-item:hover, body .zs-nav-el .elementor-nav-menu--main .elementor-item.elementor-item-active { color: var(--c-primary); }
+body .zs-nav-el .elementor-nav-menu--main .elementor-item::after { background-color: var(--c-primary); }
+body .zs-nav-el .elementor-nav-menu--dropdown { background: var(--c-bg); box-shadow: 0 12px 24px -12px rgb(0 0 0 / .25); }
+body .zs-nav-el .elementor-nav-menu--dropdown a { color: var(--c-ink); font-weight: 500; justify-content: center; min-height: 48px; font-size: 1.05rem; }
+body .zs-nav-el .elementor-nav-menu--dropdown a:hover, body .zs-nav-el .elementor-nav-menu--dropdown a.elementor-item-active { background: var(--c-surface); color: var(--c-primary); }
+
+/* Phone header: menu button on the start side (right in Hebrew), logo centred, round phone button on the end side */
+@media (max-width: 1024px) {
+  body .e-con.zs-header__in { --flex-wrap: nowrap; flex-wrap: nowrap; align-items: center; --align-items: center; justify-content: space-between; }
+  body .e-con.zs-header__in > .zs-header__nav { order: 0; flex: 0 0 auto; width: auto; margin: 0; }
+  body .e-con.zs-header__in > .zs-brand { order: 1; flex: 1 1 auto; text-align: center; display: flex; justify-content: center; }
+  body .e-con.zs-header__in > .zs-header__cta { order: 2; flex: 0 0 auto; visibility: visible !important; pointer-events: auto !important; }
+  body .zs-header__cta .elementor-button { width: 46px; height: 46px; padding: 0; border-radius: 50% !important; display: grid; place-items: center; }
+  body .zs-header__cta .elementor-button-text { display: none; }
+  body .zs-header__cta .elementor-button :is(.elementor-button-icon, svg) { margin: 0; }
+  /* menu button: round outline like the phone, two lines (a calmer icon than the default three-bar burger) */
+  body :is(.elementor-menu-toggle, .zs-burger) { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--c-primary); background: transparent; color: var(--c-ink); display: grid; place-items: center; padding: 0; }
+  body .elementor-menu-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+  body .zs-burger { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
+  body .zs-burger span { width: 18px; height: 2px; border-radius: 2px; flex: none; }
+  body .zs-burger span:nth-child(2) { width: 12px; }
+  body.zs-nav-open .zs-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.zs-nav-open .zs-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
+/* Breadcrumbs above the H1 on inner pages and the blog (Elementor Breadcrumbs widget / Yoast trail), centred on phones */
+body :is(.zs-hero__crumbs, .zs-crumbsw) { font-size: .95rem; margin-bottom: 8px; }
+body :is(.zs-hero__crumbs, .zs-crumbsw) :is(a, span) { color: inherit; }
+body :is(.zs-hero__crumbs, .zs-crumbsw) a { text-decoration: none; }
+body :is(.zs-hero__crumbs, .zs-crumbsw) a:hover { text-decoration: underline; }
+body .zs-hero:not(.zs-v-cover, .zs-v-inset, .zs-v-curve) :is(.zs-hero__crumbs, .zs-crumbsw) { color: var(--c-ink); opacity: .85; }
+@media (max-width: 767px) { body :is(.zs-hero__crumbs, .zs-crumbsw), body :is(.zs-hero__crumbs, .zs-crumbsw) .elementor-widget-container { text-align: center; justify-content: center; } }
+
+/* Blog post: breadcrumbs, title, byline in that order, centred on phones; air between headings and text */
+@media (max-width: 767px) { body .zs-post-hero .zs-hero__text, body .zs-post-hero :is(.zs-hero__title, .zs-post__meta) { text-align: center; align-items: center; --align-items: center; } }
+body .zs-prose :is(h2, h3) { margin-top: 1.6em; margin-bottom: .5em; line-height: 1.3; }
+body .zs-prose :is(p, ul, ol) { margin-bottom: 1em; line-height: 1.75; }
+
+/* Footer: tighter, bigger logo */
+body .zs-footer__logo img { max-height: 104px; }
+@media (max-width: 767px) {
+  body .zs-footer__logo img { max-height: 88px; }
+  body .zs-footer :is(.zs-footer__links, .zs-footer__contact) li { margin: 0; }
+  body .zs-footer :is(.zs-footer__links a, .zs-footer__contact a) { min-height: 36px; padding-block: 0; }
+  body .zs-footer :is(.zs-footer__links, .zs-footer__contact) { gap: 2px; row-gap: 2px; display: flex; flex-direction: column; align-items: center; }
+  body .zs-footer__title { margin: 10px 0 4px; }
+  body .zs-footer .e-con { --gap: 14px; gap: 14px; }
+  body .e-con.zs-footer, body .zs-footer :is(.zs-footer__grid) { --padding-top: 28px; }
+}
+
+/* Form consent: one line where it fits, the privacy link underlined, never split from its sentence */
+body .zs-form__consent label { display: inline; line-height: 1.6; }
+body .zs-form__consent a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+
+@media (min-width: 1025px) { body .zs-a11y-item { display: none; } }

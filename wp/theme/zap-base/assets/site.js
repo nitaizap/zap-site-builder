@@ -297,6 +297,18 @@
     setInterval(function () { if (seen && !hold && !document.hidden && !sec.classList.contains('is-paused') && nx && !nx.disabled) go(cur + 1); }, iv);
   });
 
+  /* ---------- accessibility in the phone menu: an "נגישות" item that opens the toolbar (its floating button is hidden on phones) ---------- */
+  (function () {
+    var tb = document.getElementById('pojo-a11y-toolbar');
+    if (!tb) return;
+    var open = function (e) { e.preventDefault(); var t = tb.querySelector('.pojo-a11y-toolbar-toggle-link'); if (t) t.click(); };
+    [].forEach.call(document.querySelectorAll('.elementor-nav-menu--dropdown ul.elementor-nav-menu, #zs-nav .zs-menu'), function (ul) {
+      var li = document.createElement('li'); li.className = 'menu-item zs-a11y-item';
+      var a = document.createElement('a'); a.href = '#'; a.className = 'elementor-item'; a.textContent = 'נגישות'; a.setAttribute('role', 'button');
+      a.addEventListener('click', open); li.appendChild(a); ul.appendChild(li);
+    });
+  })();
+
   /* ---------- hero video: desktop only, after load, never on data-saver ---------- */
   var v = document.querySelector('video.zs-hero__video[data-src]');
   if (v) {

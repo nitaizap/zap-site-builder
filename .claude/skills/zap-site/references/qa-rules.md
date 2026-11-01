@@ -47,7 +47,7 @@ your judgement.
 | **Buttons** | Phones: side by side, equal width, one line each (never stacked) | theme |
 | **Calls to action** | A page never ends with a `cta` section: the lead form follows it (two in a row) | validator error |
 | **Phone bar** | No sticky call bar by default; the header's phone button is the call action. A site turns the bar on with `header.mobile_bar` (extra buttons) or `header.call_bar: true` | theme |
-| **Accessibility button** | Phones: in the header bar next to the menu button, never over content. The slider's pause button sits in the hero's top corner, never over buttons | theme |
+| **Accessibility button** | Phones: no floating icon at all (not in the header, not over content); an "נגישות" item at the end of the phone menu opens the toolbar. Desktop keeps the toolbar's button. The slider's pause button sits in the hero's top corner, never over buttons | theme + site.js |
 | **Layout** | ~80px between sections on desktop, 25–50px on phones; 20px side padding on phones; tap targets ≥ 44px | theme |
 | | Phones: titles, text, buttons and the footer centred (long text, lists, forms and FAQ answers stay start-aligned) | theme |
 | | Feature boxes: icon and text centred together; feature grids fill the width (3 per row) | theme. You: `columns: 3` |
@@ -59,6 +59,21 @@ your judgement.
 | **Editable everywhere** | Privacy and accessibility are Elementor pages; the blog's posts and archive (blog page, categories, search) are Elementor Pro Theme Builder templates ("פוסט בבלוג", "בלוג וקטגוריות"), like the header and footer. Theme PHP is only the fallback where Pro is missing | engine (`zs push`). You: check Templates → Theme Builder after a first push |
 | **Pages** | No leftover public pages from plugins or the base install (e.g. `/login-customizer/`) and no placeholder text | you, after a first push; theme + validator for placeholders |
 | **Facts** | Posts may use the client's listings the user approves (Weekend / Weekend Family pages) besides the brief; the site e-mail is confirmed with the client once | you |
+
+## Round 3: typography, header, menus, breadcrumbs
+
+| area | rule | how it is kept |
+|---|---|---|
+| **Hebrew type** | No negative letter-spacing on Hebrew headings (heavy Hebrew letters touch); 0, at most -0.5px | theme |
+| | Body text near-black (the palette's ink), weight 400, 17px on desktop; never a light grey or Light (300) weight; the top bar 400 too | theme. You: keep `colors.text` / `muted` dark |
+| | Main menu weight 500 | theme |
+| **Hero** | The logo above the H1 is small (≈128px desktop / 104px phone) so it doesn't repeat the H1 at the same weight; drop it from the hero when the logo already spells the name the H1 says | you (`custom_css` size, or `logo: false`) |
+| **Phone header** | Menu button on the start side (right in Hebrew), logo centred, a round phone button on the end side; both buttons round outlines, the menu icon two-and-a-half lines, not the default three-bar burger | theme |
+| **Menu** | The main menu is Elementor Pro's Nav Menu widget over the WordPress menu "ראשי", so pages added or renamed in Appearance → Menus show up in the header; the theme shortcode is only the fallback without Pro | engine (`nav_widget`) |
+| **Breadcrumbs** | Every inner page and the blog show breadcrumbs above the H1 (reverses round 1): Elementor Pro's Breadcrumbs widget (it prints Yoast's trail, so it can be centred and styled in Elementor); centred on phones. Home has none | engine (`breadcrumbs_widget`), theme |
+| **Blog post** | Order: breadcrumbs, title, byline (author + date; the category is in the trail); centred on phones; air between prose headings and text | engine (post template), theme |
+| **Footer** | Tight spacing on phones; logo ≈104px desktop / 88px phone | theme |
+| **Forms** | The consent line stays one sentence (no break before the link); the privacy link is underlined | theme |
 
 ## Before you hand a site to QA
 
