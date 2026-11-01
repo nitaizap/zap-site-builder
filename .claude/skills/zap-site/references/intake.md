@@ -67,6 +67,7 @@ reported as "no logo, no socials, no menu, no order link" had all four on rest.c
 
 | property | URL | gives |
 |---|---|---|
+| SiteContent share (local Windows sessions only) | `\\gpna01\Drive-F$\SiteContent\<id>\` | the client's raw material: logo, photos, texts, deliverables. Check it first when the path is reachable (`ls "//gpna01/Drive-F\$/SiteContent/<id>"`); copy every file into `sites/<slug>/intake/` and commit it, so later and cloud sessions have it. Empty subfolders are normal; say "empty", not "not found". Cloud sessions cannot reach it: ask for the files only if the brief says they are there |
 | Dapei Zahav | `https://www.d.co.il/<id>/` | phones (virtual = Zap tracking), hours, geo, tags |
 | Zap Rest (restaurants, cafés, bars, event halls) | `https://www.rest.co.il/rest/<id>/` | **logo + gallery** (ask WebFetch to list *every* image URL; the logo often sits in the gallery, not the header), own description, kashrut, Facebook/Instagram, delivery + reservation links, delivery phone |
 | Mishlohim (anything that delivers) | `https://www.mishlohim.co.il/menu/<restId>/` (linked from rest.co.il) | **full menu with prices**, delivery fee/time/hours, small logo |

@@ -4,7 +4,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .tools && cd .tools
-PHP_ZIP=$(curl -sL https://windows.php.net/downloads/releases/ | grep -oE 'php-8\.3\.[0-9]+-nts-Win32-vs16-x64\.zip' | sort -uV | tail -1)
+PHP_ZIP=$(curl -sL https://windows.php.net/downloads/releases/ | grep -oE 'php-8\.3\.[0-9]+(-[0-9]+)?-nts-Win32-vs16-x64\.zip' | sort -uV | tail -1)
+[ -n "$PHP_ZIP" ] || { echo "no PHP 8.3 build found on windows.php.net" >&2; exit 1; }
 MDB=$(curl -s https://archive.mariadb.org/ | grep -oE 'mariadb-11\.4\.[0-9]+' | sort -uV | tail -1)
 [ -d php ] || { curl -sSLo php.zip "https://windows.php.net/downloads/releases/$PHP_ZIP"; mkdir -p php; unzip -qo php.zip -d php; }
 [ -d "$MDB-winx64" ] || { curl -sSLo mariadb.zip "https://archive.mariadb.org/$MDB/winx64-packages/$MDB-winx64.zip"; unzip -qo mariadb.zip; }
