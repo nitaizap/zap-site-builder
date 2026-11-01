@@ -11,7 +11,6 @@ while (have_posts()) : the_post();
   <header class="zs-post__head">
     <div class="zs-wrap zs-wrap--narrow">
       <?php zs_breadcrumbs(); ?>
-      <?php if ($cats) : ?><a class="zs-eyebrow" href="<?php echo esc_url(get_category_link($cats[0])); ?>"><?php echo esc_html($cats[0]->name); ?></a><?php endif; ?>
       <h1 class="zs-post__title"><?php the_title(); ?></h1>
       <p class="zs-post__meta">מאת <?php echo esc_html($author); ?> · עודכן <time datetime="<?php echo esc_attr(get_the_modified_date('c')); ?>"><?php echo esc_html(get_the_modified_date()); ?></time></p>
     </div>

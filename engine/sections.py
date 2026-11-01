@@ -83,6 +83,12 @@ def W(ctx, wtype, settings, classes=""):
     return {"id": ctx.uid(), "elType": "widget", "widgetType": wtype, "settings": s, "elements": []}
 
 
+def crumbs(ctx):
+    """Breadcrumbs above an inner page's H1 (Zap QA, two reviewers: "חסר פירורי לחם בכל האתר"); header.breadcrumbs:
+    false hides them where a client's reviewer asks."""
+    return Z(ctx, "breadcrumbs", {}, "zs-hero__crumbs") if (ctx.site.get("header") or {}).get("breadcrumbs", True) else None
+
+
 def Z(ctx, part, settings=None, classes=""):
     """A Zap part widget (registered by the zap-site plugin): native Elementor widget, no shortcode text."""
     return W(ctx, "zap-" + part, settings or {}, classes)
@@ -230,12 +236,14 @@ def hero(ctx, s):
         chip = " zs-hero__logo--chip" if lk == "__logo" else ""   # no light logo -> it sits on a white chip
         logo = image(ctx, lk, "zs-hero__logo" + chip, "medium", eager=True) if lk in ctx.media else None
     txt = C(ctx, "zs-hero__text", [
+        crumbs(ctx) if not is_home else None,
         logo,
         heading(ctx, s.get("eyebrow"), "p", "zs-eyebrow"),
         (heading(ctx, s["title"], "h1", "zs-hero__title") if ("*" in s["title"] or "\n" in s["title"])
          else heading(ctx, _h1_markup(s["title"], ctx.site["business"]["name"]), "h1", "zs-hero__title", raw=True)),
         text(ctx, s.get("lead"), "zs-hero__lead"),
-        buttons(ctx, s.get("cta"), s.get("cta2")),
+        # inner pages: no buttons in the hero (Zap QA); the CTA band, the header phone and the call bar carry the action
+        buttons(ctx, s.get("cta"), s.get("cta2")) if is_home or s.get("buttons") else None,
         text(ctx, checks(s.get("points", [])), "zs-hero__points") if s.get("points") else None,
     ])
     vid = None
@@ -798,7 +806,7 @@ def header_template(ctx):
     d = ctx.site
     b, h = d["business"], d.get("header", {})
     els = []
-    if h.get("topbar", True):
+    if h.get("topbar", False):   # off by default (Zap QA: "remove the blue strip with the details")
         els.append(C(ctx, "zs-topbar", [
             C(ctx, "zs-wrap zs-topbar__in", [
                 heading(ctx, h.get("topbar_text") or d.get("site", {}).get("tagline", ""), "p", "zs-topbar__text"),
@@ -819,19 +827,58 @@ def header_template(ctx):
     return els
 
 
+# ---------- shared single templates: every service page / every post through one Elementor document ----------
+# (Zap QA: a change in the template must update all service pages.) The page's own title, excerpt and featured
+# image come in through the zap-* dynamic tags (wp/plugin/zap-site/inc/templates.php), its body through
+# [zap_page_content] / [zap_post_body].
+
+def _walk(els):
+    for e in els or []:
+        if e:
+            yield e
+            yield from _walk(e.get("elements"))
+
+
+def _dyn(ctx, el, key, tag):
+    el["settings"].setdefault("__dynamic__", {})[key] = f'[elementor-tag id="{ctx.uid()}" name="{tag}" settings="%7B%7D"]'
+
+
+def service_template(ctx, sample_image=None):
+    d = ctx.site
+    tpl = (d.get("templates") or {}).get("service", {})
+    h = hero(ctx, {"type": "hero", "title": "__ZS_TITLE__", "lead": "__ZS_LEAD__", "image": sample_image})
+    for e in _walk([h]):
+        st = e.get("settings", {})
+        if e.get("widgetType") == "heading" and "__ZS_TITLE__" in str(st.get("title", "")):
+            _dyn(ctx, e, "title", "zap-title")
+        elif e.get("widgetType") == "text-editor" and "__ZS_LEAD__" in str(st.get("editor", "")):
+            _dyn(ctx, e, "editor", "zap-excerpt")
+        elif e.get("widgetType") == "image" and "zs-hero__img" in st.get("_css_classes", ""):
+            _dyn(ctx, e, "image", "zap-image")
+    body = C(ctx, "zs-tpl-content", [Z(ctx, "page-content")], inner=False)
+    # no closing CTA band: the lead form follows every page (Zap QA: two calls to action in a row)
+    return [h, body]
+
+
 def post_template(ctx):
     """Theme Builder 'single-post' template (Elementor Pro): page hero with the post's title as H1 and its byline,
     the featured image, the content, then FAQ / related page / author. Edited in Elementor like any page."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
+            crumbs(ctx),
             Z(ctx, "post-meta", {}, "zs-post__metaw"),
             Z(ctx, "post-title", {}, "zs-hero__title"),
         ])], tag="section", inner=False, boxed=True)
+    # the post beside "מאמרים נוספים" (Zap QA: a post template distinct from an inner page, more posts at the side)
     body = C(ctx, "zs-sec zs-post-body", [
-        C(ctx, "zs-wrap zs-wrap--narrow", [
-            Z(ctx, "post-image", {}, "zs-post__hero"),
-            W(ctx, "theme-post-content", {}, "zs-prose"),
-            Z(ctx, "post-extras", {}, "zs-post__extras"),
+        C(ctx, "zs-postbody__grid", [
+            C(ctx, "zs-postbody__main", [
+                Z(ctx, "post-image", {}, "zs-post__hero"),
+                W(ctx, "theme-post-content", {}, "zs-prose zs-post__body"),
+                Z(ctx, "post-extras", {}, "zs-post__extras"),
+            ]),
+            C(ctx, "zs-postbody__aside", [heading(ctx, "מאמרים נוספים", "p", "zs-postbody__aside-t"),
+                                          Z(ctx, "more-posts", {"count": 4})], tag="aside"),
         ])], tag="section", inner=False, boxed=True)
     return [hero, body]
 
@@ -841,6 +888,7 @@ def archive_template(ctx):
     archive title as H1 and its intro, then the posts as cards."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
+            crumbs(ctx),
             Z(ctx, "archive-title", {}, "zs-hero__title"),
             Z(ctx, "archive-intro", {}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)
@@ -859,7 +907,7 @@ def footer_logo(ctx):
     lg = ctx.media.get(k)
     if not lg:
         return heading(ctx, b["name"], "p", "zs-footer__name", link="page:")
-    chip = " zs-footer__logo--chip" if k == "__logo" else ""
+    chip = " zs-footer__logo--chip" if k == "__logo" else " zs-footer__logo--light"
     return W(ctx, "image", {"image": {"url": lg["url"], "id": lg["id"], "alt": b["name"], "source": "library"},
                             "image_size": "full", "link_to": "custom", "link": {"url": "/", "is_external": "", "nofollow": ""}},
              "zs-footer__logo" + chip)

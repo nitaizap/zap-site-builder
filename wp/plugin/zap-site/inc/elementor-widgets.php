@@ -87,6 +87,8 @@ add_action('elementor/widgets/register', function ($wm) {
         'archive-title'  => ['archive-title', 'archive_title', 'כותרת ארכיון', 'eicon-archive-title', []],
         'archive-intro'  => ['archive-intro', 'archive_intro', 'פתיח ארכיון', 'eicon-text', []],
         'archive-posts'  => ['archive-posts', 'archive_posts', 'פוסטים בארכיון', 'eicon-archive-posts', []],
+        'page-content'   => ['page-content', 'page_content', 'תוכן העמוד (בטמפלט)', 'eicon-post-content', []],
+        'more-posts'     => ['more-posts', 'more_posts', 'מאמרים נוספים', 'eicon-post-list', ['count' => ['number', 'מספר מאמרים', 4]]],
     ];
     $GLOBALS['zap_widget_specs'] = $specs;
     // one small concrete class per widget: Elementor instantiates widgets by class name
@@ -113,6 +115,8 @@ add_action('elementor/widgets/register', function ($wm) {
     final class Zap_Widget_archive_title extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-title']; } }
     final class Zap_Widget_archive_intro extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-intro']; } }
     final class Zap_Widget_archive_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-posts']; } }
+    final class Zap_Widget_page_content extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['page-content']; } }
+    final class Zap_Widget_more_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['more-posts']; } }
     foreach (array_keys($specs) as $n) {
         $cls = 'Zap_Widget_' . str_replace('-', '_', $n);
         $wm->register(new $cls());
