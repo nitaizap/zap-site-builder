@@ -141,6 +141,8 @@ def accessibility_html(data):
 
 
 def build(site, only=None):
+    if hasattr(site, "_guard_port"):   # local builds only: never write into another checkout's database
+        site._guard_port()
     site_dir = site.src
     data = load_site(site_dir)
     problems = validate(data, site_dir)

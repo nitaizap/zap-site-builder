@@ -124,7 +124,7 @@ add_shortcode('zap_post_meta', function () {
     $author = zap_opt('business.author_name', zap_opt('business.name'));
     $cats = get_the_category();
     $o = '';
-    if ($cats) $o .= '<a class="zs-eyebrow" href="' . esc_url(get_category_link($cats[0])) . '">' . esc_html($cats[0]->name) . '</a>';
+    // the category is already in the breadcrumbs above the title: the byline is just author + date
     return $o . '<p class="zs-post__meta">מאת ' . esc_html($author) . ' · עודכן <time datetime="' . esc_attr(get_the_modified_date('c'))
          . '">' . esc_html(get_the_modified_date()) . '</time></p>';
 });

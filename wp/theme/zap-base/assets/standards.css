@@ -144,6 +144,35 @@ body .elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-c
 body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 14px; inset-block-end: auto; }
 @media (max-width: 767px) { body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 10px; } }
 
+/* ---------- Zap QA round 3 (הוילה הלבנה): typography, breadcrumbs, post, consent ---------- */
+/* Hebrew headings: no negative tracking (heavy Hebrew letters touch); -0.5px at most */
+body :is(h1, h2, h3, h4, h5, h6, .elementor-heading-title, .zs-hero__title .elementor-heading-title) { letter-spacing: 0 !important; }
+/* Body text near-black, regular weight, 17px on desktop; only text on light grounds */
+body .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-cta, .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve))
+  :is(.zs-split__text, .zs-sec__intro, .zs-prose, .zs-faq__list, .zs-feature, .zs-cards--classic .zs-card__body, .zs-contact__info, .zs-hero__lead) :is(p, li) { color: var(--c-ink); font-weight: 400; }
+body .zs-post-body .zs-prose :is(p, li) { color: var(--c-ink); font-weight: 400; }
+@media (min-width: 768px) { body :is(.zs-sec p, .zs-sec li, .zs-prose p, .zs-prose li) { font-size: 1.0625rem; } }
+body .zs-topbar :is(.elementor-heading-title, li, a, span) { font-weight: 400; }
+/* Main menu weight 500 */
+body .zs-menu > li > a { font-weight: 500; }
+/* Breadcrumbs above the H1: small, centred on phones, white on photo heroes */
+body .zs-hero__crumbs { font-size: .95rem; margin-bottom: 8px; }
+body .zs-hero__crumbs :is(a, span) { color: inherit; }
+body .zs-hero__crumbs a { text-decoration: none; }
+body .zs-hero__crumbs a:hover { text-decoration: underline; }
+@media (max-width: 767px) { body .zs-hero__crumbs, body .zs-hero__crumbs :is(.elementor-widget-container, nav, p) { text-align: center; justify-content: center; } }
+body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__crumbs, body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__crumbs :is(a, span, p, nav) { color: #fff !important; text-shadow: 0 1px 8px rgb(0 0 0 / .45); }
+/* Blog post: breadcrumbs, title, byline; centred on phones; air between prose headings and text */
+@media (max-width: 767px) { body .zs-post-hero .zs-hero__text, body .zs-post-hero :is(.zs-hero__title, .zs-post__meta) { text-align: center; align-items: center; --align-items: center; } }
+body .zs-prose :is(h2, h3) { margin-top: 1.6em; margin-bottom: .5em; line-height: 1.3; }
+body .zs-prose :is(p, ul, ol) { margin-bottom: 1em; line-height: 1.75; }
+/* Form consent: one sentence, the privacy link underlined */
+body .zs-form__consent a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+/* Option: header.phone_round: true (a client's reviewer asked for the phone in a circle on phones) */
+@media (max-width: 1024px) {
+  body.zs-phone-round .zs-header__cta .elementor-button, body.zs-phone-round .zs-header__cta.zs-b .elementor-button { border: 2px solid var(--c-primary) !important; border-radius: 50% !important; }
+}
+
 /* ---------- Zap QA round 3 (פטוצ'ינה) ---------- */
 /* Phones/tablets: one header row, menu button + logo + a plain phone icon (no big round button) */
 @media (max-width: 1024px) {
@@ -186,3 +215,5 @@ body.zs-align-center .zs-hero--page :is(.zs-hero__title, .zs-hero__lead) .elemen
 body.zs-align-center .zs-gallery .e-con.zs-head, body.zs-align-center .zs-faq .e-con.zs-head { margin-inline: auto; }
 /* a title stacked over its intro gets air between them */
 body .e-con.zs-head:not(.zs-head--split) { row-gap: 14px; --row-gap: 14px; gap: 14px; }
+/* the header row grows with the 96 px logo (it touched the top edge) */
+@media (min-width: 1025px) { body .zs-header__in, body .e-con.zs-header__in { min-height: 116px; --min-height: 116px; padding-block: 10px; } }
