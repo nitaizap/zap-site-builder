@@ -73,3 +73,86 @@ add_shortcode('zap_phone', function () {
     $t = zap_opt('business.phone_e164');
     return $t ? '<a href="' . esc_attr(zs_tel_href($t)) . '">' . esc_html(zap_opt('business.phone_display')) . '</a>' : '';
 });
+
+/* ---------- parts of the Elementor Theme Builder templates for the blog (Single post / Archive) ----------
+   The layout is an Elementor document a person edits in Theme Builder; these shortcodes carry the parts that
+   depend on the current query or on the post's meta (FAQ, related page). */
+
+/* The archive's intro: the blog page's excerpt, or the category description. */
+add_shortcode('zap_archive_intro', function () {
+    $t = is_home() ? get_the_excerpt((int) get_option('page_for_posts')) : (is_category() ? category_description() : '');
+    return $t ? '<div class="zs-archive__intro">' . wp_kses_post(wpautop($t)) . '</div>' : '';
+});
+
+/* The current archive's posts as cards (the main query: blog page, category, search). */
+add_shortcode('zap_archive_posts', function () {
+    if (!have_posts()) return '';
+    ob_start();
+    echo '<div class="zs-postgrid">';
+    while (have_posts()) { the_post(); ?>
+      <article class="zs-postcard">
+        <a class="zs-postcard__img" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true"><?php if (has_post_thumbnail()) the_post_thumbnail('zs-card', ['loading' => 'lazy']); ?></a>
+        <div class="zs-postcard__body">
+          <h2 class="zs-postcard__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+          <p><?php echo esc_html(get_the_excerpt()); ?></p>
+        </div>
+      </article>
+    <?php }
+    echo '</div>';
+    the_posts_pagination(['mid_size' => 1, 'prev_text' => 'הקודם', 'next_text' => 'הבא']);
+    wp_reset_postdata();
+    return ob_get_clean();
+});
+
+/* The post's byline: category link, author, last update. */
+add_shortcode('zap_post_meta', function () {
+    $author = zap_opt('business.author_name', zap_opt('business.name'));
+    $cats = get_the_category();
+    $o = '';
+    if ($cats) $o .= '<a class="zs-eyebrow" href="' . esc_url(get_category_link($cats[0])) . '">' . esc_html($cats[0]->name) . '</a>';
+    return $o . '<p class="zs-post__meta">מאת ' . esc_html($author) . ' · עודכן <time datetime="' . esc_attr(get_the_modified_date('c'))
+         . '">' . esc_html(get_the_modified_date()) . '</time></p>';
+});
+
+/* After the post's content: its FAQ (the same questions as the FAQPage schema), the related page, the author. */
+add_shortcode('zap_post_extras', function () {
+    $id = get_the_ID();
+    $o = '';
+    $faq = json_decode((string) get_post_meta($id, '_zap_faq', true), true);
+    if (is_array($faq) && $faq) {
+        $o .= '<section class="zs-post__faq" aria-labelledby="zs-post-faq"><h2 id="zs-post-faq">שאלות נפוצות</h2>';
+        foreach ($faq as $it) {
+            $o .= '<details class="zs-faq__item"><summary>' . esc_html($it['q'] ?? '') . '</summary><div class="zs-faq__a">'
+                . wp_kses_post(wpautop($it['a'] ?? '')) . '</div></details>';
+        }
+        $o .= '</section>';
+    }
+    $related = (int) get_post_meta($id, '_zap_related_page', true);
+    if ($related && get_post_status($related) === 'publish') {
+        $o .= '<aside class="zs-post__cta"><p class="zs-post__cta-title">' . esc_html(get_the_title($related)) . '</p><p>'
+            . esc_html(get_the_excerpt($related)) . '</p><a class="zs-btn zs-btn--primary" href="' . esc_url(get_permalink($related)) . '">'
+            . esc_html(get_the_title($related)) . '</a></aside>';
+    }
+    $author = zap_opt('business.author_name', zap_opt('business.name'));
+    $credit = zap_opt('business.author_credentials');
+    $o .= '<aside class="zs-author"><p class="zs-author__name">' . esc_html($author) . '</p>' . ($credit ? '<p>' . esc_html($credit) . '</p>' : '') . '</aside>';
+    if ($d = zap_opt('content.disclaimer')) $o .= '<p class="zs-disclaimer">' . esc_html($d) . '</p>';
+    return $o;
+});
+
+/* The archive's H1: the blog page's title on the posts page, the category name, or the search query. */
+add_shortcode('zap_archive_title', function () {
+    if (is_home())         $t = get_the_title((int) get_option('page_for_posts'));
+    elseif (is_category()) $t = single_cat_title('', false);
+    elseif (is_search())   $t = 'תוצאות חיפוש: ' . get_search_query();
+    else                   $t = wp_strip_all_tags(get_the_archive_title());
+    return '<h1 class="elementor-heading-title">' . esc_html($t) . '</h1>';
+});
+
+/* The post's H1 and featured image for the Theme Builder "Single post" template. */
+add_shortcode('zap_post_title', function () {
+    return '<h1 class="elementor-heading-title">' . esc_html(get_the_title()) . '</h1>';
+});
+add_shortcode('zap_post_image', function () {
+    return has_post_thumbnail() ? '<figure class="zs-post__img">' . get_the_post_thumbnail(null, 'large', ['loading' => 'eager', 'fetchpriority' => 'high']) . '</figure>' : '';
+});

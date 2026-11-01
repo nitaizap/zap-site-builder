@@ -76,9 +76,9 @@ OS has "reduce motion" on (the site parks all motion then); or a cached page. Ch
 ## What a person can edit afterwards (in Elementor)
 
 - Every page: containers with native widgets (heading, text, image, button, icon, accordion, video).
-- **Header and footer**: Elementor templates. With Elementor Pro (Zap's base has it) they are Theme Builder
+- **Header, footer, blog post, blog archive**: Elementor Theme Builder templates (Header, Footer, Single post, Archive). With Elementor Pro (Zap's base has it) they are Theme Builder
   header/footer with "entire site" conditions; without Pro they are saved templates the theme renders.
-  Menus are edited in Appearance → Menus; the lead form, contact list and legal line are shortcodes.
+  Menus are edited in Appearance → Menus; the lead form, contact list and legal line are Zap widgets (Elementor panel → category "Zap"), never shortcodes.
 - **Brand colours and fonts**: Elementor Site Settings → Global Colors / Global Fonts. The theme reads them, so
   one change restyles the whole site.
 - Decorative only (HTML widgets): the slogan marquee, the road scene, the route track (its steps are editable containers), the hero video/ride, the footer wordmark.

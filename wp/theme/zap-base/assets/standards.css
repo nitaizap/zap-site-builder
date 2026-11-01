@@ -29,11 +29,12 @@ body .zs-hero .zs-hero__title .elementor-heading-title { font-size: clamp(2.1rem
   body .zs-sec__title .elementor-heading-title { font-size: 1.75rem; }
 }
 
-/* Hero buttons on phones: stacked, full width, one line each */
+/* Buttons on phones, everywhere: side by side, equal width, one line each (Zap QA round 2) */
 @media (max-width: 767px) {
-  body .zs-hero .e-con.zs-btns { --flex-direction: column; flex-direction: column; --align-items: stretch; align-items: stretch; width: 100%; --width: 100%; }
-  body .zs-hero .e-con.zs-btns > .elementor-element { width: 100%; --container-widget-width: 100%; max-width: none; }
-  body .zs-hero .e-con.zs-btns .elementor-button { width: 100%; white-space: nowrap; justify-content: center; }
+  body .e-con.zs-btns { --flex-direction: row; flex-direction: row; --flex-wrap: nowrap; flex-wrap: nowrap; --gap: 10px; gap: 10px; width: 100%; justify-content: center; }
+  body .e-con.zs-btns > .elementor-element { flex: 1 1 0; min-width: 0; width: auto; --container-widget-width: auto; max-width: none; }
+  body .e-con.zs-btns .elementor-button { width: 100%; white-space: nowrap; justify-content: center; padding-inline: 10px; font-size: 1rem; }
+  body .e-con.zs-btns .elementor-button :is(svg, i) { display: none; }
 }
 
 /* Tap targets: 44px minimum for links people tap on phones */
@@ -43,8 +44,8 @@ body .zs-hero .zs-hero__title .elementor-heading-title { font-size: clamp(2.1rem
   body .zs-faq__list .elementor-toggle .elementor-tab-title { min-height: 56px; display: flex; align-items: center; }
 }
 
-/* The phone call bar never covers the footer's last line */
-@media (max-width: 767px) { body:has(.zs-fab) .zs-footer { padding-bottom: 88px; } }
+/* The sticky call bar is opt-in (header.call_bar); with it on, it never covers the footer's last line */
+@media (max-width: 767px) { body:has(.zs-fab) .zs-footer { padding-bottom: 88px; } body:not(:has(.zs-fab)) { padding-bottom: 0 !important; } }
 
 /* FAQ: hover state and a chevron that points down and turns when open */
 body .zs-faq__list .elementor-toggle .elementor-tab-title { cursor: pointer; transition: background-color .2s, color .2s; }
@@ -66,16 +67,18 @@ body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
 /* Gallery photos open in a lightbox */
 body .zs-gallery__img a { display: block; cursor: zoom-in; }
 
-/* Accessibility toolbar button on phones: small, in the start corner above the call bar, off the content */
+/* Accessibility toolbar button on phones: in the header bar beside the menu button, never over content */
 @media (max-width: 767px) {
-  body #pojo-a11y-toolbar { top: auto !important; bottom: 84px !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: auto !important; bottom: 0 !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; opacity: .92; }
+  body #pojo-a11y-toolbar { position: fixed !important; top: 0 !important; bottom: auto !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: calc((var(--header-h, 72px) - 40px) / 2) !important; bottom: auto !important; }
+  body.admin-bar #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { margin-top: 46px; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; }
+  body #pojo-a11y-toolbar.pojo-a11y-toolbar-left .pojo-a11y-toolbar-toggle { left: auto; right: -196px !important; }
 }
 
 /* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */
-body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 64px; max-width: 240px; }
-@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 50px; max-width: 180px; } }
+body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 84px; max-width: 260px; }
+@media (max-width: 767px) { body :is(.zs-tpl, .elementor-location-header) .zs-brand img, body .zs-brand .zs-brand__logo { height: 60px; max-width: 190px; } }
 
 /* Header call button: the number in dark text on a light button with a brand-colour border (Zap QA) */
 body .zs-header__cta .elementor-button, body .zs-nav__cta { background: var(--c-bg, #fff); color: var(--c-ink); border: 2px solid var(--c-primary); box-shadow: none; }
@@ -101,3 +104,38 @@ body a[href^="tel:"] { white-space: nowrap; }
   body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: 0 !important; --min-height: 0; --padding-top: 0; --padding-bottom: 0; }
   body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { min-height: 0 !important; justify-content: center !important; --padding-top: 36px; --padding-bottom: 36px; padding-block: 36px !important; }
 }
+
+/* Top bar text at body size */
+body .zs-topbar :is(.elementor-heading-title, li, a, span) { font-size: 1rem; }
+
+/* Main menu centred in the header on desktop (Zap QA round 2) */
+@media (min-width: 1025px) { body .zs-nav { margin-inline: auto; } body .e-con.zs-header__in > .zs-header__nav { flex: 1 1 auto; } body .zs-header__nav .zs-nav { justify-content: center; } }
+
+/* One H1 size on phones on every template: page heroes, blog, posts, legal pages */
+@media (max-width: 767px) {
+  body :is(.zs-hero__title .elementor-heading-title, .zs-archive__title, .zs-post__title, .zs-page__title, .zs-404 h1, .zs-search h1) { font-size: 2.1rem !important; line-height: 1.2; }
+}
+
+/* Feature boxes: icon and text centred together */
+body .zs-features .e-con.zs-feature { text-align: center; --align-items: center; align-items: center; }
+body .zs-features .zs-feature__icon .elementor-icon-wrapper { text-align: center; }
+
+/* Phones: content centred (titles, text, buttons, footer); long text, lists, forms and FAQ answers stay start-aligned */
+@media (max-width: 767px) {
+  body .e-con.zs-sec:not(.zs-faq) :is(.zs-head, .zs-head__main, .zs-split__text, .zs-cta__text, .zs-card__body) { text-align: center; --align-items: center; align-items: center; }
+  body .e-con.zs-sec:not(.zs-faq) :is(.zs-sec__title, .zs-sec__intro, .zs-eyebrow, .zs-split__text .elementor-widget-text-editor) { text-align: center; }
+  body .zs-checks { display: inline-block; text-align: start; }
+  body .zs-footer, body .zs-footer :is(.zs-footer__col, .zs-footer__links, .zs-footer__contact, .zs-footer__legal) { text-align: center; justify-content: center; }
+  body .zs-footer :is(.zs-footer__contact li, .zs-footer__legal) { justify-content: center; }
+  body .zs-footer .e-con, body .zs-footer :is(.zs-footer__grid, .zs-footer__bottom) { --align-items: center; align-items: center; }
+  body .e-con.zs-footer, body .zs-footer { --padding-bottom: 24px; }
+}
+
+/* Galleries: 2 per row on phones; big galleries (gallery pages) are a uniform grid, no large first tile, no holes */
+@media (max-width: 767px) { body .zs-gallery .zs-grid { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+body .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+13) { grid-column: auto; grid-row: auto; }
+body .elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+13) img { aspect-ratio: 4 / 3; height: auto; }
+
+/* Slider pause button: top corner of the hero, never over the hero buttons */
+body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 14px; inset-block-end: auto; }
+@media (max-width: 767px) { body .zs-hero .zs-hero__media > .zs-pause { inset-block-start: 10px; } }

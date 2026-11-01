@@ -1,6 +1,8 @@
 <?php defined('ABSPATH') || exit;
 /* Blog index, category archives, search and any fallback. */
 get_header();
+// Elementor Pro Theme Builder "Archive" template first; this PHP is the fallback
+if (function_exists('elementor_theme_do_location') && elementor_theme_do_location('archive')) { get_footer(); return; }
 if (is_home()) {
     $pid   = (int) get_option('page_for_posts');
     $title = $pid ? get_the_title($pid) : 'בלוג';
