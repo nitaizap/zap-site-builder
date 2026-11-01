@@ -41,7 +41,7 @@ def _texts(obj, path=""):
         for k, v in obj.items():
             if k in ("src", "href", "image", "images", "icon", "type", "key", "slug", "anchor", "bg", "category",
                      "related_page", "featured_image", "youtube_url", "kind", "video", "colors", "fonts", "preset", "hero", "header",
-                     "variant", "tier"):
+                     "variant", "tier", "kit", "archetype"):
                 continue
             yield from _texts(v, f"{path}.{k}" if path else k)
     elif isinstance(obj, list):
@@ -49,7 +49,7 @@ def _texts(obj, path=""):
             yield from _texts(v, f"{path}[{i}]")
 
 
-def validate(d, site_dir):
+def validate(d, site_dir, _dir=None):
     out = []
     E = lambda m: out.append("ERROR " + m)
     W = lambda m: out.append("WARN  " + m)
@@ -105,7 +105,10 @@ def validate(d, site_dir):
                 if kw in kw_owner:
                     E(f"keyword cannibalisation: '{kw}' is owned by both {kw_owner[kw]} and {name}")
                 kw_owner[kw] = name
-        hero_t = next((s.get("title", "") for s in p.get("sections", []) if s.get("type") == "hero"), "")
+        hero_s = next((s for s in p.get("sections", []) if s.get("type") == "hero"), None)
+        if hero_s and p.get("type") != "home" and (hero_s.get("cta") or hero_s.get("cta2")):
+            E(f"{name}: inner-page hero has buttons; Zap QA: buttons only in the home hero (the page and the lead form carry the action)")
+        hero_t = (hero_s or {}).get("title", "")
         h1_plain = hero_t.replace("*", "").replace(chr(10), " ").strip()
         if p.get("type") == "home" and b.get("name") and h1_plain != b["name"]:
             E(f"home: the H1 is the client's name only ('{b['name']}', Zap checklist), not '{h1_plain}'; the keyword goes in the lead and the first H2")
@@ -135,6 +138,9 @@ def validate(d, site_dir):
         if secs and secs[-1].get("type") == "cta" and p.get("type") not in ("contact",):
             E(f"{name}: page ends with a cta section and the lead form follows it: two calls to action in a row (Zap QA); drop the cta or move it up")
         for s_ in secs:
+            gk = s_.get("images") or []
+            if len(gk) != len(set(gk)):
+                E(f"{name}: {s_.get('type')} repeats a photo: {sorted({k for k in gk if gk.count(k) > 1})}")
             icons = [it.get("icon") for it in s_.get("items", []) if isinstance(it, dict) and it.get("icon")]
             dup = sorted({i for i in icons if icons.count(i) > 1})
             if dup:
@@ -194,8 +200,8 @@ def validate(d, site_dir):
     foot_order = [i.get("href") for i in d.get("footer_nav", []) if i.get("href") in nav_order]
     if foot_order != [h for h in nav_order if h in foot_order]:
         E("footer_nav lists the pages in a different order from nav (Zap QA: same order in both)")
-    if any(i.get("href") == "page:" for i in d.get("nav", [])):
-        W("nav has a 'home' item; Zap QA: the logo links home, the menu does not")
+    if d.get("nav") and d["nav"][0].get("href") != "page:":
+        E("nav must start with a 'דף הבית' item (Zap QA round 2: home is the first menu item, desktop and mobile)")
     for c in d.get("categories", []):
         if c.get("description") and not c["description"].rstrip().endswith((".", "!", "?")):
             E(f"category '{c.get('slug')}' description is cut mid-sentence (it shows on the blog page): end it with a full sentence")
@@ -206,7 +212,27 @@ def validate(d, site_dir):
             if h.startswith("page:") and h[5:].partition('#')[0] not in keys:
                 E(f"menu item '{it.get('label')}' links to missing page '{h}'")
 
+    body_font = ((d.get("design") or {}).get("fonts") or {}).get("body", "")
+    if body_font in ("Miriam Libre", "Frank Ruhl Libre", "Noto Serif Hebrew", "David Libre", "Bellefair", "Bona Nova",
+                     "Suez One", "Secular One", "Karantina", "Fredoka", "Varela Round"):
+        E(f"design.fonts.body '{body_font}' is a display/serif face; Zap QA: body text and forms in a readable sans "
+          "(Assistant, Heebo, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew, Alef); keep the character font for headings")
     imgs = d.get("images", {})
+    try:
+        from PIL import Image
+        hashes = {}
+        for k, v in imgs.items():
+            f = (site_dir / v.get("src", "")) if site_dir else None
+            if f and f.exists() and f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+                im = Image.open(f).convert("L").resize((9, 8))
+                px = list(im.getdata())
+                hashes[k] = sum(1 << i for i in range(64) if px[(i // 8) * 9 + i % 8] > px[(i // 8) * 9 + i % 8 + 1])
+        ks = list(hashes)
+        near = [(a, c) for i, a in enumerate(ks) for c in ks[i + 1:] if bin(hashes[a] ^ hashes[c]).count("1") <= 10]
+        for a, c in near:
+            W(f"images '{a}' and '{c}' look like the same shot; Zap QA flags the same view twice in one gallery: keep one")
+    except Exception:
+        pass
     used = set(re.findall(r'"(?:image|featured_image)":\s*"([^"]+)"', json.dumps(d, ensure_ascii=False)))
     for lst in re.findall(r'"images":\s*\[([^\]]*)\]', json.dumps(d, ensure_ascii=False)):
         used |= set(re.findall(r'"([^"]+)"', lst))
@@ -288,4 +314,38 @@ def validate(d, site_dir):
             E(f"{path}: dash as punctuation ('{DASH.search(txt).group(0).strip()}'): rewrite with a comma, colon, period or a line break (house rule: no em/en dashes in site copy)")
         if SUPERLATIVE.search(txt):
             W(f"{path}: unverifiable superlative: '{SUPERLATIVE.search(txt).group(0)}'")
+    from sections import ARCHETYPES, KITS
+    des = d.get("design", {})
+    if d.get("tier") and _dir is None and not (des.get("kit") and des.get("archetype")):
+        W("design.kit and design.archetype are not set: every new site picks both (references/pool.md → Style kits, Home archetypes)")
+    for where, dz in [("design", des)] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
+        if dz.get("archetype") and dz["archetype"] not in ARCHETYPES:
+            E(f"{where}.archetype '{dz['archetype']}' is not an archetype: {', '.join(ARCHETYPES)}")
+    dirs = [v for v in (d.get("directions") or {}).values() if isinstance(v, dict)]
+    for lever in ("kit", "archetype"):
+        vals = [v.get(lever) or des.get(lever) for v in dirs]
+        if len(dirs) > 1 and all(vals) and len(set(vals)) < len(vals):
+            E(f"two gate directions share the same {lever} ({', '.join(vals)}): each direction is a different {lever}")
+    for where, dz in [("design", d.get("design", {}))] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
+        if dz.get("kit") and dz["kit"] not in KITS:
+            E(f"{where}.kit '{dz['kit']}' is not a style kit: {', '.join(KITS)}")
+    # Gate directions with their own home page: the same checks as the real home, on a copy that uses it.
+    if _dir is None:
+        seen = set(out)
+        for k, dv in (d.get("directions") or {}).items():
+            if not isinstance(dv, dict) or "home" not in dv:
+                continue
+            if not isinstance(dv["home"], list) or not dv["home"]:
+                E(f"directions.{k}.home must be a non-empty list of sections")
+                continue
+            import copy
+            alt = copy.deepcopy(d)
+            alt.pop("directions", None)
+            alt["design"] = {**alt.get("design", {}), **{x: v for x, v in dv.items() if x not in ("home", "label")}}
+            for pg in alt.get("pages", []):
+                if pg.get("type") == "home":
+                    pg["sections"] = dv["home"]
+            for m in validate(alt, site_dir, _dir=k):
+                if m not in seen and m.startswith("ERROR"):
+                    out.append(m.replace("ERROR ", f"ERROR direction {k}: ", 1))
     return out

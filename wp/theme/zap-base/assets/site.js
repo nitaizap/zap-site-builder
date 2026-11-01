@@ -371,7 +371,7 @@
 
 /* post images open in a lightbox */
 (function () {
-  var imgs = document.querySelectorAll('.zs-post__body img, .zs-post__hero img');
+  var imgs = document.querySelectorAll('.zs-post__body img, .single-post .zs-prose img, .zs-post__hero img');
   if (!imgs.length || !window.HTMLDialogElement) return;
   var d = document.createElement('dialog'); d.className = 'zs-lightbox'; d.setAttribute('aria-label', 'תמונה מוגדלת');
   d.innerHTML = '<button type="button" aria-label="סגירה">×</button><img alt="">';

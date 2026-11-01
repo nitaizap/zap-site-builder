@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 from images import prepare_image
-from sections import Ctx, footer_template, header_template, post_template, render_page, service_template
+from sections import Ctx, archive_template, footer_template, header_template, post_template, render_page, service_template
 from validate import validate
 
 PHP_LIB = Path(__file__).with_name("wp_lib.php")
@@ -140,6 +140,9 @@ def build(site, only=None):
     errors = [p for p in problems if p.startswith("ERROR")]
     for p in problems:
         print(p)
+    if errors and os.environ.get("ZS_MEASURE_ONLY") == "1":   # zs registry: measure an old site built before newer rules
+        print(f"ZS_MEASURE_ONLY: building despite {len(errors)} error(s), for measurement only")
+        errors = []
     if errors:
         raise SystemExit(f"site.json has {len(errors)} error(s); fix them and build again.")
 
@@ -154,6 +157,7 @@ def build(site, only=None):
             "seo": {"title": f"{b['name']} | מדיניות פרטיות",
                     "description": _privacy_desc(b["name"])},
             "content": privacy_html(data),
+            "sections": [{"type": "hero", "title": "מדיניות פרטיות"}, {"type": "prose", "html": privacy_html(data), "bg": "plain"}],
         })
         std["privacy_url"] = "/מדיניות-פרטיות/"
         data["_paths"]["מדיניות-פרטיות"] = "/מדיניות-פרטיות/"
@@ -173,9 +177,21 @@ def build(site, only=None):
             "key": "הצהרת-נגישות", "type": "privacy", "legal": "accessibility", "title": "הצהרת נגישות", "noindex": False,
             "seo": {"title": f"{b['name']} | הצהרת נגישות", "description": d[:160]},
             "content": accessibility_html(data),
+            "sections": [{"type": "hero", "title": "הצהרת נגישות"}, {"type": "prose", "html": accessibility_html(data), "bg": "plain"}],
         })
         std["accessibility_url"] = "/הצהרת-נגישות/"
         data["_paths"]["הצהרת-נגישות"] = "/הצהרת-נגישות/"
+
+    # Gate preview: a direction may carry its own home page (directions[k].home = sections), so the three directions
+    # differ in layout, not only in colour. Each is built as a hidden, noindexed page /zs-dir-<k>/ that renders as the
+    # home page under that direction. Local builds only: a pushed client site never gets them.
+    if not getattr(site, "remote", False):
+        for k, dv in (data.get("directions") or {}).items():
+            if isinstance(dv, dict) and dv.get("home"):
+                data["pages"].append({"key": f"zs-dir-{k}", "type": "page", "title": f"כיוון {k.upper()}", "noindex": True,
+                                      "_as_home": True, "sections": dv["home"],
+                                      "_design": {**data.get("design", {}), **{x: v for x, v in dv.items() if x not in ("home", "label")}},
+                                      "seo": {"title": f"{data['business']['name']} | כיוון {k.upper()}", "description": ""}})
 
     site.install_code()
     log = []
@@ -249,12 +265,14 @@ def build(site, only=None):
     use_tpl = (data.get("templates") or {}).get("shared", True)   # service pages + posts through shared templates
     payload = []
     for p in pages:
-        ctx = Ctx(p["key"], media, data)
+        ctx = Ctx(p["key"], media, data, as_home=bool(p.get("_as_home")))
+        if p.get("_design"):
+            ctx.design = p["_design"]
         secs = p.get("sections") or []
         hero_s = next((s for s in secs if s.get("type") == "hero"), {})
         shared = p.get("type") == "service" and use_tpl
-        if shared:   # the service template carries the hero (title, excerpt, image) and the closing CTA
-            secs = [s for s in secs if s.get("type") not in ("hero", "cta")]
+        if shared:   # the shared service template carries the hero (this page's title, excerpt and image)
+            secs = [s for s in secs if s.get("type") != "hero"]
             p = {**p, "excerpt": hero_s.get("lead") or p.get("excerpt", ""),
                  "featured_image": hero_s.get("image") or p.get("featured_image")}
         elements = render_page(ctx, secs) if secs else None
@@ -281,12 +299,11 @@ def build(site, only=None):
     tctx = Ctx("__tpl", media, data)
     svc = [p for p in data.get("pages", []) if p.get("type") == "service"]
     sample = next((s.get("image") for p in svc for s in p.get("sections", []) if s.get("type") == "hero" and s.get("image")), None)
-    tpls = {"header": header_template(tctx), "footer": footer_template(tctx), "name": data["business"]["name"]}
+    tpls = {"header": header_template(tctx), "footer": footer_template(tctx),
+            "single-post": post_template(tctx), "archive": archive_template(tctx), "name": data["business"]["name"]}
     if use_tpl and svc:
         tpls["service"] = service_template(Ctx("__tpl_service", media, data), sample)
         tpls["service_keys"] = [p["key"] for p in svc]
-    if use_tpl and data.get("posts"):
-        tpls["post"] = post_template(Ctx("__tpl_post", media, data), data["posts"][0].get("image"))
     log.append(run_php(site, "templates", tpls))
 
     # 4. blog posts
