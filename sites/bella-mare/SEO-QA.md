@@ -1,14 +1,14 @@
 # SEO QA — בלה מארה
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 27 pass, 1 fail, 5 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 29 pass, 0 fail, 5 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
 | 1 | עיצוב וטיפוגרפיה | מספר מקשר פותח פופ אפ | 👁 MANUAL | the engine has no tracking-number popup; check the example site14.clicksite.co.il and the Zap number in the brief |
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | — N/A | 0 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link /הצהרת-נגישות/ |
-| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ❌ FAIL | blog page no, 0 posts; the posts come from BestLinks |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 44 images |
+| 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ✅ PASS | blog page yes, 3 posts |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 48 images |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
 | 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 30 images, 0 marked AI; compare with the client's folder from the spec |
@@ -18,13 +18,13 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 27 pass, 1 fa
 | 14 | כפתורים ויצירת קשר | כפתורי טלפון עם tel: לחיוג ישיר | ✅ PASS |  |
 | 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
-| 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | — N/A | no posts yet |
+| 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | ✅ PASS | posts live under /בלוג/ |
 | 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 0 forms |
-| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 9 internal links, all < 400 |
+| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 13 internal links, all < 400 |
 | 20 | שגיאות 301 ו-404 | תיקון כל ה-404 (עמוד / 301) | ✅ PASS | redesign: map the old site's URLs to new ones (301) before launch |
 | 21 | שגיאות 301 ו-404 | קישורים פנימיים לא מפנים לכתובות ישנות | ✅ PASS |  |
 | 22 | SEO On-Page | סכמת FAQ בעמודי שירות ופוסטים | ✅ PASS |  |
-| 23 | SEO On-Page | Meta Title ייחודי ואופטימלי בכל עמוד | ✅ PASS | 6 unique titles |
+| 23 | SEO On-Page | Meta Title ייחודי ואופטימלי בכל עמוד | ✅ PASS | 11 unique titles |
 | 24 | SEO On-Page | Meta Description ייחודי (150-160 תווים) | ✅ PASS |  |
 | 25 | עמוד 404 | עיצוב מותאם לעמוד 404 | ✅ PASS | HTTP 404 |
 | 26 | עמוד 404 | קישור לעמוד הבית | ✅ PASS |  |
