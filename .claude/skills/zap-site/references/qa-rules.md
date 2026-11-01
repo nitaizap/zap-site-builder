@@ -135,5 +135,5 @@ your judgement.
 | Section heads and card content centred consistently, when the client's QA asks | `design.align: "center"` |
 | Consent line with a single space ("אני מאשר/ת את מדיניות הפרטיות") | plugin |
 | "Where is the form e-mail set?" | wp-admin → פניות מהאתר → הגדרות טפסים (recipient, sender, test address, staging state); also shown in the form widget's panel. A rebuild takes `business.email_leads` from site.json, so change it there too |
-| Breadcrumbs: this round asked for them sitewide, an earlier round rejected them | per site: `header.breadcrumbs: true` (one sitewide trail under the header); ask when unsure |
+| Breadcrumbs on every site (user decision 01/11/2026) | default on every inner page; `header.breadcrumbs: false` only when a client asks to hide them |
 
