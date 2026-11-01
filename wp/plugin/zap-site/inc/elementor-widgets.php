@@ -71,7 +71,7 @@ add_action('elementor/widgets/register', function ($wm) {
             'email' => [$yn, 'שדה אימייל', ''], 'button' => ['text', 'טקסט כפתור', '']]],
         'recent-posts'   => ['recent-posts', 'recent_posts', 'פוסטים אחרונים', 'eicon-posts-grid', [
             'count' => ['number', 'מספר פוסטים', 3], 'category' => ['text', 'קטגוריה (slug)', ''], 'exclude' => ['text', 'להחריג (ID)', '']]],
-        'logo'           => ['logo', 'logo', 'לוגו האתר', 'eicon-site-logo', ['where' => [['header' => 'הדר', 'footer' => 'פוטר'], 'מיקום', 'header']]],
+        'logo'           => ['logo', 'logo', 'לוגו האתר', 'eicon-site-logo', ['where' => [['header' => 'הדר', 'footer' => 'פוטר', 'footer-dark' => 'פוטר כהה (לוגו בהיר)'], 'מיקום', 'header']]],
         'nap'            => ['nap', 'nap', 'פרטי העסק', 'eicon-info-box', []],
         'map'            => ['map', 'map', 'מפה', 'eicon-google-maps', ['q' => ['text', 'כתובת (ריק = כתובת העסק)', '']]],
         'reviews'        => ['reviews', 'reviews', 'ביקורות', 'eicon-review', []],
@@ -93,6 +93,8 @@ add_action('elementor/widgets/register', function ($wm) {
         'archive-title'  => ['archive-title', 'archive_title', 'כותרת ארכיון', 'eicon-archive-title', []],
         'archive-intro'  => ['archive-intro', 'archive_intro', 'פתיח ארכיון', 'eicon-text', []],
         'archive-posts'  => ['archive-posts', 'archive_posts', 'פוסטים בארכיון', 'eicon-archive-posts', []],
+        'page-content'   => ['page-content', 'page_content', 'תוכן העמוד (בטמפלט)', 'eicon-post-content', []],
+        'more-posts'     => ['more-posts', 'more_posts', 'מאמרים נוספים', 'eicon-post-list', ['count' => ['number', 'מספר מאמרים', 4]]],
     ];
     $GLOBALS['zap_widget_specs'] = $specs;
     // one small concrete class per widget: Elementor instantiates widgets by class name
@@ -120,6 +122,8 @@ add_action('elementor/widgets/register', function ($wm) {
     final class Zap_Widget_archive_title extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-title']; } }
     final class Zap_Widget_archive_intro extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-intro']; } }
     final class Zap_Widget_archive_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['archive-posts']; } }
+    final class Zap_Widget_page_content extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['page-content']; } }
+    final class Zap_Widget_more_posts extends Zap_Part_Widget { protected static function spec(): array { return $GLOBALS['zap_widget_specs']['more-posts']; } }
     foreach (array_keys($specs) as $n) {
         $cls = 'Zap_Widget_' . str_replace('-', '_', $n);
         $wm->register(new $cls());

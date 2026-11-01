@@ -147,11 +147,13 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
     const fr = fill && (fill.length < 4 || fill[3] > .05) ? cr(flat(fill, bg), bg) : 1;
     const br = bw >= 1 && bc ? cr(flat(bc, bg), bg) : 1;
-    // an icon-only control (no visible text, e.g. the phones' header call icon) is identified by its icon: the glyph's contrast counts (WCAG 1.4.11)
+    // icon-only controls (the phones' header call icon) are judged by their icon (svg, icon font or a CSS-mask icon);
+    // a borderless text/icon button by its own colour (WCAG 1.4.11)
     const bare = !(el.innerText || '').trim(), ico = bare && el.querySelector('svg, i'), pb = getComputedStyle(el, '::before');
-    const ic = ico ? rgb(getComputedStyle(ico).color) : (bare && pb.maskImage && pb.maskImage !== 'none' ? rgb(pb.backgroundColor) : null);   // svg/icon font, or a CSS-mask icon
+    const ic = ico ? rgb(getComputedStyle(ico).color) : (bare && pb.maskImage && pb.maskImage !== 'none' ? rgb(pb.backgroundColor) : null);
     const ir = ic ? cr(flat(ic, bg), bg) : 1;
-    if (Math.max(fr, br, ir) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
+    const fg = rgb(s.color), tr = (!fill || (fill.length > 3 && fill[3] <= .05)) && !(bw >= 1) && fg ? cr(flat(fg, bg), bg) : 1;
+    if (Math.max(fr, br, tr, ir) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
   });
   if (faint.size) E(`control blends into its background (${faint.size}): ${[...faint].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
   // icons (svg / icon font / check bullets) at least 3:1

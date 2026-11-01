@@ -257,9 +257,8 @@ function zs_wa_href($e164, $text = '') {
 }
 
 function zs_breadcrumbs() {
-    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
-    // a site that wants the visible trail sets header.breadcrumbs: true.
-    if (!zs_opt('header.breadcrumbs', false)) return;
+    // visible on inner pages by default (Zap QA asked for them sitewide); header.breadcrumbs: false hides them
+    if (!zs_opt('header.breadcrumbs', true)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
@@ -323,6 +322,16 @@ function zs_part_topbar_meta() {
     // no phone here: the header's call button already shows it (Zap QA: one phone per header)
     return $o . '</ul>';
 }
+
+/* an in-page anchor in the menu ("/#contact") is never the current page (WordPress matches it to the home URL) */
+add_filter('nav_menu_css_class', function ($classes, $item) {
+    if (str_contains((string) $item->url, '#')) $classes = array_diff($classes, ['current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-menu-parent']);
+    return $classes;
+}, 10, 2);
+add_filter('nav_menu_link_attributes', function ($atts, $item) {
+    if (str_contains((string) $item->url, '#')) unset($atts['aria-current']);
+    return $atts;
+}, 10, 2);
 
 function zs_part_nav() {
     $tel = zs_opt('business.phone_e164'); $cta = zs_opt('header.cta_label', '');
@@ -410,8 +419,9 @@ function zs_part_group_logo() {
              . '<span class="zs-footer__zap-by">Powered by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
              . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
     }
-    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'
-         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group.webp') . '" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
+    // dark footers: the words in text ("Powered by", Zap QA: the old credit image read "Power by") + Zap's logo in white
+    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><span class="zs-footer__zap-by">Powered by</span><img class="zs-zap-white" src="'
+         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg') . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
 }
 
 function zs_part_call_line() {
