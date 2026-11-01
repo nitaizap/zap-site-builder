@@ -427,3 +427,5 @@ a.zs-kosher:hover { text-decoration: underline; }
   body .e-con.zs-split.zs-v-card .e-con.zs-split__text { margin: 16px 0 0 !important; width: 100% !important; max-width: 100%; box-sizing: border-box; }
   body .e-con.zs-split.zs-v-card .zs-badge { z-index: 3; }
 }
+/* breadcrumbs on a photo hero are white under every tone (the light tone's muted grey sat dark on the washed photo) */
+html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-crumbs :is(*, a, .breadcrumb_last), html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-crumbs { color: #fff; }
