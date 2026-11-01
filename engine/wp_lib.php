@@ -98,23 +98,6 @@ function zs_task_state($p) {
     echo wp_json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
 }
 
-/* Elementor Pro widgets the engine uses (nav-menu, breadcrumbs) carry a `_zs_fallback` zap-* widget: without Pro
-   the widget is swapped for it, so a site on free Elementor still gets a working menu / trail. */
-function zs_pro_fallback($els) {
-    $pro = defined('ELEMENTOR_PRO_VERSION');
-    foreach ($els as &$e) {
-        if (!empty($e['elements'])) $e['elements'] = zs_pro_fallback($e['elements']);
-        $fb = $e['settings']['_zs_fallback'] ?? null;
-        if ($fb === null) continue;
-        unset($e['settings']['_zs_fallback']);
-        if (!$pro) {   // fallback = a zap-* widget of the plugin (native Elementor widget, no shortcode)
-            $e['widgetType'] = $fb;
-            $e['settings'] = ['_css_classes' => $e['settings']['_css_classes'] ?? ''];
-        }
-    }
-    return $els;
-}
-
 /* ---------------- pages ---------------- */
 function zs_yoast_meta($seo, $noindex = false) {
     $m = [];
@@ -160,7 +143,7 @@ function zs_task_pages($p) {
         if (is_array($pg['elements'])) {
             $doc = \Elementor\Plugin::$instance->documents->get($id, false);
             $doc->set_is_built_with_elementor(true);
-            $ok = $doc->save(['elements' => zs_pro_fallback($pg['elements']), 'settings' => ['template' => 'default']]);
+            $ok = $doc->save(['elements' => $pg['elements'], 'settings' => ['template' => 'default']]);
             if (!$ok) fwrite(STDERR, "elementor save refused for page '{$pg['key']}'\n");
         } else {
             delete_post_meta($id, '_elementor_edit_mode');
@@ -431,7 +414,7 @@ function zs_task_templates($p) {
         // header logo = Elementor Pro's Site Logo widget (Zap QA: the header logo is the site-logo widget, linking home)
         if ($pro && $slot === 'header') $els = zs_site_logo_widget($els);
         $doc = \Elementor\Plugin::$instance->documents->get($id, false);
-        $doc->save(['elements' => zs_pro_fallback($els)]);
+        $doc->save(['elements' => $els]);
         if ($pro) {
             update_post_meta($id, '_elementor_conditions', $conds[$slot]);
         }
