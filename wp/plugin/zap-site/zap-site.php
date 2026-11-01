@@ -24,7 +24,8 @@ function zap_opt($key = null, $default = '') {
 
 require __DIR__ . '/inc/leads.php';
 require __DIR__ . '/inc/schema.php';
-require __DIR__ . '/inc/shortcodes.php';
+require __DIR__ . '/inc/shortcodes.php';   // legacy: sites built before the no-shortcode rule
+require __DIR__ . '/inc/elementor-widgets.php';
 require __DIR__ . '/inc/hardening.php';
 require __DIR__ . '/inc/robots.php';
 require __DIR__ . '/inc/templates.php';

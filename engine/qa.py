@@ -176,6 +176,8 @@ MEASURE_JS = r"""
   if (dim.size) E(`decorative text or icon too faint (${dim.size}): ${[...dim].slice(0, 4).map(([t, r]) => `${t} ${r}`).join('; ')}`);
   // css or shortcodes leaking as text
   if (/\.(zs|elementor)-[a-z_-]+\s*\{|\[zap_[a-z_]+/.test(txt)) E('CSS or shortcode text visible on the page');
+  // house rule: no Elementor shortcode widgets (dynamic parts are zap-* widgets)
+  if (q('.elementor-widget-shortcode').length) E(`shortcode widget on the page (${q('.elementor-widget-shortcode').length}): use a zap-* Elementor widget`);
   // accessibility basics
   q('a, button').filter(vis).forEach(el => { if (!(el.textContent.trim() || el.getAttribute('aria-label') || el.querySelector('img[alt]:not([alt=""])'))) W(`control without a name: ${el.outerHTML.slice(0, 60)}`); });
   q('input:not([type=hidden]), textarea, select').filter(vis).forEach(el => { if (!(el.labels && el.labels.length) && !el.getAttribute('aria-label')) E(`form field without label: ${el.name}`); });
