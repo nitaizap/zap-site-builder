@@ -79,3 +79,13 @@ From template 2: header, beige rounded cards, staggered photo row, reviews over 
 - `page:<key>#<anchor>` links (sections, buttons, menus, `zs seo` row 3) resolve to the page path + `#anchor`.
 - Theme: under `tone: light` the photo hero and CTA are ivory, so `zs-accent-low` no longer turns their eyebrow and primary button white (was white on ivory).
 - Seen, not fixed: a freshly created site can serve a stale Elementor header (no menu button) until `wp elementor flush-css` + cache flush; `zs qa` then times out on `.zs-burger`.
+
+## QA round 1 (Zap QA report, 01/11/2026)
+Generic fixes merged to main (PRs #32, #34): form settings screen (פניות מהאתר → הגדרות טפסים), global logo widget,
+plain phone icon + clean mobile menu, bigger logos, equal footer columns, no card arrows, design.align center,
+validator: no eyebrow above an H1, consent single space. Site changes: no hero eyebrow, no top-bar text, footer
+column "ניווט מהיר", breadcrumbs on (header.breadcrumbs), "אירועים" card shortened, food photo in the about duo,
+trays list, "צהריים טובים VIP", "בהרכב ובמחיר", design.align center, nav starts with "דף הבית" (newer QA rule).
+Answered, not changed: #5 e-mail spelling (from the brief: confirm with the client), #22 the tray sticker shows the
+direct line 054-3830028 while the site shows the Zap tracking number 053-6242885 (by design, "מספר מקשר" popup),
+#19 reviews block hides itself until Dapei Zahav returns reviews (live domain), #29 the contact page has one form.
