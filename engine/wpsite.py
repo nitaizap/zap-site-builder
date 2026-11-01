@@ -180,8 +180,9 @@ class Site:
             kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
         else:
             kw["start_new_session"] = True
+        # PHP notices from plugins go to server.log, never into the page (hosts hide them; on the page they break the layout QA)
         env = dict(os.environ, PHP_CLI_SERVER_WORKERS="4")
-        p = subprocess.Popen([php_bin(), "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
+        p = subprocess.Popen([php_bin(), "-d", "display_errors=0", "-d", "log_errors=1", "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
                              cwd=self.wp_dir, stdout=log, stderr=log, stdin=subprocess.DEVNULL, env=env, **kw)
         self.pidfile.write_text(str(p.pid))
         for _ in range(40):

@@ -1673,3 +1673,12 @@ body .zs-postcard__title a { white-space: normal; overflow: hidden; text-overflo
 .zs-footer__links, .zs-footer__contact { gap: 4px; }
 /* Zap credit on a dark footer: Zap's own colour logo on a small white chip (a recoloured logo read as broken) */
 .zs-footer__zap img.zs-zap-white { filter: none; background: #fff; padding: 4px 10px; border-radius: 6px; height: 32px; box-sizing: content-box; }
+
+/* phones + tablets, dark header: the plain phone icon in the header's own ink (primary on a dark header blends in) */
+@media (max-width: 1024px) {
+  html body.zs-h-dark:not(.zs-k-shade) .zs-header__cta .elementor-button, html body.zs-k-shade:has(.zs-hero.zs-v-stage) .zs-header__cta .elementor-button { color: var(--c-dark-ink) !important; }
+}
+/* kit shade: buttons are accent, so on the accent panel of a photo CTA the main button turns white */
+body.zs-k-shade .zs-ctaph .zs-cta__panel .zs-b-primary .elementor-button { background: #fff !important; color: var(--c-dark) !important; }
+body.zs-k-shade .zs-ctaph .zs-cta__panel .zs-b-primary .elementor-button * { color: inherit !important; }
+body.zs-k-shade .zs-ctaph .zs-cta__panel .zs-b-primary .elementor-button:hover { background: var(--c-dark) !important; color: var(--c-dark-ink) !important; }
