@@ -215,3 +215,5 @@ body.zs-align-center .zs-hero--page :is(.zs-hero__title, .zs-hero__lead) .elemen
 body.zs-align-center .zs-gallery .e-con.zs-head, body.zs-align-center .zs-faq .e-con.zs-head { margin-inline: auto; }
 /* a title stacked over its intro gets air between them */
 body .e-con.zs-head:not(.zs-head--split) { row-gap: 14px; --row-gap: 14px; gap: 14px; }
+/* the header row grows with the 96 px logo (it touched the top edge) */
+@media (min-width: 1025px) { body .zs-header__in, body .e-con.zs-header__in { min-height: 116px; --min-height: 116px; padding-block: 10px; } }
