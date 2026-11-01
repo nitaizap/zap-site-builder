@@ -256,9 +256,8 @@ function zs_wa_href($e164, $text = '') {
 }
 
 function zs_breadcrumbs() {
-    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
-    // a site that wants the visible trail sets header.breadcrumbs: true.
-    if (!zs_opt('header.breadcrumbs', false)) return;
+    // visible on inner pages by default (Zap QA asked for them sitewide); header.breadcrumbs: false hides them
+    if (!zs_opt('header.breadcrumbs', true)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
