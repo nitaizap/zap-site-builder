@@ -4,7 +4,8 @@ Rules that keep this robust:
   * Markup is fixed per section type; ALL visual styling lives in the theme CSS (zs-* classes).
     Elementor element settings carry content and semantics only, never colours or sizes.
   * Every element id is derived from the page key + position, so rebuilds are stable.
-  * Only free, classic widgets: heading, text-editor, image, button, accordion, shortcode, html, video.
+  * Only free, classic widgets: heading, text-editor, image, button, accordion, html, video,
+    plus the zap-* widgets the zap-site plugin registers. Never the shortcode widget (house rule).
 """
 import hashlib
 import html
@@ -80,6 +81,11 @@ def W(ctx, wtype, settings, classes=""):
     if classes:
         s["_css_classes"] = classes
     return {"id": ctx.uid(), "elType": "widget", "widgetType": wtype, "settings": s, "elements": []}
+
+
+def Z(ctx, part, settings=None, classes=""):
+    """A Zap part widget (registered by the zap-site plugin): native Elementor widget, no shortcode text."""
+    return W(ctx, "zap-" + part, settings or {}, classes)
 
 
 def heading(ctx, text, tag="h2", classes="", link=None, raw=False):
@@ -257,7 +263,7 @@ def hero(ctx, s):
     if s.get("form") and has_form(ctx):
         ft = s["form"] if isinstance(s["form"], str) else (ctx.site.get("form") or {}).get("title", "השאירו פרטים ונחזור אליכם")
         fcard = C(ctx, "zs-hero__form", [heading(ctx, ft, "p", "zs-hero__form-title"),
-                                         W(ctx, "shortcode", {"shortcode": '[zap_form id="hero" message="no" email="yes"]'})])
+                                         Z(ctx, "form", {"id": "hero", "message": "", "email": "yes"})])
     kind = "zs-hero--home" if is_home else "zs-hero--page"
     vidc = " zs-hero--vid" if vid else ""
     vidc += " zs-hero--form" if fcard else ""
@@ -399,18 +405,18 @@ def logos(ctx, s):
 
 
 def posts(ctx, s):
-    sc = f'[zap_recent_posts count="{int(s.get("count", 3))}"' + (f' category="{s["category"]}"' if s.get("category") else "") + "]"
-    return section(ctx, s, "zs-posts", [*sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": sc}), buttons(ctx, s.get("more"))])
+    z = Z(ctx, "recent-posts", {"count": int(s.get("count", 3)), "category": s.get("category", "")})
+    return section(ctx, s, "zs-posts", [*sec_head(ctx, s), z, buttons(ctx, s.get("more"))])
 
 
 def contact(ctx, s):
     left = C(ctx, "zs-contact__info", [heading(ctx, s.get("title"), "p", "zs-sec__title zs-contact__title"), text(ctx, s.get("text")),
-                                       W(ctx, "shortcode", {"shortcode": "[zap_nap]"}),
-                                       W(ctx, "shortcode", {"shortcode": '[zap_form id="contact"]'}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
+                                       Z(ctx, "nap"),
+                                       Z(ctx, "form", {"id": "contact"}) if has_form(ctx) else call_buttons(ctx)])   # same fields as the footer form (Zap QA)
     if s.get("variant") == "photo":     # form beside a full-height photo (pool: template 1)
         right = C(ctx, "zs-contact__photo", [image(ctx, s.get("image"), "zs-contact__img", "large")])
     else:
-        right = C(ctx, "zs-contact__map", [W(ctx, "shortcode", {"shortcode": "[zap_map]"})]) if s.get("map", True) else None
+        right = C(ctx, "zs-contact__map", [Z(ctx, "map")]) if s.get("map", True) else None
     return section(ctx, s, "zs-contact", [left, right])
 
 
@@ -433,7 +439,7 @@ def leadbar(ctx, s):
     bgimg = image(ctx, s.get("image"), "zs-leadbar__bg", "full") if s.get("variant") == "photo" else None
     return section(ctx, s, "zs-leadbar", [bgimg, C(ctx, "zs-leadbar__box", [
         heading(ctx, s.get("title"), "h2", "zs-sec__title"), text(ctx, s.get("text"), "zs-leadbar__text"),
-        W(ctx, "shortcode", {"shortcode": f'[zap_form id="{fid}" message="no" email="yes"]'}) if has_form(ctx) else call_buttons(ctx),
+        Z(ctx, "form", {"id": fid, "message": "", "email": "yes"}) if has_form(ctx) else call_buttons(ctx),
     ])])
 
 
@@ -441,7 +447,7 @@ def reviews(ctx, s):
     if not ctx.site["business"].get("dpz_customer_id"):
         return None   # no real source -> no reviews block at all
     bgimg = image(ctx, s.get("image"), "zs-reviews__bg", "full") if s.get("variant") == "photo" else None
-    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), W(ctx, "shortcode", {"shortcode": "[zap_reviews]"})])
+    return section(ctx, s, "zs-reviews-sec", [bgimg, *sec_head(ctx, s), Z(ctx, "reviews")])
 
 
 def video(ctx, s):
@@ -785,7 +791,7 @@ def render_page(ctx, sections):
 
 
 # ---------- site templates: header + footer as editable Elementor documents ----------
-# Native widgets for everything a client edits (logo, phone button, texts, titles); shortcodes only for the
+# Native widgets for everything a client edits (logo, phone button, texts, titles); Zap part widgets (zap-*) for the
 # parts that are behaviour or Zap standards (menu + burger, contact list, lead form, legal line, Zap logo).
 
 def header_template(ctx):
@@ -796,7 +802,7 @@ def header_template(ctx):
         els.append(C(ctx, "zs-topbar", [
             C(ctx, "zs-wrap zs-topbar__in", [
                 heading(ctx, h.get("topbar_text") or d.get("site", {}).get("tagline", ""), "p", "zs-topbar__text"),
-                W(ctx, "shortcode", {"shortcode": "[zap_topbar_meta]"}, "zs-topbar__meta"),
+                Z(ctx, "topbar-meta", {}, "zs-topbar__meta"),
             ]),
         ], inner=False))
     logo = ctx.media.get("__logo")
@@ -808,7 +814,7 @@ def header_template(ctx):
     if tel:
         tel["settings"]["_css_classes"] += " zs-header__cta"
     els.append(C(ctx, "zs-header", [
-        C(ctx, "zs-wrap zs-header__in", [brand, W(ctx, "shortcode", {"shortcode": "[zap_nav]"}, "zs-header__nav"), tel]),
+        C(ctx, "zs-wrap zs-header__in", [brand, Z(ctx, "nav", {}, "zs-header__nav"), tel]),
     ], tag="header", inner=False))
     return els
 
@@ -818,14 +824,14 @@ def post_template(ctx):
     the featured image, the content, then FAQ / related page / author. Edited in Elementor like any page."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg zs-post-hero", [
         C(ctx, "zs-hero__text", [
-            W(ctx, "shortcode", {"shortcode": "[zap_post_meta]"}, "zs-post__metaw"),
-            W(ctx, "shortcode", {"shortcode": "[zap_post_title]"}, "zs-hero__title"),
+            Z(ctx, "post-meta", {}, "zs-post__metaw"),
+            Z(ctx, "post-title", {}, "zs-hero__title"),
         ])], tag="section", inner=False, boxed=True)
     body = C(ctx, "zs-sec zs-post-body", [
         C(ctx, "zs-wrap zs-wrap--narrow", [
-            W(ctx, "shortcode", {"shortcode": "[zap_post_image]"}, "zs-post__hero"),
+            Z(ctx, "post-image", {}, "zs-post__hero"),
             W(ctx, "theme-post-content", {}, "zs-prose"),
-            W(ctx, "shortcode", {"shortcode": "[zap_post_extras]"}, "zs-post__extras"),
+            Z(ctx, "post-extras", {}, "zs-post__extras"),
         ])], tag="section", inner=False, boxed=True)
     return [hero, body]
 
@@ -835,10 +841,10 @@ def archive_template(ctx):
     archive title as H1 and its intro, then the posts as cards."""
     hero = C(ctx, "zs-sec zs-hero zs-hero--page zs-hero--noimg", [
         C(ctx, "zs-hero__text", [
-            W(ctx, "shortcode", {"shortcode": "[zap_archive_title]"}, "zs-hero__title"),
-            W(ctx, "shortcode", {"shortcode": "[zap_archive_intro]"}, "zs-hero__lead"),
+            Z(ctx, "archive-title", {}, "zs-hero__title"),
+            Z(ctx, "archive-intro", {}, "zs-hero__lead"),
         ])], tag="section", inner=False, boxed=True)
-    body = C(ctx, "zs-sec zs-archive-body", [W(ctx, "shortcode", {"shortcode": "[zap_archive_posts]"}, "zs-archive__posts")],
+    body = C(ctx, "zs-sec zs-archive-body", [Z(ctx, "archive-posts", {}, "zs-archive__posts")],
              tag="section", inner=False, boxed=True)
     return [hero, body]
 
@@ -867,9 +873,9 @@ def footer_template(ctx):
             C(ctx, "zs-leadband__text", [
                 heading(ctx, form.get("title", "השאירו פרטים ונחזור אליכם" if has_form(ctx) else "דברו איתנו"), "p", "zs-leadband__title"),   # not an H2: repeats on every page (Zap QA)
                 text(ctx, form.get("text", "ממלאים שם וטלפון, ואנחנו חוזרים בהקדם." if has_form(ctx) else "")),
-                W(ctx, "shortcode", {"shortcode": "[zap_call_line]"}, "zs-leadband__or") if has_form(ctx) else None,
+                Z(ctx, "call-line", {}, "zs-leadband__or") if has_form(ctx) else None,
             ]),
-            W(ctx, "shortcode", {"shortcode": '[zap_form id="footer"]'}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
+            Z(ctx, "form", {"id": "footer"}, "zs-leadband__form") if has_form(ctx) else call_buttons(ctx),
         ]),
     ], tag="section", inner=False)
     lead["settings"]["_element_id"] = "leave-details"
@@ -880,19 +886,19 @@ def footer_template(ctx):
         ]),
         C(ctx, "zs-footer__col", [
             heading(ctx, f.get("links_title", "השירותים שלנו"), "p", "zs-footer__title"),
-            W(ctx, "shortcode", {"shortcode": '[zap_menu location="footer"]'}),
+            Z(ctx, "menu", {"location": "footer"}),
         ], tag="nav"),
         C(ctx, "zs-footer__col", [
             heading(ctx, "יצירת קשר", "p", "zs-footer__title"),
-            W(ctx, "shortcode", {"shortcode": "[zap_footer_contact]"}),
+            Z(ctx, "footer-contact"),
         ]),
     ])
     mark = W(ctx, "html", {"html": f'<div class="zs-footer__mark" aria-hidden="true">{html.escape(b["name"])}</div>'}, "zs-footer__mark-w")
     bar = C(ctx, "zs-footer__bar", [
         C(ctx, "zs-wrap zs-footer__bar-in", [
-            W(ctx, "shortcode", {"shortcode": "[zap_copyright]"}),
-            W(ctx, "shortcode", {"shortcode": "[zap_legal]"}),
-            W(ctx, "shortcode", {"shortcode": "[zap_group_logo]"}),
+            Z(ctx, "copyright"),
+            Z(ctx, "legal"),
+            Z(ctx, "group-logo"),
         ]),
     ])
     foot = C(ctx, "zs-footer", [cols, mark, bar], tag="footer", inner=False)

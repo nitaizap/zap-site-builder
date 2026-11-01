@@ -61,6 +61,10 @@ before doing the step — every one encodes mistakes already made.
    Rewrite with a comma, colon, period, parentheses or a line break (`"keyword\nbrand"` puts the brand on its
    own H1 line). The validator stops the build on either character. Only Zap's verbatim privacy template keeps
    its legal citations as they are.
+7a. **No shortcodes, ever (standing rule).** Build only with Elementor widgets and WordPress. Dynamic and shared
+   parts are the plugin's native `zap-*` widgets (category "Zap" in the Elementor panel); never the shortcode
+   widget and never `[zap_*]` text in a page, template or post. `zs build` stops on one, `zs qa` reports one.
+   Sites built before the rule keep their shortcodes; do not reverse them unless asked.
 8. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
    a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
    this site locally **and on the pushed site**.
