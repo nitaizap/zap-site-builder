@@ -1,6 +1,7 @@
 <?php defined('ABSPATH') || exit;
 get_header();
-if (have_posts() && get_option('zs_tpl_post')) { the_post(); if (zs_render_tpl('post')) { get_footer(); return; } rewind_posts(); }
+// Elementor Pro Theme Builder "Single post" template first (editable in Elementor); this PHP is the fallback
+if (function_exists('elementor_theme_do_location') && elementor_theme_do_location('single')) { get_footer(); return; }
 while (have_posts()) : the_post();
     $author  = zs_opt('business.author_name', zs_opt('business.name'));
     $credit  = zs_opt('business.author_credentials');

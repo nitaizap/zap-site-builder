@@ -22,6 +22,53 @@ every preset.
 Leave `tier` out only for legacy sites. The validator stops the build when a site breaks its package.
 Basic sites must still meet every other rule (QA 0 errors, real facts, Zap standards).
 
+## Style kits (`design.kit`): the skeleton, the first lever
+
+Presets mostly change colour and type. A **kit** changes the page's skeleton: header layout, how every section
+head sits, the container width, the background rhythm (which grounds the sections take, set in the engine),
+image treatment, buttons and footer. Two sites on different kits read as different sites even with the same
+sections; two sites on the same kit read as siblings whatever the colours. **Every new site sets a kit, and the
+three gate directions use three different kits.**
+
+| kit | skeleton | rhythm | suits |
+|---|---|---|---|
+| `atelier` | logo centred above a centred menu; heads centred under a short rule; 1080px page; photos with a hairline offset frame; pill buttons; centred footer | all plain | boutique, hospitality, beauty, crafts |
+| `magazine` | menu right after the logo; heads on a heavy rule, oversized titles; 1320px grid; square photos and buttons; the name as a huge footer wordmark | plain, plain, dark | restaurants, agencies, editorial brands, B2B with photos |
+| `sidebar` | each section's title in a sticky side column with a brand bar, the content beside it (desktop) | plain / surface | law, medical, consultants, anything with long explanations |
+| `panels` | the page is tinted; every section a rounded white panel; pill-shaped floating header; panel footer | all panels | clinics, kids, wellness, friendly services |
+| `bands` | heavy heads, block buttons, square photos; alternate sections on full primary-colour bands (forms, FAQ and text stay light) | plain / primary | trades, transport, fitness, bold consumer brands |
+| `quiet` | no grounds at all; hairlines between sections; small heads; 980px page; no shadows | all plain | professionals, notaries, architects, luxury restraint |
+| `frame` | the page sits inside a brand-colour frame (desktop); heads with a side bar; photos in an offset frame | plain / surface | studios, galleries, design-led trades |
+| `shade` | art-directed: a `stage` hero under a dark header, display type only where it is big, chapters / collages / overlay / film strip, a postcard form band, accent buttons | set per section (`bg: dark` for night bands) | hospitality, venues, anything with strong photos and a story |
+| `gallery` | photo-led: gallery and card grids run edge to edge with 4px gaps, square corners; centred heads; menu in the middle | surface / plain | zimmers, venues, portfolios, food |
+
+`tone: light` turns every colour band into a tint. Kit CSS: `wp/theme/zap-base/assets/kits.css`; rhythm:
+`KITS` in `engine/sections.py`. Adding a kit: one `KITS` entry + one block in kits.css, then the engine test
+under that kit (QA 0 errors, SEO 0 FAIL) and a look at desktop + 390.
+
+## Home archetypes (`design.archetype`): the home page's story, chosen before any section
+
+There is **no default home order**. The home page starts from an archetype, the story it tells, picked for this
+client's audience and material; the sections and variants are then chosen to tell each beat. Example section
+choices are a starting point, not a recipe: two sites on the same archetype still use different sections.
+
+| archetype | the story | beats (example sections) | suits |
+|---|---|---|---|
+| `tour` | walk the visitor through the place | cover hero → one space per beat (`tiles`, `split` with big photos) → `carousel` → `facts` card → practical FAQ → contact over a photo | zimmers, venues, restaurants, clinics with a space to show |
+| `statement` | one confident line, then proof | type-led hero (`centered`, little photo) → `quote` / `prose band` → one `split overlap` → `features checks` → `cta photo` | boutique professionals, brands with a strong line |
+| `booking` | the action first | hero with `form: true` or a `leadbar` → `facts` / `pricelist` → `gallery strip` → `reviews` → FAQ | appointments, rentals, events, delivery |
+| `proof` | evidence before claims | hero → `logos band` → `trust` card → work (`cards framed`, `gallery mosaic`) → `steps` / `route` → `reviews` | trades, contractors, B2B, installers |
+| `story` | chapters of the owner's story | `curve` hero → origin `split frame` → `quote` → method `steps cards` → `team` → place `gallery` | family businesses, craftsmen, farms, small hotels |
+| `catalogue` | the offer as a list | hero → listing `cards` (`price`, `meta`) or `pricelist tiles` high up → `features rows` → FAQ | real estate, shops, menus, fee lists |
+| `gallery` | pictures do the talking | hero `images` slider → `gallery mosaic` / `carousel` → one short `split card` → `faq aside` | photographers, designers, venues, food |
+| `guide` | the audience's questions lead | hero → FAQ or `prose` answers high on the page → each answer links to its service (`cards`) → `posts` | legal, medical, finance, anything people research |
+
+Rules (the validator and `zs pool` enforce them):
+- every new site sets `design.kit` and `design.archetype`;
+- the three gate directions use **three different kits and three different archetypes**, each with its own `home`;
+- a kit or archetype used by one of the **last 3 client sites** is not used again (`zs pool` ERROR);
+- the measured layout must stay under 85% alike against every other client and between the directions.
+
 ## Section variants (`variant` on a section)
 
 | type | variant | what it looks like | source | needs |
@@ -117,9 +164,9 @@ changed: palette (brand brass), hero `curve`, gallery `stagger`".
 
 Template screenshots: `benchmark/zap-template-<n>-full.jpg`.
 
-**The templates' shared language is the default:** header = logo, menu, phone; home order about → services →
-why us → FAQ → form → footer; footer = quick links / services / contact. Deviate on purpose, not by accident.
-Show what the client really has, and nothing they don't:
+**What the templates share is the furniture, not the order:** a header with logo, menu and phone; a form before the
+footer; a footer with quick links, services and contact. The home page's order comes from the archetype (above),
+never from a template. Show what the client really has, and nothing they don't:
 - the social bar shows only the networks the client really has (none → no bar);
 - a WhatsApp button only if there is a WhatsApp number;
 - "מספר מקשר" under the phone only if there is a Zap tracking number.
@@ -151,6 +198,13 @@ order, and listing "באתר הקיים ↔ בעיצוב החדש" in NOTES.md.
   photo grids) back to back; one brand-colour band (`checks`, `leadbar`, `cta`, `marquee`) per screenful.
 - **At most two variants from the same template on one page**, so no site reads as a copy of one template.
 - **Every direction in the gate differs in at least one variant as well as preset/hero.**
-- Before the gate run `bin/zs pool <slug>`: it compares the home-page recipe and design levers with every
-  other client on a `site/*` branch (`git fetch` first). A "too close" warning means swap variants or a
-  lever, and write the reason for each choice in NOTES.md (one line per section).
+- **Measured, not named, and enforced.** `zs qa` measures the home page (`sites/<slug>/fingerprint.json`): the
+  palette (button, header, footer, heading colours), the furniture every page repeats (top bar, form band, footer,
+  FAQ rows, icon chips, floating button), the components (section type + variant, in order) and the layout. It is
+  compared with every client in `fingerprints/` and on `site/*` branches: **40% or more alike is an ERROR** (38%
+  warns) in `zs qa`, `zs preview` (every direction), `zs pool`, `zs push` and `zs package`. The five sites the user
+  rejected as "all the same" measure 27-43% to each other (brand-weighted measure). Commit `fingerprint.json` with the site.
+- What makes sites look alike, in the order a visitor notices it: **palette** (two dark olive/green sites read as one
+  brand), **furniture** (the same top bar, form band, footer and FAQ on every page), **components** (the same 8-photo
+  mosaic, icon grid and FAQ-beside-a-photo), then layout. Fix in that order. Before choosing, open the other
+  clients' home pages (`fingerprints/README.md` lists them) and pick what none of them has.

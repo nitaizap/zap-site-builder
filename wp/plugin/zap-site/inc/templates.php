@@ -62,32 +62,6 @@ add_shortcode('zap_page_content', function () {
     return $html;
 });
 
-/* A post's body in the post template: the text (images open in a lightbox), its FAQ, the related service. */
-add_shortcode('zap_post_body', function () {
-    $id = zap_tpl_post_id();
-    if (!$id) return '';
-    $o = '<div class="zs-prose zs-post__body">' . apply_filters('the_content', get_post_field('post_content', $id)) . '</div>';
-    $faq = json_decode((string) get_post_meta($id, '_zap_faq', true), true);
-    if ($faq) {
-        $o .= '<section class="zs-post__faq zs-faq__list" aria-labelledby="zs-post-faq"><h2 id="zs-post-faq">שאלות נפוצות</h2><div class="elementor-toggle">';
-        foreach ($faq as $f) $o .= '<details class="elementor-toggle-item"><summary class="elementor-tab-title">' . esc_html($f['q'] ?? '') . '</summary><div class="elementor-tab-content"><p>' . esc_html($f['a'] ?? '') . '</p></div></details>';
-        $o .= '</div></section>';
-    }
-    $rel = (int) get_post_meta($id, '_zap_related_page', true);
-    if ($rel && get_post_status($rel) === 'publish') {
-        $o .= '<aside class="zs-post__cta"><p class="zs-post__cta-title">' . esc_html(get_the_title($rel)) . '</p><p>' . esc_html(get_the_excerpt($rel)) . '</p>'
-            . '<a class="zs-btn zs-btn--primary" href="' . esc_url(get_permalink($rel)) . '">' . esc_html(get_the_title($rel)) . '</a></aside>';
-    }
-    return $o;
-});
-
-/* Byline under a post's H1. */
-add_shortcode('zap_post_meta', function () {
-    $id = zap_tpl_post_id();
-    $author = zap_opt('business.author_name', zap_opt('business.name'));
-    return '<p class="zs-post__meta">מאת ' . esc_html($author) . ' · עודכן <time datetime="' . esc_attr(get_the_modified_date('c', $id)) . '">' . esc_html(get_the_modified_date('', $id)) . '</time></p>';
-});
-
 /* "מאמרים נוספים": the other posts as a side list. */
 add_shortcode('zap_more_posts', function ($atts) {
     $a = shortcode_atts(['count' => 4], $atts);

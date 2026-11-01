@@ -35,7 +35,32 @@ your judgement.
 | **Interaction** | Carousel side slides readable (not faded to a ghost) | theme |
 | | "מספר מקשר": when the displayed phone is a Zap virtual number, `business.phone_is_virtual: true` (+ `phone_regular`) adds the link and Zap's standard explanation popup | engine. You: set it whenever the brief's display number is a Zap number |
 
-## Round 2 (layout and templates): Zap's house rules
+## More rules from QA rounds (layout, menus, galleries, phones)
+
+| area | rule | how it is kept |
+|---|---|---|
+| **Menu** | Menu starts with "דף הבית" (desktop and mobile) and lists the pages in the same order as the footer; the blog is in it | validator error |
+| | Main menu centred in the header on desktop | theme |
+| **Fonts** | Body text and forms in a readable sans (Assistant, Heebo, Rubik, Noto Sans Hebrew, IBM Plex, Alef); a serif or display face only for headings | validator error (`fonts.body`), forms inherit |
+| **Heroes** | Buttons only in the home hero; inner-page heroes have none | validator error |
+| | Phones: the hero is as tall as its content, logo and text never under the header, buttons in view at 360×640 | theme, `zs qa` fold check |
+| **Buttons** | Phones: side by side, equal width, one line each (never stacked) | theme |
+| **Calls to action** | A page never ends with a `cta` section: the lead form follows it (two in a row) | validator error |
+| **Phone bar** | No sticky call bar by default; the header's phone button is the call action. A site turns the bar on with `header.mobile_bar` (extra buttons) or `header.call_bar: true` | theme |
+| **Accessibility button** | Phones: in the header bar next to the menu button, never over content. The slider's pause button sits in the hero's top corner, never over buttons | theme |
+| **Layout** | ~80px between sections on desktop, 25–50px on phones; 20px side padding on phones; tap targets ≥ 44px | theme |
+| | Phones: titles, text, buttons and the footer centred (long text, lists, forms and FAQ answers stay start-aligned) | theme |
+| | Feature boxes: icon and text centred together; feature grids fill the width (3 per row) | theme. You: `columns: 3` |
+| | Section intros sit with their title (`head: "stack"` when the intro is short) | you |
+| **Icons** | Chosen by what the item is, never a repeated or generic star/heart. Events: brit = baby, henna = henna, shabbat chatan = star-david, birthday = cake, bar mitzvah = award, proposal = ring, challah = bread, bachelor = cheers. Venues: kitchen = utensils, kids = child, table tennis/snooker = pingpong, services to order = bell. `sparkle` renders as a star | validator error on repeats. You: meaning |
+| **Galleries** | No photo twice in one section and no two shots of the same view; gallery pages are an even grid (no large first tile, no holes), 2 per row on phones; lightbox captions are the Hebrew description, never the file name | validator (repeats error, near-duplicate warning), theme, engine |
+| | Wide panorama photos never go into tall or square crops on phones (the source lacks the height and looks soft) | you |
+| **FAQ** | Hover state, a downward chevron that turns when open; post FAQs shown on the page (same as the schema) | theme, `zs qa` |
+| **Editable everywhere** | Privacy and accessibility are Elementor pages; the blog's posts and archive (blog page, categories, search) are Elementor Pro Theme Builder templates ("פוסט בבלוג", "בלוג וקטגוריות"), like the header and footer. Theme PHP is only the fallback where Pro is missing | engine (`zs push`). You: check Templates → Theme Builder after a first push |
+| **Pages** | No leftover public pages from plugins or the base install (e.g. `/login-customizer/`) and no placeholder text | you, after a first push; theme + validator for placeholders |
+| **Facts** | Posts may use the client's listings the user approves (Weekend / Weekend Family pages) besides the brief; the site e-mail is confirmed with the client once | you |
+
+## Round 2 (a contractor site): layout and templates
 
 | area | rule | how it is kept |
 |---|---|---|
@@ -43,7 +68,7 @@ your judgement.
 | | Desktop: the menu centred between the logo and the phone button | theme |
 | | Phones: burger on the right (start), logo in the middle, a plain phone icon on the left (no filled button) | theme |
 | | Every page that exists in the site (the blog too) is in the main menu | validator warning |
-| **Accessibility button** | In the site's primary colour, never Ally's orange; on phones low on the start edge (it moves under the header only while its panel is open), never over the header or the H1 | theme, `zs qa` |
+| **Accessibility button** | In the site's primary colour, never Ally's orange. Position on phones: two reviewers asked for different places ("in the header next to the menu" on one site, "lower, not over the header" on another); the theme follows the newer rule above. Never over the H1 or a button | theme, `zs qa` |
 | **Phones** | Centred layout: headings, intros, card and feature text, buttons, CTA, lead form text, footer. Long text (prose, FAQ answers, forms) stays aligned to the start | theme |
 | | Home hero: H1 and lead first, close under the header; the photo under them (or behind them in cover/inset/curve) | theme, `zs qa` |
 | | The two hero buttons side by side and never wrapping at 360px (no "התקשר / ו") | theme. You: keep button labels to one or two short words |
