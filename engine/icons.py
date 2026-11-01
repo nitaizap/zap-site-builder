@@ -47,6 +47,7 @@ PATHS = {
     "star-david": '<path d="M12 3l7.8 13.5H4.2zM12 21L4.2 7.5h15.6z"/>',
     "shower": '<path d="M4 20V8a4 4 0 0 1 8 0M9 9h6M10 13v.01M12 15v.01M14 13v.01M12 17v.01"/>',
     "wifi": '<path d="M3 9a13 13 0 0 1 18 0M6 12.5a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19v.01"/>',
+    "henna": '<path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 10V4a1.5 1.5 0 0 1 3 0v6M14 10V5.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-12 0v-2.5a1.5 1.5 0 0 1 3 0"/><path d="M19 3l.5 1.5L21 5l-1.5.5L19 7l-.5-1.5L17 5l1.5-.5z"/>',
     "parking": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M10 17V7h3a3 3 0 0 1 0 6h-3"/>',
 }
 
@@ -78,7 +79,7 @@ FA = {
     "bell": ("fas fa-concierge-bell", "fa-solid"), "baby": ("fas fa-baby", "fa-solid"), "ring": ("fas fa-ring", "fa-solid"),
     "cake": ("fas fa-birthday-cake", "fa-solid"), "bread": ("fas fa-bread-slice", "fa-solid"), "cheers": ("fas fa-glass-cheers", "fa-solid"),
     "star-david": ("fas fa-star-of-david", "fa-solid"), "shower": ("fas fa-shower", "fa-solid"), "wifi": ("fas fa-wifi", "fa-solid"),
-    "parking": ("fas fa-parking", "fa-solid"),
+    "parking": ("fas fa-parking", "fa-solid"), "henna": ("fas fa-hand-sparkles", "fa-solid"),
 }
 
 
