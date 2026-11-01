@@ -765,7 +765,7 @@ body .e-con.zs-topbar__in { --flex-direction: row; --justify-content: space-betw
 /* header row: logo · menu · phone */
 body .e-con.zs-header__in { --flex-direction: row; --align-items: center; --column-gap: 24px; --flex-wrap: nowrap; min-height: var(--header-h); }
 .e-con.zs-header__in > .zs-header__nav { flex: 1 1 auto; margin-inline: 0; }   /* the menu takes the row between the logo and the call button, centred in it (Zap QA) */
-@media (min-width: 1025px) { .e-con.zs-header__in > .zs-header__nav :is(.zs-nav, .zs-menu) { justify-content: center; margin-inline: auto; } }
+@media (min-width: 1025px) { .e-con.zs-header__in > .zs-header__nav :is(.elementor-widget-container, .elementor-shortcode, .zs-part) { justify-content: center; } }
 .e-con.zs-header__in > .zs-header__nav > .elementor-widget-container, .e-con.zs-header__in > .zs-header__nav .elementor-shortcode, .e-con.zs-header__in > .zs-header__nav .zs-part { display: flex; align-items: center; gap: 8px; }
 .zs-tpl .zs-brand img, .elementor-location-header .zs-brand img { height: 56px; width: auto; max-width: 280px; object-fit: contain; display: block; }
 .e-con.zs-header__in > .zs-brand { flex: none; }
