@@ -420,3 +420,10 @@ body .e-con.zs-card__links { display: flex; flex-direction: row; flex-wrap: wrap
 .zs-kosher { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: none; color: inherit; }
 .zs-kosher .zs-ico { width: 18px; height: 18px; }
 a.zs-kosher:hover { text-decoration: underline; }
+
+/* split · card on phones: the card sits under the photo inside the page margins, never over the photo's badge
+   and never touching the screen edge (Zap QA) */
+@media (max-width: 900px) {
+  body .e-con.zs-split.zs-v-card .e-con.zs-split__text { margin: 16px 0 0 !important; width: 100% !important; max-width: 100%; box-sizing: border-box; }
+  body .e-con.zs-split.zs-v-card .zs-badge { z-index: 3; }
+}

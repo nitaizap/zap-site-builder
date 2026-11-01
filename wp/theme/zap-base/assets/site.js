@@ -35,7 +35,8 @@
     var y = window.scrollY;
     var s = y > 8;
     if (h && s !== scrolled) { scrolled = s; h.classList.toggle('is-scrolled', s); }
-    if (hero && lively && !reduce && y < 900) hero.style.transform = 'translate3d(0,' + Math.round(y * 0.08) + 'px,0) scale(1.06)';
+    // no parallax on phones: the hero photo seemed to float away from the top while scrolling (Zap QA)
+    if (hero && lively && !reduce && y < 900 && window.innerWidth > 767) hero.style.transform = 'translate3d(0,' + Math.round(y * 0.08) + 'px,0) scale(1.06)';
     ticking = false;
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
@@ -268,8 +269,11 @@
     var nx = sec.querySelector('.zs-car__next'), pv = sec.querySelector('.zs-car__prev');
     // slides line up on the reading start (the right edge in RTL), first photo first
     var rtl = getComputedStyle(tr).direction === 'rtl';
-    function mid(el) { var r = el.getBoundingClientRect(); return rtl ? r.right : r.left; }
-    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0; return rtl ? r.right - pad : r.left + pad; }
+    // phones: the active photo sits in the middle of the screen (Zap QA), so slides are measured by their centres
+    var narrow = window.matchMedia('(max-width: 767px)');
+    function mid(el) { var r = el.getBoundingClientRect(); return narrow.matches ? (r.left + r.right) / 2 : (rtl ? r.right : r.left); }
+    function edge() { var r = tr.getBoundingClientRect(), pad = parseFloat(getComputedStyle(tr)[rtl ? 'paddingRight' : 'paddingLeft']) || 0;
+      return narrow.matches ? (r.left + r.right) / 2 : (rtl ? r.right - pad : r.left + pad); }
     function upd() {
       var c = edge(), best = 0, bd = 1e9;
       sl.forEach(function (s, i) { var d = Math.abs(mid(s) - c); if (d < bd) { bd = d; best = i; } });
@@ -288,7 +292,7 @@
     if (nx) nx.addEventListener('click', function () { go(cur + 1); });
     if (pv) pv.addEventListener('click', function () { go(cur - 1); });
     sl.forEach(function (s, i) { s.addEventListener('click', function () { if (i !== cur) go(i); }); });
-    setTimeout(upd, 60);
+    setTimeout(function () { if (narrow.matches) tr.scrollBy({ left: mid(sl[0]) - edge(), behavior: 'auto' }); upd(); }, 60);
     if (!motion) return;
     ['pointerenter', 'focusin'].forEach(function (e) { sec.addEventListener(e, function () { hold = true; }); });
     ['pointerleave', 'focusout'].forEach(function (e) { sec.addEventListener(e, function () { hold = false; }); });
@@ -364,4 +368,22 @@
     e.preventDefault(); d.showModal();
   });
   d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+})();
+
+/* post images open in a lightbox */
+(function () {
+  var imgs = document.querySelectorAll('.zs-post__body img, .single-post .zs-prose img, .zs-post__hero img');
+  if (!imgs.length || !window.HTMLDialogElement) return;
+  var d = document.createElement('dialog'); d.className = 'zs-lightbox'; d.setAttribute('aria-label', 'תמונה מוגדלת');
+  d.innerHTML = '<button type="button" aria-label="סגירה">×</button><img alt="">';
+  document.body.appendChild(d);
+  var im = d.querySelector('img');
+  d.querySelector('button').addEventListener('click', function () { d.close(); });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  imgs.forEach(function (i) {
+    i.setAttribute('tabindex', '0'); i.setAttribute('role', 'button');
+    var open = function () { im.src = i.currentSrc || i.src; im.alt = i.alt; d.showModal(); };
+    i.addEventListener('click', open);
+    i.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
 })();

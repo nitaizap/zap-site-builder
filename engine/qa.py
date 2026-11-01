@@ -147,7 +147,9 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
     const fr = fill && (fill.length < 4 || fill[3] > .05) ? cr(flat(fill, bg), bg) : 1;
     const br = bw >= 1 && bc ? cr(flat(bc, bg), bg) : 1;
-    if (Math.max(fr, br) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
+    // a borderless icon/text button (the phone icon in a phone header) is judged by its icon/text colour instead
+    const fg = rgb(s.color), tr = (!fill || (fill.length > 3 && fill[3] <= .05)) && !(bw >= 1) && fg ? cr(flat(fg, bg), bg) : 1;
+    if (Math.max(fr, br, tr) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
   });
   if (faint.size) E(`control blends into its background (${faint.size}): ${[...faint].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
   // icons (svg / icon font / check bullets) at least 3:1

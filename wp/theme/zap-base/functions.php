@@ -256,9 +256,8 @@ function zs_wa_href($e164, $text = '') {
 }
 
 function zs_breadcrumbs() {
-    // Zap QA: no visible breadcrumb line above the H1. Yoast still emits BreadcrumbList in the schema graph;
-    // a site that wants the visible trail sets header.breadcrumbs: true.
-    if (!zs_opt('header.breadcrumbs', false)) return;
+    // visible on inner pages by default (Zap QA asked for them sitewide); header.breadcrumbs: false hides them
+    if (!zs_opt('header.breadcrumbs', true)) return;
     if (function_exists('yoast_breadcrumb') && !is_front_page()) {
         yoast_breadcrumb('<nav class="zs-crumbs" aria-label="פירורי לחם">', '</nav>');
     }
@@ -419,8 +418,9 @@ function zs_part_group_logo() {
              . '<span class="zs-footer__zap-by">Powered by</span><img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg')
              . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
     }
-    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><img src="'
-         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group.webp') . '" width="183" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
+    // dark footers: the words in text ("Powered by", Zap QA: the old credit image read "Power by") + Zap's logo in white
+    return '<a class="zs-footer__zap" href="https://zapgroup.co.il/" target="_blank" rel="noopener"><span class="zs-footer__zap-by">Powered by</span><img class="zs-zap-white" src="'
+         . esc_url(get_stylesheet_directory_uri() . '/assets/zap-group-blue.svg') . '" width="109" height="26" alt="זאפ גרופ" loading="lazy" decoding="async"></a>';
 }
 
 function zs_part_call_line() {
