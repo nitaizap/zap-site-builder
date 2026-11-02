@@ -15,6 +15,7 @@
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
+  zs intake <specs...> [--images-root F:\\Clients]  sites-team email -> sites/c<id>/ (brief + client images)
   zs list                           sites on this machine
   zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
   zs pool <slug>                    this site's measured look vs every other client (stops at 40% alike)
@@ -350,6 +351,7 @@ def main():
     x = sub.add_parser("image");x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
+    import intake; intake.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
     x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
