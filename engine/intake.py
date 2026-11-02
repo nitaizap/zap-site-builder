@@ -29,7 +29,13 @@ W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
 SPEC_EXT = (".docx", ".xlsx")
-ID_RE = re.compile(r"(?<!\d)(\d{8})(?!\d)")
+# Zap client numbers are usually 8 digits, but not always: נועם sent 743850 (6) and 2910210 (7) on
+# 2026-11-02 and both were silently rejected. 6 to 9 digits are accepted everywhere a client is named.
+ID_RE = re.compile(r"(?<!\d)(\d{6,9})(?!\d)")
+# For the free-text fallback only. A spec sheet is full of 6-to-9-digit runs that are not client
+# numbers - a phone like 03-7532200, a price, a date - and the file name is nearly always right, so
+# the loose pattern is not safe to turn loose on the body.
+ID_RE_TEXT = re.compile(r"(?<!\d)(\d{8})(?!\d)")
 URL_RE = re.compile(r"https?://[^\s<>\"')\]]+")
 IMG_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".bmp", ".tif", ".tiff", ".heic", ".ai", ".eps", ".pdf"}
 PACKAGES = ("בייסיק", "פרימיום", "פלוס", "פרו", "basic", "premium", "plus", "pro")
@@ -432,13 +438,23 @@ def already_built(cid, sites_dir):
         except (OSError, ValueError):
             continue
     branches = [b.strip() for b in _git("branch", "-a", "--format=%(refname:short)").splitlines() if b.strip()]
+    # The branch you are standing on does not count. The documented flow is to cut site/c<id> and then
+    # run intake inside it, so counting it made every worktree-first run trip over itself.
+    here = _git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    mine = {"site/" + slug, "origin/site/" + slug}
     for b in branches:
-        if b == "site/" + slug or b.endswith("/site/" + slug):
+        if (b == "site/" + slug or b.endswith("/site/" + slug)) and b != here:
+            if not _git("ls-tree", "--name-only", b, "sites/%s/" % slug).strip():
+                continue                    # the branch exists but holds nothing for this client
             hits.append("branch %s exists" % b)
     for b in branches:                      # built earlier under a business-name slug
-        if "site/" not in b or b == "site/" + slug or b.endswith("/site/" + slug):
+        if "site/" not in b or b in mine or b == here:
             continue
-        hit = _git("grep", "-l", cid, b, "--", "sites/").strip()
+        # Match the client_id FIELD, not the id anywhere under sites/. One email often carries several
+        # clients and every brief embeds that whole email body, so a prose sweep made each client in a
+        # multi-client mail "name" all the others - it blocked הרקולס-גורקביץ 743850 on 2026-11-02
+        # because car service's brief quoted the same mail.
+        hit = _git("grep", "-l", '"client_id": "%s"' % cid, b, "--", "sites/*/intake.json").strip()
         if hit:
             where = hit.splitlines()[0].split(":", 1)[-1]
             hits.append("branch %s names this client (%s)" % (b, where))
@@ -458,10 +474,12 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
     results = []
     for doc in docs:
         text, doc_links = spec_text(doc)
-        m = ID_RE.search(doc.stem) or ID_RE.search(text)
+        spec_id = spec_fields(text).get("client_id", "").strip()
+        m = ID_RE.search(doc.stem) or (ID_RE.fullmatch(spec_id) and ID_RE.search(spec_id)) or ID_RE_TEXT.search(text)
         cid = m.group(1) if m else ""
         if not cid:
-            results.append({"file": doc.name, "error": "no 8-digit client id in file name or text"})
+            results.append({"file": doc.name,
+                            "error": "no client id (6-9 digits) in the file name, the מספר לקוח field or the text"})
             continue
         slug = "c" + cid
         seen = [] if force else already_built(cid, sites_dir)
