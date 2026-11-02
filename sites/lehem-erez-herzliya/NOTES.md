@@ -53,3 +53,7 @@ What they want to know fast: what's on the menu, hours, how to order, can I book
 | events capacity, chain site | "עד 80 איש" | lehemerez.co.il/branches/hanadiv. Brief says private room 30 / 70 seats: brief kept |
 | online ordering | none: no Wolt page (404), no link on the chain site or Zap listings | lehemerez.co.il, wolt.com, rest.co.il, d.co.il |
 | services on chain site | איסוף עצמי, גישה לנכים, משלוחים, אירועים, חנייה, קייטרינג | lehemerez.co.il/branches/hanadiv |
+
+## Decisions (Nitai, 2026-11-02)
+- Company name: kept off the site (privacy page uses the business name only).
+- Blog: the 3 posts are approved as written.
