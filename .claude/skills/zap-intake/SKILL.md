@@ -13,14 +13,21 @@ runs in the cloud with `/zap-site` on the branch this skill pushes.
 | what | value |
 |---|---|
 | senders | `NetaS@d.co.il`, `SharonY@d.co.il`, `NoamR@d.co.il` |
-| images root | `F:\` (searched 4 levels deep for a folder whose name contains the 8-digit client id) — set `ZS_IMAGES_ROOT` to narrow it |
+| images root | `F:\SiteContent\<client id>\` (default; override with `ZS_IMAGES_ROOT`). F: is `\\gpna01\Drive-f$` |
 | state | `work/intake-state.json` (handled message ids; gitignored) |
 | inbox folder | `work/inbox/<message-id>/` (attachments + `body.txt`; gitignored) |
 
 ## 1. Find new mail
 
-Microsoft 365 / Outlook connector: search mail from the senders above, last 14 days, that is not in
-`work/intake-state.json`. Sort each message:
+Desktop Outlook on this PC (the Microsoft 365 connector is blocked by the company's sign-in policy):
+
+```bash
+powershell -ExecutionPolicy Bypass -File bin/outlook-inbox.ps1 -Days 14
+```
+
+It saves each new message from the senders into `work/inbox/<id>/` (attachments, `body.txt`, `meta.json`)
+and prints the list. Outlook must be open. (If the connector starts working, it may be used instead.)
+Sort each message:
 
 - **new request**: has `.docx` attachments with an 8-digit id (usually "<business> <id> - בייסיק.docx").
   One email can hold several clients: each .docx is one site.
@@ -30,16 +37,17 @@ Microsoft 365 / Outlook connector: search mail from the senders above, last 14 d
 
 ## 2. Intake (new request)
 
-Save attachments + the body (UTF-8) into `work/inbox/<message-id>/`, then:
+The message is already in `work/inbox/<id>/` (step 1). Run:
 
 ```bash
-bin/zs intake work/inbox/<message-id> --images-root "${ZS_IMAGES_ROOT:-F:\\}" --sender <from> --subject "<subject>" --body-file work/inbox/<message-id>/body.txt
+bin/zs intake work/inbox/<message-id> --sender <from> --subject "<subject>" --body-file work/inbox/<message-id>/body.txt
 ```
 
 It writes `sites/c<id>/` (brief/, intake.json, assets/client/) per spec and prints a JSON summary.
 Open 2-3 of the copied images to check they belong to the client (folder names lie too).
-An id with no F: folder is not a stop: the cloud session researches images (rest.co.il, the old site);
-say so in the summary.
+An id with no F: folder is not a stop: the cloud session uses `image_sources` (WeTransfer link in the spec
+expires: if there is one, download it on the PC into `sites/c<id>/assets/client/` now), rest.co.il, the old
+site; say so in the summary.
 
 ## 3. Hand off (per client)
 
@@ -66,6 +74,6 @@ if none is reachable, put the prompt in the summary.
 
 ## 5. Record + report
 
-Add every handled message id to `work/intake-state.json`. Report in Hebrew, short: per client: id, name,
+Add every handled message id (`meta.json` entry_id) under `handled` to `work/intake-state.json`. Report in Hebrew, short: per client: id, name,
 images copied (n) or missing, staging yes/no, branch, cloud session started or prompt to paste.
 Never reply to the sites team from here, never mail a client.
