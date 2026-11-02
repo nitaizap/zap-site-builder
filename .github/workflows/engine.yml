@@ -32,9 +32,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      # No actions/setup-python on purpose. bin/setup-cloud.sh installs pillow and playwright
+      # into the system python3, and bin/zs picks the first python3 that can `import PIL`.
+      # A hosted-toolcache python ahead of it on PATH has no pillow, and `zs build` dies with
+      # ModuleNotFoundError: No module named 'PIL'. The system python3 is also what the cloud
+      # sandbox this installer targets actually uses.
 
       - name: Cache apt archives
         uses: actions/cache@v4
@@ -79,6 +81,7 @@ jobs:
           mariadb -h127.0.0.1 -uzs -pzs -e 'select version()'
           php -v | head -1
           wp --info --allow-root | head -3
+          python3 -c "import sys, PIL; print('python3', sys.version.split()[0], 'pillow', PIL.__version__, 'at', sys.executable)"
           bin/zs doctor || true
 
       # The documented engine test. --strict-uniqueness turns the sample's fingerprint
