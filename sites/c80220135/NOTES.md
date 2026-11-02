@@ -35,11 +35,12 @@ Branch `site/c80220135`. Built in automatic mode from `brief/brief.md` (spec she
 | package | not named anywhere | intake.json `missing` |
 
 ### Research that could not be done
-This session's network policy denies every outbound host except the Anthropic/package-manager allowlist.
-`www.ym-mazdaford.co.il`, `www.d.co.il/80220135/`, `web.archive.org` and Instagram were all refused
-(`connect_rejected`, 403 at the egress proxy), so the old site, the Dapei Zahav listing, the Maps CID/geo
-and the Instagram gallery could not be read. Everything on the site therefore comes from the spec sheet and
-the F: drive images. See OPEN-ITEMS.md.
+
+The session's network policy initially denied every outbound host. It was later opened to full access, which
+unblocked the build, but `www.ym-mazdaford.co.il`, `www.d.co.il/80220135/`, `web.archive.org` and Instagram
+were not revisited afterwards, so the old site, the Dapei Zahav listing, the Maps CID/geo and the Instagram
+gallery are still unread. Everything on the site comes from the spec sheet and the F: drive images.
+See OPEN-ITEMS.md.
 
 ## Keyword map
 
@@ -100,10 +101,11 @@ now, not as the old site shows it.
 | `ink` | `#111619` | 18.22:1 on white |
 | `text` | `#1e262b` | 15.36:1 |
 | `muted` | `#4c5a62` | 7.13:1 on white, 6.51:1 on surface |
-| `dark` | `#15191c` | white on it 17.68:1 |
+| `dark` | `#0e2a30` petrol charcoal | white on it 15.08:1 |
 
-Measured with a contrast script before the colours went into site.json, because `zs qa` could not run (see
-OPEN-ITEMS 2). The registry's five clients use navy, crimson, royal blue, wine and olive buttons; a petrol
+Measured with a contrast script before the colours went into site.json, and confirmed afterwards by `zs qa`
+(0 errors). The footer was moved off near-black to a petrol charcoal after the uniqueness measure put the
+home page at 38% against white-villa; it reads 37% now. The registry's five clients use navy, crimson, royal blue, wine and olive buttons; a petrol
 button with a bronze accent sits outside all of them.
 
 ## Home composition (11 sections, archetype `proof`)
@@ -157,3 +159,47 @@ superlative or placeholder anywhere in site.json.
 Two spec statements disagree about age: שנות פעילות says "מעל 30 שנה" while תחומי עיסוק says the centre was
 founded in the 1950s. The site uses only the 1950s statement and the dated licence years, and claims no
 number of years. See OPEN-ITEMS 5.
+
+## Build and QA result (verified)
+
+Run on the merged tree, after the theme fixes this build found went to `main` in PR #59.
+
+| gate | result |
+|---|---|
+| `bin/zs build c80220135` | builds clean |
+| `bin/zs qa c80220135` | **0 errors, 0 warnings** |
+| `bin/zs seo c80220135` | **0 FAIL** (every MANUAL row looked at, below) |
+| `bin/zs pool c80220135` | exit 0: 37% against patoccina, white-villa and lehem-erez-herzliya (limit 40%) |
+| `engine/validate.py` | 0 errors, 2 warnings (privacy confirmation, Dapei Zahav id) |
+
+### The SEO checklist's MANUAL rows, looked at
+
+| row | what I checked |
+|---|---|
+| 1 מספר מקשר | The spec leaves מספר מקשר זאפ empty, so the site shows the client's own 08-6720513 and `phone_is_virtual` is false. Nothing to pop up. If the sites team assigns a tracking number, see OPEN-ITEMS 8 |
+| 8 FAQ relevant | All 15 answers (6 home, 3 per service page, 3 per post) read against the facts table above. Every one traces to a spec line: the four marques and their licence years, booking ahead and out-of-hours collection, the price quote, the commercial-vehicles programme, the hours, the 45% parts offer |
+| 9 client images used | 7 of the 25 F: drive files are real usable photographs and all 7 are on the site, plus the 2 marque logos and the commercial-vehicles badge. 0 AI images. What was excluded and why is in the Images section above |
+| +1 phone, email, address | Site shows 08-6720513, musach@y-m.co.il, קיבוץ יד מרדכי. Matches the spec byte for byte |
+| +6 mobile and 1280 | Home read at 390 in full; service, contact, blog and post pages shot at 390; header measured and viewed at 1536, 1440, 1366, 1280, 1100 and 1025. No overlaps, no horizontal scroll, no wrapped labels |
+
+### Theme bugs this build found (fixed generically, PR #59, merged)
+
+1. `zs-accent-low` did not cover the footer: its contact icons and wordmark measured 2.60 on the dark footer.
+2. `cta` variant `photo` puts a dark button on its accent panel, invisible when the accent is dark (2.60).
+3. A business with no logo got a broken header: the name as text was shrunk into the logo's slot by Elementor's
+   flex sizing and spilled out of the viewport. Also: menu labels wrapped mid-word, and the header's side grid
+   tracks let a wide brand slide under the menu.
+4. `pool.known()`: the branch-fingerprint loop still lacked the shape guard that #58 gave the registry loop.
+
+Two more were found here but landed first from other sessions, so this branch dropped its own versions:
+white text on a light panel inside a colour band (#57) and the `clients.json` crash in `zs qa` (#58).
+
+### Not a bug, worth remembering
+
+- The reveal animation leaves a `translateY(18px)` on a section's title until it scrolls into view, so a
+  full-page screenshot shows the title overlapping the text under it. Scroll the element in and wait before
+  judging. This is what the playbook means about scrolled screenshots.
+- `wpsite.create()` runs the Hebrew language install with `check=False`. When that download fails the site
+  stays `en_US` and the whole Hebrew site renders **LTR**, which invalidates every layout measurement: the
+  burger lands under the accessibility button and `zs qa` dies on a click timeout instead of reporting. It
+  happened in this environment to both this site and the sample. Flagged on PR #59.

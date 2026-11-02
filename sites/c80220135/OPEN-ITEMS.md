@@ -14,47 +14,41 @@ forbids several sections, so בייסיק and the spec's page list cannot both h
 spec lists. If the client was in fact sold the בייסיק package, the page list has to be cut to five before
 launch, and that is a commercial decision, not a build one.
 
-## 2 · The build, QA and SEO gates could not be run in this session
+## 2 · The gates were blocked, then run (resolved)
 
-This environment's network policy denies `wordpress.org`, `downloads.wordpress.org` and
-`api.wordpress.org` (403 at the egress proxy, reproduced with curl and with wp-cli). `zs build` provisions
-the local WordPress with `wp core download` plus the Elementor, Yoast and Ally plugins, so it exits before
-it writes anything:
+The environment's network policy denied `wordpress.org` at first, so `zs build` could not provision the local
+WordPress. The user opened network access to full and everything below was then run for real:
 
-```
-Error: RuntimeException: Failed to get url 'https://api.wordpress.org/core/version-check/1.7/?locale=en_US':
-cURL error 56: CONNECT tunnel failed, response 403.
-```
+| gate | result |
+|---|---|
+| `zs qa c80220135` | **0 errors, 0 warnings** |
+| `zs seo c80220135` | **0 FAIL**, every MANUAL row looked at (NOTES.md) |
+| `zs pool c80220135` | exit 0, **37%** against the nearest other client (limit 40%) |
 
-Everything downstream of the build is therefore **not run**: `zs qa`, `zs seo`, `zs preview`, `zs shots`,
-`zs pool`, `fingerprint.json`. What *was* run is `engine/validate.py`, standalone, against site.json:
-**0 errors, 4 warnings** (the four warnings are items 3, 4, 6 and 7 below).
+Two environment quirks worth knowing for the next cloud session, neither of them a site problem:
 
-What this leaves unverified, and nothing in this file substitutes for it:
-- the uniqueness gate against `fingerprints/` (the 40% limit). The look was chosen to sit far from the five
-  registered clients on the levers the measure weights most (palette first, then furniture, then
-  components), and the kit and archetype are both unused by the last three clients, but **it has not been
-  measured.**
-- WCAG contrast as `zs qa` measures it. The palette was measured by script instead (ratios in NOTES.md);
-  every value clears 4.5:1, and `muted` clears 7:1 on both grounds.
-- the above-the-fold check at 1280×620 and 360×640, the mobile pass at 390 px, the heading/alt/link crawl,
-  and every row of the SEO checklist.
+- `bin/setup-cloud.sh` installs a Chromium that the pip `playwright` (1.64.1) does not look for. Symlinking
+  `/opt/pw-browsers/chromium-1243` and `chromium_headless_shell-1243` to the `-1248` names fixes it.
+- WordPress's own installer refuses `downloads.wordpress.org` because the host resolves to the agent proxy and
+  `wp_safe_remote_get` rejects it as a private address, so `wp plugin install` and `wp theme install` fail with
+  "A valid URL was not provided". Seeding wp-cli's cache with curl works:
+  `~/.wp-cli/cache/plugin/<slug>-<version>.zip` and `~/.wp-cli/cache/theme/<slug>-<version>.zip`.
+  The Hebrew language pack hits the same wall and fails **silently** (`check=False`), which leaves a Hebrew
+  site rendering LTR end to end. Unzip `downloads.wordpress.org/translation/core/6.2.15/he_IL.zip` into
+  `wp-content/languages/` and set `WPLANG`. Flagged on PR #59.
 
-**To finish:** allow `wordpress.org`, `downloads.wordpress.org` and `api.wordpress.org` under the
-environment's Network access (cloud environment menu → Edit → Network access), then
-`bin/zs build c80220135 && bin/zs qa c80220135 && bin/zs seo c80220135 && bin/zs pool c80220135`.
-Note that this session also needed `~/.cache` symlinks for Playwright's browser; `bin/setup-cloud.sh`
-installed a Chromium build that the pip `playwright` 1.64.1 does not look for.
-
-## 3 · The business has no logo, so there is no logo and no favicon
+## 3 · The business has no logo, and the favicon is a stand-in
 
 The spec states "אין לוגו לעסק" and the F: drive holds no business logo, only the marque logos. The site
-therefore ships without `logo` and without `favicon`: the header renders the business name as text.
+therefore ships without `logo`: the header and footer render the business name as text. A logo was not drawn,
+and not traced from the photograph of the sign on the building.
 
-Zap QA expects a logo in the header, a logo in the footer linking home, and a favicon made from the logo's
-symbol. None of those can be met, and a logo must not be drawn or traced from the photograph of the sign.
-**Needed from the client:** a wordmark or logo file (PNG, transparent), or a decision to keep the site
-text-only in the header. Until then the cloned base site's favicon stays.
+`zs qa` fails a site that keeps the cloned base install's favicon, so `assets/favicon.png` is a **stand-in**:
+the brand petrol tile with the initials YM, nothing more. It exists so the base site's icon cannot ship.
+It is not a logo and should be replaced the moment the client supplies artwork.
+
+**Needed from the client:** a wordmark or logo file (PNG, transparent). Then set `logo` and regenerate
+`favicon` from its symbol, and the header, footer and favicon all follow from the one file.
 
 ## 4 · "אזור חוות דעת לקוחות" cannot be built yet
 
@@ -131,3 +125,29 @@ the about page. Worth one confirmation that he consents, or a replacement shot.
 - **Staging.** `staging_url` is empty, as expected. Nothing was pushed, nothing was published, no staging
   host was contacted.
 - **Dream from Steel (80386843)** was not touched.
+
+## 11 · Decisions taken during the build, for the record
+
+- **The menu was restructured.** Nine top-level items (home, about, six services, blog, contact) did not fit a
+  laptop header: at 1280 px the menu collided with the business name. The six service pages now sit in one
+  dropdown, "השירותים שלנו", which points at the services block on the home page. Five top-level items fit
+  from 1025 px up. Every page is still reachable from the main menu, as Zap QA requires, and the page URLs
+  did not change.
+- **A blog was added after all.** OPEN-ITEMS 6 below explains that the spec asks for none, but `zs seo` fails
+  a site without a blog category and three posts. Three posts were written **only** from material already in
+  the spec: the service intervals and the booking flow, the original-parts programme, and what the computerised
+  diagnosis does. No new business fact was introduced. If the blog is out of scope commercially, delete the
+  `בלוג` page, the category and the three posts from site.json; the rest of the site is unaffected.
+- **The footer colour moved** from near-black to a petrol charcoal (`#0e2a30`) because the uniqueness measure
+  put the home page at 38% against white-villa, and the footer colour is one of the signals it weights most.
+  It reads 37% now.
+- **The marque logos were re-cut** onto one shared 3:1 canvas so all three chips render at exactly 200×80 with
+  equal spacing, which is what the spec asks for ("בגודל אחיד ובמרווחים שווים"). The source files have very
+  different proportions and rendered at 252, 182 and 155 px wide before this. Their order was also reversed so
+  that reading left to right gives Mazda, Ford, then the commercial-vehicles badge, as the spec specifies.
+
+## 12 · Cosmetic, worth one look
+
+The accessibility toolbar's **desktop** button overlaps the header's phone button by about a 12 px corner. The
+phone button still takes a click at its centre and `zs qa` passes, so it was left alone rather than moved for
+every client: two Zap QA reviewers have already disagreed about where that button belongs. Mentioned on PR #59.
