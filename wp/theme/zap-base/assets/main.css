@@ -164,10 +164,15 @@ body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-prima
 
 /* A block that paints its own light panel (white or surface) inside a colour band keeps the light-ground text
    tokens. Without this the band's --c-ink/--c-text (white) are inherited into the panel and the text vanishes:
-   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band. */
+   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band.
+   split "card" (1.10), steps "cards", the facts card and team members paint one the same way. */
 :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) :is(
   .zs-v-frame .e-con.zs-split__text,
+  .zs-v-card .e-con.zs-split__text,
   .zs-v-rows .e-con.zs-feature,
+  .zs-v-cards .e-con.zs-step,
+  .zs-facts__card,
+  .zs-member,
   .zs-trust__list,
   .zs-faq__list .elementor-toggle .elementor-toggle-item,
   .zs-postcard,
