@@ -343,14 +343,16 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def test_form(page, site):
-    """Submit the footer form like a person (waits > 3s so the time trap passes) and confirm it saved."""
+    """Submit the visible lead form like a person (waits > 3s so the time trap passes) and confirm it saved."""
     before = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
     page.goto(site.url + "/", wait_until="networkidle")
     page.wait_for_timeout(3500)
-    page.fill("#zf-footer-name", "בדיקת QA")
-    page.fill("#zf-footer-phone", "050-0000000")
-    page.check("#zf-footer input[name=zf_consent]")
-    page.click("#zf-footer button[type=submit]")
+    # the footer band is hidden on pages with a contact section (one form per page): submit the form a visitor sees
+    f = "footer" if page.locator("#zf-footer-name").is_visible() else "contact"
+    page.fill(f"#zf-{f}-name", "בדיקת QA")
+    page.fill(f"#zf-{f}-phone", "050-0000000")
+    page.check(f"#zf-{f} input[name=zf_consent]")
+    page.click(f"#zf-{f} button[type=submit]")
     page.wait_for_load_state("networkidle")
     ok_msg = page.locator(".zs-form__ok").count() > 0
     after = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
