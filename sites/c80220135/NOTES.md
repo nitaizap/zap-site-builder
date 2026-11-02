@@ -34,13 +34,24 @@ Branch `site/c80220135`. Built in automatic mode from `brief/brief.md` (spec she
 | blog | not requested (אתר SEO (בלוג) and מאמרים both empty) | spec |
 | package | not named anywhere | intake.json `missing` |
 
-### Research that could not be done
+### Research, done after the network opened
 
-The session's network policy initially denied every outbound host. It was later opened to full access, which
-unblocked the build, but `www.ym-mazdaford.co.il`, `www.d.co.il/80220135/`, `web.archive.org` and Instagram
-were not revisited afterwards, so the old site, the Dapei Zahav listing, the Maps CID/geo and the Instagram
-gallery are still unread. Everything on the site comes from the spec sheet and the F: drive images.
-See OPEN-ITEMS.md.
+The session's network policy denied every outbound host at first. Once it was opened, the client's existing
+site was read properly with `bin/zs grab` (pages and images in `research/`), and the logo question was chased
+to the end. What came back:
+
+| source | result |
+|---|---|
+| ym-mazdaford.co.il | read. Confirms every fact on the new site (licence years, ownership, staff, waiting room, VIP service, parts programme). No logo image: its brand is styled text. No new photographs: its images are the same 2022 shots already in `assets/`, cropped, plus one manufacturer stock composite that was not used |
+| facebook.com/ymmazdaford | read. Profile picture is a photograph of the pylon sign, not a logo |
+| instagram.com/yad_mordechai_service_center | login wall, not read |
+| d.co.il/80220135 | blocks automated reading, not circumvented. Its reviews do surface on the client's own site: 4.84 from 31 reviews |
+
+Two things the old site turned up that the spec does not mention, both in OPEN-ITEMS: it displays a **Zap
+tracking number, 072-3263207**, on its home page, and its **Dapei Zahav listing is populated**, which makes
+the reviews block the spec asks for one verification away.
+
+Still unread: the Maps CID and geo coordinates, and the Instagram gallery.
 
 ## Keyword map
 

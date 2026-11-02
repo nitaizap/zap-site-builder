@@ -1,0 +1,74 @@
+[
+  {
+    "file": "research/img/00.png",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/969.a0de937e.png",
+    "alt": "",
+    "w": 500,
+    "logo": false,
+    "kb": 25
+  },
+  {
+    "file": "research/img/logo-01.png",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/608.a158cc4c.png",
+    "alt": "logos",
+    "w": 396,
+    "logo": true,
+    "kb": 7
+  },
+  {
+    "file": "research/img/logo-02.png",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/zap-logo.37303906.png",
+    "alt": " ",
+    "w": 237,
+    "logo": true,
+    "kb": 11
+  },
+  {
+    "file": "research/img/03.svg",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/whatsapp.e0badb1b.svg",
+    "alt": "whatsapp",
+    "w": 662,
+    "logo": false,
+    "kb": 24
+  },
+  {
+    "file": "research/img/05.png",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/631.1b17264e.png",
+    "alt": "",
+    "w": 0,
+    "logo": false,
+    "kb": 49
+  },
+  {
+    "file": "research/img/06.webp",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/20220520_124705_resized_1(1)-335bb5d9.05f9a874.webp",
+    "alt": "משרד קבלה",
+    "w": 1920,
+    "logo": false,
+    "kb": 187
+  },
+  {
+    "file": "research/img/07.webp",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/20220520_124727_resized_1(1).6f9e4334.webp",
+    "alt": "חזית",
+    "w": 1920,
+    "logo": false,
+    "kb": 178
+  },
+  {
+    "file": "research/img/08.webp",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/20220520_124757_resized_1.f7d6c642.webp",
+    "alt": "חדר המתנה",
+    "w": 1920,
+    "logo": false,
+    "kb": 145
+  },
+  {
+    "file": "research/img/09.webp",
+    "src": "https://www.ym-mazdaford.co.il/assets/images/20220520_124843(1).049b28b6.webp",
+    "alt": "אולם עבודה",
+    "w": 1428,
+    "logo": false,
+    "kb": 114
+  }
+]

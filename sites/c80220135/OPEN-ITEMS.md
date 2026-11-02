@@ -37,31 +37,47 @@ Two environment quirks worth knowing for the next cloud session, neither of them
   site rendering LTR end to end. Unzip `downloads.wordpress.org/translation/core/6.2.15/he_IL.zip` into
   `wp-content/languages/` and set `WPLANG`. Flagged on PR #59.
 
-## 3 · The business has no logo, and the favicon is a stand-in
+## 3 · The business has no logo anywhere (searched), and the favicon is a stand-in
 
-The spec states "אין לוגו לעסק" and the F: drive holds no business logo, only the marque logos. The site
-therefore ships without `logo`: the header and footer render the business name as text. A logo was not drawn,
-and not traced from the photograph of the sign on the building.
+The spec states "אין לוגו לעסק". That was checked against every source available, not just the F: drive:
+
+| source | what is there |
+|---|---|
+| `assets/client/` (25 files from F:) | marque logos and the המחלקה הראשונה badge only, no business logo |
+| the client's own site, ym-mazdaford.co.il | the brand is **live styled text** ("מרכז שירות / יד מרדכי", blue, two lines), not an image. Its only logo files are the Mazda/Ford strip, the המחלקה badge and Zap's own platform logo |
+| Facebook (facebook.com/ymmazdaford) | the profile picture is a **photograph of the pylon sign**, not a logo. A higher-resolution shot of the same sign is already in `assets/pylon.jpg` |
+| Instagram | behind a login wall, not readable |
+| Dapei Zahav (d.co.il/80220135) | blocks automated reading; not circumvented |
+
+So the finding is confirmed rather than assumed: **no designed logo exists**, and the client's own site solves
+it exactly as this build does, by setting the name as type. The header and footer render the business name as
+text, and nothing was drawn or traced from the photograph of the sign.
 
 `zs qa` fails a site that keeps the cloned base install's favicon, so `assets/favicon.png` is a **stand-in**:
-the brand petrol tile with the initials YM, nothing more. It exists so the base site's icon cannot ship.
-It is not a logo and should be replaced the moment the client supplies artwork.
+the brand petrol tile with the initials YM, nothing more. It is not a logo and should be replaced the moment
+the client supplies artwork.
 
 **Needed from the client:** a wordmark or logo file (PNG, transparent). Then set `logo` and regenerate
-`favicon` from its symbol, and the header, footer and favicon all follow from the one file.
+`favicon` from its symbol, and header, footer and favicon all follow from the one file.
 
-## 4 · "אזור חוות דעת לקוחות" cannot be built yet
+## 4 · Reviews: the listing exists and has 31 of them. One human look away
 
-The spec asks for a customer-reviews area on the home page. Reviews may only come from the Dapei Zahav
-widget with a verified `dpz_customer_id`; inventing reviews, ratings or a score is forbidden and the
-validator blocks it. The client id 80220135 is very likely the right customer id, and
-`https://www.d.co.il/80220135/` is in `intake.json`, but that page could not be opened from this session
-(item 2's network block) and Zap standards require the listing to be verified against legal name, street
-and phone first, because a wrong id publishes another company's reviews.
+The spec asks for a customer-reviews area on the home page. It is **still not built**, but the picture has
+changed since the first pass, because the client's own site could finally be read:
 
-**Default taken:** no reviews section at all, rather than an empty band. Add
-`"dpz_customer_id": "80220135"` to `business` once someone has opened the listing and confirmed it, then
-put a `reviews` section back on the home page (the `photo` variant over `facade-drive` suits it).
+- **ym-mazdaford.co.il renders a review block today: `4.84`, `31 חוות דעת`.** So this business genuinely has
+  a populated Zap/Dapei Zahav listing. That is no longer a guess.
+- `intake.json` points at `https://www.d.co.il/80220135/`, and 80220135 is the client id on the spec sheet,
+  so `dpz_customer_id: "80220135"` is almost certainly right.
+
+What is still missing is the one check Zap standards require before using an id: open the listing and confirm
+the **legal name, street and phone** on it, because a wrong id publishes another company's reviews. The
+Dapei Zahav page blocks automated reading and I did not work around that, so a person has to glance at it.
+
+**To turn it on** (about a minute once confirmed): add `"dpz_customer_id": "80220135"` to `business` in
+site.json, put a `reviews` section back on the home page (the `photo` variant over `facade-drive` suits the
+page), rebuild. Note the widget only renders on a pushed site, not locally, and it draws its own score and
+count: no rating may ever be typed into the copy, and the validator blocks it.
 
 ## 5 · Two brand logos are missing, and the brief asks for four
 
@@ -99,15 +115,24 @@ set, so it stays a launch blocker until the client confirms those fields.
   and the schema carries no `geo` or `hasMap`. The Dapei Zahav page would have given both; it is blocked.
 - **Google Business Profile URL.** The spec leaves `Google My Business` empty.
 - **LinkedIn.** Empty on the spec. No bar item was invented.
-- **Zap tracking number (מספר מקשר זאפ).** Empty on the spec, so `phone_is_virtual` stays false and the site
-  shows 08-6720513 as the client's own number. If the sites team does assign a tracking number, set
-  `phone_is_virtual: true` and `phone_regular: "08-6720513"`, which adds Zap's explanation popup.
+- **Zap tracking number (מספר מקשר זאפ): the spec says none, the existing site uses one.** This needs a
+  decision before launch. The spec leaves מספר מקשר זאפ empty and gives 08-6720513 as טלפון לאתר, which is
+  what this build shows, with `phone_is_virtual` false. But the client's current site displays
+  **072-3263207** on its home page, labelled "מספר מקשר" with Zap's "הסבר" link, and falls back to
+  08-6720513 on its about and contact pages. So a tracking number for this client already exists.
+  The playbook's rule is that the site shows the Zap number, confirmed once. Nothing was changed here,
+  because the display phone is a business fact and the spec states it explicitly.
+  **If the sites team confirms 072-3263207**, set `phone_display: "072-3263207"`,
+  `phone_e164: "+972723263207"`, `phone_is_virtual: true` and `phone_regular: "08-6720513"`; the engine then
+  adds the "מספר מקשר" link and Zap's standard explanation popup.
 - **Years in business.** The spec contradicts itself ("מעל 30 שנה" against a 1950s founding). No number of
   years is claimed anywhere on the site.
-- **Gallery.** The spec says "לקחת תמונות מהאתר הקיים". The existing site is unreachable from this session,
-  so the gallery is built from the seven usable F: drive photographs instead. Only seven real photographs
-  exist, below the 13+ the playbook wants, and three of them are 800×600 from 2020; the Instagram account
-  in `intake.json` would be the obvious source for more.
+- **Gallery.** The spec says "לקחת תמונות מהאתר הקיים". The existing site was read in the end
+  (`bin/zs grab`, output in `research/`) and it yielded **no new photographs**: its images are the same 2022
+  facade and pylon shots already in `assets/`, just cropped to banner sizes, plus one Ford/Mazda manufacturer
+  stock composite that is not the client's own material and was not used. So the seven F: drive photographs
+  really are everything. That is below the 13+ the playbook wants, and three of them are 800×600 from 2020.
+  The Instagram account in `intake.json` is the remaining source, and it needs a login to read.
 - **Owner photo.** `תמונת בעלים` is empty on the spec; no portrait is used and none was generated.
 - **כתבת תדמית.** Empty on the spec; nothing was written in its place.
 
@@ -151,3 +176,14 @@ the about page. Worth one confirmation that he consents, or a replacement shot.
 The accessibility toolbar's **desktop** button overlaps the header's phone button by about a 12 px corner. The
 phone button still takes a click at its centre and `zs qa` passes, so it was left alone rather than moved for
 every client: two Zap QA reviewers have already disagreed about where that button belongs. Mentioned on PR #59.
+
+## 13 · What the client's existing site confirmed
+
+Read with `bin/zs grab` once the network opened; the pages and images are in `research/`. Every factual claim
+on the new site was cross-checked against it and **none of them had to change**: the 1996 Mazda licence from
+דלק מוטורס, the 2000 Ford licence, the kibbutz ownership and ערן שטרנברג's management, the roughly 13 staff,
+the air-conditioned waiting room overlooking the workshop, the VIP service with the lift home, and the 45%
+original-parts programme for vehicles over 3 years all appear there in the client's own words.
+
+Two differences, both expected: the old site names only Mazda and Ford, because it predates the 2025 Dongfeng
+and Voyah licences the spec adds; and it lists the services without the separate pages the spec now asks for.
