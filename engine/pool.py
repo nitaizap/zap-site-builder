@@ -76,7 +76,7 @@ def known(slug):
             if fp and "palette" in fp and "secs" in fp:   # skip the registry index (clients.json) and partial files
                 out[f.stem] = fp
     for other, _d, fp in _others(slug, files=True):
-        if fp and "palette" in fp:
+        if fp and "palette" in fp and "secs" in fp:   # same guard as above: a partial file here crashes similarity too
             out[other] = fp
     return out
 
