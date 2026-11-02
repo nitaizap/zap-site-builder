@@ -41,8 +41,9 @@ It saves each new message from the senders into `work/inbox/<id>/` (attachments,
 and prints the list. Outlook must be open. (If the connector starts working, it may be used instead.)
 Sort each message:
 
-- **new request**: has `.docx` attachments with an 8-digit id (usually "<business> <id> - בייסיק.docx").
-  One email can hold several clients: each .docx is one site.
+- **new request**: has `.docx` or `.xlsx` attachments with an 8-digit id (usually "<business> <id> - בייסיק.docx"
+  for the Word template, "<business> <id> - וויקנד.xlsx" for the Excel one).
+  One email can hold several clients: each spec sheet is one site.
 - **staging URL**: a reply naming a client id/business and a URL (`*.ussl.co.il` etc.) → step 4.
 - **feedback**: a reply in the thread of a client already handed off → step 4.
 - anything else: skip, list it in the summary.
