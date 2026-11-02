@@ -177,6 +177,9 @@ def validate(d, site_dir, _dir=None):
                 W(f"menu item '{it.get('label')}' differs from that page's H1 '{h1_of[h[5:]]}': use one name")
     # blog: Hebrew category slugs, at least 3 posts (Zap SEO checklist)
     if any(p.get("type") == "blog" for p in pages):
+        blog_key = next(p["key"] for p in pages if p.get("type") == "blog")
+        if not any(it.get("href") == f"page:{blog_key}" for item in d.get("nav", []) for it in [item] + item.get("children", [])):
+            W("the blog page is not in the main menu (Zap QA: \"בלוג לא מופיע בתפריט הראשי\")")
         if not d.get("categories"):
             E("a blog page needs at least one category in site.json (else the base site's leftover category shows, e.g. /blog/)")
         if len(d.get("posts", [])) < 3:
@@ -287,6 +290,8 @@ def validate(d, site_dir, _dir=None):
                 E(f"{name}: {ty} needs items")
             if ty == "facts" and any(not (it.get("label") and str(it.get("value", "")).strip()) for it in s.get("items", [])):
                 E(f"{name}: every facts item needs a label and a value")
+            if ty == "hero" and s.get("eyebrow"):
+                E(f"{name}: no small title (eyebrow) above the H1 (Zap QA sitewide fixes: 'אין כותרת קטנה מעל ה-H1')")
             if ty == "hero" and s.get("form") and p.get("type") == "contact":
                 E(f"{name}: no hero form on the contact page: it has its own full form (one form per page, Zap QA)")
             if v is None:

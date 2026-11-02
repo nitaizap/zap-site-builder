@@ -27,7 +27,7 @@ Zap QA rule (supersedes the old "H1 = keyword"): exactly one H1 per page (the he
 | field | rule | example |
 |---|---|---|
 | `seo.title` | Zap QA format, every page: `<site name> \| <page name>`; home: `<site name> \| <head keyword>` (validator) | `מים טובים אינסטלציה \| איתור נזילות` |
-| `seo.description` | 140–160 chars · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
+| `seo.description` | 150–160 chars of real content (never a filler ending added to hit the length) · keyword · differentiator · a call with the phone | `איתור נזילות בחיפה והקריות עם מצלמה תרמית… 073-7001234` |
 | `seo.keyword` | the owned keyword (unique across the site) | `איתור נזילות בחיפה` |
 
 Category descriptions are the category page's meta description and show on the blog page: 150–160 chars, a
