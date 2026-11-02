@@ -207,7 +207,7 @@
   ],
   "design": {
     "colors": {
-      "primary": "#8b5a1a",
+      "primary": "#2b1d10",
       "primary_ink": "#ffffff",
       "accent": "#e0b23a",
       "accent_ink": "#1a1712",
@@ -217,8 +217,8 @@
       "bg": "#ffffff",
       "surface": "#f6f1e8",
       "line": "#e0ddd2",
-      "dark": "#2a1d10",
-      "dark_ink": "#f6efe2"
+      "dark": "#6b3e14",
+      "dark_ink": "#fbf3e6"
     },
     "motion": "subtle",
     "header": "light",
