@@ -6,7 +6,8 @@
   zs shots <slug> [paths...]        screenshots desktop + mobile (+ design directions)
   zs preview <slug>                 home page under every design direction -> sites/<slug>/preview/PREVIEW.md
   zs qa <slug>                      measured QA sweep -> sites/<slug>/QA-REPORT.md
-  zs doctor                         check php, wp-cli, mariadb, browser, network, gh
+  zs doctor                         check php, wp-cli, mariadb, browser, network, gh + the pipeline itself
+  zs selftest                       run the documented engine chain (new/build/qa/seo), honest exit code
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
   zs grab <slug> <url>              research the client's old site (Wayback fallback) -> sites/<slug>/research/
   zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
@@ -31,7 +32,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from env import ROOT, die  # noqa: E402
+from env import ROOT, IS_WIN, die  # noqa: E402
 from wpsite import Site  # noqa: E402
 
 
@@ -234,18 +235,31 @@ def cmd_fetch_image(a):
 
 
 def cmd_doctor(a):
+    """Read-only. Checks the tools, then the pipeline around them (see engine/pipecheck.py)."""
     import shutil
     import subprocess
-    from env import php_bin, wp_cmd, ensure_db, run
+    from env import php_path, wp_cli_phar, wp_cmd, ensure_db, run, TOOLS
     ok = True
     def line(name, good, detail=""):
         nonlocal ok
+        if good is None:                      # not applicable on this platform: reported, not counted
+            print(f"n/a  {name} {detail}")
+            return
         ok &= bool(good)
         print(f"{'OK  ' if good else 'FAIL'} {name} {detail}")
-    r = run([php_bin(), "-r", "echo PHP_VERSION, ' ', implode(',', array_intersect(['mysqli','gd','mbstring','zip','intl','curl'], get_loaded_extensions()));"], check=False)
-    line("php", r.returncode == 0, r.stdout.strip())
-    r = run(wp_cmd() + ["--version"], check=False)
-    line("wp-cli", r.returncode == 0, r.stdout.strip())
+    php = php_path()
+    if not php:
+        line("php", False, f"not found (expected {TOOLS / 'php' / 'php.exe'}); every build, serve and WP-CLI call will stop")
+    else:
+        r = run([php, "-r", "echo PHP_VERSION, ' ', implode(',', array_intersect(['mysqli','gd','mbstring','zip','intl','curl'], get_loaded_extensions()));"], check=False)
+        line("php", r.returncode == 0, r.stdout.strip())
+    if IS_WIN and not wp_cli_phar():
+        line("wp-cli", False, f"not found (expected {TOOLS / 'wp-cli.phar'})")
+    elif not php and IS_WIN:
+        line("wp-cli", False, "cannot run: it needs php")
+    else:
+        r = run(wp_cmd() + ["--version"], check=False)
+        line("wp-cli", r.returncode == 0, r.stdout.strip())
     try:
         ensure_db()
         line("mariadb", True)
@@ -272,6 +286,16 @@ def cmd_doctor(a):
         line("network: wordpress.org", False, f"{e} (set the environment's network access to Full)")
     gh = shutil.which("gh") is not None and subprocess.run(["gh", "auth", "status"], capture_output=True).returncode == 0
     print(f"OK   publish route: {'GitHub release (gh)' if gh else 'delivery branch via git push (no gh needed)'}")
+
+    # The pipeline itself: the things that were broken while every binary above was fine.
+    print("\n-- pipeline --")
+    import pipecheck
+    for name, fn in pipecheck.CHECKS:
+        try:
+            good, detail = fn()
+        except Exception as e:                # a broken check is a FAIL, never a silent pass
+            good, detail = False, f"check raised {type(e).__name__}: {e}"
+        line(name, good, detail)
     sys.exit(0 if ok else 1)
 
 
@@ -363,6 +387,7 @@ def main():
     x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--full", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
+    import selftest; selftest.add_parser(sub)
     x = sub.add_parser("static"); x.add_argument("slug"); x.set_defaults(f=cmd_static)
     x = sub.add_parser("grab"); x.add_argument("slug"); x.add_argument("url"); x.add_argument("--pages", type=int, default=25); x.set_defaults(f=cmd_grab)
     x = sub.add_parser("fetch-image"); x.add_argument("slug"); x.add_argument("key"); x.add_argument("url"); x.add_argument("--ext"); x.set_defaults(f=cmd_fetch_image)

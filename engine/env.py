@@ -32,8 +32,50 @@ def _first(*cands):
     return None
 
 
+# ---------------------------------------------------------------- missing tools
+# A missing tool used to travel as None into subprocess.Popen and surface as
+# "TypeError: expected str, bytes or os.PathLike object, not NoneType" from deep inside
+# subprocess, naming nothing. These say what is missing, where we looked and how to get it.
+
+_HOWTO = {
+    "PHP": "unzip a portable PHP 8.x build (with the mysqli, gd, mbstring, zip, intl and curl "
+           "extensions enabled in php.ini) so that php.exe sits at .tools/php/php.exe",
+    "WP-CLI": "download https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar "
+              "and save it as .tools/wp-cli.phar",
+    "MariaDB": "unzip a portable MariaDB winx64 build into .tools/ so the folder is named "
+               ".tools/mariadb-<version>-winx64 (its binaries live in that folder's bin/)",
+}
+
+
+def missing_tool(tool, looked, extra=""):
+    """Stop with a message that names the tool, where we looked, and how to get it."""
+    cands = [looked] if isinstance(looked, (str, Path)) else list(looked)
+    where = "\n".join(f"    {x}" for x in cands)
+    die(f"{tool} is not installed on this machine, so this command cannot run.\n"
+        f"  looked for:\n{where}\n"
+        f"  fix: {_HOWTO.get(tool, 'install ' + tool)}.\n"
+        f"  .tools/ is gitignored and this repo ships no Windows installer for it "
+        f"(bin/setup-cloud.sh is Ubuntu only).{extra}\n"
+        f"  `bin/zs doctor` lists every tool at once.")
+
+
+def php_path():
+    """PHP if it is really there, else None. For probing (doctor); callers that need it use php_bin()."""
+    return _first(TOOLS / "php" / "php.exe") if IS_WIN else shutil.which("php")
+
+
 def php_bin():
-    return _first(TOOLS / "php" / "php.exe") if IS_WIN else (shutil.which("php") or "php")
+    if not IS_WIN:
+        return shutil.which("php") or "php"
+    p = _first(TOOLS / "php" / "php.exe")
+    if not p:
+        missing_tool("PHP", TOOLS / "php" / "php.exe")
+    return p
+
+
+def wp_cli_phar():
+    """The bundled WP-CLI phar if present, else None."""
+    return _first(TOOLS / "wp-cli.phar")
 
 
 def mariadb_dir():
@@ -41,19 +83,29 @@ def mariadb_dir():
     return hits[-1] if hits else None
 
 
+def require_mariadb_dir():
+    d = mariadb_dir()
+    if not d:
+        missing_tool("MariaDB", TOOLS / "mariadb-*-winx64")
+    return d
+
+
 def mysql_bin(name="mariadb"):
     if IS_WIN:
-        d = mariadb_dir()
-        return str(d / "bin" / f"{name}.exe") if d else name
+        return str(require_mariadb_dir() / "bin" / f"{name}.exe")
     return shutil.which(name) or shutil.which(name.replace("mariadb", "mysql")) or name
 
 
 def wp_cmd():
     """argv prefix for WP-CLI."""
-    if IS_WIN:
-        return [php_bin(), str(TOOLS / "wp-cli.phar")]
-    w = shutil.which("wp")
-    return [w] if w else [php_bin(), str(TOOLS / "wp-cli.phar")]
+    if not IS_WIN:
+        w = shutil.which("wp")
+        if w:
+            return [w]
+    phar = wp_cli_phar()
+    if not phar:
+        missing_tool("WP-CLI", TOOLS / "wp-cli.phar")
+    return [php_bin(), phar]
 
 
 def run(argv, cwd=None, check=True, capture=True, env=None, input=None):
@@ -95,9 +147,7 @@ def ensure_db():
         return
     import time
     if IS_WIN:
-        d = mariadb_dir()
-        if not d:
-            die("portable MariaDB not found under .tools/ (see tools/setup-windows.sh)")
+        d = require_mariadb_dir()
         data = TOOLS / "mdata"
         if not data.exists():
             run([str(d / "bin" / "mariadb-install-db.exe"), f"--datadir={data}", f"--port={DB_PORT}"])
