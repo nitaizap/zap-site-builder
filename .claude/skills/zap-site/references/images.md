@@ -16,25 +16,54 @@ No Weave flow is needed: run the model directly. Verified 2026-10-07 (3.5 credit
 
 | use | model (weave_run_model id) | settings | ≈ credits |
 |---|---|---|---|
-| all site photos (default) | Nano Banana 2.1 `bebebed5-50c1-4701-98b3-86929db21585` | `resolution: "1K"`, `aspect_ratio: "3:2"` (cards/hero) or `"4:5"` (split), `output_format: "webp"` | 3.5 |
-| a premium client's hero | same, `resolution: "2K"` | | 5 |
-| alternative look | GPT Image 2.5 `2db90e64-51dd-45b2-870a-66d19a81118e` | `quality: "medium"`, `image_size: "landscape_4_3"` | 8 |
+| all site photos (default) | GPT Image 2.5 `2db90e64-51dd-45b2-870a-66d19a81118e` | `quality: "medium"`, `image_size: "landscape_4_3"` (cards/hero) or `"portrait_4_3"` (split), `output_format: "webp"` | 8 |
+| a hero worth the extra detail | same, `quality: "high"` or variant `"Sunburst"` | Sunburst is slower, tighter control, for production imagery | 8+ |
+| alternative look | Nano Banana 2.1 `bebebed5-50c1-4701-98b3-86929db21585` | `resolution: "1K"`, `aspect_ratio: "3:2"` or `"4:5"`, `output_format: "webp"` | 7 |
 
 Credits are the workspace's Weave credits (not Figma AI credits). Default to 1K: the theme never shows
 an image wider than ~1200px except the full-bleed `hero: image` layout, where 2K is worth it.
 
-### The cost gate — one approval per batch
+### The budget — 100 Weave credits per client, no approval needed under it
 
-`weave_run_model` without `acknowledgedCost` only quotes. Every run needs the user's explicit approval:
+Each client has a standing budget of **100 Weave credits**. Spend it without asking. Only going over
+100 for that client needs the user's approval, and then only for the part that goes over.
 
-1. Plan all images for the site first (key, what it shows, aspect). Quote each (no `acknowledgedCost`).
-2. Ask **once**, with AskUserQuestion (Approve / Cancel): the list of images and the total credits.
-3. On approval run each with its quoted `acknowledgedCost`. Never exceed what was approved; anything
-   extra (a reroll, a new image) is a new approval.
-4. Poll `weave_get_model_run_output` until `COMPLETED`, then download each output:
+At ~8 credits per GPT Image 2.5 image that is roughly 12 images, which is more than a site needs: the
+budget is a guard against a runaway loop, not a tight allowance. Rerolling a bad image is normal and
+comes out of the same 100.
+
+(The quotes above are what the models quote today. The earlier figure of 3.5 credits in this file was
+from 2026-10-07 and is no longer right — always read the quote rather than this table.)
+
+1. Plan all images for the site first (key, what it shows, aspect). Quote each (`weave_run_model`
+   without `acknowledgedCost` only quotes and spends nothing).
+2. Add the quotes to what this client has already spent, from `sites/<slug>/IMAGE-SOURCES.md`.
+   - **Total ≤ 100** → run them, echoing each quoted `acknowledgedCost`. Do not ask.
+   - **Total > 100** → ask once with AskUserQuestion, showing the spend so far, what is left to make
+     and the overage. Run nothing beyond 100 until they approve.
+3. Poll `weave_get_model_run_output` until `COMPLETED`, then download each output:
    `bin/zs fetch-image <slug> <key> "<output url>"` → `sites/<slug>/assets/<key>.webp`
-5. Read the image before using it. Reject and regenerate (with approval) anything with text, people,
-   a wrong object, or a look that doesn't match the rest of the set.
+4. Read the image before using it. Reject and regenerate anything with text, people, a wrong object,
+   or a look that doesn't match the rest of the set. A reroll needs no approval while under 100.
+5. Record every generated image in `sites/<slug>/IMAGE-SOURCES.md` (below) as you go, with its credits.
+   An image that is not recorded there must not ship.
+
+### IMAGE-SOURCES.md — required before publish
+
+Legal instruction from שרון יוסף, 20/10/2026, after review by עו"ד קובי בארי: a copyright claim can reach
+₪100,000 per image, with no need to prove damage. **Every** image on a client site must be recorded, not
+only AI ones, and an image whose source is uncertain must not be used at all.
+
+`sites/<slug>/IMAGE-SOURCES.md` holds one row per image file:
+
+| file | source | license | date | by | credits |
+|---|---|---|---|---|---|
+| `assets/hero.webp` | AI — Figma Weave, GPT Image 2.5 | generated for this client | 2026-11-02 | ניתאי צוויג | 8 |
+| `assets/gate-3.webp` | client's own photo (F:\SiteContent\<id>) | client supplied | 2026-11-02 | ניתאי צוויג | 0 |
+
+For AI, name the tool **and** the model — "AI" alone does not satisfy the instruction. For a downloaded
+photo, name the site it came from and the licence type (free / paid / free for commercial use). The
+`credits` column doubles as the Weave budget ledger for this client.
 
 If the Figma connector is not available in the session, fall back to `bin/zs image` (OpenAI key on the
 environment) or to step 4 of the preference list, and say so.
