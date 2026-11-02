@@ -94,19 +94,32 @@ def package_from(stem, text):
     return ""
 
 
-def staging_from(text):
+def staging_from(text, cid=""):
+    """The staging URL for this client, or "".
+
+    One email can carry several clients and name all of their staging sites, so a host
+    holding a different 8-digit id belongs to somebody else and is skipped.
+    """
     for u in URL_RE.findall(text or ""):
-        if ".ussl.co.il" in u or "staging" in u or ".1wp.site" in u or "clicksite.co.il" in u:
-            return u.rstrip(".,/") + "/"
+        if not (".ussl.co.il" in u or "staging" in u or ".1wp.site" in u or "clicksite.co.il" in u):
+            continue
+        if cid and any(i != cid for i in ID_RE.findall(u)):
+            continue
+        return u.rstrip(".,/") + "/"
     return ""
+
+
+def body_lines_for(body, cid, name):
+    """The email-body lines that mention this client (by id or name)."""
+    return [l for l in (body or "").splitlines()
+            if cid in l or (name and name.split()[0] in l)]
 
 
 def body_links_for(body, cid, name):
     """Links on the email-body line that mentions this client (by id or name)."""
     out = []
-    for line in (body or "").splitlines():
-        if cid in line or (name and name.split()[0] in line):
-            out += [u.rstrip(".,") for u in URL_RE.findall(line)]
+    for line in body_lines_for(body, cid, name):
+        out += [u.rstrip(".,") for u in URL_RE.findall(line)]
     return sorted(set(out))
 
 
@@ -212,7 +225,8 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             "package": package_from(doc.stem, text),
             "spec_file": doc.name, "sender": sender, "subject": subject,
             "received": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "staging_url": staging or staging_from(text) or staging_from(body),
+            "staging_url": staging or staging_from(text, cid)
+                           or staging_from("\n".join(body_lines_for(body, cid, name)), cid),
             "links": links,
             "zap_pages": {"dapei_zahav": f"https://www.d.co.il/{cid}/"},
             "spec": spec,
