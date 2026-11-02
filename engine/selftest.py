@@ -107,7 +107,46 @@ def selftest(fresh=False, strict_uniqueness=False, keep_going=False, slug=SAMPLE
         if st == FAIL and not keep_going:
             break
 
+    _report_similarity(slug)
     return _summary(stages, overall_ok)
+
+
+def _report_similarity(slug):
+    """Print how close this slug's measured home is to every committed client fingerprint.
+
+    `pool.check_measured()` returns early for the slug `sample`: the engine's example is not a client,
+    so a client-vs-client rule does not apply to it. Reasonable - but it means a green run says nothing
+    at all about uniqueness, and CLAUDE.md lets a session self-merge on a green CI. So the numbers are
+    printed whether or not they are enforced, and a drift of the example towards a real client is seen
+    rather than hidden. Nothing here fails the run.
+    """
+    import json
+    try:
+        from fingerprint import similarity
+        from pool import known
+        f = ROOT / "sites" / slug / "fingerprint.json"
+        if not f.exists():
+            return
+        mine = json.loads(f.read_text(encoding="utf-8"))
+        home = mine.get("home") or (mine if "secs" in mine else None)
+        if not home:
+            return
+        scores = []
+        for other, ofp in known(slug).items():
+            oh = ofp.get("home") or ofp
+            try:
+                scores.append((round(similarity(home, oh) * 100), other))
+            except Exception:
+                continue
+        if not scores:
+            return
+        scores.sort(reverse=True)
+        note = "" if slug != "sample" else "   (not enforced for 'sample': it is not a client)"
+        print("\n  %s vs every committed fingerprint%s:" % (slug, note))
+        for pct, other in scores[:6]:
+            print("    %-26s %3d%%%s" % (other, pct, "   <- highest" if (pct, other) == scores[0] else ""))
+    except Exception as e:                   # never let reporting break the run it reports on
+        print("\n  (could not measure similarity: %s)" % e)
 
 
 def _summary(stages, overall_ok):
