@@ -9,7 +9,7 @@ few photos, the client's old site URL, a Google Business link. Sometimes only a 
 
 A branch `site/c<id>` pushed by the local `zap-intake` skill already holds `intake.json` (id, name, package,
 sender, links, staging URL, `missing`), `brief/brief.md` (the Word spec as text + the email body), the
-original .docx, and `assets/client/` (images from the F: drive). Start from those; the slug stays `c<id>`.
+original spec sheet (.docx or .xlsx), and `assets/client/` (images from the F: drive). Start from those; the slug stays `c<id>`.
 Later replies (staging URL, feedback) land in `sites/c<id>/inbox/`: `git pull` and read them first.
 
 ## Extract — open every file

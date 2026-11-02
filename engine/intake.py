@@ -3,10 +3,11 @@
 Runs on the machine that can see the client images (Windows with the F: drive). Stdlib only, so it
 works without extra installs; Pillow, when present, shrinks oversized photos.
 
-One email may carry several clients (one .docx spec per client). For each .docx:
+One email may carry several clients (one spec sheet per client). Spec sheets come as Word
+(.docx, the "בייסיק" template) or Excel (.xlsx, the "וויקנד" template). For each spec:
   * client id   = the 8-digit Zap customer id (file name first, then the document text)
   * slug        = c<id>  (stable, Latin, the same id that names the F: folder)
-  * writes      sites/<slug>/brief/<spec>.docx    the original
+  * writes      sites/<slug>/brief/<spec>         the original (.docx or .xlsx)
                 sites/<slug>/brief/brief.md      the spec as text (paragraphs + tables), + the email body
                 sites/<slug>/intake.json         id, name, package, sender, subject, links, staging URL, status
                 sites/<slug>/assets/client/*     images copied from <images-root>/**/<id>*/
@@ -23,6 +24,9 @@ from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+SPEC_EXT = (".docx", ".xlsx")
 ID_RE = re.compile(r"(?<!\d)(\d{8})(?!\d)")
 URL_RE = re.compile(r"https?://[^\s<>\"')\]]+")
 IMG_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".bmp", ".tif", ".tiff", ".heic", ".ai", ".eps", ".pdf"}
@@ -70,6 +74,114 @@ def docx_text(path):
     return "\n".join(lines).strip(), links
 
 
+# ---------- Excel ----------
+
+def _col(ref):
+    """"B12" -> 1 (0-based column index)."""
+    n = 0
+    for ch in ref:
+        if not ch.isalpha():
+            break
+        n = n * 26 + (ord(ch.upper()) - 64)
+    return n - 1
+
+
+def _shared_strings(z):
+    if "xl/sharedStrings.xml" not in z.namelist():
+        return []
+    root = ET.fromstring(z.read("xl/sharedStrings.xml"))
+    return ["".join(t.text or "" for t in si.iter(S + "t")) for si in root.findall(S + "si")]
+
+
+def _cell_text(c, shared):
+    t = c.get("t")
+    if t == "inlineStr":
+        is_ = c.find(S + "is")
+        return "".join(x.text or "" for x in is_.iter(S + "t")) if is_ is not None else ""
+    v = c.find(S + "v")
+    if v is None or v.text is None:
+        return ""
+    if t == "s":
+        i = int(v.text)
+        return shared[i] if 0 <= i < len(shared) else ""
+    if t == "b":
+        return "TRUE" if v.text.strip() == "1" else "FALSE"
+    return v.text
+
+
+def xlsx_text(path):
+    """Same shape as docx_text: the sheets as `a | b | c` rows, plus the hyperlink targets.
+
+    The "וויקנד" template is a two-sheet workbook ("כללי" + "איפיון עמודים") of label/value rows,
+    so every row becomes one `label | value` line, exactly what spec_fields() already reads.
+    The site tree ("עץ אתר") is the one field written across the row *below* its label, so it is
+    re-emitted as a single `עץ אתר | page | page | ...` line.
+    """
+    lines, links = [], []
+    with zipfile.ZipFile(path) as z:
+        names = z.namelist()
+        shared = _shared_strings(z)
+        order = []
+        if "xl/workbook.xml" in names:
+            wb = ET.fromstring(z.read("xl/workbook.xml"))
+            rels = {}
+            if "xl/_rels/workbook.xml.rels" in names:
+                for r in ET.fromstring(z.read("xl/_rels/workbook.xml.rels")):
+                    rels[r.get("Id")] = r.get("Target")
+            for sh in wb.iter(S + "sheet"):
+                tgt = rels.get(sh.get(R + "id"), "")
+                tgt = tgt[1:] if tgt.startswith("/") else "xl/" + tgt.lstrip("/")
+                if tgt in names:
+                    order.append((sh.get("name") or "", tgt))
+        if not order:
+            order = [("", n) for n in sorted(n for n in names
+                                             if n.startswith("xl/worksheets/") and n.endswith(".xml"))]
+        for sheet_name, target in order:
+            root = ET.fromstring(z.read(target))
+            head, tail = target.rsplit("/", 1)
+            rel_path = head + "/_rels/" + tail + ".rels"
+            ext = {}
+            if rel_path in names:
+                for r in ET.fromstring(z.read(rel_path)):
+                    if r.get("TargetMode") == "External":
+                        ext[r.get("Id")] = r.get("Target")
+            for h in root.iter(S + "hyperlink"):
+                u = ext.get(h.get(R + "id")) or h.get("location") or ""
+                if u.startswith("http"):
+                    links.append(u)
+            rows = []                                    # one entry per non-empty row: [(column, text)]
+            for row in root.iter(S + "row"):
+                cells = [(_col(c.get("r") or "A"), t)
+                         for c in row.findall(S + "c") for t in [_cell_text(c, shared).strip()] if t]
+                if cells:
+                    rows.append(cells)
+            if sheet_name:
+                lines.append("## " + sheet_name)
+            for cells in rows:                           # a wide gap starts a second label/value pair
+                group, prev = [], None
+                for col, txt in cells:
+                    if prev is not None and col - prev >= 3:
+                        lines.append(" | ".join(group))
+                        group = []
+                    group.append(txt)
+                    prev = col
+                if group:
+                    lines.append(" | ".join(group))
+            for i, cells in enumerate(rows[:-1]):        # the site tree sits one row below its label
+                for col, txt in cells:
+                    if txt.startswith("עץ אתר"):
+                        tree = [t for c2, t in rows[i + 1] if c2 >= col]
+                        if tree:
+                            lines.append("עץ אתר | " + " | ".join(tree))
+            lines.append("")
+    return "\n".join(lines).strip(), sorted(set(links))
+
+
+def spec_text(path):
+    """(text, links) for a spec sheet, Word or Excel."""
+    return xlsx_text(path) if Path(path).suffix.lower() == ".xlsx" else docx_text(path)
+
+
 # ---------- parsing ----------
 
 def name_from_filename(stem, cid):
@@ -88,8 +200,8 @@ def package_from(stem, text):
     for p in PACKAGES:
         if p.lower() in stem.lower():
             return p
-    for p in PACKAGES[:4]:
-        if p in text[:400]:
+    for p in PACKAGES[:4]:   # a whole word only: "פרו" must not match inside "פרויקט"
+        if re.search(r"(?<![֐-ת])" + p + r"(?![֐-ת])", text[:400]):
             return p
     return ""
 
@@ -124,12 +236,25 @@ def body_links_for(body, cid, name):
 
 
 SPEC_FIELDS = {   # label in Zap's spec template -> intake.json key
-    "שם הלקוח": "name", "מספר לקוח": "client_id", "עץ אתר": "sitemap", "דומיין": "domain",
+    "שם הלקוח": "contact_name", "שם העסק": "name", "מספר לקוח": "client_id", "עץ אתר": "sitemap", "דומיין": "domain",
     "אתר קיים": "old_site", "טלפון מסקיו": "phone_tracking", "טלפון ישיר לעסק": "phone_direct",
     "וואטסאפ": "whatsapp", "שעות פעילות": "hours", "כתובת": "address", "אימייל": "email", "GMB": "gmb",
     "פייסבוק": "facebook", "אינסטגרם": "instagram", "יוטיוב": "youtube", "לינקדין": "linkedin",
     "טוויטר": "twitter", "עמוד משלוחים / תפריט": "menu_url", "לוגו": "logo", "חומר גרפי גולמי": "raw_graphics",
     "צבעים": "colors", "רפרנסים": "references", "תבנית נבחרת": "template", "רסט": "rest", "דפי זהב": "dapei_zahav",
+    # the "וויקנד" Excel template spells the same fields out in full
+    "מס' לקוח": "client_id", "שם הלקוח בפרסום": "name", "מס' לקוח בוויקנד": "weekend_client_id",
+    "ורטיקל": "vertical", "קישור לתבנית": "template",
+    "טלפון ישיר לעסק (אליו מחובר המסקיו)": "phone_direct", "נייד לכפתור וואטסאפ": "whatsapp",
+    "כתובת עסק": "address", "טיק טוק": "tiktok",
+    "לוגו (קישור לסייט)": "logo", "חומר גרפי גולמי (קישור לסייט)": "raw_graphics",
+    "צבעים מועדפים על הלקוח": "colors", "אתר כרפרנס 1": "reference_1", "אתר כרפרנס 2": "reference_2",
+    "מה הלקוח אהב / לא אהב ברפרנסים?": "references_notes",
+    "אם כן, איזו כתובת דומיין? האם הכתובת תקינה?": "domain_requested",
+    "כמה עמודים האתר הקיים": "old_site_pages", "סיכום שיחה עם מת\"ל": "call_summary",
+    "קישור לסרטון 360": "video_360", "האם להציג חוות דעת באתר?": "reviews",
+    "הנחיות כלליות לעורך": "content_notes", "הנחיות כלליות למעצב": "design_notes",
+    "סגנון עריכה": "writing_style", "פנייה לגולשי האתר": "audience_address",
 }
 
 
@@ -204,13 +329,13 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
     docs = []
     for i in inputs:
         p = Path(i)
-        docs += sorted(p.glob("*.docx")) if p.is_dir() else [p]
-    docs = [d for d in docs if d.suffix.lower() == ".docx" and not d.name.startswith("~$")]
+        docs += sorted(f for e in SPEC_EXT for f in p.glob("*" + e)) if p.is_dir() else [p]
+    docs = [d for d in docs if d.suffix.lower() in SPEC_EXT and not d.name.startswith("~$")]
     if not docs:
-        raise SystemExit("intake: no .docx spec sheets found in " + ", ".join(map(str, inputs)))
+        raise SystemExit("intake: no .docx/.xlsx spec sheets found in " + ", ".join(map(str, inputs)))
     results = []
     for doc in docs:
-        text, doc_links = docx_text(doc)
+        text, doc_links = spec_text(doc)
         m = ID_RE.search(doc.stem) or ID_RE.search(text)
         cid = m.group(1) if m else ""
         if not cid:
@@ -218,7 +343,7 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             continue
         slug = "c" + cid
         spec = spec_fields(text)
-        name = spec.get("name") or name_from_filename(doc.stem, cid)
+        name = spec.get("name") or spec.get("contact_name") or name_from_filename(doc.stem, cid)
         links = sorted(set(doc_links + [u.rstrip(".,") for u in URL_RE.findall(text)] + body_links_for(body, cid, name)))
         info = {
             "client_id": cid, "slug": slug, "branch": "site/" + slug, "name": name,
@@ -231,7 +356,8 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             "zap_pages": {"dapei_zahav": f"https://www.d.co.il/{cid}/"},
             "spec": spec,
             "image_sources": sorted({u for u in links if "wetransfer" in u or "drive.google" in u or "dropbox" in u
-                                     or "rest.co.il" in u or "instagram" in u}),
+                                     or "rest.co.il" in u or "instagram" in u
+                                     or "sharepoint.com" in u}),
             "images": [], "image_dirs": [], "missing": [], "status": "intake",
         }
         if any("rest.co.il" in u for u in links):
@@ -246,6 +372,13 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
                 info["images"] = copy_images(dirs, site / "assets" / "client")
         else:
             info["missing"].append("images: no --images-root given")
+        other = sorted({i for i in ID_RE.findall(subject or "") if i != cid})
+        if other:
+            info["missing"].append(
+                "client id: the spec sheet says %s, the email subject says %s - %s used (the file wins)"
+                % (cid, ", ".join(other), cid))
+        if not info["package"]:
+            info["missing"].append("package: no package named in the file name or the spec sheet")
         if not info["staging_url"]:
             info["missing"].append("staging URL (the sites team sends it later)")
         if not dry_run:
@@ -275,8 +408,8 @@ def cli(a):
 
 
 def add_parser(sub):
-    x = sub.add_parser("intake", help="sites-team email (.docx specs + body) -> sites/c<id>/ with brief + images")
-    x.add_argument("inputs", nargs="+", help=".docx files or a folder holding them")
+    x = sub.add_parser("intake", help="sites-team email (.docx/.xlsx specs + body) -> sites/c<id>/ with brief + images")
+    x.add_argument("inputs", nargs="+", help=".docx/.xlsx spec sheets, or a folder holding them")
     x.add_argument("--images-root", help=r"default F:\SiteContent (holds one folder per client id)")
     x.add_argument("--sender"); x.add_argument("--subject"); x.add_argument("--staging")
     x.add_argument("--body-file", help="the email body saved as UTF-8 text")
