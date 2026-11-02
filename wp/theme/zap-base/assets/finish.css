@@ -55,9 +55,7 @@ body .zs-cards--overlay .e-con.zs-card__body { --padding-top: 0px; --padding-bot
 .zs-badge span { font-size: .9rem; color: rgb(255 255 255 / .82); }
 @media (max-width: 900px) { .zs-split__media .elementor-element.zs-badge-w { inset-inline-start: 12px; inset-block-end: 12px; } }
 
-/* gallery: mosaic when there are 5+ images */
-.zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) { grid-column: span 2; grid-row: span 2; }
-.elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) img { aspect-ratio: auto; height: 100%; }
+/* gallery: an even grid, no large first tile (Zap QA: a big first photo left empty cells beside it) */
 
 /* header utility bar (header.topbar, default on) */
 .zs-topbar { background: var(--c-dark); color: color-mix(in srgb, var(--c-dark-ink) 86%, transparent); font-size: .86rem; }

@@ -19,6 +19,11 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
 - Claude may open and merge its own engine/theme/skill PRs without asking, when GitHub reports no merge conflict
   (mergeable), any CI on the head is green, and the engine test below passed (`qa` 0 errors, `seo` 0 FAIL). If there
   is a conflict, red CI or an open review thread, fix it first or ask. Never merge a `site/<slug>` branch into `main`.
+  Default is to merge without asking: do not stop mid-work for approvals that these conditions already cover.
+- Open items are collected, not asked one by one: anything unclear, assumed or blocked goes into
+  `sites/<slug>/OPEN-ITEMS.md` (site work) or the PR body under "Open items" (engine work), and work continues
+  on the best safe default. Only at the very end does the user get one list: what is done, then the open items.
+  Stop early only for what cannot be defaulted safely (a business fact, mailing a real client, a secret).
 - No em dashes (—) in any site copy, ever (the validator stops the build).
 - No shortcodes on new sites, ever: build only with Elementor widgets and WordPress. Dynamic parts (form, menus, posts,
   map, contact details, footer credits, blog templates) are the `zap-*` widgets the `zap-site` plugin registers.

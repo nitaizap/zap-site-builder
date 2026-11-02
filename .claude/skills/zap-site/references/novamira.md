@@ -26,6 +26,16 @@ only (`work/novamira-tokens/<host>.json`, chmod 600, never committed) and refres
 `zs qa --site` use it automatically. Revoke any time: Novamira → Manage Connections. If AI Abilities are off,
 switch them on first (Novamira → Configuration).
 
+## Automatic (sites from zap-intake): the user's PC approves
+
+```bash
+bin/zs connect --site https://<client>.ussl.co.il --handoff c<id>
+```
+
+pushes the code to `site/c<id>` as `sites/c<id>/inbox/connect-request.json`; the PC's `zap-intake` runs
+`zs staging`, which logs in (password reset through Outlook if needed) and approves. Nobody types a code.
+If it is not approved in time, put it in OPEN-ITEMS.md and keep building locally.
+
 ## Alternative: one-time setup on Zap's BASE site (inherited by every clone, zero clicks per site)
 
 1. On the base site: Novamira → Configuration → **Enable AI Abilities**. They are locked to the site's host
