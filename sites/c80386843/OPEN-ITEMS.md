@@ -92,8 +92,11 @@ default in every case; the default taken is written next to each item.
    of Ofir, and the logo file. Each one that arrives gets a row in `IMAGE-SOURCES.md`, and a real gallery
    section plus a `team`/`split` with the owner's photo can then go on the home and about pages.
 
-8. **No further images were generated in this session.** The Weave budget stands where the intake session
-   left it: **8 of 100 credits used**, all four images from 02/11.
+8. **Weave budget: 16 of 100 credits used.** 8 at intake (the first four images), 8 in the build session:
+   four more atmosphere images approved as one batch, at 2 credits each. They are a shop drawing with
+   measuring tools (the תכנון page), a cut-off saw throwing sparks (the ייצור page), a weld bead on a joint
+   (home) and a second workshop interior (the אודות page), so the service pages and two of the posts no
+   longer reuse the home page's photos. All eight are process and material only. 84 credits remain.
 
 ## Smaller assumptions, no answer needed unless someone disagrees
 

@@ -8,10 +8,10 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8425 · 39 rows: 34 pass, 0 fa
 | 3 | עיצוב וטיפוגרפיה | שירותי החברה בדף הבית מפנים לעמוד השירות הנכון | ✅ PASS | 3 cards checked |
 | 4 | עיצוב וטיפוגרפיה | יש עמודי הצהרת נגישות ומדיניות פרטיות | ✅ PASS | privacy ok; accessibility link /הצהרת-נגישות/ |
 | 5 | עיצוב וטיפוגרפיה | קטגוריית בלוג עם 3 פוסטים רלוונטיים (בסטלינקס) | ✅ PASS | blog page yes, 3 posts |
-| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 11 images |
+| 6 | תמונות וביצועים | כל התמונות מתחת ל-100KB ובפורמט WebP | ✅ PASS | 15 images |
 | 7 | תמונות וביצועים | ALT לכל התמונות | ✅ PASS |  |
 | 8 | תמונות וביצועים | השאלות הנפוצות רלוונטיות לחברה | 👁 MANUAL | read every FAQ against NOTES.md facts (validate.py already blocks thin FAQs and invented ratings) |
-| 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 4 images, 4 marked AI; compare with the client's folder from the spec |
+| 9 | תמונות וביצועים | הוכנסו תמונות הלקוח מטופס האפיון | 👁 MANUAL | 8 images, 8 marked AI; compare with the client's folder from the spec |
 | 11 | כפתורים ויצירת קשר | לינק וואטסאפ למספר הנכון + טאב חדש | ✅ PASS | 27 links |
 | 12 | כפתורים ויצירת קשר | כפתור וואטסאפ צף בכל האתר (טאב חדש) | ✅ PASS | desktop 1440 + mobile 390, every page |
 | 13 | כפתורים ויצירת קשר | כפתור טלפון תואם למספר באתר | ✅ PASS | tel = 072-2594285 |

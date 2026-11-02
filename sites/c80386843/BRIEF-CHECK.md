@@ -80,7 +80,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 | line | status | where |
 |---|---|---|
 | תמונת בעלים — blank | ⏳ | no owner photo. No AI portrait was made (`images.md` forbids generated people). OPEN-ITEMS 7 |
-| גלריה — blank | ⏳ | **no gallery section on the site, deliberately.** Nothing invented. OPEN-ITEMS 7 |
+| גלריה — blank | ⏳ | **no gallery section on the site, deliberately.** Nothing invented. Eight AI atmosphere images (material and process only) fill the image slots instead. OPEN-ITEMS 7 |
 
 ## 8 · כתבת תדמית
 
