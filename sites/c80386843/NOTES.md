@@ -20,8 +20,8 @@ automatic mode: sitemap from the spec, direction chosen here, open points collec
 | what the business does | metalwork and manufacture of metal products, everything custom, planning to finished product | spec sheet §5 |
 | customers | private clients, architects, carpenters, drone-market and aviation-market companies | spec sheet §5 |
 | existing site | none: only the Dapei Zahav listing d.co.il/80386843/33060/ | spec sheet §2, intake |
-| logo, brand colours, "sites you liked" | not given | spec sheet §6 (all blank) |
-| photographs | none supplied | spec §7 blank; `F:\SiteContent\80386843` empty (intake session) |
+| logo, brand colours, "sites you liked" | not given on the spec sheet; the team says a logo exists but it never reached the branch | spec sheet §6 (blank), Noam 02/11 (`inbox/2026-11-02-feedback.md`) |
+| photographs | none supplied; generated or stock imagery sanctioned by the sites team | spec §7 blank; `F:\SiteContent\80386843` empty (intake session); Noam 02/11 (`inbox/2026-11-02-feedback.md`) |
 
 Nothing on the site comes from anywhere else. No founding year is stated (20 years is the spec's own
 wording, not a date); no licences, no prices, no ratings, no counts.

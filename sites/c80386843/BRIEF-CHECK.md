@@ -70,7 +70,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 
 | line | status | where |
 |---|---|---|
-| לוגו — blank | ⏳ | name as text in header and footer. OPEN-ITEMS 4 |
+| לוגו — blank | ⏳ | the team says a logo exists, but the file never reached the branch. Name as text in header and footer meanwhile. OPEN-ITEMS 4 |
 | צבעי מותג — blank | ✅ | free choice, taken from the material: petrol steel + brass. NOTES.md |
 | יד חופשית למעצב — blank | ✅ | treated as a free hand, since nothing was specified |
 | אתרים שאהבתם — blank | ➖ | nothing to match |
@@ -92,7 +92,9 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 
 | request | status | where |
 |---|---|---|
-| leave room on the home page for a video frame (AI social promo the client bought), 02/11 | ⏳ | slot reserved and documented with the exact position and JSON. Nothing rendered until the file or URL arrives. OPEN-ITEMS 6 |
+| leave room on the home page for a video frame (AI social promo the client bought), Noam 02/11 15:09 | ⏳ | slot reserved and documented with the exact position and JSON. Nothing rendered until the file or URL arrives. OPEN-ITEMS 6 |
+| "אין אתר ואין תמונות צריך לייצר או לקחת ממאגרים", Noam 02/11 14:57 | ✅ | four AI atmosphere images on the site, each marked `ai` and recorded in IMAGE-SOURCES.md, with the footer line saying so. No generated work presented as the client's: OPEN-ITEMS 7 |
+| "יש רק לוגו", Noam 02/11 14:57 | ⏳ | the file is not on the branch. OPEN-ITEMS 4 |
 
 ## Prohibitions, checked by grep over `site.json`
 

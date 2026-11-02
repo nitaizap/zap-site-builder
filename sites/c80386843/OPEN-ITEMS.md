@@ -25,9 +25,16 @@ default in every case; the default taken is written next to each item.
    so the privacy page is a launch blocker until the client confirms the legal name, whether a customer
    database is kept, and the contact address for privacy requests.
 
-4. **Logo.** The client supplied none (spec §6 blank). The header and footer show the business name as text,
-   which is legible and passes QA. A logo file replaces it in one place (Elementor → Site Settings → Site
-   Identity) or by setting `logo` in `site.json` and rebuilding.
+4. **Logo: it exists, but the file is not on this branch.** The spec sheet leaves §6 blank, but Noam's reply
+   of 02/11 15:09 (`inbox/2026-11-02-feedback.md`) says *"יש רק לוגו"*: the logo is the one asset the client
+   did send. It did not reach `sites/c80386843/assets/`, so the cloud session never saw it and nothing could
+   be built from it.
+   **Needs:** whoever has it (the mail thread, or the F: drive on the intake PC) pushes it to this branch as
+   `sites/c80386843/assets/logo.png` (PNG or WebP, transparent, no SVG: WordPress rejects those). Then set
+   `logo` in `site.json`, cut a square 512px `favicon.png` from its symbol, and rebuild. Until then the
+   header and footer show the business name as text, which is legible and passes QA, and the palette was
+   chosen from the client's material rather than sampled from the logo, so it may want revisiting once the
+   logo is in hand.
 
 5. **Favicon is a placeholder.** With no logo there is no symbol to cut one from, and `zs qa` fails a site
    with no favicon. `assets/favicon.png` is a plain brass tile with the initials DS, made in this session
@@ -36,7 +43,7 @@ default in every case; the default taken is written next to each item.
 
 ## Reserved, waiting for the file
 
-6. **Video frame on the home page (requested 02/11 during the build).** The client also bought an AI social
+6. **Video frame on the home page** (Noam, 02/11 15:09, `inbox/2026-11-02-feedback.md`). The client also bought an AI social
    promo video and it should appear on the home page. No file or URL has arrived, so nothing is rendered: an
    empty band would fail QA and look broken. The slot is **between the services cards and `split:overlap`**,
    i.e. index 4 of the home page's `sections` in `site.json`. When the URL arrives, drop in:
@@ -62,6 +69,18 @@ default in every case; the default taken is written next to each item.
    Generating gates, railings or structures would have read as this client's portfolio, which
    `references/images.md` forbids. The footer carries the line
    "תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק".
+
+   **The sites team has since confirmed this** (Noam, 02/11 14:57, `inbox/2026-11-02-feedback.md`):
+   *"אין אתר ואין תמונות צריך לייצר או לקחת ממאגרים"*. That sanctions generated and stock imagery, which is
+   what the four atmosphere images are, and it is why they are on the site at all.
+
+   **It does not change the no-portfolio decision, and that part needs a human to confirm.** Generated or
+   stock photographs of gates, railings or finished structures on a metalworker's site read as that
+   metalworker's own jobs whether they are captioned or not, which is the one thing `references/images.md`
+   forbids and the one thing a customer would be misled by. Atmosphere (a bench, raw stock, a workshop bay)
+   carries no such claim. If the team means for stock *work* photos to go up as well, say so explicitly and
+   say how they should be labelled, and it can be built in one round; it is their call, not ours, and it is
+   not being done silently.
 
    **What to ask the client for, in one message:** photographs of finished work (the more unusual the
    better, since the whole site argues that the work is not standard), one photograph of the workshop, one
