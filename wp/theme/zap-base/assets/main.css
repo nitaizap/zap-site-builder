@@ -38,6 +38,9 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
 body {
+  /* the light-ground text tokens, resolved once here: a colour band below re-points --c-ink/--c-text at its
+     own ink, so a block that paints its own light panel inside that band restores these instead. */
+  --zs-l-ink: var(--c-ink); --zs-l-text: var(--c-text); --zs-l-muted: var(--c-muted); --zs-l-line: var(--c-line);
   margin: 0; background: var(--c-bg); color: var(--c-text);
   font-family: var(--f-body); font-size: var(--fs-body); line-height: 1.7;
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
@@ -147,6 +150,21 @@ body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-prima
 .zs-bg-dark .zs-b-ghost .elementor-button, .zs-bg-primary .zs-b-ghost .elementor-button { color: #fff; border-color: #fff; }
 .zs-bg-dark .zs-b-ghost .elementor-button:hover, .zs-bg-primary .zs-b-ghost .elementor-button:hover { border-color: #fff; background: rgb(255 255 255 / .08); color: #fff; }
 .zs-bg-primary .zs-b-primary .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); box-shadow: none; }
+
+/* A block that paints its own light panel (white or surface) inside a colour band keeps the light-ground text
+   tokens. Without this the band's --c-ink/--c-text (white) are inherited into the panel and the text vanishes:
+   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band. */
+:is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) :is(
+  .zs-v-frame .e-con.zs-split__text,
+  .zs-v-rows .e-con.zs-feature,
+  .zs-trust__list,
+  .zs-faq__list .elementor-toggle .elementor-toggle-item,
+  .zs-postcard,
+  .zs-contact .zs-form,
+  .zs-post__cta,
+  .zs-layers__draw
+) { --c-ink: var(--zs-l-ink); --c-text: var(--zs-l-text); --c-muted: var(--zs-l-muted); --c-line: var(--zs-l-line);
+    color: var(--zs-l-text); }
 
 .zs-eyebrow .elementor-heading-title, a.zs-eyebrow { font-family: var(--f-body); font-size: .95rem; font-weight: 700; color: var(--c-primary); letter-spacing: .02em; margin: 0; text-decoration: none; display: inline-block; }
 .zs-eyebrow { margin-bottom: 10px; }
