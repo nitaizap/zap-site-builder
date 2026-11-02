@@ -39,7 +39,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8414 · 39 rows: 32 pass, 0 fa
 | +4 | כללי | עמוד פנימי שונה מפוסט | ✅ PASS | pages render through Elementor page layouts, posts through single.php |
 | +5 | כללי | מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח | ✅ PASS | privacy title: לחם ארז הרצליה / מדיניות פרטיות; accessibility title: לחם ארז הרצליה / הצהרת נגישות |
 | +6 | כללי | נראות במובייל ובמחשב נייד 1280 | 👁 MANUAL | zs qa measures 1440 + 390 and the hero at 1280×620; look at 1280 once by eye |
-| +7 | כללי | שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות | ✅ PASS | legal name: לחם ארז הרצליה |
+| +7 | כללי | שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות | ✅ PASS | legal name: שאולוף זאב ובניו בע"מ |
 | +8 | כללי | מייל הטפסים ושם האתר מוגדרים נכון | ✅ PASS | leads → effi289@gmail.com; subject carries the site name; staging never mails the client |
 | +9 | כללי | סדר היררכי של כותרות, בלי H2 בטפסים | ✅ PASS |  |
 | +10 | כללי | כפתור נגישות (Ally) מוצג באתר | ✅ PASS | visible |

@@ -43,3 +43,13 @@ What they want to know fast: what's on the menu, hours, how to order, can I book
 2. Delivery/take-away has no online order link: buttons call / WhatsApp, menu page links the chain menu.
 3. Blog: the basic package and the brief have no blog; no posts written.
 4. Privacy: Zap standard wording; legal company name unknown (launch blocker until confirmed).
+
+## Research round 2 (2026-11-02)
+| field | value | source |
+|---|---|---|
+| legal name | שאולוף זאב ובניו בע"מ (franchisee of רשת לחם ארז בע"מ) | Zap disconnection form 19.4.2020 for customer 80049225 (F:\sitecontent\80049225\חומרים ישנים\טופס ניתוק 19.4.20). 2020 record: confirm still current |
+| branch menu | https://media.getmood.io/warehouse/dynamic/728563.pdf (branch restaurant menu with prices) | lehemerez.co.il/branches/hanadiv |
+| hours, chain site | א-ה 7:15-20:00, שישי 7:15-14:00, שבת סגור | lehemerez.co.il/branches/hanadiv. Third version (d.co.il 22:45/13:45, rest.co.il 22:30/before Shabbat, updated 19/10/2026). Unresolved: only the client knows |
+| events capacity, chain site | "עד 80 איש" | lehemerez.co.il/branches/hanadiv. Brief says private room 30 / 70 seats: brief kept |
+| online ordering | none: no Wolt page (404), no link on the chain site or Zap listings | lehemerez.co.il, wolt.com, rest.co.il, d.co.il |
+| services on chain site | איסוף עצמי, גישה לנכים, משלוחים, אירועים, חנייה, קייטרינג | lehemerez.co.il/branches/hanadiv |
