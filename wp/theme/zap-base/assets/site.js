@@ -69,16 +69,32 @@
   if (motion) {
     var h1 = document.querySelector('.zs-hero__title .elementor-heading-title');
     if (h1 && !h1.querySelector('.zs-w')) {
+      // Each .zs-w is an inline-block, which the bidi algorithm treats as one neutral box. Splitting a Latin
+      // name word by word inside an RTL heading therefore lays its words out right to left ("Dream from Steel"
+      // rendered as "Steel from Dream"). So split on bidi runs: every Hebrew/Arabic word is its own span, and a
+      // run of Latin words stays in one span, where the browser lays it out left to right as written.
+      var RTL = /[\u0590-\u05FF\u0600-\u06FF\u0700-\u074F\u0780-\u07BF\uFB1D-\uFDFF\uFE70-\uFEFF]/;
       var wi = 0, walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
       nodes.forEach(function (n) {
         if (n.parentElement.closest('.zs-h1__sep')) return;
-        var frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(function (part) {
+        var frag = document.createDocumentFragment(), parts = n.textContent.split(/(\s+)/), run = null;
+        var span = function (text) {
+          var sp = document.createElement('span'); sp.className = 'zs-w';
+          sp.style.setProperty('--w', wi++); sp.textContent = text; frag.appendChild(sp);
+        };
+        var flush = function () { if (run !== null) { span(run); run = null; } };
+        parts.forEach(function (part, i) {
           if (!part) return;
-          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-          var sp = document.createElement('span'); sp.className = 'zs-w'; sp.style.setProperty('--w', wi++); sp.textContent = part; frag.appendChild(sp);
+          if (/^\s+$/.test(part)) {
+            var next = parts[i + 1];
+            if (run !== null && next && !/^\s+$/.test(next) && !RTL.test(next)) { run += part; return; }
+            flush(); frag.appendChild(document.createTextNode(part)); return;
+          }
+          if (RTL.test(part)) { flush(); span(part); return; }
+          run = run === null ? part : run + part;
         });
+        flush();
         n.parentNode.replaceChild(frag, n);
       });
     }
