@@ -15,6 +15,8 @@
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
+  zs intake <specs...> [--images-root F:\\Clients]  sites-team email -> sites/c<id>/ (brief + client images)
+  zs staging <slug> --site https://x  PC: log in (reset via Outlook if needed) + approve the cloud's access code
   zs list                           sites on this machine
   zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
   zs pool <slug>                    this site's measured look vs every other client (stops at 40% alike)
@@ -116,8 +118,24 @@ def _remote(a):
 
 def cmd_connect(a):
     from remote import connect, NovamiraError
+    say = lambda m: print(m, flush=True)
+    if a.handoff:   # the PC (zs staging) approves: hand it the code through the site branch
+        import re, subprocess, time
+        def say(m):
+            print(m, flush=True)
+            hit = re.search(r"open (\S+) .* code\s+(\S+)", m)
+            if not hit:
+                return
+            d = ROOT / "sites" / a.handoff / "inbox"
+            d.mkdir(parents=True, exist_ok=True)
+            f = d / "connect-request.json"
+            f.write_text(json.dumps({"site": a.site, "verification_uri": hit.group(1), "user_code": hit.group(2),
+                                     "expires_at": time.time() + 840}), encoding="utf-8")
+            g = lambda *c: subprocess.run(["git", "-C", str(ROOT), *c], capture_output=True)
+            g("add", str(f)); g("commit", "-m", f"{a.handoff}: staging access request"); g("push")
+            print("handed to the PC: sites/%s/inbox/connect-request.json pushed; waiting for zs staging there" % a.handoff, flush=True)
     try:
-        f = connect(a.site, say=lambda m: print(m, flush=True))
+        f = connect(a.site, say=say)
     except NovamiraError as e:
         die(str(e))
     print(f"connected: token stored for this machine only ({f.name}, not committed). Next: zs push <slug> --site {a.site}")
@@ -339,7 +357,7 @@ def main():
     x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*", help='"/", "/<page>/" or "all"')
     x.add_argument("--directions", action="store_true"); x.add_argument("--mobile", action="store_true"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_shots)
     x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
-    x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.set_defaults(f=cmd_connect)
+    x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.add_argument("--handoff", metavar="SLUG", help="push the code to site/<slug> for the PC (zs staging) to approve"); x.set_defaults(f=cmd_connect)
     x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")
     x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--full", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
@@ -350,6 +368,8 @@ def main():
     x = sub.add_parser("image");x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
+    import intake; intake.add_parser(sub)
+    import staging; staging.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
     x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)

@@ -429,3 +429,12 @@ a.zs-kosher:hover { text-decoration: underline; }
 }
 /* breadcrumbs on a photo hero are white under every tone (the light tone's muted grey sat dark on the washed photo) */
 html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-crumbs :is(*, a, .breadcrumb_last), html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-crumbs { color: #fff; }
+/* cover / inset / curve heroes are centred (finish.css bottom-aligns the cinematic image hero with a 560px floor) */
+html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { justify-content: center !important; }
+/* short laptop screens (1280×620): the home cover hero's logo, H1, lead and both buttons fit above the fold
+   (the 560px floor + the 115px hero logo pushed the buttons just below it) */
+@media (min-width: 768px) and (max-height: 760px) {
+  html body .e-con.zs-hero.zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: min(calc(100svh - 120px), 820px) !important; }
+  html body .e-con.zs-hero.zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { padding-block: 20px !important; }
+  html body .zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__logo img { max-height: 84px; width: auto; }
+}
