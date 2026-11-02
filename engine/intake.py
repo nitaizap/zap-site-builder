@@ -438,13 +438,23 @@ def already_built(cid, sites_dir):
         except (OSError, ValueError):
             continue
     branches = [b.strip() for b in _git("branch", "-a", "--format=%(refname:short)").splitlines() if b.strip()]
+    # The branch you are standing on does not count. The documented flow is to cut site/c<id> and then
+    # run intake inside it, so counting it made every worktree-first run trip over itself.
+    here = _git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    mine = {"site/" + slug, "origin/site/" + slug}
     for b in branches:
-        if b == "site/" + slug or b.endswith("/site/" + slug):
+        if (b == "site/" + slug or b.endswith("/site/" + slug)) and b != here:
+            if not _git("ls-tree", "--name-only", b, "sites/%s/" % slug).strip():
+                continue                    # the branch exists but holds nothing for this client
             hits.append("branch %s exists" % b)
     for b in branches:                      # built earlier under a business-name slug
-        if "site/" not in b or b == "site/" + slug or b.endswith("/site/" + slug):
+        if "site/" not in b or b in mine or b == here:
             continue
-        hit = _git("grep", "-l", cid, b, "--", "sites/").strip()
+        # Match the client_id FIELD, not the id anywhere under sites/. One email often carries several
+        # clients and every brief embeds that whole email body, so a prose sweep made each client in a
+        # multi-client mail "name" all the others - it blocked הרקולס-גורקביץ 743850 on 2026-11-02
+        # because car service's brief quoted the same mail.
+        hit = _git("grep", "-l", '"client_id": "%s"' % cid, b, "--", "sites/*/intake.json").strip()
         if hit:
             where = hit.splitlines()[0].split(":", 1)[-1]
             hits.append("branch %s names this client (%s)" % (b, where))
