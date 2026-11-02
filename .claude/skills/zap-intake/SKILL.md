@@ -44,6 +44,10 @@ Sort each message:
 - **new request**: has `.docx` or `.xlsx` attachments with an 8-digit id (usually "<business> <id> - בייסיק.docx"
   for the Word template, "<business> <id> - וויקנד.xlsx" for the Excel one).
   One email can hold several clients: each spec sheet is one site.
+  A client taken in before is **skipped**, with the evidence printed (a `site/c<id>` branch, another
+  branch naming the id, a local `sites/` folder, or `fingerprints/clients.json`). That file is committed
+  and is the only record that survives a branch being deleted once a site ships, so commit it together
+  with `sites/c<id>` when intake says it added an entry. `--force` takes a client in again on purpose.
 - **staging URL**: a reply naming a client id/business and a URL (`*.ussl.co.il` etc.) → step 4 (`zs replies`).
 - **feedback**: a reply in the thread of a client already handed off → step 4.
 - anything else: skip, list it in the summary.
