@@ -1,0 +1,49 @@
+{
+  "80049225": {
+    "first_seen": "2026-11-01",
+    "name": "לחם ארז הרצליה",
+    "slug": "lehem-erez-herzliya"
+  },
+  "80240748": {
+    "first_seen": "2026-10-21",
+    "name": "מהירות האור שליחויות",
+    "slug": "mehirut-haor"
+  },
+  "80272199": {
+    "first_seen": "2026-10-25",
+    "name": "ניק איטום",
+    "slug": "nick-itum"
+  },
+  "80356988": {
+    "first_seen": "2026-10-28",
+    "name": "פטוצ'ינה",
+    "slug": "patoccina"
+  },
+  "80392210": {
+    "first_seen": "2026-11-01",
+    "name": "קיסוס ביץ קלאב אילת",
+    "slug": "kisos-beach-club"
+  },
+  "80392812": {
+    "first_seen": "2026-10-28",
+    "name": "בלה מארה",
+    "slug": "bella-mare"
+  },
+  "80392936": {
+    "first_seen": "2026-10-21",
+    "name": "הוילה הלבנה ינוב",
+    "slug": "white-villa"
+  },
+  "80393074": {
+    "first_seen": "2026-10-29",
+    "name": "בצל התאנה",
+    "note": "the sites team's subject line and the staging host say 80393140; unresolved",
+    "slug": "betzel-hateena"
+  },
+  "80393140": {
+    "first_seen": "2026-10-29",
+    "name": "בצל התאנה",
+    "note": "same client as 80393074; which id is real is unresolved",
+    "slug": "betzel-hateena"
+  }
+}

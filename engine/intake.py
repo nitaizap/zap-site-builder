@@ -16,6 +16,7 @@ Nothing is invented: what is not found stays empty and is listed under "missing"
 import json
 import re
 import shutil
+import subprocess
 import sys
 import urllib.parse
 import zipfile
@@ -371,7 +372,81 @@ def copy_images(dirs, dest):
 
 # ---------- main ----------
 
-def intake(inputs, images_root=None, sender="", subject="", body="", staging="", sites_dir=None, dry_run=False):
+def _git(*args):
+    """git stdout, or "" when git is missing or the command fails. Never raises."""
+    try:
+        r = subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True,
+                           text=True, encoding="utf-8", errors="replace", timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return r.stdout if r.returncode == 0 else ""
+
+
+CLIENTS = ROOT / "fingerprints" / "clients.json"   # committed: client id -> what was built
+
+
+def clients_seen():
+    try:
+        return json.loads(CLIENTS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def record_client(cid, slug, name):
+    """Remember that this client exists, so a later run knows not to re-create it.
+
+    Branches are the other evidence, and branches get deleted once a site ships; this
+    file is committed and survives that.
+    """
+    d = clients_seen()
+    if cid in d:
+        return False
+    d[cid] = {"slug": slug, "name": name, "first_seen": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+    CLIENTS.parent.mkdir(parents=True, exist_ok=True)
+    CLIENTS.write_text(json.dumps(d, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return True
+
+
+def already_built(cid, sites_dir):
+    """Evidence that this client was taken in before. Empty list = genuinely new.
+
+    A thread gets read again far more often than a client is genuinely new: a second
+    checkout, a re-run, an old inbox. Intake used to re-create the folder and the branch
+    every time, and the only thing in the way was work/intake-state.json, which is
+    gitignored and per-checkout. Machine-checkable signs, cheapest first.
+    """
+    slug, hits = "c" + cid, []
+    sites_dir = Path(sites_dir)
+    known = clients_seen().get(cid)
+    if known:
+        hits.append("fingerprints/clients.json: %s (%s), first seen %s"
+                    % (known.get("slug", "?"), known.get("name") or "no name", known.get("first_seen", "?")))
+    if (sites_dir / slug).is_dir():
+        hits.append("sites/%s/ already exists here" % slug)
+    for f in sorted(sites_dir.glob("*/intake.json")):
+        if f.parent.name == slug:
+            continue
+        try:
+            if json.loads(f.read_text(encoding="utf-8")).get("client_id") == cid:
+                hits.append("sites/%s/ is the same client" % f.parent.name)
+        except (OSError, ValueError):
+            continue
+    branches = [b.strip() for b in _git("branch", "-a", "--format=%(refname:short)").splitlines() if b.strip()]
+    for b in branches:
+        if b == "site/" + slug or b.endswith("/site/" + slug):
+            hits.append("branch %s exists" % b)
+    for b in branches:                      # built earlier under a business-name slug
+        if "site/" not in b or b == "site/" + slug or b.endswith("/site/" + slug):
+            continue
+        hit = _git("grep", "-l", cid, b, "--", "sites/").strip()
+        if hit:
+            where = hit.splitlines()[0].split(":", 1)[-1]
+            hits.append("branch %s names this client (%s)" % (b, where))
+    return hits
+
+
+def intake(inputs, images_root=None, sender="", subject="", body="", staging="", sites_dir=None,
+           dry_run=False, force=False):
     sites_dir = Path(sites_dir or ROOT / "sites")
     docs = []
     for i in inputs:
@@ -389,6 +464,12 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             results.append({"file": doc.name, "error": "no 8-digit client id in file name or text"})
             continue
         slug = "c" + cid
+        seen = [] if force else already_built(cid, sites_dir)
+        if seen:
+            results.append({"file": doc.name, "client_id": cid, "slug": slug,
+                            "status": "skipped: already taken in", "evidence": seen,
+                            "hint": "add --force to take it in again"})
+            continue
         spec = spec_fields(text)
         name = spec.get("name") or spec.get("contact_name") or name_from_filename(doc.stem, cid)
         links = sorted(set(doc_links + [u.rstrip(".,") for u in URL_RE.findall(text)] + body_links_for(body, cid, name)))
@@ -429,6 +510,8 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
         if not info["staging_url"]:
             info["missing"].append("staging URL (the sites team sends it later)")
         if not dry_run:
+            if record_client(cid, slug, name):
+                info["note"] = "recorded in fingerprints/clients.json - commit that file too"
             (site / "brief").mkdir(parents=True, exist_ok=True)
             shutil.copy2(doc, site / "brief" / doc.name)
             md = [f"# {name} ({cid})", "", f"- from: {sender}", f"- subject: {subject}",
@@ -448,7 +531,8 @@ def cli(a):
     body = Path(a.body_file).read_text(encoding="utf-8") if a.body_file else ""
     import os
     root = a.images_root or os.environ.get("ZS_IMAGES_ROOT") or (r"F:\SiteContent" if os.name == "nt" else None)
-    res = intake(a.inputs, root, a.sender or "", a.subject or "", body, a.staging or "", dry_run=a.dry_run)
+    res = intake(a.inputs, root, a.sender or "", a.subject or "", body, a.staging or "",
+                 dry_run=a.dry_run, force=a.force)
     print(json.dumps(res, ensure_ascii=False, indent=2))
     if any("error" in r for r in res):
         sys.exit(1)
@@ -461,6 +545,8 @@ def add_parser(sub):
     x.add_argument("--sender"); x.add_argument("--subject"); x.add_argument("--staging")
     x.add_argument("--body-file", help="the email body saved as UTF-8 text")
     x.add_argument("--dry-run", action="store_true")
+    x.add_argument("--force", action="store_true",
+                   help="take the client in again even though it was taken in before")
     x.set_defaults(f=cli)
 
 
