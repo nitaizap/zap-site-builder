@@ -34,6 +34,12 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
   `site/*` branches, and stop at 40% alike. Fix it by redesigning (kit, palette, hero, components), never by tuning
   the measure. The rules are in `.claude/skills/zap-site/references/pool.md`.
 - Never invent business facts; never mail the real client from staging; never print secrets.
+- **Image rights.** Standing instruction from שרון יוסף, 20/10/2026, after review by עו"ד קובי בארי: a
+  copyright claim can reach ₪100,000 per image, with no need to prove damage. Every image uploaded to a
+  client site is recorded in `sites/<slug>/IMAGE-SOURCES.md`: upload date, who uploaded it, and the exact
+  source - for a downloaded photo the site and the licence type, for AI the tool **and the model**. An
+  image whose origin is uncertain is not used. Details: `.claude/skills/zap-site/references/images.md`.
+- **Weave budget: 100 credits per client.** Spend freely under it; only going over needs the user.
 - Before calling anything done: go through `.claude/skills/zap-site/references/qa-rules.md` (what Zap QA rejects), then `bin/zs qa <slug>` with 0 errors and `bin/zs seo <slug>` (the Zap SEO
   checklist) with 0 FAIL.
 
