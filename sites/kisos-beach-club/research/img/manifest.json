@@ -1,0 +1,50 @@
+[
+  {
+    "file": "research/img/logo-00.png",
+    "src": "https://kissoseilat.co.il/wp-content/uploads/2026/09/kissos-logo.png",
+    "alt": "לוגו קיסוס ביץ קלאב מסעדה",
+    "w": 720,
+    "logo": true,
+    "kb": 156
+  },
+  {
+    "file": "research/img/01.jpg",
+    "src": "https://kissoseilat.co.il/wp-content/uploads/2026/09/kissos-signage-1536x1024.jpg",
+    "alt": "שילוט קיסוס ביץ קלאב על המתחם באילת",
+    "w": 1366,
+    "logo": false,
+    "kb": 216
+  },
+  {
+    "file": "research/img/02.jpg",
+    "src": "https://kissoseilat.co.il/wp-content/uploads/2026/09/kissos-view-red-sea-scaled.jpg",
+    "alt": "הנוף אל הים האדום והרי אדום מקיסוס",
+    "w": 1366,
+    "logo": false,
+    "kb": 438
+  },
+  {
+    "file": "research/img/03.jpg",
+    "src": "https://kissoseilat.co.il/wp-content/uploads/2026/09/kissos-wellness-deck-1536x1024.jpg",
+    "alt": "תרגול וולנס על הדק מול הים בקיסוס",
+    "w": 1366,
+    "logo": false,
+    "kb": 262
+  },
+  {
+    "file": "research/img/logo-04.png",
+    "src": "https://kissoseilat.co.il/wp-content/plugins/sogo-accessibility/public/css/sogo-logo.png",
+    "alt": "sogo logo",
+    "w": 55,
+    "logo": true,
+    "kb": 2
+  },
+  {
+    "file": "research/img/logo-05.png",
+    "src": "https://kissoseilat.co.il/wp-content/uploads/2026/09/kissos-logo-150x150.png",
+    "alt": "",
+    "w": 0,
+    "logo": true,
+    "kb": 28
+  }
+]
