@@ -10,8 +10,13 @@ default in every case; the default taken is written next to each item.
    (`references/qa-rules.md`, `playbook.md`) is that the site shows the Zap tracking number, so the site
    shows **072-2594285** with `phone_is_virtual` (the "מספר מקשר" link and Zap's explanation popup), and
    names **050-9254010** as the business's own line. WhatsApp goes to 050-9254010, as the spec asks.
-   **Unresolved:** the spec explicitly labels the 050 as "טלפון לאתר". One line from Noam or Ofir flips it
-   (`business.phone_display` / `phone_regular` in `site.json`, one rebuild).
+   **What the listing itself shows** (both Dapei Zahav pages for this customer id, read 02/11): the only
+   phone button on the listing is **072-2594285**, and the page says plainly that Zap routes it as a virtual
+   number. The 050 appears there only inside the text of the share buttons, never as a contact button. The
+   WhatsApp button on the listing goes to 972559686670, which is a Zap service number and not the client's.
+   So the public record agrees with what the site now does.
+   **Still unresolved:** the spec sheet explicitly labels the 050 as "טלפון לאתר". One line from Noam or Ofir
+   settles it (`business.phone_display` / `phone_regular` in `site.json`, one rebuild).
 
 2. **The package.** Not named anywhere in the mail or the spec sheet, and the spec's project type says
    "אתר מלא (כולל דומיין)". Built as the standard basic scope: no video, no hero slider, a restrained
@@ -21,25 +26,25 @@ default in every case; the default taken is written next to each item.
    client's call, not ours.
 
 3. **Legal name for the privacy policy.** `business.legal_name` is set to the trading name
-   "מסגרית Dream from Steel" because no registered name was given. `standards.privacy_confirmed` is false,
-   so the privacy page is a launch blocker until the client confirms the legal name, whether a customer
-   database is kept, and the contact address for privacy requests.
+   "מסגרית Dream from Steel" because no registered name was given. **Looked for and not found:** neither
+   Dapei Zahav listing for this customer id carries a company name, ח.פ., ע.מ., בע"מ or עוסק מורשה number,
+   and the owner's name does not appear on them either. This one genuinely needs the client.
+   `standards.privacy_confirmed` stays false, so the privacy page is a launch blocker until the client
+   confirms the legal name, whether a customer database is kept, and the contact address for privacy
+   requests.
 
-4. **Logo: it exists, but the file is not on this branch.** The spec sheet leaves §6 blank, but Noam's reply
-   of 02/11 15:09 (`inbox/2026-11-02-feedback.md`) says *"יש רק לוגו"*: the logo is the one asset the client
-   did send. It did not reach `sites/c80386843/assets/`, so the cloud session never saw it and nothing could
-   be built from it.
-   **Needs:** whoever has it (the mail thread, or the F: drive on the intake PC) pushes it to this branch as
-   `sites/c80386843/assets/logo.png` (PNG or WebP, transparent, no SVG: WordPress rejects those). Then set
-   `logo` in `site.json`, cut a square 512px `favicon.png` from its symbol, and rebuild. Until then the
-   header and footer show the business name as text, which is legible and passes QA, and the palette was
-   chosen from the client's material rather than sampled from the logo, so it may want revisiting once the
-   logo is in hand.
+4. **Logo: found and in use, but only at 140px.** The file never reached this branch, so it was found on the
+   client's own Dapei Zahav listing, in Zap's `Customers/80386843/` folder: the Dream from Steel badge, dark
+   slate with an orange rim. It is now the site's logo in the header and the footer, the favicon is cut from
+   it, and **the whole palette is sampled from it** (orange `#b84606`, slate `#1b2a36`), replacing the
+   petrol-and-brass scheme the site was built with before it turned up.
+   **What is still wanted:** the original file. 140x140 is the largest the directory serves, which is sharp
+   enough at the header's 96px but soft on a high-density screen and too small for a crisp 512px favicon. Ask
+   the client for the source (SVG, AI/EPS, or a PNG of 512px or more); dropping it in is one file plus a
+   rebuild. Provenance is recorded in `IMAGE-SOURCES.md`.
 
-5. **Favicon is a placeholder.** With no logo there is no symbol to cut one from, and `zs qa` fails a site
-   with no favicon. `assets/favicon.png` is a plain brass tile with the initials DS, made in this session
-   (recorded in `IMAGE-SOURCES.md`). It is a stand-in, not a brand mark: replace it with one made from the
-   real logo when that arrives.
+5. **Favicon** is now cut from the real logo (see item 4), so this is closed except for the resolution point
+   above.
 
 ## Reserved, waiting for the file
 

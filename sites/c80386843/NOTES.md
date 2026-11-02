@@ -20,7 +20,9 @@ automatic mode: sitemap from the spec, direction chosen here, open points collec
 | what the business does | metalwork and manufacture of metal products, everything custom, planning to finished product | spec sheet §5 |
 | customers | private clients, architects, carpenters, drone-market and aviation-market companies | spec sheet §5 |
 | existing site | none: only the Dapei Zahav listing d.co.il/80386843/33060/ | spec sheet §2, intake |
-| logo, brand colours, "sites you liked" | not given on the spec sheet; the team says a logo exists but it never reached the branch | spec sheet §6 (blank), Noam 02/11 (`inbox/2026-11-02-feedback.md`) |
+| logo | the Dream from Steel badge: slate hexagon, orange rim | the client's own Dapei Zahav listing, `img.d.co.il/Customers/80386843/…png` (found 02/11; see IMAGE-SOURCES.md) |
+| brand colours | orange `#d15301` and slate `#2c3e4f`, sampled from the logo's pixels | the logo file above |
+| "sites you liked" | not given | spec sheet §6 (blank) |
 | photographs | none supplied; generated or stock imagery sanctioned by the sites team | spec §7 blank; `F:\SiteContent\80386843` empty (intake session); Noam 02/11 (`inbox/2026-11-02-feedback.md`) |
 
 Nothing on the site comes from anywhere else. No founding year is stated (20 years is the spec's own
@@ -43,7 +45,7 @@ wording, not a date); no licences, no prices, no ratings, no counts.
 | `archetype` | `statement` | type-led: one confident line ("אין אצלנו קטלוג"), then short proof. The right shape for a site with four atmosphere photos and no work to show |
 | `base_template` | 1 | navy-on-white, offset frames. **Deliberately not template 5** (the metal-works demo, white + red): the obvious pick for a metalworker and already used by the pilot branches |
 | preset | `editorial` | serif headings, hairlines, no shadows: craft rather than heavy industry |
-| palette | primary petrol steel `#15606b`, accent brass `#b07d22` | steel and brass, the two metals in every one of the client's photos. Measured as the most distant brand colour available: brass and amber are taken by betzel-hateena and kisos-beach-club, navy by bella-mare, blue by nick-itum, red by mehirut-haor, maroon by patoccina, olive by white-villa |
+| palette | primary orange `#b84606`, accent steel blue `#6b8ca6`, ink slate `#1b2a36` | **sampled from the client's own logo** once it was found on their Dapei Zahav listing. The logo's orange is `#d15301`; it is deepened to `#b84606` so white text clears 4.5:1 and the chapter headings clear 4.5:1 on the surface tint, which `design.md` allows ("a darker primary only if contrast needs it"). The logo's slate `#2c3e4f` carries the text and the footer. The site was built first on petrol steel and brass, chosen as the most distant free colour; that was replaced the moment the real brand turned up |
 | fonts | Frank Ruhl Libre / Assistant | the business is bespoke, not mass production. A serif headline against brushed steel reads as craft |
 | radius | 10 | sharp (2) was the first choice, but it made the measured page frame identical to mehirut-haor's |
 | hero | `centered` + the workshop photo | statement first, photo second |
@@ -65,6 +67,25 @@ collage → cta → faq:dark` (11 sections). Components picked for what none of 
   palette, kit and seven of the eleven components changed. Final: 38% (mehirut-haor), 35% (white-villa)
 - the sidebar kit leaves the title column empty on a section without a title (the service-page `prose`).
   Kept: every section's content then starts at the same x, which is the kit's point
+
+## Research done in the build session
+
+The intake session reported the Dapei Zahav listing as holding only a generic category cover. Reading both
+listings for this customer id directly (`/80386843/33060/`, category מתכות, and `/80386843/30120/`, category
+מסגריות) turned up more:
+
+- **the client's logo**, in Zap's own `Customers/80386843/` folder, not a category cover. It is now the
+  site's logo, favicon and palette. The playbook's warning ("missing a logo that sat in a directory's
+  gallery cost a round") was exactly this case.
+- **the phone question, partly settled**: the only contact button on either listing is 072-2594285, and the
+  page itself says Zap routes it as a virtual number. The 050 appears only inside the share-button text. The
+  WhatsApp button there (972559686670) is a Zap service number, not the client's.
+- **no legal name anywhere**: no company name, ח.פ., ע.מ., בע"מ or עוסק מורשה on either page, and the
+  owner's name does not appear. The privacy-page blocker genuinely needs the client.
+- **no reviews**: both listings say "אין עדיין חוות דעת", so no `reviews` section was added even though
+  `dpz_customer_id` is set. It would render empty.
+- the second listing's description drops "ייצור מוצרי מתכת" from the first sentence; the fuller wording on
+  the 33060 listing is the one the spec sheet also carries, and that is what the site uses.
 
 ## Keyword map
 
