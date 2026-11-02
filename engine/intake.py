@@ -110,10 +110,35 @@ def body_links_for(body, cid, name):
     return sorted(set(out))
 
 
+SPEC_FIELDS = {   # label in Zap's spec template -> intake.json key
+    "שם הלקוח": "name", "מספר לקוח": "client_id", "עץ אתר": "sitemap", "דומיין": "domain",
+    "אתר קיים": "old_site", "טלפון מסקיו": "phone_tracking", "טלפון ישיר לעסק": "phone_direct",
+    "וואטסאפ": "whatsapp", "שעות פעילות": "hours", "כתובת": "address", "אימייל": "email", "GMB": "gmb",
+    "פייסבוק": "facebook", "אינסטגרם": "instagram", "יוטיוב": "youtube", "לינקדין": "linkedin",
+    "טוויטר": "twitter", "עמוד משלוחים / תפריט": "menu_url", "לוגו": "logo", "חומר גרפי גולמי": "raw_graphics",
+    "צבעים": "colors", "רפרנסים": "references", "תבנית נבחרת": "template", "רסט": "rest", "דפי זהב": "dapei_zahav",
+}
+
+
+def spec_fields(text):
+    """First `label | value` row per known label (later sections reuse labels like H1, so first wins)."""
+    out = {}
+    for line in text.splitlines():
+        if " | " not in line:
+            continue
+        k, v = (x.strip() for x in line.split(" | ", 1))
+        key = SPEC_FIELDS.get(k)
+        if key and v and key not in out:
+            out[key] = v
+    return out
+
+
 # ---------- images ----------
 
 def find_client_dirs(root, cid, depth=4):
     root = Path(root)
+    if (root / cid).is_dir():             # Zap layout: F:\SiteContent\<id>\
+        return [root / cid]
     hits, stack = [], [(root, 0)]
     while stack:
         d, lvl = stack.pop()
@@ -179,8 +204,9 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             results.append({"file": doc.name, "error": "no 8-digit client id in file name or text"})
             continue
         slug = "c" + cid
-        name = name_from_filename(doc.stem, cid)
-        links = sorted(set(doc_links + body_links_for(body, cid, name)))
+        spec = spec_fields(text)
+        name = spec.get("name") or name_from_filename(doc.stem, cid)
+        links = sorted(set(doc_links + [u.rstrip(".,") for u in URL_RE.findall(text)] + body_links_for(body, cid, name)))
         info = {
             "client_id": cid, "slug": slug, "branch": "site/" + slug, "name": name,
             "package": package_from(doc.stem, text),
@@ -189,6 +215,9 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
             "staging_url": staging or staging_from(text) or staging_from(body),
             "links": links,
             "zap_pages": {"dapei_zahav": f"https://www.d.co.il/{cid}/"},
+            "spec": spec,
+            "image_sources": sorted({u for u in links if "wetransfer" in u or "drive.google" in u or "dropbox" in u
+                                     or "rest.co.il" in u or "instagram" in u}),
             "images": [], "image_dirs": [], "missing": [], "status": "intake",
         }
         if any("rest.co.il" in u for u in links):
@@ -223,7 +252,9 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
 
 def cli(a):
     body = Path(a.body_file).read_text(encoding="utf-8") if a.body_file else ""
-    res = intake(a.inputs, a.images_root, a.sender or "", a.subject or "", body, a.staging or "", dry_run=a.dry_run)
+    import os
+    root = a.images_root or os.environ.get("ZS_IMAGES_ROOT") or (r"F:\SiteContent" if os.name == "nt" else None)
+    res = intake(a.inputs, root, a.sender or "", a.subject or "", body, a.staging or "", dry_run=a.dry_run)
     print(json.dumps(res, ensure_ascii=False, indent=2))
     if any("error" in r for r in res):
         sys.exit(1)
@@ -232,7 +263,7 @@ def cli(a):
 def add_parser(sub):
     x = sub.add_parser("intake", help="sites-team email (.docx specs + body) -> sites/c<id>/ with brief + images")
     x.add_argument("inputs", nargs="+", help=".docx files or a folder holding them")
-    x.add_argument("--images-root", help=r"e.g. F:\Clients  (searched for a folder whose name holds the client id)")
+    x.add_argument("--images-root", help=r"default F:\SiteContent (holds one folder per client id)")
     x.add_argument("--sender"); x.add_argument("--subject"); x.add_argument("--staging")
     x.add_argument("--body-file", help="the email body saved as UTF-8 text")
     x.add_argument("--dry-run", action="store_true")
