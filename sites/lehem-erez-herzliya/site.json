@@ -381,7 +381,7 @@
               "value": "מערכת מולטימדיה"
             },
             {
-              "label": "מתאים ל",
+              "label": "למי מתאים",
               "value": "מפגשים, ישיבות צוות, חגיגות משפחתיות"
             },
             {
@@ -399,7 +399,7 @@
           "variant": "strip",
           "title": "מהסניף",
           "images": [
-            "seating",
+            "bakery",
             "counter",
             "storefront"
           ],
@@ -487,7 +487,7 @@
       "type": "page",
       "title": "גלריה",
       "excerpt": "תמונות מהמנות, מהמעדנייה ומהסניף של לחם ארז ברחוב הנדיב בהרצליה.",
-      "featured_image": "counter_wide",
+      "featured_image": "storefront",
       "seo": {
         "title": "לחם ארז הרצליה | גלריה",
         "description": "תמונות מלחם ארז הרצליה ברחוב הנדיב: ארוחות בוקר, לחם ומאפים, פסטות וסלטים, קפה מהבר, המעדנייה ואזור הישיבה של הסניף. כך זה נראה אצלנו לפני שאתם מגיעים.",
@@ -498,7 +498,7 @@
           "type": "hero",
           "title": "גלריה",
           "lead": "מהמנות, מהמעדנייה ומהסניף ברחוב הנדיב בהרצליה.",
-          "image": "counter_wide"
+          "image": "storefront"
         },
         {
           "type": "gallery",
@@ -520,8 +520,8 @@
             "focaccia",
             "greek",
             "seating",
-            "storefront",
-            "counter"
+            "counter",
+            "cappuccino"
           ]
         }
       ]
