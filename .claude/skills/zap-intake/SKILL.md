@@ -14,7 +14,8 @@ runs in the cloud with `/zap-site` on the branch this skill pushes.
 |---|---|
 | senders | `NetaS@d.co.il`, `SharonY@d.co.il`, `NoamR@d.co.il` |
 | images root | `F:\SiteContent\<client id>\` (default; override with `ZS_IMAGES_ROOT`). F: is `\\gpna01\Drive-f$` |
-| state | `work/intake-state.json` (handled message ids; gitignored) |
+| state | `work/intake-state.json` (handled message ids; **gitignored, so per checkout** - this PC has three clones of the repo, each with its own) |
+| real guard | `fingerprints/clients.json` (committed, one entry per client id; survives branch deletion and other checkouts) |
 | inbox folder | `work/inbox/<message-id>/` (attachments + `body.txt`; gitignored) |
 
 ## 0. One-time setup on the PC
@@ -22,9 +23,13 @@ runs in the cloud with `/zap-site` on the branch this skill pushes.
 ```bash
 py -m pip install playwright pillow
 py -m playwright install chromium
+bash tools/setup-windows.sh      # portable PHP + WP-CLI + MariaDB into .tools/ (needed by zs build/qa/seo)
 setx ZS_WP_USER "<the user's WordPress login email>"
 setx ZS_WP_PASSWORD "<the shared staging password>"
 ```
+
+Full detail, and the UTF-8 console trap when calling `py engine/zs.py` instead of `bin/zs`:
+`docs/PC-SETUP.md` steps 1b and 1c.
 
 The user types the last two themselves in their own terminal; never ask for, echo or store the password.
 Reopen the terminal after `setx`.
@@ -79,8 +84,10 @@ Then start the cloud build on that branch, prompt:
 
 > /zap-site build sites/c<id> from sites/c<id>/brief/ and intake.json. Staging: <url or "not yet: build locally, push when it arrives">.
 
-Start it with `claude --remote "<prompt>"` from the repo when that is available; otherwise list the
-branches + prompts in the summary for the user to paste into a new cloud session.
+There is no CLI command that starts a cloud session (`claude --remote` does not exist; `--remote-control`
+is a different thing). List the branches + prompts in the summary and the user opens the session from the
+Claude desktop app or claude.ai/code: repo `nitaizap/zap-site-builder`, environment `zap-sites`, branch
+`site/c<id>`, paste the prompt.
 
 ## 4. Staging URL / feedback replies (`zs replies`)
 
