@@ -71,7 +71,7 @@ def known(slug):
     for f in sorted((ROOT / "fingerprints").glob("*.json")):
         if f.stem != slug:
             fp = load(f.read_text(encoding="utf-8"))
-            if fp:
+            if fp and "palette" in fp and "secs" in fp:   # skip the registry index (clients.json) and partial files
                 out[f.stem] = fp
     for other, _d, fp in _others(slug, files=True):
         if fp and "palette" in fp:
