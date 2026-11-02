@@ -1,0 +1,105 @@
+name: engine
+
+# There was no CI at all before this workflow: every PR merged with an empty
+# statusCheckRollup. This runs the documented engine test (bin/zs selftest) on a real
+# PHP + MariaDB + WP-CLI stack, so an engine or theme change cannot land unchecked.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: engine-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  selftest:
+    runs-on: ubuntu-24.04
+    # A WordPress install that hangs (download, plugin install, a wedged MariaDB) must not
+    # burn a whole runner hour.
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+      # engine/env.py defaults for non-Windows; stated here so the job is self-describing.
+      ZS_DB_HOST: 127.0.0.1
+      ZS_DB_PORT: "3306"
+      ZS_DB_USER: zs
+      ZS_DB_PASS: zs
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache apt archives
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives/*.deb
+          key: apt-${{ runner.os }}-24.04-${{ hashFiles('bin/setup-cloud.sh') }}
+          restore-keys: apt-${{ runner.os }}-24.04-
+
+      - name: Cache pip wheels (pillow, playwright)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('bin/setup-cloud.sh') }}
+          restore-keys: pip-${{ runner.os }}-
+
+      # The Chromium download is the slowest part of the setup and never changes between runs.
+      - name: Cache the Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('bin/setup-cloud.sh') }}
+          restore-keys: playwright-${{ runner.os }}-
+
+      # bin/setup-cloud.sh warms this with `wp core download` + the three plugins, so a cache
+      # hit saves re-downloading WordPress and Elementor on every run.
+      - name: Cache the warmed WordPress download
+        uses: actions/cache@v4
+        with:
+          path: /tmp/zs-warm
+          key: wp-warm-${{ runner.os }}-${{ hashFiles('bin/setup-cloud.sh') }}-${{ github.run_id }}
+          restore-keys: wp-warm-${{ runner.os }}-${{ hashFiles('bin/setup-cloud.sh') }}-
+
+      # The repo's own Ubuntu installer (PHP, MariaDB, WP-CLI, pillow, playwright). It assumes
+      # root, which is why it runs under sudo; -E keeps the cache paths above (HOME) in scope.
+      - name: Install the toolchain (bin/setup-cloud.sh)
+        run: sudo -E bash bin/setup-cloud.sh
+
+      - name: Start MariaDB and check the toolchain
+        run: |
+          sudo service mariadb start || sudo service mysql start
+          for i in $(seq 1 30); do mariadb -h127.0.0.1 -uzs -pzs -e 'select 1' >/dev/null 2>&1 && break; sleep 1; done
+          mariadb -h127.0.0.1 -uzs -pzs -e 'select version()'
+          php -v | head -1
+          wp --info --allow-root | head -3
+          bin/zs doctor || true
+
+      # The documented engine test. --strict-uniqueness turns the sample's fingerprint
+      # collision with the real client nick-itum into a failure, which is the point: the
+      # sample must not be allowed to sit at 46% alike. See the PR body.
+      - name: zs selftest --strict-uniqueness
+        run: bin/zs selftest --fresh --strict-uniqueness
+
+      # Not the point of the job: the regression corpus lives in work/inbox/ on the intake PC
+      # and is gitignored, so here this only proves the skip path still exits 0.
+      - name: zs regress (skip path only - no corpus in CI)
+        if: always()
+        run: bin/zs regress
+
+      - name: Upload the QA report and preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-qa
+          path: |
+            sites/sample/QA-REPORT.md
+            sites/sample/preview/
+          if-no-files-found: ignore
+          retention-days: 7
