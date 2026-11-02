@@ -39,7 +39,7 @@ What they want to know fast: what's on the menu, hours, how to order, can I book
 - photos: photographer shoot "תמונות מגיל הצלם" (F:\sitecontent\80049225\חומרים גרפיים), 84 files; old press photos in "חומרים ישנים".
 
 ## Gaps / assumptions
-1. Hours: used d.co.il (Zap's own listing). Confirm against rest.co.il.
+1. Hours: d.co.il (א׳-ה׳ 07:15-22:45, ו׳ 07:15-13:45), decided by Nitai 2026-11-02 over rest.co.il and the chain site.
 2. Delivery/take-away has no online order link: buttons call / WhatsApp, menu page links the chain menu.
 3. Blog: the basic package and the brief have no blog; no posts written.
 4. Privacy: Zap standard wording; legal company name unknown (launch blocker until confirmed).
