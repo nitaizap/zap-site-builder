@@ -1,0 +1,70 @@
+{
+  "client_id": "80220135",
+  "slug": "c80220135",
+  "branch": "site/c80220135",
+  "name": "מרכז שירות יד מרדכי",
+  "package": "",
+  "spec_file": "איפיון אתר - מרכז שירות יד מרדכי - 80220135_1.docx",
+  "sender": "NoamR@d.co.il",
+  "subject": "Re: אתרי WIX- מעבר לWP",
+  "received": "2026-11-02T12:20:19Z",
+  "staging_url": "",
+  "links": [
+    "https://www.facebook.com/ymmazdaford/",
+    "https://www.instagram.com/yad_mordechai_service_center/",
+    "https://www.ym-mazdaford.co.il/"
+  ],
+  "zap_pages": {
+    "dapei_zahav": "https://www.d.co.il/80220135/"
+  },
+  "spec": {
+    "contact_name": "מוסך יד מרדכי",
+    "name": "מרכז שירות יד מרדכי",
+    "client_id": "80220135",
+    "old_site": "https://www.ym-mazdaford.co.il/",
+    "hours": "ראשון–חמישי: 07:00–16:00 שישי: 07:00–12:30 שבת: סגור",
+    "whatsapp": "כן – 052-6758069",
+    "facebook": "כן – https://www.facebook.com/ymmazdaford/",
+    "instagram": "כן – https://www.instagram.com/yad_mordechai_service_center/",
+    "logo": "אין לוגו לעסק"
+  },
+  "image_sources": [
+    "https://www.instagram.com/yad_mordechai_service_center/"
+  ],
+  "images": [
+    "חומרים-ישנים_Mini-Site-Image_80220135-minisite.jpg",
+    "חומרים-ישנים_SEM_ספטמבר-21_חדש_לוגואים.PNG",
+    "חומרים-ישנים_SEM_ספטמבר-21_לוגו-מאזדה-ופורד.cleaned.pdf",
+    "חומרים-ישנים_חומר-גרפי-גולמי_Ford_Motor_Company_Logo.svg.png",
+    "חומרים-ישנים_חומר-גרפי-גולמי_mazda-logo.png",
+    "חומרים-ישנים_חומר-גרפי-גולמי_אולם-עבודה.jpg",
+    "חומרים-ישנים_חומר-גרפי-גולמי_חדר-המתנה.jpg",
+    "חומרים-ישנים_חומר-גרפי-גולמי_חזית.jpg",
+    "חומרים-ישנים_חומר-גרפי-גולמי_חזית2.jpg",
+    "חומרים-ישנים_חומר-גרפי-גולמי_משרד-קבלה.jpg",
+    "חומרים-ישנים_חומר-גרפי-גולמי_סטריפ_11999575_939770929414294_5134400719138574603_o.jpg",
+    "חומרים-ישנים_חומרי-גלם-לקוח_תמונות_20220520_124705_resized_1-1-.jpg",
+    "חומרים-ישנים_חומרי-גלם-לקוח_תמונות_20220520_124727_resized_1-1-.jpg",
+    "חומרים-ישנים_חומרי-גלם-לקוח_תמונות_20220520_124757_resized_1.jpg",
+    "חומרים-ישנים_חומרי-גלם-לקוח_תמונות_20220520_124843-1-.jpg",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-לאתר-6.7.20_חזית.jpg",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-לאתר-6.7.20_תיקונים-לאתר-מרכז-שירות-יד-מרדכי.pdf",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_Logo-Mazda-Ford-high-rez-.png",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_Logo_FullColor_Horizontal.png",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_Logo_FullColor_Vertical.png",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_לוגו-מחלקה-ראשונה.JPG",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_לוגו-פורד-ללא-רקע.png",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_מחלקה-ראשונה-למסחריות.JPG",
+    "חומרים-ישנים_תכתובות-מול-לקוח_תיקונים-נוספים-8.7_תיקונים-2-לאתר.pdf",
+    "מוסך-יד-מרדכי-כרטסת.pdf"
+  ],
+  "image_dirs": [
+    "F:\\SiteContent\\80220135"
+  ],
+  "missing": [
+    "package: no package named in the file name or the spec sheet",
+    "staging URL (the sites team sends it later)"
+  ],
+  "status": "intake",
+  "note": "recorded in fingerprints/clients.json - commit that file too"
+}
