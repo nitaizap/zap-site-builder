@@ -147,7 +147,13 @@ MEASURE_JS = r"""
     const s = getComputedStyle(el), fill = rgb(s.backgroundColor), bc = rgb(s.borderTopColor), bw = parseFloat(s.borderTopWidth);
     const fr = fill && (fill.length < 4 || fill[3] > .05) ? cr(flat(fill, bg), bg) : 1;
     const br = bw >= 1 && bc ? cr(flat(bc, bg), bg) : 1;
-    if (Math.max(fr, br) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
+    // icon-only controls (the phones' header call icon) are judged by their icon (svg, icon font or a CSS-mask icon);
+    // a borderless text/icon button by its own colour (WCAG 1.4.11)
+    const bare = !(el.innerText || '').trim(), ico = bare && el.querySelector('svg, i'), pb = getComputedStyle(el, '::before');
+    const ic = ico ? rgb(getComputedStyle(ico).color) : (bare && pb.maskImage && pb.maskImage !== 'none' ? rgb(pb.backgroundColor) : null);
+    const ir = ic ? cr(flat(ic, bg), bg) : 1;
+    const fg = rgb(s.color), tr = (!fill || (fill.length > 3 && fill[3] <= .05)) && !(bw >= 1) && fg ? cr(flat(fg, bg), bg) : 1;
+    if (Math.max(fr, br, tr, ir) < 3) faint.set((el.textContent || el.getAttribute('aria-label') || el.name || el.tagName).trim().slice(0, 24), Math.max(fr, br).toFixed(2));
   });
   if (faint.size) E(`control blends into its background (${faint.size}): ${[...faint].slice(0, 4).map(([t, r]) => `"${t}" ${r}`).join('; ')}`);
   // icons (svg / icon font / check bullets) at least 3:1
@@ -337,14 +343,16 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def test_form(page, site):
-    """Submit the footer form like a person (waits > 3s so the time trap passes) and confirm it saved."""
+    """Submit the visible lead form like a person (waits > 3s so the time trap passes) and confirm it saved."""
     before = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
     page.goto(site.url + "/", wait_until="networkidle")
     page.wait_for_timeout(3500)
-    page.fill("#zf-footer-name", "בדיקת QA")
-    page.fill("#zf-footer-phone", "050-0000000")
-    page.check("#zf-footer input[name=zf_consent]")
-    page.click("#zf-footer button[type=submit]")
+    # the footer band is hidden on pages with a contact section (one form per page): submit the form a visitor sees
+    f = "footer" if page.locator("#zf-footer-name").is_visible() else "contact"
+    page.fill(f"#zf-{f}-name", "בדיקת QA")
+    page.fill(f"#zf-{f}-phone", "050-0000000")
+    page.check(f"#zf-{f} input[name=zf_consent]")
+    page.click(f"#zf-{f} button[type=submit]")
     page.wait_for_load_state("networkidle")
     ok_msg = page.locator(".zs-form__ok").count() > 0
     after = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
@@ -389,18 +397,32 @@ def run_qa(site):
                 warns += len(m["warn"])
             if vp == "mobile":
                 page.goto(site.url + "/", wait_until="networkidle")
-                page.click(".zs-burger")
-                page.wait_for_timeout(450)
-                opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
-                                       # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
-                                       " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
-                                       " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
-                page.keyboard.press("Escape")
-                page.wait_for_timeout(350)
-                closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
-                extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
-                if not (opened and closed):
-                    errors += 1
+                el_menu = page.locator(".elementor-menu-toggle").count() > 0   # Elementor Pro Nav Menu in the header
+                if el_menu:
+                    page.click(".elementor-menu-toggle")
+                    page.wait_for_timeout(450)
+                    opened = page.evaluate("(() => { const d = document.querySelector('.elementor-nav-menu--dropdown'); if (!d) return false;"
+                                           " const r = d.getBoundingClientRect(); return getComputedStyle(d).display !== 'none' && r.height > 150"
+                                           " && document.querySelector('.elementor-menu-toggle').getAttribute('aria-expanded') === 'true'; })()")
+                    page.click(".elementor-menu-toggle")
+                    page.wait_for_timeout(350)
+                    closed = page.evaluate("document.querySelector('.elementor-menu-toggle').getAttribute('aria-expanded') === 'false'")
+                    extra.append(("mobile menu (Elementor Nav Menu) opens / closes", opened and closed))
+                    if not (opened and closed):
+                        errors += 1
+                else:
+                    page.click(".zs-burger")
+                    page.wait_for_timeout(450)
+                    opened = page.evaluate("getComputedStyle(document.getElementById('zs-nav')).visibility === 'visible' && document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'true'"
+                                           # and it really covers the screen on top of the page (a filter/backdrop-filter on an ancestor clips a fixed menu)
+                                           " && document.getElementById('zs-nav').getBoundingClientRect().height > innerHeight * 0.5"
+                                           " && !!(document.elementFromPoint(innerWidth / 2, innerHeight * 0.6) || document.body).closest('#zs-nav')")
+                    page.keyboard.press("Escape")
+                    page.wait_for_timeout(350)
+                    closed = page.evaluate("document.querySelector('.zs-burger').getAttribute('aria-expanded') === 'false'")
+                    extra.append(("mobile menu opens full-screen on top / Escape closes", opened and closed))
+                    if not (opened and closed):
+                        errors += 1
                 if not data["business"].get("email_leads"):
                     no_form = page.locator("form.zs-form").count() == 0
                     extra.append(("calls-only site (no leads e-mail): no lead form rendered", no_form))

@@ -9,7 +9,15 @@ $contact = get_posts(['post_type' => 'page', 'meta_key' => '_zap_page_type', 'me
     <?php get_search_form(); ?>
     <p class="zs-404__actions">
       <a class="zs-btn zs-btn--primary" href="<?php echo esc_url(home_url('/')); ?>">לדף הבית</a>
-      <?php if ($contact) : ?><a class="zs-btn zs-btn--ghost" href="<?php echo esc_url(get_permalink($contact[0])); ?>">צרו קשר</a><?php endif; ?>
+      <?php
+      $curl = $contact ? get_permalink($contact[0]) : '';
+      if (!$curl) {   // no contact page: the contact section's anchor from the main menu (e.g. /#contact)
+          $locs = get_nav_menu_locations();
+          foreach (!empty($locs['primary']) ? (array) wp_get_nav_menu_items($locs['primary']) : [] as $mi) {
+              if (str_contains((string) $mi->url, '#contact')) { $curl = $mi->url; break; }
+          }
+      }
+      if ($curl) : ?><a class="zs-btn zs-btn--ghost" href="<?php echo esc_url($curl); ?>">צרו קשר</a><?php endif; ?>
       <?php if ($tel = zs_opt('business.phone_e164')) : ?>
       <a class="zs-btn zs-btn--ghost" href="<?php echo esc_attr(zs_tel_href($tel)); ?>"><?php echo esc_html(zs_opt('business.phone_display')); ?></a>
       <?php endif; ?>
