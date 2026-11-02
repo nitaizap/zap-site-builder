@@ -2,8 +2,8 @@
   "client_id": "80272199",
   "slug": "c80272199",
   "branch": "site/c80272199",
-  "name": "ניק בונביוב",
-  "package": "פרו",
+  "name": "ניק איטום",
+  "package": "",
   "spec_file": "איפיון אתר - ניק איטום - 80272199.docx",
   "sender": "NoamR@d.co.il",
   "subject": "ניק איטום 80272199- איפיון אתר",
@@ -16,7 +16,8 @@
     "dapei_zahav": "https://www.d.co.il/80272199/"
   },
   "spec": {
-    "name": "ניק בונביוב",
+    "contact_name": "ניק בונביוב",
+    "name": "ניק איטום",
     "client_id": "80272199",
     "old_site": "https://www.nickitum.co.il/",
     "hours": "א'-ה' 07:00-22:00 ו' 07:00-15:00",
@@ -62,6 +63,8 @@
   "image_dirs": [
     "F:\\SiteContent\\80272199"
   ],
-  "missing": [],
+  "missing": [
+    "package: no package named in the file name or the spec sheet"
+  ],
   "status": "intake"
 }

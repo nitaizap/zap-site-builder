@@ -1,8 +1,8 @@
-# ניק בונביוב (80272199)
+# ניק איטום (80272199)
 
 - from: NoamR@d.co.il
 - subject: ניק איטום 80272199- איפיון אתר
-- package: פרו
+- package: (none stated)
 - staging: https://80272199.ussl.co.il/
 
 ## Email body
