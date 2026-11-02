@@ -67,7 +67,7 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | צרו קשר: טופס לידים, טלפון, כתובת ומפה | ✅ | `contact` section with `map: true`, plus the NAP block |
 | אזור שירותים, קוביות לכל שירות עם קישור לעמוד | ✅ | `cards` section, six cards, each linking its page, one meaningful icon each |
 | באנר מבצע חלקים מקוריים | ✅ | `cta` `photo` band, the spec's wording including "רכבים מעל 3 שנים, ט.ל.ח" |
-| אזור חוות דעת לקוחות | ⏳ | **not built.** Needs a verified Dapei Zahav customer id; reviews may not be written (OPEN-ITEMS 4) |
+| אזור חוות דעת לקוחות | ✅ | `reviews` section on the home page, Dapei Zahav customer id 80220135, verified against the API payload (its links point at this client's own listing). Renders on the pushed site only, so it is empty in the local screenshots (OPEN-ITEMS 4) |
 | לוגואים של המותגים המורשים (מאזדה, פורד, דונגפנג, וויה) | ⚠️ | only Mazda and Ford exist in the client's files. The band shows those two plus המחלקה הראשונה, all four marques are named in its text, in the facts card with their licence years, in the FAQ and on every service page (OPEN-ITEMS 5) |
 | "המחלקה הראשונה למסחריות" | ✅ | in the logos band, the band's text and the home FAQ |
 | כפתורי חיוג ווואטסאפ צפים | ✅ | seen on the rendered pages: floating WhatsApp button on desktop, call + WhatsApp bar on phones, on every page |

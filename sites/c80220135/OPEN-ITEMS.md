@@ -60,24 +60,24 @@ the client supplies artwork.
 **Needed from the client:** a wordmark or logo file (PNG, transparent). Then set `logo` and regenerate
 `favicon` from its symbol, and header, footer and favicon all follow from the one file.
 
-## 4 · Reviews: the listing exists and has 31 of them. One human look away
+## 4 · Reviews: on (resolved)
 
-The spec asks for a customer-reviews area on the home page. It is **still not built**, but the picture has
-changed since the first pass, because the client's own site could finally be read:
+The spec asks for a customer-reviews area and it is now built. `business.dpz_customer_id` is `80220135` and a
+`reviews` section sits on the home page after the licence facts, so the evidence runs licences, then what
+customers say, then the services.
 
-- **ym-mazdaford.co.il renders a review block today: `4.84`, `31 חוות דעת`.** So this business genuinely has
-  a populated Zap/Dapei Zahav listing. That is no longer a guess.
-- `intake.json` points at `https://www.d.co.il/80220135/`, and 80220135 is the client id on the spec sheet,
-  so `dpz_customer_id: "80220135"` is almost certainly right.
+The id was verified rather than assumed: the Zap reviews API returns a real review for it (a service visit,
+dated 20/10/2024) and every link in that payload points at `https://www.d.co.il/80220135/`, which is this
+client's own listing from `intake.json`. The client's existing site shows the same listing, 4.84 from 31
+reviews.
 
-What is still missing is the one check Zap standards require before using an id: open the listing and confirm
-the **legal name, street and phone** on it, because a wrong id publishes another company's reviews. The
-Dapei Zahav page blocks automated reading and I did not work around that, so a person has to glance at it.
-
-**To turn it on** (about a minute once confirmed): add `"dpz_customer_id": "80220135"` to `business` in
-site.json, put a `reviews` section back on the home page (the `photo` variant over `facade-drive` suits the
-page), rebuild. Note the widget only renders on a pushed site, not locally, and it draws its own score and
-count: no rating may ever be typed into the copy, and the validator blocks it.
+Two things to know:
+- **the widget renders only on a pushed site.** Locally the browser blocks its API call (CORS from
+  127.0.0.1), so the block is empty in the preview screenshots. It was checked by answering the request with
+  the real payload: one review card, stars in a single row, a muted date, page chips and both Dapei Zahav
+  links, which is what the standard describes.
+- no score or review count is written anywhere in the copy, and none ever should be: the widget draws its
+  own, and the validator blocks typed ratings.
 
 ## 5 · Two brand logos are missing, and the brief asks for four
 

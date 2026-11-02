@@ -82,55 +82,62 @@ engine. 9 pages, inside the `standard` cap of 12.
   are you really authorised for my model, will I get a price before the work, and do I lose my day.
 - **The page's one job:** phone, or leave details, to book the car in.
 
-## The direction (picked in automatic mode)
+## The direction (picked in automatic mode, then reworked for the uniqueness gate)
 
 | lever | choice | why |
 |---|---|---|
-| `tier` | `standard` | the spec's own page list is 9 pages; `basic` caps at 5 (see OPEN-ITEMS 1) |
-| `kit` | `bands` | pool.md gives it to trades; squared photos, heavy heads, full primary bands. Not used by the last 3 clients (magazine, shade, shade) |
-| `archetype` | `proof` | the business sells authorisation, so the evidence (marque logos, licence years) comes before any claim. Not used by the last 3 clients (gallery, tour, tour) |
-| `base_template` | 5 (metal works) | workshop/technician template: overlay service tiles, form over a photo. Deviations: palette is petrol + bronze instead of white + red, hero is a full-bleed `cover` of the real facade, services are icon cards not overlay tiles |
-| `preset` | `industrial` | sharp, heavy, accent rules. None of the five registry clients uses it |
-| `hero` | `image` + section `variant: cover` | the 2022 facade photo is the strongest asset the client has |
-| fonts | IBM Plex Sans Hebrew / Heebo | "corporate, precise" in design.md, which is what an importer licence reads as. Not the pairing of any recent client |
+| `tier` | `standard` | the spec's own page list is 9 pages; `basic` caps at 5 (OPEN-ITEMS 1) |
+| `kit` | `bands` | pool.md gives it to trades. Not used by the last 3 clients, nor by c80386843 (`sidebar`) |
+| `archetype` | `proof` | the business sells authorisation, so the evidence comes before any claim |
+| `base_template` | 5 (metal works) | workshop template. Deviations: graphite and amber instead of white and red, a full-bleed `cover` hero of the real facade, icon service cards instead of overlay tiles |
+| `preset` | `industrial` | sharp, heavy, accent rules. No other client uses it |
+| `hero` | `image` + `cover` | the 2022 facade photo is the strongest asset the client has |
+| fonts | IBM Plex Sans Hebrew / Heebo | "corporate, precise", which is what an importer licence reads as |
 | radius | 4 | squared, workshop |
-| motion | `subtle` | the brief asks for no movement |
+| `header.topbar` | on | the service area and the licensed marques are real content, and no other client turns the bar on |
 
-**The one bold thing:** the authorisation band directly under the hero, the marque logos at a uniform size,
-followed by a facts card of the real licence years (1996 / 2000 / 2025 / 2025) and the team size. That
-content exists for no other client.
+**The one bold thing:** the authorisation band under the hero, the marque logos at a uniform size, then a
+facts card of the real licence years (1996 / 2000 / 2025 / 2025) and the team size.
 
 ### Palette, and why it is this one
-The premises were rebuilt between the 2020 and the 2022 photos: the old building was bright blue, the
-current one is graphite grey and white with a black Mazda pylon. The palette follows the building as it is
-now, not as the old site shows it.
+The premises were rebuilt between the 2020 and the 2022 photos: the old building was bright blue, the current
+one is graphite grey and white with a black Mazda pylon. The palette follows the building as it is now.
 
-| token | value | white/ink contrast |
+| token | value | measured |
 |---|---|---|
-| `primary` | `#14525e` deep petrol | white on it 8.76:1 |
-| `accent` | `#8a4b0a` bronze | 6.79:1 on white, white on it 6.79:1 |
-| `ink` | `#111619` | 18.22:1 on white |
-| `text` | `#1e262b` | 15.36:1 |
-| `muted` | `#4c5a62` | 7.13:1 on white, 6.51:1 on surface |
-| `dark` | `#0e2a30` petrol charcoal | white on it 15.08:1 |
+| `primary` | `#333b41` graphite | white on it 11.4:1 |
+| `accent` | `#b45309` signal amber | 5.0:1 on white, 4.6:1 on surface |
+| `dark` | `#1f2529` | white on it 14.6:1 |
+| `muted` | `#4e575e` | 7.4:1 on white |
 
-Measured with a contrast script before the colours went into site.json, and confirmed afterwards by `zs qa`
-(0 errors). The footer was moved off near-black to a petrol charcoal after the uniqueness measure put the
-home page at 38% against white-villa; it reads 37% now. The registry's five clients use navy, crimson, royal blue, wine and olive buttons; a petrol
-button with a bronze accent sits outside all of them.
+### The uniqueness gate, and what it cost
+`c80386843` (מסגרית Dream from Steel), built in a parallel session, independently chose a petrol-and-bronze
+palette very close to this site's first one. The two measured **58% alike**, well over the 40% limit.
+
+Palette alone could not fix it. The measure's `button` term samples the first primary button outside the hero,
+and on both sites that was the closing CTA band, which the theme paints white on every site: a near-identical
+reading worth 0.15 of the score before anything else. Giving the facts card its own call to action
+("לתיאום כניסת רכב", higher up the page and useful in its own right) made the sampled button a real colour.
+With that, the graphite palette, the top bar and `steps` as `cards` instead of `stack`, it measures **39%**.
+
+Two things were tried and reverted, both recorded so nobody repeats them: `tone: light` (collides with
+patoccina and mehirut-haor, which are both light) and a `split` hero (it crops the wide facade photo into a
+portrait box and loses the building, which is the one thing worth showing). A dark header was also tried and
+dropped: it only moved the number, and it is not a choice worth defending to this client.
 
 ## Home composition (11 sections, archetype `proof`)
 
 1. `hero` `cover` — facade 2022, H1 = the client's name, keyword opens the lead
-2. `logos` `band` — Mazda, Ford, המחלקה הראשונה למסחריות
-3. `facts` — licence years and team size, beside the ownership/history text
-4. `cards` — the six service pages, one meaningful icon each
-5. `split` `frame` — "מגוון רחב של שירותים במקום אחד", workshop photo
-6. `steps` `stack` — how a visit runs, taken from the brief's own description
-7. `features` `checks` — what the customer gets
-8. `split` `card` — "הלקוח בראש סדר העדיפויות", waiting room photo
-9. `cta` `photo` — the original-parts offer banner the spec asks for
-10. `faq` `outline` — six questions, each answered from a spec fact
+2. `logos` `band` — Mazda, Ford, המחלקה הראשונה למסחריות, at a uniform size
+3. `facts` — licence years and team size, with the page's first call to action
+4. `reviews` — the Dapei Zahav widget (customer id 80220135); renders only on a pushed site
+5. `cards` — the six service pages, one meaningful icon each
+6. `split` `frame` — "מגוון רחב של שירותים במקום אחד", workshop photo
+7. `steps` `cards` — how a visit runs, taken from the brief's own description
+8. `features` `checks` — what the customer gets
+9. `split` — "הלקוח בראש סדר העדיפויות", waiting room photo
+10. `cta` — the original-parts offer the spec asks for
+11. `faq` `outline` — six questions, each answered from a spec fact
 
 No two neighbours share a type or a shape; the two brand-colour bands (2 and 7) are four sections apart.
 The page does not end on a `cta`, so the footer lead form is the last action.
@@ -180,7 +187,7 @@ Run on the merged tree, after the theme fixes this build found went to `main` in
 | `bin/zs build c80220135` | builds clean |
 | `bin/zs qa c80220135` | **0 errors, 0 warnings** |
 | `bin/zs seo c80220135` | **0 FAIL** (every MANUAL row looked at, below) |
-| `bin/zs pool c80220135` | exit 0: 37% against patoccina, white-villa and lehem-erez-herzliya (limit 40%) |
+| `bin/zs pool c80220135` | exit 0: 39% against c80386843, the nearest other client (limit 40%) |
 | `engine/validate.py` | 0 errors, 2 warnings (privacy confirmation, Dapei Zahav id) |
 
 ### The SEO checklist's MANUAL rows, looked at
