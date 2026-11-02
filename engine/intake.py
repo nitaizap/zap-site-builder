@@ -29,7 +29,13 @@ W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
 SPEC_EXT = (".docx", ".xlsx")
-ID_RE = re.compile(r"(?<!\d)(\d{8})(?!\d)")
+# Zap client numbers are usually 8 digits, but not always: נועם sent 743850 (6) and 2910210 (7) on
+# 2026-11-02 and both were silently rejected. 6 to 9 digits are accepted everywhere a client is named.
+ID_RE = re.compile(r"(?<!\d)(\d{6,9})(?!\d)")
+# For the free-text fallback only. A spec sheet is full of 6-to-9-digit runs that are not client
+# numbers - a phone like 03-7532200, a price, a date - and the file name is nearly always right, so
+# the loose pattern is not safe to turn loose on the body.
+ID_RE_TEXT = re.compile(r"(?<!\d)(\d{8})(?!\d)")
 URL_RE = re.compile(r"https?://[^\s<>\"')\]]+")
 IMG_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".bmp", ".tif", ".tiff", ".heic", ".ai", ".eps", ".pdf"}
 PACKAGES = ("בייסיק", "פרימיום", "פלוס", "פרו", "basic", "premium", "plus", "pro")
@@ -458,10 +464,12 @@ def intake(inputs, images_root=None, sender="", subject="", body="", staging="",
     results = []
     for doc in docs:
         text, doc_links = spec_text(doc)
-        m = ID_RE.search(doc.stem) or ID_RE.search(text)
+        spec_id = spec_fields(text).get("client_id", "").strip()
+        m = ID_RE.search(doc.stem) or (ID_RE.fullmatch(spec_id) and ID_RE.search(spec_id)) or ID_RE_TEXT.search(text)
         cid = m.group(1) if m else ""
         if not cid:
-            results.append({"file": doc.name, "error": "no 8-digit client id in file name or text"})
+            results.append({"file": doc.name,
+                            "error": "no client id (6-9 digits) in the file name, the מספר לקוח field or the text"})
             continue
         slug = "c" + cid
         seen = [] if force else already_built(cid, sites_dir)
