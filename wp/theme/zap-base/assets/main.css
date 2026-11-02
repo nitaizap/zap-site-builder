@@ -164,10 +164,15 @@ body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-prima
 
 /* A block that paints its own light panel (white or surface) inside a colour band keeps the light-ground text
    tokens. Without this the band's --c-ink/--c-text (white) are inherited into the panel and the text vanishes:
-   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band. */
+   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band.
+   split "card" (1.10), steps "cards", the facts card and team members paint one the same way. */
 :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) :is(
   .zs-v-frame .e-con.zs-split__text,
+  .zs-v-card .e-con.zs-split__text,
   .zs-v-rows .e-con.zs-feature,
+  .zs-v-cards .e-con.zs-step,
+  .zs-facts__card,
+  .zs-member,
   .zs-trust__list,
   .zs-faq__list .elementor-toggle .elementor-toggle-item,
   .zs-postcard,
@@ -1604,13 +1609,21 @@ body .e-con.zs-postbody__aside { position: sticky; top: 110px; background: var(-
 }
 /* phones + tablets: burger on the start (right) side, logo in the middle, a plain phone icon on the end side */
 @media (max-width: 1024px) {
-  body .e-con.zs-header__in { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  /* The nav element is a fixed overlay when closed, so its track measured 0 and the burger drawn inside it
+     (48px) sat over whatever the centre track held. Both side tracks keep room for their 48px control. */
+  body .e-con.zs-header__in { display: grid; grid-template-columns: minmax(48px, 1fr) minmax(0, auto) minmax(48px, 1fr); align-items: center; }
   body .e-con.zs-header__in > .zs-header__nav { grid-column: 1; grid-row: 1; justify-self: start; }
   body .e-con.zs-header__in > .zs-brand { grid-column: 2; grid-row: 1; justify-self: center; }
   body .e-con.zs-header__in > .zs-header__cta { grid-column: 3; grid-row: 1; justify-self: end; margin: 0; }
   html body .zs-header__cta .elementor-button { background: transparent !important; box-shadow: none !important; border: 0 !important; color: var(--c-primary) !important; padding: 8px !important; min-height: 44px; min-width: 44px; }
   html body .zs-header__cta .elementor-button .elementor-button-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   html body .zs-header__cta .elementor-button svg, html body .zs-header__cta .elementor-button::before { width: 26px; height: 26px; }
+  /* A client with no logo file shows the name as text. Nowrap plus an auto centre track let a long name
+     ("מסגרית Dream from Steel") overflow onto the burger and the phone icon. On phones it wraps instead and
+     keeps a track it cannot grow out of; a logo image is unaffected (it has its own height/max-width). */
+  body .e-con.zs-header__in > .zs-brand.zs-brand__name { max-width: 100%; min-width: 0; }
+  body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { white-space: normal; }
+  .zs-brand__name { font-size: 1.05rem; line-height: 1.22; }
 }
 /* accessibility button: brand colour (its place on phones is set in standards.css) */
 html body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { background-color: var(--c-primary) !important; color: #fff !important; }
