@@ -20,7 +20,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8546 · 39 rows: 33 pass, 0 fa
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
 | 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | ✅ PASS | posts live under /בלוג/ |
 | 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 13 forms |
-| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 16 internal links, all < 400 |
+| 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 15 internal links, all < 400 |
 | 20 | שגיאות 301 ו-404 | תיקון כל ה-404 (עמוד / 301) | ✅ PASS | redesign: map the old site's URLs to new ones (301) before launch |
 | 21 | שגיאות 301 ו-404 | קישורים פנימיים לא מפנים לכתובות ישנות | ✅ PASS |  |
 | 22 | SEO On-Page | סכמת FAQ בעמודי שירות ופוסטים | ✅ PASS |  |
