@@ -396,6 +396,7 @@ def main():
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
     import intake; intake.add_parser(sub)
     import replies; replies.add_parser(sub)
+    import regress; regress.add_parser(sub)
     import staging; staging.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
