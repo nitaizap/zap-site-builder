@@ -9,8 +9,9 @@
 | `assets/steel-texture.webp` | AI — Figma Weave, GPT Image 2.5 | generated for this client | 2026-11-02 | ניתאי צוויג | 2 |
 | `assets/fabrication.webp` | AI — Figma Weave, GPT Image 2.5 | generated for this client | 2026-11-02 | ניתאי צוויג | 2 |
 | `assets/materials.webp` | AI — Figma Weave, GPT Image 2.5 | generated for this client | 2026-11-02 | ניתאי צוויג | 2 |
+| `assets/favicon.png` | made in the build session with Pillow (a brass tile with the initials DS), not AI, not a client asset | placeholder until the client's logo arrives | 2026-11-02 | zap-site build session | 0 |
 
-**Weave budget:** 8 of 100 credits used for this client.
+**Weave budget:** 8 of 100 credits used for this client. The build session generated no further images.
 
 ## Why these are atmosphere only
 
@@ -32,3 +33,14 @@ customer would reasonably be misled by.
 
 Until those arrive the site ships without a portfolio section. Each one added later needs its own row
 in the table above.
+
+## The favicon
+
+`zs qa` fails a site with no favicon, and with no logo there is no symbol to cut one from. The file in the
+table is a plain brass tile carrying the initials DS, drawn in the build session. It is a stand-in, not a
+brand mark, and is to be replaced with one made from the real logo. See `OPEN-ITEMS.md` item 5.
+
+## What the site says about these images
+
+The footer of every page carries, next to the copyright:
+"תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק".
