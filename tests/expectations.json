@@ -1,5 +1,22 @@
 {
   "intake": {
+    "איפיון אתר - car service - 80362823_1.docx": {
+      "client_id": "80362823",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "car service",
+      "package": "",
+      "staging_url": ""
+    },
+    "איפיון אתר - הרקולס-גורקביץ ייצור מראות ואביזרים לרכב בעמ - 743850_3.docx": {
+      "error": "no 8-digit client id in file name or text"
+    },
+    "איפיון אתר - מוניות כפר סבא - 2910210_1.docx": {
+      "error": "no 8-digit client id in file name or text"
+    },
     "איפיון אתר - מסגרית Dream from Steel - 80386843.docx": {
       "client_id": "80386843",
       "images_found": true,
@@ -98,9 +115,9 @@
   },
   "replies": {
     "counts": {
-      "new_spec": 7,
+      "new_spec": 8,
       "other": 7,
-      "staging": 34
+      "staging": 35
     },
     "staging_by_client": {
       "80049225": "https://erezbread80049225.ussl.co.il/",
