@@ -3,35 +3,37 @@
 Collected while building, not asked one by one (the skill's automatic mode). Work continued on the best safe
 default in every case; the default taken is written next to each item.
 
-## Needs a decision from the client or the sites team
+## Decided (Nitai, 02/11) — closed, no action left
 
-1. **Which phone number the site shows.** The spec sheet gives two: `טלפון לאתר 050-9254010` and
-   `מספר מקשר זאפ 072-2594285`. The Dapei Zahav listing shows 072-2594285. The house rule
-   (`references/qa-rules.md`, `playbook.md`) is that the site shows the Zap tracking number, so the site
-   shows **072-2594285** with `phone_is_virtual` (the "מספר מקשר" link and Zap's explanation popup), and
-   names **050-9254010** as the business's own line. WhatsApp goes to 050-9254010, as the spec asks.
-   **What the listing itself shows** (both Dapei Zahav pages for this customer id, read 02/11): the only
-   phone button on the listing is **072-2594285**, and the page says plainly that Zap routes it as a virtual
-   number. The 050 appears there only inside the text of the share buttons, never as a contact button. The
-   WhatsApp button on the listing goes to 972559686670, which is a Zap service number and not the client's.
-   So the public record agrees with what the site now does.
-   **Still unresolved:** the spec sheet explicitly labels the 050 as "טלפון לאתר". One line from Noam or Ofir
-   settles it (`business.phone_display` / `phone_regular` in `site.json`, one rebuild).
+1. **The site shows the Zap tracking number.** Confirmed: `phone_display` is **072-2594285** with
+   `phone_is_virtual`, so every page carries the "מספר מקשר" link and Zap's standard explanation popup
+   beside it. **050-9254010** stays as `phone_regular` (the business's own line, named in that popup) and as
+   the WhatsApp number, which is what the spec sheet asks for WhatsApp.
+   This is also what the public record shows: the only contact button on either Dapei Zahav listing for this
+   customer id is the 072 number, and the page itself says Zap routes it as a virtual number. The spec
+   sheet's "טלפון לאתר 050-9254010" is therefore treated as the business's line, not the display number.
+   Already built this way; nothing to change.
 
-2. **The package.** Not named anywhere in the mail or the spec sheet, and the spec's project type says
-   "אתר מלא (כולל דומיין)". Built as the standard basic scope: no video, no hero slider, a restrained
-   section set. **But `tier` is set to `standard`, not `basic`,** because the spec's own page list is six
-   pages (home, 3 services, about, contact) and the basic package caps at five. Nothing else about the site
-   needs the larger package. If the sold package really is בייסיק, one page has to go, and that is the
-   client's call, not ours.
+2. **Six pages stay.** Confirmed: the spec sheet's own page list is kept in full (home, מסגרות בהתאמה
+   אישית, ייצור מוצרי מתכת ייחודיים, תכנון מוצרי מתכת, אודות, צור קשר), plus the blog, privacy and the
+   accessibility statement, which do not count against the package. `tier` stays **`standard`**, because the
+   basic package caps at five pages and would force one of the spec's pages off the site.
+   If anyone later asks why a בייסיק client is on `standard`: it is the page count the spec itself ordered,
+   nothing else. No premium-only feature is used (no hero video, no slider, motion stays `subtle`). The one
+   thing `standard` buys beyond the page count is the `video` section, which the reserved home-page slot
+   (item 6) needs anyway.
 
-3. **Legal name for the privacy policy.** `business.legal_name` is set to the trading name
-   "מסגרית Dream from Steel" because no registered name was given. **Looked for and not found:** neither
-   Dapei Zahav listing for this customer id carries a company name, ח.פ., ע.מ., בע"מ or עוסק מורשה number,
-   and the owner's name does not appear on them either. This one genuinely needs the client.
-   `standards.privacy_confirmed` stays false, so the privacy page is a launch blocker until the client
-   confirms the legal name, whether a customer database is kept, and the contact address for privacy
-   requests.
+3. **Legal name for the privacy policy: parked** (Nitai, 02/11). `business.legal_name` stays the trading
+   name "מסגרית Dream from Steel" and `standards.privacy_confirmed` stays false, so the privacy page keeps
+   its launch blocker, and `zs build` prints it as a WARN on every build. It will also appear in
+   `LAUNCH-CHECKLIST.md` once `zs package` generates that file.
+   Neither Dapei Zahav listing carries a company name, ח.פ., ע.מ., בע"מ or עוסק מורשה, so there is nothing
+   to look up: it has to come from Ofir. **This is safe to park through build and staging, but not through
+   go-live**: the policy names the data controller, so the real legal name (and whether a customer database
+   is kept, and the address for privacy requests) must be confirmed before the site is pointed at the
+   client's own domain. Picking it up later is one line in `site.json` plus a rebuild.
+
+## Still open
 
 4. **Logo: found and in use, but only at 140px.** The file never reached this branch, so it was found on the
    client's own Dapei Zahav listing, in Zap's `Customers/80386843/` folder: the Dream from Steel badge, dark

@@ -40,7 +40,7 @@ wording, not a date); no licences, no prices, no ratings, no counts.
 
 | lever | choice | why |
 |---|---|---|
-| `tier` | `standard` | the spec names no package; its own sitemap is 6 pages, over basic's cap of 5. See OPEN-ITEMS |
+| `tier` | `standard` | the spec names no package, and its own sitemap is 6 pages, over basic's cap of 5. Decided 02/11: keep all six, so `standard`. No premium-only feature is used |
 | `kit` | `sidebar` | the section title sits in a side column beside long content. This client has **no portfolio to show**, so the site has to convince by explaining, and the skeleton is built for explanation. Also the only free kit with a dark footer (`bands` is on c80220135, `magazine` on lehem-erez) |
 | `archetype` | `statement` | type-led: one confident line ("אין אצלנו קטלוג"), then short proof. The right shape for a site with four atmosphere photos and no work to show |
 | `base_template` | 1 | navy-on-white, offset frames. **Deliberately not template 5** (the metal-works demo, white + red): the obvious pick for a metalworker and already used by the pilot branches |

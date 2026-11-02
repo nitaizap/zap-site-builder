@@ -10,7 +10,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 |---|---|---|
 | אתר מלא (כולל דומיין) | ✅ | 7 pages + privacy + accessibility + blog archive, all built. Domain is the sites team's step, not ours |
 | אתר SEO (בלוג) — blank | ✅ | built anyway: the Zap SEO checklist fails a site without a blog category and 3 posts. `/בלוג/` + `/בלוג/עבודות-מתכת/` + 3 posts |
-| package not named | ⏳ | `tier: standard`; the spec's own 6-page list exceeds the basic cap of 5. OPEN-ITEMS 2 |
+| package not named | ✅ | decided 02/11: the spec's own six pages stay, `tier: standard` (the basic cap of 5 would force one off). OPEN-ITEMS 2 |
 
 ## 2 · פרטי לקוח
 
@@ -32,7 +32,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 | שעות: א׳–ה׳ 07:00–20:00 | ✅ | `/צור-קשר/`, footer, `facts` card, `openingHours` schema |
 | אימייל לאתר: ofir.elc@gmail.com | ✅ | `/צור-קשר/` contact list and the footer |
 | מייל לטופס לידים: ofir.elc@gmail.com | ✅ | `business.email_leads`; a test lead on the local build was saved and correctly not mailed (staging) |
-| טלפון לאתר: 050-9254010 | ⏳ | shown as the business's own line under "מספר מקשר"; the displayed number is the Zap one. OPEN-ITEMS 1 |
+| טלפון לאתר: 050-9254010 | ✅ | decided 02/11: the site displays the Zap tracking number, and the 050 is the business's own line named in the "מספר מקשר" popup, plus the WhatsApp number. OPEN-ITEMS 1 |
 | מספר מקשר זאפ: 072-2594285 | ✅ | the displayed phone on every page, with `phone_is_virtual` and Zap's explanation link |
 
 ## 4 · נוכחות דיגיטלית
@@ -62,7 +62,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 | מסגרות בהתאמה אישית: עבודות מיוחדות ולא סטנדרטיות, פרויקטים מורכבים לביצוע | ✅ | `/מסגרות-בהתאמה-אישית/`, 560 words, H2 "פרויקטים מורכבים לביצוע" |
 | ייצור מוצרי מתכת ייחודיים בהתאם לדרישת הלקוח | ✅ | `/ייצור-מוצרי-מתכת-ייחודיים/`, 520 words |
 | תכנון מוצרי מתכת מותאמים אישית | ✅ | `/תכנון-מוצרי-מתכת/`, 500 words |
-| כפתורי חיוג לאופיר 050-9254010 | ⏳ | call buttons everywhere; they dial the Zap number, with the 050 named as the business's line. OPEN-ITEMS 1 |
+| כפתורי חיוג לאופיר 050-9254010 | ✅ | call buttons everywhere; decided 02/11 that they dial the Zap tracking number, with the 050 named as the business's line and used for WhatsApp. OPEN-ITEMS 1 |
 | טופס לידים | ✅ | footer form on every page except contact, `leadbar` mid-home, full form on `/צור-קשר/`. Consent checkbox linking the privacy policy; a real submission was saved |
 | מאמרים — blank | ✅ | 3 posts written from the brief's own material. See OPEN-ITEMS 9 |
 
@@ -70,8 +70,8 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 
 | line | status | where |
 |---|---|---|
-| לוגו — blank | ⏳ | the team says a logo exists, but the file never reached the branch. Name as text in header and footer meanwhile. OPEN-ITEMS 4 |
-| צבעי מותג — blank | ✅ | free choice, taken from the material: petrol steel + brass. NOTES.md |
+| לוגו — blank | ✅ | blank on the spec, but the client's real logo was found on their Dapei Zahav listing and is in the header and the footer, with the favicon cut from it and the whole palette sampled from it. Only the source file at full resolution is still wanted. OPEN-ITEMS 4 |
+| צבעי מותג — blank | ✅ | sampled from the client's own logo once it was found: orange `#b84606` and slate `#1b2a36`. NOTES.md |
 | יד חופשית למעצב — blank | ✅ | treated as a free hand, since nothing was specified |
 | אתרים שאהבתם — blank | ➖ | nothing to match |
 
@@ -94,7 +94,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 |---|---|---|
 | leave room on the home page for a video frame (AI social promo the client bought), Noam 02/11 15:09 | ⏳ | slot reserved and documented with the exact position and JSON. Nothing rendered until the file or URL arrives. OPEN-ITEMS 6 |
 | "אין אתר ואין תמונות צריך לייצר או לקחת ממאגרים", Noam 02/11 14:57 | ✅ | four AI atmosphere images on the site, each marked `ai` and recorded in IMAGE-SOURCES.md, with the footer line saying so. No generated work presented as the client's: OPEN-ITEMS 7 |
-| "יש רק לוגו", Noam 02/11 14:57 | ⏳ | the file is not on the branch. OPEN-ITEMS 4 |
+| "יש רק לוגו", Noam 02/11 14:57 | ✅ | the file never reached the branch, so it was found on the client's own Dapei Zahav listing and is now in use. 140x140 is all the directory serves; the original is still wanted. OPEN-ITEMS 4 |
 
 ## Prohibitions, checked by grep over `site.json`
 
