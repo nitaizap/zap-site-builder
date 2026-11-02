@@ -17,6 +17,18 @@ runs in the cloud with `/zap-site` on the branch this skill pushes.
 | state | `work/intake-state.json` (handled message ids; gitignored) |
 | inbox folder | `work/inbox/<message-id>/` (attachments + `body.txt`; gitignored) |
 
+## 0. One-time setup on the PC
+
+```bash
+py -m pip install playwright pillow
+py -m playwright install chromium
+setx ZS_WP_USER "<the user's WordPress login email>"
+setx ZS_WP_PASSWORD "<the shared staging password>"
+```
+
+The user types the last two themselves in their own terminal; never ask for, echo or store the password.
+Reopen the terminal after `setx`.
+
 ## 1. Find new mail
 
 Desktop Outlook on this PC (the Microsoft 365 connector is blocked by the company's sign-in policy):
@@ -71,6 +83,19 @@ Write the reply text to `sites/c<id>/inbox/<date>-<kind>.md` (kind = staging | f
 reply → same folder), set `staging_url` in `intake.json` when given, commit + push to `site/c<id>`.
 Then tell the cloud session for that client (the user's session list, title "c<id> …") to pull and act;
 if none is reachable, put the prompt in the summary.
+
+## 4b. Staging access (replaces "forgot password" + pasting the code)
+
+For every client with a staging URL, and whenever `git pull` brings a `sites/c<id>/inbox/connect-request.json`:
+
+```bash
+git switch site/c<id> && git pull
+bin/zs staging c<id> --site <staging url>
+```
+
+It logs in with the saved password, or does the password reset itself (reads the reset mail in Outlook,
+sets the usual password), then approves the cloud session's access code. Check `work/staging-approve.png`.
+Run this check every few minutes while a cloud session waits for access (it waits 14 minutes).
 
 ## 5. Record + report
 
