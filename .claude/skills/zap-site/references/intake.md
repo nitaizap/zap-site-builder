@@ -5,6 +5,13 @@
 Usually one of: a pasted Hebrew brief, a spec board (image/PDF) with the page list and palette, a logo, a
 few photos, the client's old site URL, a Google Business link. Sometimes only a name and a phone number.
 
+## From the sites team (zap-intake)
+
+A branch `site/c<id>` pushed by the local `zap-intake` skill already holds `intake.json` (id, name, package,
+sender, links, staging URL, `missing`), `brief/brief.md` (the Word spec as text + the email body), the
+original .docx, and `assets/client/` (images from the F: drive). Start from those; the slug stays `c<id>`.
+Later replies (staging URL, feedback) land in `sites/c<id>/inbox/`: `git pull` and read them first.
+
 ## Extract — open every file
 
 Open every image and PDF before describing it. Filenames lie; a mislabelled image once shipped into a header.
