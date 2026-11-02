@@ -1,0 +1,37 @@
+{
+  "client_id": "80386843",
+  "slug": "c80386843",
+  "branch": "site/c80386843",
+  "name": "מסגרית Dream from Steel",
+  "package": "",
+  "spec_file": "איפיון אתר - מסגרית Dream from Steel - 80386843.docx",
+  "sender": "NoamR@d.co.il",
+  "subject": "Re: אתרי WIX- מעבר לWP",
+  "received": "2026-11-02T12:20:16Z",
+  "staging_url": "",
+  "links": [
+    "https://www.d.co.il/80386843/33060/"
+  ],
+  "zap_pages": {
+    "dapei_zahav": "https://www.d.co.il/80386843/"
+  },
+  "spec": {
+    "contact_name": "אופיר אלחנתי",
+    "name": "מסגרית Dream from Steel",
+    "client_id": "80386843",
+    "old_site": "https://www.d.co.il/80386843/33060/",
+    "hours": "ימים א'–ה', בין השעות 07:00 עד 20:00",
+    "whatsapp": "כן – 050-9254010"
+  },
+  "image_sources": [],
+  "images": [],
+  "image_dirs": [
+    "F:\\SiteContent\\80386843"
+  ],
+  "missing": [
+    "package: no package named in the file name or the spec sheet",
+    "staging URL (the sites team sends it later)"
+  ],
+  "status": "intake",
+  "note": "recorded in fingerprints/clients.json - commit that file too"
+}
