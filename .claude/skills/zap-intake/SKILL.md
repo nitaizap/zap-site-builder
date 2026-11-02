@@ -44,7 +44,7 @@ Sort each message:
 - **new request**: has `.docx` or `.xlsx` attachments with an 8-digit id (usually "<business> <id> - בייסיק.docx"
   for the Word template, "<business> <id> - וויקנד.xlsx" for the Excel one).
   One email can hold several clients: each spec sheet is one site.
-- **staging URL**: a reply naming a client id/business and a URL (`*.ussl.co.il` etc.) → step 4.
+- **staging URL**: a reply naming a client id/business and a URL (`*.ussl.co.il` etc.) → step 4 (`zs replies`).
 - **feedback**: a reply in the thread of a client already handed off → step 4.
 - anything else: skip, list it in the summary.
 
@@ -78,12 +78,59 @@ Then start the cloud build on that branch, prompt:
 Start it with `claude --remote "<prompt>"` from the repo when that is available; otherwise list the
 branches + prompts in the summary for the user to paste into a new cloud session.
 
-## 4. Staging URL / feedback replies
+## 4. Staging URL / feedback replies (`zs replies`)
 
-Write the reply text to `sites/c<id>/inbox/<date>-<kind>.md` (kind = staging | feedback; images in the
-reply → same folder), set `staging_url` in `intake.json` when given, commit + push to `site/c<id>`.
+`zs intake` opens a client. Everything the sites team sends afterwards - "here is the staging
+site", QA comments, a QA document - comes back as a reply in the same thread, and one reply often
+covers several clients at once. `zs replies` sorts those and files each one under the client it is
+really about. It never guesses: a message it cannot place is reported, not written.
+
+```bash
+bin/zs replies                        # dry run over work/inbox: prints what it would write, per client
+```
+
+Read the dry run before anything else. Then, per client, on that client's branch:
+
+```bash
+git switch site/c<id> && git pull
+bin/zs replies --client <id> --write
+git add sites/c<id> && git commit -m "replies: <name> (<id>)" && git push
+```
+
+`--write` is per checkout: a run covers several clients, so it only writes for the `sites/c<id>/`
+folders that are actually in the working tree and names the branch to switch to for the rest.
+It never commits or pushes - that stays above, so a wrong attribution is seen before it lands.
+
+What it writes per (message, client):
+
+- `sites/c<id>/inbox/<YYYY-MM-DD>-<kind>.md` (kind = `staging` when the message brings a staging URL
+  this client did not have, otherwise `feedback`): sender, subject, received, entry_id, the staging
+  URLs, and the part of the reply text that belongs to this client.
+- the real attachments next to it. The five signature logos (`11933939571542770323.png` and friends),
+  `image001.png`-style Outlook artefacts and `Outlook-*.png` are dropped.
+- `staging_url` in `sites/c<id>/intake.json`, with "staging URL" removed from `missing`.
+
+How it decides whose reply it is:
+
+- **staging URL -> the id in its host.** Outlook safelink wrappers are unwrapped first, and the host
+  carries the client id even when it is dressed up (`80392210kisos.ussl.co.il`,
+  `erezbread80049225.ussl.co.il`, `80393140pig.ussl.co.il`). A host with no id goes to the client
+  only when the message is about exactly one.
+- **text -> the client named last above it**, by 8-digit id or by business name, so
+  "הוילה הלבנה:" followed by its URL does not spill onto the next client in the list. Lines before
+  any client is named are shared by the clients this sender named - never by one that only appeared
+  in the quoted thread below.
+- **business names** come from the spec sheets in `work/inbox`, the checked-out `sites/` and the
+  `site/c<id>` branches. A name two clients both answer to is never used.
+- a name and an id in the same subject that disagree (a typo in one of them) is a clash: nothing is
+  written for the disputed client and it is listed under "Not attributed".
+
+Message classes printed by the dry run: `new_spec` (a spec attachment - step 2, not this step),
+`staging`, `feedback`, `other`.
+
 Then tell the cloud session for that client (the user's session list, title "c<id> …") to pull and act;
-if none is reachable, put the prompt in the summary.
+if none is reachable, put the prompt in the summary. Everything under "Not attributed" goes in the
+summary too, as an open item - never onto a branch on a hunch.
 
 ## 4b. Staging access (replaces "forgot password" + pasting the code)
 

@@ -15,6 +15,7 @@
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
+  zs replies [work/inbox]           sites-team replies (staging URL / QA feedback) -> sites/c<id>/inbox/ (dry run)
   zs intake <specs...> [--images-root F:\\Clients]  sites-team email -> sites/c<id>/ (brief + client images)
   zs staging <slug> --site https://x  PC: log in (reset via Outlook if needed) + approve the cloud's access code
   zs list                           sites on this machine
@@ -369,6 +370,7 @@ def main():
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
     import intake; intake.add_parser(sub)
+    import replies; replies.add_parser(sub)
     import staging; staging.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
