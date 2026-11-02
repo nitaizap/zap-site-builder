@@ -195,3 +195,23 @@ body .zs-hero--page.zs-v-stage .zs-hero__title .elementor-heading-title { font-s
 body .zs-trust.zs-v-giant .zs-trust__list li { text-align: center !important; display: flex; flex-direction: column; align-items: center; padding-inline: clamp(14px, 2vw, 32px) !important; }
 body .zs-trust.zs-v-giant .zs-trust__list li::before, body .zs-trust.zs-v-giant .zs-trust__list li::after,
 body .zs-trust.zs-v-giant .zs-trust__list strong::after, body .zs-trust.zs-v-giant .zs-trust__list span::before { margin-inline: auto !important; inset-inline: 0 !important; }
+
+/* chapters, Zap revision 1.11.2026: each chapter centred (title over its label), a larger label, a short accent rule
+   between them and a soft ground, so the strip reads as a designed index rather than text at the column edges */
+body .e-con.zs-chapters { background: var(--c-surface); }
+.e-con.zs-chapter { --flex-direction: column; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 10px;
+  padding: clamp(22px, 2.4vw, 34px) 16px; transition: background-color .25s; }
+.e-con.zs-chapter:hover { background: var(--c-bg); }
+.zs-chapter__t .elementor-heading-title { text-align: center; }
+.zs-chapter__l .elementor-heading-title { font-size: clamp(1.05rem, .95rem + .35vw, 1.25rem); font-weight: 600; text-align: center; color: var(--c-ink); }
+.zs-chapter__l { position: relative; padding-top: 12px; }
+.zs-chapter__l::before { content: ""; position: absolute; top: 0; left: 50%; width: 28px; height: 2px; background: var(--c-accent); transform: translateX(-50%); }
+/* overlay chips, Zap revision 1.11.2026: room between the chips and the button under them */
+.zs-overlay__card .zs-chips { gap: 10px 12px; margin: 22px 0 6px !important; }
+.zs-overlay__card .zs-chips span { padding: 7px 18px; }
+.e-con.zs-overlay__card > .zs-btns, .e-con.zs-overlay__card .zs-btns { margin-top: 28px; }
+
+/* film strip captions, Zap revision 2.11.2026: larger and centred under each photo */
+body .zs-film__img :is(figcaption, .widget-image-caption) { margin-top: 14px; text-align: center !important;
+  font-family: var(--f-head); font-size: clamp(1.15rem, 1rem + .5vw, 1.45rem); line-height: 1.3; letter-spacing: .01em; }
+body .zs-film.zs-bg-dark .zs-film__img :is(figcaption, .widget-image-caption) { color: var(--c-dark-ink); }

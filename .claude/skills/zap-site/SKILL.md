@@ -123,6 +123,11 @@ Then send the user, in one message:
 - open questions and assumptions
 - the question: which direction (A/B/C), and approve the sitemap?
 
+**Automatic mode** (the site came from `zap-intake`, i.e. `intake.json` exists): do not wait. Take the sitemap
+from the spec (`spec.sitemap`), pick the direction yourself (best fit to the brief and audience, measured
+least alike other clients), write the choice and why into `OPEN-ITEMS.md`, and continue to step 4. The user
+sees it in the end-of-work list and can still switch direction in a feedback round.
+
 **Autopilot:** if the user said not to stop ("בלי עצירות", "תבנה עד הסוף"), pick your recommended
 direction, say which and why in one line, and continue without waiting.
 
