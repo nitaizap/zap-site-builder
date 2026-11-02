@@ -8,7 +8,7 @@
   "sender": "NoamR@d.co.il",
   "subject": "ניק איטום 80272199- איפיון אתר",
   "received": "2026-11-02T09:23:26Z",
-  "staging_url": "",
+  "staging_url": "https://80272199.ussl.co.il/",
   "links": [
     "https://www.nickitum.co.il/"
   ],
@@ -62,8 +62,6 @@
   "image_dirs": [
     "F:\\SiteContent\\80272199"
   ],
-  "missing": [
-    "staging URL (the sites team sends it later)"
-  ],
+  "missing": [],
   "status": "intake"
 }

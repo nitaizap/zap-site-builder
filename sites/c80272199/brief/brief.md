@@ -3,7 +3,7 @@
 - from: NoamR@d.co.il
 - subject: ניק איטום 80272199- איפיון אתר
 - package: פרו
-- staging: (not yet)
+- staging: https://80272199.ussl.co.il/
 
 ## Email body
 
