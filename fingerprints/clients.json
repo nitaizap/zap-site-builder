@@ -2,7 +2,8 @@
   "80049225": {
     "first_seen": "2026-11-01",
     "name": "לחם ארז הרצליה",
-    "slug": "lehem-erez-herzliya"
+    "slug": "lehem-erez-herzliya",
+    "note": "confirmed 02/11: 80049225 is correct; the production board lists 80391351"
   },
   "80220135": {
     "first_seen": "2026-11-02",
@@ -29,6 +30,13 @@
     "name": "מסגרית Dream from Steel",
     "slug": "c80386843"
   },
+  "80391351": {
+    "alias_of": "80049225",
+    "first_seen": "2026-11-01",
+    "name": "לחם ארז הרצליה",
+    "note": "NOT the real client number: confirmed 02/11 that 80049225 is correct. This is what the production board carries. Kept so it cannot create a second client.",
+    "slug": "lehem-erez-herzliya"
+  },
   "80392210": {
     "first_seen": "2026-11-01",
     "name": "קיסוס ביץ קלאב אילת",
@@ -47,13 +55,14 @@
   "80393074": {
     "first_seen": "2026-10-29",
     "name": "בצל התאנה",
-    "note": "the sites team's subject line and the staging host say 80393140; unresolved",
+    "note": "confirmed 02/11 by נועם: 80393074 is correct; sales sheet, subject lines, the board and the staging host 80393140pig carry 80393140",
     "slug": "betzel-hateena"
   },
   "80393140": {
     "first_seen": "2026-10-29",
     "name": "בצל התאנה",
-    "note": "same client as 80393074; which id is real is unresolved",
-    "slug": "betzel-hateena"
+    "note": "NOT the real client number: confirmed 02/11 that 80393074 is correct. Kept so a mail quoting 80393140 does not create a second client. Its staging host 80393140pig.ussl.co.il keeps the wrong number and cannot be renamed.",
+    "slug": "betzel-hateena",
+    "alias_of": "80393074"
   }
 }
