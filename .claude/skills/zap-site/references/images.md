@@ -1,5 +1,29 @@
 # Images
 
+## Rights: every image is recorded, or it is not used
+
+Standing instruction from שרון יוסף, 20/10/2026, after review by עו"ד קובי בארי: a copyright claim over a
+single image can reach **₪100,000, with no need to prove damage**. So:
+
+- **An image of uncertain origin is not used.** No "probably fine", no reverse-image guesswork. Drop it and
+  use one of the other options below, or no image at all.
+- **Every image uploaded to a client site gets a row in `sites/<slug>/IMAGE-SOURCES.md`**, committed on the
+  client's branch, before delivery. One row per file:
+
+  | file | uploaded | by | source | licence |
+  |---|---|---|---|---|
+  | `assets/hero.webp` | 2026-11-02 | Claude (session <slug>) | AI: Figma Weave, model Nano Banana 2.1 | generated, no third-party rights |
+  | `assets/shop-front.webp` | 2026-11-02 | <name> | client sent it (WeTransfer, 2026-10-30) | client's own photo |
+  | `assets/tiles.webp` | 2026-11-02 | <name> | https://unsplash.com/photos/xxxxxxx | Unsplash Licence |
+
+  For a downloaded photo: the **site** it came from and the **licence type**. For AI: the **tool and the
+  model** (not just "AI"). The client's own photos: how and when they arrived.
+
+## Budget: 100 Weave credits per client
+
+Spend freely under 100 credits for a client. Only going over that needs the user's decision - which is
+separate from the per-batch cost gate below, which is always required.
+
 ## Order of preference
 
 1. **The client's own photos** (work, premises, team, products, certificates). Ask for them at intake.
@@ -64,6 +88,7 @@ Over 6 MB the validator stops the build: ask for the 720p, 4 s variant.
 
 ## Do not
 
+- Use any image you cannot write a source row for (see *Rights*, top of this file).
 - Copy photos from Google Maps, other businesses, or press sites without permission.
 - Use visible captions like "תמונה להמחשה" (the validator blocks it).
 - Put a dark logo on a dark header: provide `logo_light`, or choose `header: light`.
