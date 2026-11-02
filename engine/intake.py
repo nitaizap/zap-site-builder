@@ -17,6 +17,7 @@ import json
 import re
 import shutil
 import sys
+import urllib.parse
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -206,18 +207,64 @@ def package_from(stem, text):
     return ""
 
 
+SAFELINK_RE = re.compile(r"https?://[\w.-]*safelinks\.protection\.outlook\.com/\S*", re.I)
+
+
+def unwrap_safelinks(text):
+    """Replace every Outlook safelink wrapper with the real URL it hides.
+
+    Outlook rewrites links as
+    `https://eur04.safelinks.protection.outlook.com/?url=<percent-encoded url>&data=...`.
+    Storing that is storing garbage, so the `url=` parameter is decoded and the wrapper dropped.
+    A wrapper with no readable `url=` is removed entirely rather than left behind.
+    """
+    def one(m):
+        q = urllib.parse.parse_qs(urllib.parse.urlparse(m.group(0)).query)
+        return (q.get("url") or [""])[0]
+    return SAFELINK_RE.sub(one, text or "")
+
+
+def is_staging_host(url):
+    return (".ussl.co.il" in url or "staging" in url or ".1wp.site" in url or "clicksite.co.il" in url)
+
+
+BARE_STAGING_RE = re.compile(r"(?<![\w.@/:-])((?:[\w-]+\.)+(?:ussl\.co\.il|1wp\.site|clicksite\.co\.il))")
+
+
+def staging_urls(text):
+    """[(client id or "", url), ...] for every staging URL in the text, in order, de-duplicated.
+
+    Staging hosts are not uniformly named - `80392936.ussl.co.il`, `80392210kisos.ussl.co.il`
+    and `erezbread80049225.ussl.co.il` are all real - but the 8-digit client id is embedded in
+    the host, so the id in the host is what says whose site it is.
+    """
+    text = unwrap_safelinks(text)
+    found = URL_RE.findall(text) + ["https://" + h for h in BARE_STAGING_RE.findall(text)]
+    out, seen = [], set()
+    for u in found:
+        if not is_staging_host(u):
+            continue
+        parts = urllib.parse.urlparse(u.rstrip(".,"))
+        host = parts.netloc.lower()
+        if not host or host in seen:
+            continue
+        u = parts.scheme + "://" + host + "/"        # the site itself, not the /wp-login.php someone sent
+        seen.add(host)
+        ids = ID_RE.findall(host)
+        out.append((ids[0] if len(ids) == 1 else "", u))
+    return out
+
+
 def staging_from(text, cid=""):
     """The staging URL for this client, or "".
 
     One email can carry several clients and name all of their staging sites, so a host
     holding a different 8-digit id belongs to somebody else and is skipped.
     """
-    for u in URL_RE.findall(text or ""):
-        if not (".ussl.co.il" in u or "staging" in u or ".1wp.site" in u or "clicksite.co.il" in u):
+    for found, u in staging_urls(text):
+        if cid and found and found != cid:
             continue
-        if cid and any(i != cid for i in ID_RE.findall(u)):
-            continue
-        return u.rstrip(".,/") + "/"
+        return u
     return ""
 
 
