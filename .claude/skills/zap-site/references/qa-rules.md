@@ -123,7 +123,8 @@ your judgement.
    four questions in `hero-space.md` (height earned, text fills or balances its column, content or air, first button in view).
    `zs qa` cannot see this one; the user has rejected heroes that passed it with 0 errors.
 3. Read every heading once for punctuation, and every menu label against its page's H1.
-4. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
+4. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
+5. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
 
 ## Round 3 (פטוצ'ינה, 01/11/2026)
 

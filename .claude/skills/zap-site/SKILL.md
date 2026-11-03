@@ -221,6 +221,13 @@ git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
   "reduce motion" setting (Windows: Animation effects) — the site parks all motion then, by design — and
   cache (open in a private window). Verify yourself on the front end before answering.
 
+**Zap does not launch client sites; the deliverable is a launch-ready site.** Before handover, on staging, run
+`bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL) and attach `sites/<slug>/LAUNCH-SHEET.md`: it
+proves the plugin-dependent parts render (a copy by a migration tool can leave the `zap-site` plugin behind: no menu,
+no form, no legal line, still HTTP 200, as on הוילה הלבנה), staging mode is in force, nothing pins the staging host, QA
+is clean on desktop and mobile, and lists what the person launching must redo (the Elementor Pro licence is tied to
+the domain). Details: `references/novamira.md`, "Handover".
+
 Needs a connection: `zs connect` (run it in the background, give the user the link + code in one line, wait), or
 the `ZS_NOVAMIRA` secret from the one-time base-site setup. Without either, say so, do everything else, offer the zip. A live (non-staging) domain needs `--live` and the
 user's explicit go-ahead. What a person edits afterwards — pages, header/footer templates, Site Settings
