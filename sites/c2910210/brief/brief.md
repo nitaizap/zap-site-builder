@@ -3,7 +3,7 @@
 - from: NoamR@d.co.il
 - subject: איפיונים חדשים לאתרי WP
 - package: 
-- staging: (not yet)
+- staging: https://2910210kfarsabataxis.ussl.co.il/
 
 ## Email body
 

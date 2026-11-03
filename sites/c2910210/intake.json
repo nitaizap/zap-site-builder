@@ -8,7 +8,7 @@
   "sender": "NoamR@d.co.il",
   "subject": "איפיונים חדשים לאתרי WP",
   "received": "2026-11-03T07:39:52Z",
-  "staging_url": "",
+  "staging_url": "https://2910210kfarsabataxis.ussl.co.il/",
   "links": [
     "https://maps.google.com/?cid=9921269185300775859",
     "https://www.moniot.info",
@@ -158,8 +158,7 @@
     "F:\\SiteContent\\02910210"
   ],
   "missing": [
-    "package: no package named in the file name or the spec sheet",
-    "staging URL (the sites team sends it later)"
+    "package: no package named in the file name or the spec sheet"
   ],
   "status": "intake",
   "note": "recorded in fingerprints/clients.json - commit that file too"
