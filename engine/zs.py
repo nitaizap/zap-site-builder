@@ -162,8 +162,10 @@ def cmd_push(a):
             r.eval_php("update_option('zs_prev_front', (int) get_option('page_on_front')); echo 1;")
         if not a.no_backup:
             print("backup:", r.backup())
-        # staging lock: leads are saved but never mailed to the real client, search engines stay out
-        r.eval_php(f"update_option('zs_staging_lock', {0 if a.live else 1}); echo 1;")
+        # staging vs live is decided by the address (plugin inc/launch.php); register this host as staging so even a
+        # staging address outside Zap's usual domains keeps leads off the client's inbox until it moves
+        if not a.live:
+            r.eval_php(f"$h = (array) get_option('zap_staging_hosts', []); if (!in_array('{r.host}', $h, true)) {{ $h[] = '{r.host}'; update_option('zap_staging_hosts', $h); }} delete_option('zs_staging_lock'); echo 1;")
         build(r)
         if not other:
             # first push into a fresh base clone: the base's own placeholder pages/posts (not built from site.json)
