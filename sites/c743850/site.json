@@ -62,7 +62,8 @@
       "body": "Heebo"
     },
     "radius": 8,
-    "motion": "subtle"
+    "motion": "subtle",
+    "custom_css": "/* home hero (split): the generic rule gives the photo a portrait 4:4.6 box whatever the text needs, which made the hero 786px tall with a 307px text column floating in it. Landscape photo, a larger H1 and lead, balanced padding. */@media (min-width:1025px){html body.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img{aspect-ratio:4/3.2!important}html body.zs-hv-split .zs-hero--home .e-con.zs-hero__text{--row-gap:26px}html body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(3.6rem,1.6rem + 3.6vw,5.6rem)}html body.zs-hv-split .zs-hero--home .zs-hero__lead{font-size:clamp(1.25rem,1rem + .6vw,1.55rem)}html body .e-con.zs-hero--home{--padding-top:clamp(32px,1.2rem + 2vw,56px);--padding-bottom:clamp(36px,1.2rem + 2.4vw,64px)}}@media (max-width:1024px){html body .zs-hero--home .zs-hero__media :is(.elementor-widget-image,.elementor-widget-container){height:100%}html body .zs-hero--home .zs-hero__media img{height:100%!important;width:100%;object-fit:cover;object-position:50% 52%}}"
   },
   "logo": "assets/logo.png",
   "logo_light": "assets/logo-light.png",
