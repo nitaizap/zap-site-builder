@@ -22,7 +22,7 @@ Speak to the user in their language (usually Hebrew). Keep messages short; the f
 
 ## The whole of `references/` (there is nothing else; do not go looking for another skill)
 
-Everything this skill knows beyond the order of work is in these 15 files, next to this one. If you are
+Everything this skill knows beyond the order of work is in these 16 files, next to this one. If you are
 about to ask the user how to do something, or to search for a separate skill, read the file first.
 
 | file | the question it answers |
@@ -40,6 +40,7 @@ about to ask the user how to do something, or to search for a separate skill, re
 | **`images.md`** | **image rights and the `IMAGE-SOURCES.md` record; how to generate images with Figma Weave (model ids, settings, credits, the cost gate, prompt rules); Veo video; the `bin/zs image` fallback.** There is no separate "Weave" skill: this file is it |
 | `seo-checklist.md` | the team's SEO sheet row by row, and what `zs seo` checks |
 | `qa-rules.md` | everything Zap QA rejects, as rules |
+| `hero-space.md` | what "make better use of the hero" means, the four questions to answer before delivery, the evidence on six heroes, and how a measured check gets earned. Measure with `py tools/hero-space.py <url>` |
 | `novamira.md` | pushing the site live into the client's WordPress |
 | `delivery.md` | the zip route: packaging, deploy script, launch checklist |
 

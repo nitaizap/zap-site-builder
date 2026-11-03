@@ -44,6 +44,7 @@ your judgement.
 | **Fonts** | Body text and forms in a readable sans (Assistant, Heebo, Rubik, Noto Sans Hebrew, IBM Plex, Alef); a serif or display face only for headings | validator error (`fonts.body`), forms inherit |
 | **Heroes** | Buttons only in the home hero; inner-page heroes have none | validator error |
 | | Phones: the hero is as tall as its content, logo and text never under the header, buttons in view at 360×640 | theme, `zs qa` fold check |
+| | **Hero space** (user note 03/11/2026 on three sites, "a recurring issue"): the first screen is used, not just filled. Height earned by the photo or by real content, text that fills or balances its column, no bare area that carries nothing. Not measurable yet: six heroes, rejected and not, gave overlapping numbers on every metric | **you**, four questions in `hero-space.md` answered with `py tools/hero-space.py <url>` and the 1440 / 1280 shots. Not enforced by `zs qa`: no honest threshold exists |
 | **Buttons** | Phones: side by side, equal width, one line each (never stacked) | theme |
 | **Calls to action** | A page never ends with a `cta` section: the lead form follows it (two in a row) | validator error |
 | **Phone bar** | No sticky call bar by default; the header's phone button is the call action. A site turns the bar on with `header.mobile_bar` (extra buttons) or `header.call_bar: true` | theme |
@@ -118,6 +119,9 @@ your judgement.
 
 1. `bin/zs qa <slug>` 0 errors, `bin/zs seo <slug>` 0 FAIL, then the same on the pushed site (`--site`).
 2. Look at desktop at 1280px and phones at 390px yourself: logo words readable, no overlaps, no empty bands.
+   Then the hero on its own: run `py tools/hero-space.py <url> --out <file>`, open the 1440x900 shot beside it and answer the
+   four questions in `hero-space.md` (height earned, text fills or balances its column, content or air, first button in view).
+   `zs qa` cannot see this one; the user has rejected heroes that passed it with 0 errors.
 3. Read every heading once for punctuation, and every menu label against its page's H1.
 4. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
 5. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
