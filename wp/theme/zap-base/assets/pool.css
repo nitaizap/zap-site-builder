@@ -106,7 +106,12 @@ body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .e-con.zs-hero__te
 body .e-con.zs-split.zs-v-overlap .e-con.zs-split__text { position: relative; z-index: 2; margin-inline-end: -14%; background: var(--c-dark);
   --c-ink: #fff; --c-text: var(--c-dark-ink); --c-muted: color-mix(in srgb, var(--c-dark-ink) 75%, transparent); color: var(--c-dark-ink);
   padding: clamp(28px, 4vw, 56px); text-align: center; align-items: center; border-radius: var(--r-sm, 4px); }
-.zs-split.zs-v-overlap .zs-sec__title .elementor-heading-title { color: var(--c-accent); }
+/* The card's ground is always --c-dark (the rule above), so its title is white, like every other title on a
+   dark ground. It used to take --c-accent, which is the pattern Zap QA rejects ("red titles on navy passed
+   WCAG's 3:1 and were rejected", qa-rules.md); it cleared the measured 4.5:1 floor only by luck of the
+   palette, so zs qa never flagged it. The accent marks a title with a rule or a chip, not by colouring the
+   words. */
+.zs-split.zs-v-overlap .zs-sec__title .elementor-heading-title { color: var(--c-dark-ink); }
 .zs-split.zs-v-overlap .zs-split__img img { aspect-ratio: 4 / 3; border-radius: var(--r-sm, 4px); box-shadow: none; }
 @media (max-width: 900px) { .elementor .e-con.zs-split.zs-v-overlap > .e-con-inner { grid-template-columns: 1fr; } body .e-con.zs-split.zs-v-overlap .e-con.zs-split__text { margin: -48px 16px 0; order: 2; } .zs-split.zs-v-overlap .e-con.zs-split__media { order: 1; } }
 
