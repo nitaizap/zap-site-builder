@@ -8,7 +8,7 @@
   "sender": "NoamR@d.co.il",
   "subject": "איפיונים חדשים לאתרי WP",
   "received": "2026-11-02T14:19:35Z",
-  "staging_url": "",
+  "staging_url": "https://80362823carservice.ussl.co.il/",
   "links": [],
   "zap_pages": {
     "dapei_zahav": "https://www.d.co.il/80362823/"
@@ -25,8 +25,7 @@
     "F:\\SiteContent\\80362823"
   ],
   "missing": [
-    "package: no package named in the file name or the spec sheet",
-    "staging URL (the sites team sends it later)"
+    "package: no package named in the file name or the spec sheet"
   ],
   "status": "intake",
   "note": "recorded in fingerprints/clients.json - commit that file too"
