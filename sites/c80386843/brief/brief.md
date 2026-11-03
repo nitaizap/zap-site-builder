@@ -3,7 +3,7 @@
 - from: NoamR@d.co.il
 - subject: Re: אתרי WIX- מעבר לWP
 - package: 
-- staging: (not yet)
+- staging: https://80386843dreamfromsteel.ussl.co.il/
 
 ## Email body
 
