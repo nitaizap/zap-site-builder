@@ -48,9 +48,10 @@ def _reset_link(host, since, wait=300):
                              capture_output=True, text=True).stdout
         for raw in out.splitlines():
             link = _unwrap(raw.strip())
-            if link.startswith("http") and host in urlsplit(link).hostname or "":
-                if "action=rp" in link:
-                    return link
+            if not link.startswith("http") or "action=rp" not in link:
+                continue
+            if host == (urlsplit(link).hostname or ""):
+                return link
         if time.time() >= end:
             break
         time.sleep(10)
@@ -70,16 +71,41 @@ def _logged_in(page, url):
     return "wp-login.php" not in page.url
 
 
+def _logins(user):
+    """The identifiers to try, in order.
+
+    ZS_WP_USER is an e-mail address and WordPress accepts it: measured on two live staging sites,
+    an e-mail login succeeds. This list is only a cheap fallback for a site whose account name is
+    not the address - the reset mail always states the username ("שם משתמש:") and the reset
+    link carries it as login=, and it has so far always been the local part. Set ZS_WP_LOGIN when
+    the two are unrelated.
+
+    It is NOT the fix for "cannot log in after a successful reset". That was a wrong stored
+    ZS_WP_PASSWORD, and the site's own error ("the password or e-mail X is incorrect") reads as if
+    the account were missing, which sent a whole afternoon looking in the wrong place.
+    """
+    names = [os.environ.get("ZS_WP_LOGIN"), user, user.split("@")[0] if "@" in user else None]
+    seen, out = set(), []
+    for n in names:
+        if n and n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out
+
+
 def _login(page, url, user, pw):
-    page.goto(url + "/wp-login.php", wait_until="domcontentloaded")
-    page.fill("#user_login", user)
-    page.fill("#user_pass", pw)
-    page.click("#wp-submit")
-    page.wait_for_load_state("domcontentloaded")
-    return _logged_in(page, url)
+    for name in _logins(user):
+        page.goto(url + "/wp-login.php", wait_until="domcontentloaded")
+        page.fill("#user_login", name)
+        _type_secret(page, "#user_pass", pw)
+        page.click("#wp-submit")
+        page.wait_for_load_state("domcontentloaded")
+        if _logged_in(page, url):
+            return True
+    return False
 
 
-def _reset(page, url, host, user, pw):
+def _reset(ctx, page, url, host, user, pw):
     since = datetime.now()
     page.goto(url + "/wp-login.php?action=lostpassword", wait_until="domcontentloaded")
     page.fill("#user_login", user)
@@ -87,14 +113,21 @@ def _reset(page, url, host, user, pw):
     page.wait_for_load_state("domcontentloaded")
     print("staging: reset requested, waiting for the mail in Outlook…", flush=True)
     link = _reset_link(host, since)
+    # WordPress moves the key out of the URL into a per-site cookie and redirects. A cookie left
+    # from an earlier attempt makes the form post that stale key: the page still reports success
+    # while the password never changes, which is exactly the failure this function used to hit.
+    ctx.clear_cookies()
     page.goto(link, wait_until="domcontentloaded")
     _type_secret(page, "#pass1", pw)
     # count() matches a hidden element too. Current WordPress ships #pass2 in the DOM but hidden, so
     # filling it unconditionally waits 30s for an element that will never be editable and then throws
     # - with the password in the exception text. Only fill it when it is actually visible.
     _type_secret(page, "#pass2", pw, only_if_visible=True)
-    if page.locator(".pw-checkbox").first.is_visible():   # "confirm use of weak password"
-        page.check(".pw-checkbox")
+    # "confirm use of weak password" flickers between visible and hidden while WordPress scores the
+    # field, so click() races against it. Set it directly; a no-op when WordPress does not ask.
+    page.evaluate("() => { const c = document.querySelector('.pw-checkbox');"
+                  " if (c && !c.checked) { c.checked = true;"
+                  " c.dispatchEvent(new Event('change', {bubbles: true})); } }")
     page.click("#wp-submit")
     page.wait_for_load_state("domcontentloaded")
 
@@ -150,9 +183,13 @@ def staging(slug, url, headless=False):
         ctx = p.chromium.launch_persistent_context(str(PROFILE), headless=headless)
         page = ctx.new_page()
         if not _logged_in(page, url) and not _login(page, url, user, pw):
-            _reset(page, url, host, user, pw)
+            _reset(ctx, page, url, host, user, pw)
             if not _login(page, url, user, pw):
-                raise SystemExit(f"staging: still cannot log in to {url} after the reset (screenshot: work/staging-fail.png)")
+                shot = ROOT / "work" / "staging-fail.png"
+                shot.parent.mkdir(parents=True, exist_ok=True)
+                page.screenshot(path=str(shot))      # the message promised this file; now it exists
+                raise SystemExit("staging: still cannot log in to %s after the reset. Tried %s "
+                                 "(screenshot: %s)" % (url, ", ".join(_logins(user)), shot))
         print(f"staging: logged in to {url}", flush=True)
         req_f = ROOT / "sites" / slug / "inbox" / "connect-request.json"
         if req_f.exists():
