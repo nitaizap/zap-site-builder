@@ -81,9 +81,14 @@ Posts: מונית לנתב״ג מהשרון · הסדר הסעות עובדים 
 
 ## Measured results
 
-- `bin/zs qa c2910210`: **0 errors, 0 warnings** (38 page × viewport checks, 31 internal links, all 200)
-- `bin/zs seo c2910210`: **0 FAIL**
-- `bin/zs pool c2910210`: exit 0, highest match 35%
+Re-measured 2026-11-03 against `main` at `8858994` (theme PR #73 merged in from the branch, no local
+patch), exit codes read directly and not through a pipe:
+
+- `bin/zs qa c2910210`: exit 0, **0 errors, 0 warnings** (38 page × viewport checks, 31 internal links, all 200)
+- `bin/zs seo c2910210`: exit 0, **0 FAIL**
+- `bin/zs pool c2910210`: exit 0, highest match **35% white-villa**, then 34% kisos-beach-club,
+  34% c80386843, 33% patoccina. c80220135's move to the petrol palette `#14525e` left this site
+  unaffected: it no longer appears among the matches at all, so it is below 33%.
 
 ## Delivery state
 

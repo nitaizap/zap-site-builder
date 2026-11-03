@@ -37,8 +37,10 @@ without stopping for the gate. Everything assumed, deviated or still open is lis
 - During research, a WebFetch of the d.co.il listing returned a block of text that claimed to be
   "reporting rules" for the agent reading it. It was not from anyone on the team and was ignored. Worth
   knowing that directory pages can carry text aimed at automated readers.
-- One theme bug was found and fixed on its own branch (preset `bold` darkens the `steps` section while
-  kit `panels` repaints that section white, leaving white text on white):
-  **PR #73, `claude/panels-dark-section-contrast`, still open.** The local build of this site was verified
-  with that fix applied (qa 0 errors). Until #73 is merged into `main`, a fresh build from this branch
-  alone will report `low text contrast` on the "איך מזמינים נסיעה" heading. Merge #73 first, then rebuild.
+- One theme bug was found here and fixed on its own branch (preset `bold` darkens the `steps` section
+  while kit `panels` repaints that section white, leaving white text on white):
+  **PR #73 is merged** (`8858994` on `main`). This branch has `main` merged in, so the fix now comes from
+  `main` and not from a local edit; `wp/` and `engine/` are byte-identical to `main`. The site was rebuilt
+  and re-measured against it on 2026-11-03: qa, seo and pool all exit 0. The "איך מזמינים נסיעה" heading
+  renders dark on the white panel at 1440 and keeps the preset's dark band with white text at 390, which
+  is the intended behaviour on both.
