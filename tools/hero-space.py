@@ -104,7 +104,7 @@ JS = r"""
   const mediaShare = media ? ((media.r - media.l) * (media.b - media.t)) / (W * H) : 0;
   const hdr = document.querySelector('header, .zs-header');
   const hdrH = hdr ? hdr.getBoundingClientRect().height : 0;
-  return {
+  const out = {
     how, cls: (hero.className || '').toString().slice(0, 60), vw, vh,
     heroTop: Math.round(top), heroH: Math.round(H), heroVh: +(H / vh).toFixed(2), heroBottomVsVh: Math.round(top + H - vh), hdrH: Math.round(hdrH),
     hasBgMedia: hasBg, mediaShare: +mediaShare.toFixed(2),
@@ -121,6 +121,25 @@ JS = r"""
     cta: btn ? {text: btns[0].textContent.trim().slice(0, 20), bottom: Math.round(btn.bottom + scrollY), aboveFold: btn.bottom <= vh, bottomVsVh: Math.round(btn.bottom - vh), n: btns.length} : null,
     mediaBox: media ? {w: Math.round(media.r - media.l), h: Math.round(media.b - media.t)} : null, leadLines: lead ? Math.round(lead.getBoundingClientRect().height / (parseFloat(leadS.lineHeight) || parseFloat(leadS.fontSize) * 1.5)) : null, nblocks: blocks.length, mediaKinds: blocks.filter(b => b.media).map(b => b.kind).slice(0, 4),
   };
+
+  // ---- first screen only: hero ∩ viewport, nothing but ground / background photo counts as empty
+  const fy0 = Math.max(hr.top, 0), fy1 = Math.min(hr.bottom, vh), fH = Math.max(0, fy1 - fy0);
+  const fgy = Math.ceil(fH / C), g2 = new Uint8Array(gx * fgy);
+  const paint2 = r => { const x0 = Math.max(0, Math.floor((r.l - hr.left) / C)), x1 = Math.min(gx, Math.ceil((r.r - hr.left) / C)), y0 = Math.max(0, Math.floor((r.t - fy0) / C)), y1 = Math.min(fgy, Math.ceil((r.b - fy0) / C));
+    for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) g2[y * gx + x] = 1; };
+  textRects.forEach(paint2); blocks.forEach(paint2);
+  let mr2 = 0, mr2box = null; const h2 = new Int32Array(gx);
+  for (let y = 0; y < fgy; y++) {
+    for (let x = 0; x < gx; x++) h2[x] = g2[y * gx + x] ? 0 : h2[x] + 1;
+    const st = [];
+    for (let x = 0; x <= gx; x++) { const h = x < gx ? h2[x] : 0; let s0 = x;
+      while (st.length && st[st.length - 1].h >= h) { const t = st.pop(); const a = t.h * (x - t.s); if (a > mr2) { mr2 = a; mr2box = {w: (x - t.s) * C, h: t.h * C}; } s0 = t.s; }
+      st.push({h, s: s0}); }
+  }
+  let c2 = 0; for (const v of g2) c2 += v;
+  const tbc = tb ? ((tb.l + tb.r) / 2 - (hr.left + W / 2)) / W : null;
+  out.first = {fH: Math.round(fH), emptyShare: +(1 - c2 / (gx * fgy)).toFixed(3), bareRectShare: +(mr2 / (gx * fgy)).toFixed(3), bareRect: mr2box, textCentreOffset: tbc === null ? null : +tbc.toFixed(2)};
+  return out;
 }
 """
 
@@ -158,13 +177,15 @@ def measure(urls, shots=None):
 def line(vp, m):
     if "error" in m:
         return f"  {vp:6} {m['error']}"
-    tb, cta, mb = m.get("textBlock") or {}, m.get("cta") or {}, m.get("mediaBox") or {}
+    tb, cta, mb, fs = m.get("textBlock") or {}, m.get("cta") or {}, m.get("mediaBox") or {}, m.get("first") or {}
     txt_vs_media = round(tb["h"] / mb["h"], 2) if tb and mb.get("h") and not m["hasBgMedia"] and m["vw"] >= 768 else None
     return (f"  {vp:6} hero {m['heroH']}px = {m['heroVh']}vh | bg photo {'yes' if m['hasBgMedia'] else 'no'} | empty {m['emptyShare']:.0%} of box "
             f"| biggest empty rect {m['maxEmptyRect']:.0%} ({m['maxEmptyRectBox']['w']}x{m['maxEmptyRectBox']['h']}) "
             f"| text block {tb.get('widthVsHero')}w x {tb.get('heightVsHero')}h of hero, vs photo height {txt_vs_media} "
             f"| h1 {m['h1']['fs']}px/{m['h1']['lines']} line(s), lead {(m['lead'] or {}).get('fs')}px "
-            f"| first button {'above' if cta.get('aboveFold') else 'BELOW'} the fold ({cta.get('bottomVsVh')}px)")
+            f"| first button {'above' if cta.get('aboveFold') else 'BELOW'} the fold ({cta.get('bottomVsVh')}px) "
+            f"| first screen only: bare rect {fs.get('bareRectShare', 0):.0%} ({(fs.get('bareRect') or {}).get('w')}x{(fs.get('bareRect') or {}).get('h')}), "
+            f"text centre {fs.get('textCentreOffset')} off the hero centre")
 
 
 def main():
