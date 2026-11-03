@@ -51,7 +51,14 @@ class Site:
     def exists(self):
         return (self.wp_dir / "wp-config.php").exists()
 
+    def _guard_port(self):
+        if self._answers() and not self._own_pid_alive():
+            raise RuntimeError(f"{self.url} is answered by a server that this checkout did not start (another clone or "
+                               f"worktree serving '{self.slug}', sharing its database `{self.db}`): run "
+                               f"`bin/zs stop {self.slug}` there, then try again")
+
     def create(self, title, locale="he_IL"):
+        self._guard_port()   # before the database is dropped: it is shared by every checkout building this slug
         self.dir.mkdir(parents=True, exist_ok=True)
         (self.src / "assets").mkdir(parents=True, exist_ok=True)
         if not (self.wp_dir / "wp-load.php").exists():
@@ -134,16 +141,38 @@ class Site:
         self.wp("rewrite", "flush", "--hard", check=False)
 
     # ---------- local web server ----------
-    def running(self):
+    def _answers(self):
         try:
             urllib.request.urlopen(self.url + "/wp-login.php", timeout=3)
             return True
         except Exception as e:  # HTTPError still means the server answered
             return hasattr(e, "code")
 
+    def _own_pid_alive(self):
+        """The server this checkout started (pidfile) is still alive."""
+        try:
+            pid = int(self.pidfile.read_text())
+        except Exception:
+            return False
+        if IS_WIN:
+            r = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
+            return str(pid) in r.stdout
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            return False
+
+    def running(self):
+        """Our own server answers. A server that answers on our port but was not started from this checkout
+        (another clone or worktree building the same slug) is not ours: it serves another folder and database,
+        so builds and QA would silently test the wrong site."""
+        return self._answers() and self._own_pid_alive()
+
     def serve(self):
         if self.running():
             return self.url
+        self._guard_port()
         router = Path(__file__).with_name("router.php")
         log = open(self.dir / "server.log", "ab")
         kw = {}
@@ -151,8 +180,9 @@ class Site:
             kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
         else:
             kw["start_new_session"] = True
+        # PHP notices from plugins go to server.log, never into the page (hosts hide them; on the page they break the layout QA)
         env = dict(os.environ, PHP_CLI_SERVER_WORKERS="4")
-        p = subprocess.Popen([php_bin(), "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
+        p = subprocess.Popen([php_bin(), "-d", "display_errors=0", "-d", "log_errors=1", "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
                              cwd=self.wp_dir, stdout=log, stderr=log, stdin=subprocess.DEVNULL, env=env, **kw)
         self.pidfile.write_text(str(p.pid))
         for _ in range(40):

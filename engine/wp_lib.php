@@ -257,6 +257,9 @@ function zs_task_finish($p) {
     // Elementor's per-document HTML cache can outlive a rebuild (a fresh site served its header without the
     // menu and burger until it was cleared): drop it every build, Elementor regenerates it on the next view
     delete_post_meta_by_key('_elementor_element_cache');
+    // ...and keep it off (Elementor → Settings → Performance → Element Caching): the first view after a build
+    // cached the header without its zap-* widgets (no menu, no burger) and served that until the next flush
+    update_option('elementor_element_cache_ttl', 'disable');
     if ($p['nav'])        zs_menu('ראשי', 'primary', $p['nav']);
     if ($p['footer_nav']) zs_menu('פוטר', 'footer', $p['footer_nav']);
 
