@@ -73,6 +73,10 @@ site; say so in the summary.
 
 ## 3. Hand off (per client)
 
+Pick the model and effort for whatever you hand off: see "Delegating" in `CLAUDE.md`. In short, a client
+build is Sonnet at high effort and belongs in a cloud session, not a local subagent; this intake run
+itself is Sonnet at medium; a pure lookup is Haiku at low.
+
 ```bash
 git fetch origin main && git switch -c site/c<id> origin/main
 git add sites/c<id> && git commit -m "intake: <name> (<id>)" && git push -u origin site/c<id>

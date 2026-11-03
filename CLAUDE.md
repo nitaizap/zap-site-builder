@@ -43,6 +43,31 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
 - Before calling anything done: go through `.claude/skills/zap-site/references/qa-rules.md` (what Zap QA rejects), then `bin/zs qa <slug>` with 0 errors and `bin/zs seo <slug>` (the Zap SEO
   checklist) with 0 FAIL.
 
+## Delegating: pick the model and effort for the job
+
+Every subagent, session or scheduled run costs what you give it. Match it to the work; the table is the
+default, deviate only with a reason.
+
+| work | model | effort | why |
+|---|---|---|---|
+| Orchestrating: writing briefs, checking what an agent reports, deciding what ships | Opus | high | Its whole value is catching a confident report that is wrong. On 2026-11-03 three agent reports were wrong in ways that mattered, each caught only by re-running the check. |
+| Building a client site | Sonnet | high | Long and partly mechanical, but it is design judgement and it faces the client. Both theme bugs found that day - a title clearing contrast by luck at 4.56:1, and bidi reversing a Latin brand inside a Hebrew H1 - came from reading `qa-rules.md` carefully, not from any gate. Do not go below high here. |
+| Intake, reply routing, board sync, the hourly run | Sonnet | medium | Deterministic: read mail, run a command, write a file, report. Haiku at medium once a path has been stable for a while. |
+| Verification: does this number match that file, is this branch current | Haiku | low | No judgement, just a lookup. Most of what an orchestrator checks belongs here. |
+
+Two things that save more than any model choice:
+
+- **Client builds belong in cloud sessions, not local subagents.** Only intake needs this PC (Outlook, the
+  F: drive). Everything after it is portable, and cloud sessions run genuinely in parallel without fighting
+  over ports, the shared MariaDB, or a local watchdog that kills a build stuck on one long call.
+- **Land engine and theme changes before dispatching builds, not during.** A theme fix merged mid-build
+  costs every agent a re-merge and a re-measure, and their uniqueness numbers go stale the moment the pool
+  moves under them.
+
+Give any long-running agent the traps as well as the task: `bin/zs` never `py engine/zs.py` (PYTHONUTF8,
+or Hebrew breaks), never trust an exit code read through a pipe, and background anything that may exceed
+about ten minutes.
+
 ## Test the engine after changing it
 
 ```bash
