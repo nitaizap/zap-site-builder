@@ -74,10 +74,15 @@ def _logged_in(page, url):
 def _logins(user):
     """The identifiers to try, in order.
 
-    ZS_WP_USER is an e-mail address, but these sites refuse it: WordPress wants the account's
-    *username*, which the reset mail spells out ("שם משתמש: nitaiz") and which the reset
-    link carries as login=. It is the local part of the address, so try that too rather than
-    asking for a second setting. Set ZS_WP_LOGIN to override when the two are unrelated.
+    ZS_WP_USER is an e-mail address and WordPress accepts it: measured on two live staging sites,
+    an e-mail login succeeds. This list is only a cheap fallback for a site whose account name is
+    not the address - the reset mail always states the username ("שם משתמש:") and the reset
+    link carries it as login=, and it has so far always been the local part. Set ZS_WP_LOGIN when
+    the two are unrelated.
+
+    It is NOT the fix for "cannot log in after a successful reset". That was a wrong stored
+    ZS_WP_PASSWORD, and the site's own error ("the password or e-mail X is incorrect") reads as if
+    the account were missing, which sent a whole afternoon looking in the wrong place.
     """
     names = [os.environ.get("ZS_WP_LOGIN"), user, user.split("@")[0] if "@" in user else None]
     seen, out = set(), []
