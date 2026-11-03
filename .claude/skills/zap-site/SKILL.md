@@ -194,7 +194,7 @@ direction, say which and why in one line, and continue without waiting.
 
 ```bash
 bin/zs connect --site https://<client>.ussl.co.il          # once per site: an admin approves a code in wp-admin
-bin/zs push <slug> --site https://<client>.ussl.co.il    # backup → code → content; staging lock on
+bin/zs push <slug> --site https://<client>.ussl.co.il    # backup → code → content; staging mode by address
 bin/zs qa <slug> --site https://<client>.ussl.co.il      # 0 errors on the pushed site itself
 bin/zs shots <slug> all --site https://<client>.ussl.co.il   # LOOK at the pushed site, desktop + mobile
 git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
