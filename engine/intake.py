@@ -14,6 +14,7 @@ One email may carry several clients (one spec sheet per client). Spec sheets com
 Nothing is invented: what is not found stays empty and is listed under "missing".
 """
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -327,22 +328,41 @@ def spec_fields(text):
 
 # ---------- images ----------
 
-def find_client_dirs(root, cid, depth=4):
+def find_client_dirs(root, cid, depth=1):
+    """The client's image folders under the images root, or [].
+
+    F:\\SiteContent holds ~88,000 client folders on a network share. This used to walk it to depth 4
+    whenever the exact folder was missing - which is every client whose folder was never created. On
+    2026-11-02 that hung three builds past a ten-minute watchdog, and it had been silently making
+    every such intake take longer than anyone would wait. A client folder is always a direct child of
+    the root (the plain id, or the id with a name beside it as SiteDesign files them), so one listing
+    answers it; `depth` is kept for callers that knowingly ask for more.
+    """
     root = Path(root)
     if (root / cid).is_dir():             # Zap layout: F:\SiteContent\<id>\
         return [root / cid]
+    # F: pads the id to 8 digits: client 743850 is F:\SiteContent\00743850. Take that exact match
+    # before any substring search, because a substring also matches a DIFFERENT client whose id
+    # happens to contain these digits - 743850 matches 19743850, whose photos are not this client's.
+    if len(cid) < 8:
+        padded = root / cid.zfill(8)
+        if padded.is_dir():
+            return [padded]
     hits, stack = [], [(root, 0)]
     while stack:
         d, lvl = stack.pop()
         try:
-            kids = [k for k in d.iterdir() if k.is_dir()]
+            # scandir, and match the NAME before touching the share. is_dir() on ~88,000 network
+            # entries is a stat each: that is what made this unusable, not the recursion itself.
+            with os.scandir(d) as it:
+                for e in it:
+                    if cid in e.name:
+                        if e.is_dir():
+                            hits.append(Path(e.path))
+                    elif lvl + 1 < depth and e.is_dir():
+                        stack.append((Path(e.path), lvl + 1))
         except OSError:
             continue
-        for k in kids:
-            if cid in k.name:
-                hits.append(k)
-            elif lvl + 1 < depth:
-                stack.append((k, lvl + 1))
     return hits
 
 
