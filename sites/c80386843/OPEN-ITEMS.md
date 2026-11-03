@@ -3,6 +3,40 @@
 Collected while building, not asked one by one (the skill's automatic mode). Work continued on the best safe
 default in every case; the default taken is written next to each item.
 
+---
+
+## ⬛ Read this first: what the client still owes, and what ships without it
+
+**This site has no portfolio, and that is a decision, not an oversight.** Whoever publishes it is publishing
+a metalworker's site with no pictures of metalwork, and should know that before, not after.
+
+The client sent **no photographs at all**. `F:\SiteContent\80386843` exists and is empty, the spec sheet
+carries no WeTransfer or Drive link, and the business has no website, Facebook or Instagram. Every one of
+the five `F:` roots was searched, including the 7,271-client archive. The eight images on the site are AI
+atmosphere only (material and process: a bench, raw stock, a weld bead, a workshop bay) and **not one of
+them shows a finished product**, because a generated gate or railing on a metalworker's site reads as that
+metalworker's own job. Full reasoning in item 7.
+
+**Three things are needed from the client before this site is what it should be:**
+
+| # | what to ask for | what it unblocks | detail |
+|---|---|---|---|
+| 1 | **photographs of completed work** — gates, railings, structures; the more unusual the better, since the whole site argues the work is not standard | a real gallery section on the home and service pages. Until they arrive there is none | item 7 |
+| 2 | **a photograph of the workshop**, and one of Ofir | the about page's owner block, and a real image for the place the site keeps describing | item 7 |
+| 3 | **the logo file at a usable resolution** (SVG, AI/EPS, or PNG ≥512px) | a crisp favicon and a header logo that holds up on a high-density screen. A 140x140 copy is in use now, recovered from the client's Dapei Zahav listing, and it is the largest that directory serves | item 4 |
+
+A fourth file is bought and promised but has not arrived: the **AI social promo video** for the home page
+(item 6). Its slot is reserved and documented; nothing renders until the URL comes.
+
+**And one thing nobody has resolved:** the site displays **072-2594285** while the spec sheet's "טלפון
+לאתר" is **050-9254010**. The 072 is a Zap מספר מקשר — a Maskyoo-style tracking line that forwards to the
+business — and it is the only number on either Dapei Zahav listing. The build follows Zap's standard and
+displays it, with the 050 named in the explanation popup and used for WhatsApp. **The client has never
+confirmed this themselves.** It is flagged, not settled: see item 1 for exactly what was assumed and on
+what evidence, and raise it with Ofir before go-live.
+
+---
+
 ## Decided (Nitai, 02/11) — closed, no action left
 
 1. **The site shows the Zap tracking number.** Confirmed: `phone_display` is **072-2594285** with
@@ -52,8 +86,10 @@ default in every case; the default taken is written next to each item.
 
 6. **Video frame on the home page** (Noam, 02/11 15:09, `inbox/2026-11-02-feedback.md`). The client also bought an AI social
    promo video and it should appear on the home page. No file or URL has arrived, so nothing is rendered: an
-   empty band would fail QA and look broken. The slot is **between the services cards and `split:overlap`**,
-   i.e. index 4 of the home page's `sections` in `site.json`. When the URL arrives, drop in:
+   empty band would fail QA and look broken. The slot is **straight after the services cards
+   (`cards:framed`) and before `collage`**, i.e. index 6 of the home page's `sections` in `site.json`
+   (re-checked 03/11 after the home was resequenced; it was index 4 under the old order). When the URL
+   arrives, drop in:
 
    ```json
    { "type": "video", "title": "הסרטון של מסגרית Dream from Steel",
@@ -71,8 +107,9 @@ default in every case; the default taken is written next to each item.
    is empty, the spec sheet has no WeTransfer or Drive link, and the business has no site, Facebook or
    Instagram. The only image on the Dapei Zahav listing is a generic category cover, not their work.
 
-   The site therefore has **no gallery**, by decision. The four images on it are AI atmosphere only (a
-   workshop bay, a fabrication bench, raw stock, brushed steel) and none of them shows a finished product.
+   The site therefore has **no gallery**, by decision. The eight images on it are AI atmosphere only (a
+   workshop bay, a fabrication bench, raw stock, brushed steel, a shop drawing, a cut-off saw throwing
+   sparks, a weld bead and a second workshop interior) and none of them shows a finished product.
    Generating gates, railings or structures would have read as this client's portfolio, which
    `references/images.md` forbids. The footer carries the line
    "תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק".

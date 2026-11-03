@@ -72,7 +72,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 |---|---|---|
 | לוגו — blank | ✅ | blank on the spec, but the client's real logo was found on their Dapei Zahav listing and is in the header and the footer, with the favicon cut from it and the whole palette sampled from it. Only the source file at full resolution is still wanted. OPEN-ITEMS 4 |
 | צבעי מותג — blank | ✅ | sampled from the client's own logo once it was found: orange `#b84606` and slate `#1b2a36`. NOTES.md |
-| יד חופשית למעצב — blank | ✅ | treated as a free hand, since nothing was specified |
+| יד חופשית למעצב — blank | ✅ | treated as a free hand, since nothing was specified. Re-exercised on 03/11: kit `sidebar`→`frame`, archetype `statement`→`story`, home resequenced, for uniqueness headroom. Every word, link and image is unchanged; only the order and the skeleton moved. NOTES.md "Uniqueness pass, 03/11" |
 | אתרים שאהבתם — blank | ➖ | nothing to match |
 
 ## 7 · תמונות
@@ -93,7 +93,7 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 | request | status | where |
 |---|---|---|
 | leave room on the home page for a video frame (AI social promo the client bought), Noam 02/11 15:09 | ⏳ | slot reserved and documented with the exact position and JSON. Nothing rendered until the file or URL arrives. OPEN-ITEMS 6 |
-| "אין אתר ואין תמונות צריך לייצר או לקחת ממאגרים", Noam 02/11 14:57 | ✅ | four AI atmosphere images on the site, each marked `ai` and recorded in IMAGE-SOURCES.md, with the footer line saying so. No generated work presented as the client's: OPEN-ITEMS 7 |
+| "אין אתר ואין תמונות צריך לייצר או לקחת ממאגרים", Noam 02/11 14:57 | ✅ | eight AI atmosphere images on the site, each marked `ai` and recorded in IMAGE-SOURCES.md, with the footer line saying so. No generated work presented as the client's: OPEN-ITEMS 7 |
 | "יש רק לוגו", Noam 02/11 14:57 | ✅ | the file never reached the branch, so it was found on the client's own Dapei Zahav listing and is now in use. 140x140 is all the directory serves; the original is still wanted. OPEN-ITEMS 4 |
 
 ## Prohibitions, checked by grep over `site.json`

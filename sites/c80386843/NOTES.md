@@ -41,21 +41,22 @@ wording, not a date); no licences, no prices, no ratings, no counts.
 | lever | choice | why |
 |---|---|---|
 | `tier` | `standard` | the spec names no package, and its own sitemap is 6 pages, over basic's cap of 5. Decided 02/11: keep all six, so `standard`. No premium-only feature is used |
-| `kit` | `sidebar` | the section title sits in a side column beside long content. This client has **no portfolio to show**, so the site has to convince by explaining, and the skeleton is built for explanation. Also the only free kit with a dark footer (`bands` is on c80220135, `magazine` on lehem-erez) |
-| `archetype` | `statement` | type-led: one confident line ("אין אצלנו קטלוג"), then short proof. The right shape for a site with four atmosphere photos and no work to show |
+| `kit` | `frame` | the page sits inside a brand-orange frame with offset photo frames: `pool.md` files it under "studios, galleries, design-led trades", which is what a shop whose whole argument is one-off bespoke work is. **Changed from `sidebar` on 03/11** for uniqueness headroom, see the critique section below |
+| `archetype` | `story` | chapters of the craftsman's story: origin ("אין אצלנו קטלוג", Ofir's 20 years), method, process, what you can order, material, who it is for, then the invitation. With no portfolio to show, the story is what carries the page. **Changed from `statement` on 03/11**, see the critique section below |
 | `base_template` | 1 | navy-on-white, offset frames. **Deliberately not template 5** (the metal-works demo, white + red): the obvious pick for a metalworker and already used by the pilot branches |
 | preset | `editorial` | serif headings, hairlines, no shadows: craft rather than heavy industry |
 | palette | primary orange `#b84606`, accent steel blue `#6b8ca6`, ink slate `#1b2a36` | **sampled from the client's own logo** once it was found on their Dapei Zahav listing. The logo's orange is `#d15301`; it is deepened to `#b84606` so white text clears 4.5:1 and the chapter headings clear 4.5:1 on the surface tint, which `design.md` allows ("a darker primary only if contrast needs it"). The logo's slate `#2c3e4f` carries the text and the footer. The site was built first on petrol steel and brass, chosen as the most distant free colour; that was replaced the moment the real brand turned up |
 | fonts | Frank Ruhl Libre / Assistant | the business is bespoke, not mass production. A serif headline against brushed steel reads as craft |
 | radius | 10 | sharp (2) was the first choice, but it made the measured page frame identical to mehirut-haor's |
-| hero | `centered` + the workshop photo | statement first, photo second |
+| hero | section variant `curve` over the workshop bay | the story archetype's opening: the photo carries the page in, the H1 sits on it, and the curved bottom edge hands over to the first chapter |
 | motion | `subtle` | the brief asks for no motion |
 
 **The one bold thing:** the H1 at full width over the workshop bay, with the whole page then running as a
 single explained argument. Nothing else competes with it.
 
-Home: `hero → chapters → prose:band → cards → split:overlap → steps:stack → facts → leadbar:photo →
-collage → cta → faq:dark` (11 sections). Components picked for what none of the other clients use:
+Home: `hero:curve → chapters → prose:band → split:overlap → steps:stack → cards:framed → collage →
+facts → leadbar:photo → cta → faq:dark` (11 sections, resequenced into the story's beats on 03/11; no copy
+was added, removed or rewritten, only reordered). Components picked for what none of the other clients use:
 `chapters`, `prose:band`, `facts`, `collage`, `steps:stack`, `faq:dark` appear on no other client site.
 
 ### Critique before delivery, and what changed after it
@@ -67,6 +68,42 @@ collage → cta → faq:dark` (11 sections). Components picked for what none of 
   palette, kit and seven of the eleven components changed. Final: 38% (mehirut-haor), 35% (white-villa)
 - the sidebar kit leaves the title column empty on a section without a title (the service-page `prose`).
   Kept: every section's content then starts at the same x, which is the kit's point
+
+### Uniqueness pass, 03/11 (the readiness run)
+
+The 02/11 build measured **38% / 34% / 39%** and was recorded as green. Re-measured on 03/11 against the
+pool as it actually stood, the home was **40.4% like `c80220135`** — over the 40% ERROR line, not under it.
+The two sites had drifted together while both were being built: `sidebar` gave a dark 3-column footer and
+`c80220135` has one too, and the shared `facts`/`cards`/`cta` vocabulary and the matching page frame did the
+rest. Four of the six measured chrome traits were identical.
+
+`bands` and `proof` were not available to replace them: `c80220135` holds both and is one of the last three
+sites, which `zs pool` refuses outright. What was changed instead:
+
+- **kit `sidebar` → `frame`**, which moves the footer to light, puts the page inside a brand-colour frame
+  (`page.edge`) and reframes every photo. The earlier build had tried `frame` and dropped it, but that was
+  `frame` *with the brass palette and the components everyone uses* (`cards`, `features:checks`,
+  `split:card`, `faq:outline`); with the logo's orange and this component set it measures far apart
+- **archetype `statement` → `story`**, and the eleven home sections resequenced into its beats
+- **hero variant `curve`**, services cards to `framed`
+
+Measured after the change, against the live pool including the siblings building right now:
+
+| other client | before | after |
+|---|---|---|
+| `c80220135` | **0.404** (ERROR) | **0.274** |
+| `mehirut-haor` | 0.375 | 0.375 |
+| `c2910210` | - | 0.351 |
+| every other client | ≤0.32 | ≤0.32 |
+
+(`c80220135` also moved while this ran: that agent returned their site to its documented petrol palette, so
+the pair is measured here against their 6b285c8. The final figures above are measured after PR #74 was
+merged in, which changed the home's first H2 from the accent to white and so moved the measured `ink`.)
+
+Worst case is now **0.375**, against `mehirut-haor`, a finished site and not one of the three joining the
+pool. `atelier` (0.39, and it pulled `patoccina` and `kisos-beach-club` up to 0.36) and `magazine`
+(two QA errors, and `c80220135` back to 0.342) were both measured and rejected. Nothing under
+`fingerprints/` and no threshold was touched.
 
 ## Research done in the build session
 
@@ -126,6 +163,7 @@ before ordering, and the route from drawing to finished product. Each links the 
 | #57 | a light panel inside a colour band inherited the band's white text (`split:frame` 1.00, `features:rows` 1.11) |
 | #61 | the H1 word-splitter reversed a multi-word Latin name in an RTL heading: "מסגרית Dream from Steel" painted as "מסגרית Steel from Dream" |
 | #62 | the phone header reserved no width for the burger, so a long text brand (a client with no logo) ran under it |
+| #74 | the `split:overlap` card paints its own ground with `--c-dark` but hard-coded its title to `--c-accent`: accent-coloured words on a dark ground, the pattern `qa-rules.md` records as a straight Zap QA rejection. `zs qa` measures the 4.5:1 floor and this pairing cleared it by luck (steel blue `#6b8ca6` on slate `#16222c` = **4.56:1**), so the gate never saw it. Found by eye at 1280 on 03/11: it was the only title on this site that was not white on its dark card |
 
 Known and not fixed: the `overlay` section's phone box is `56vh` while the browser picks a source by width,
 so a landscape photo in it is upscaled and soft. Avoided here by not using `overlay`.
