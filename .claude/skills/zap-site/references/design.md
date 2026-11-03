@@ -208,7 +208,8 @@ pushed site; a full-page shot does not show scroll-driven states.
 3. Assumptions and open questions.
 4. "Which direction — A, B or C? And is the page list right?"
 
-Before sending, Read the preview images and fix what you would not show a client: an empty-looking hero,
+Before sending, Read the preview images and fix what you would not show a client: an empty-looking hero
+("empty-looking" has a definition: `hero-space.md`),
 a logo that disappears on a dark header, buttons that wrap, a photo that does not suit `hero: image`.
 
 After the answer: copy that direction's overrides into `design`, rebuild, and continue to the build stage.
