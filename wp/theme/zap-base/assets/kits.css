@@ -59,6 +59,10 @@ body.zs-k-sidebar .zs-card { box-shadow: none; border: 1px solid var(--c-line); 
   /* the tint shows only between the panels of an Elementor page; every section keeps its own ground */
   body.zs-k-panels.zs-built { background: var(--c-surface); }
   body.zs-k-panels.zs-built .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent, .zs-trust, .zs-cta, .zs-marquee, .zs-hero, .zs-tiles, .zs-leadbar, .zs-road) { background-color: var(--c-bg); }
+  /* a preset that darkens a whole section (e.g. `bold` on `steps`) must not keep its light-on-dark text once the
+     rule above has repainted that section white: restore the page's own ink/text/muted/line on those panels */
+  body.zs-k-panels.zs-built .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent, .zs-trust, .zs-cta, .zs-marquee, .zs-hero, .zs-tiles, .zs-leadbar, .zs-road) {
+    --c-ink: var(--zs-ink); --c-text: var(--zs-text); --c-muted: var(--zs-muted); --c-line: var(--zs-line); }
   body.zs-k-panels .e-con.zs-sec:not(.zs-hero) { width: calc(100% - 48px); max-width: 1400px; margin: 0 auto 18px; border-radius: var(--r-lg); overflow: hidden; }
   body.zs-k-panels .e-con.zs-sec.zs-hero { width: calc(100% - 48px); max-width: 1400px; margin: 18px auto; border-radius: var(--r-lg); overflow: hidden; }
   body.zs-k-panels .zs-header { width: calc(100% - 48px); max-width: 1400px; margin: 14px auto 0; border-radius: 999px; background: var(--c-bg); box-shadow: 0 10px 30px -22px rgb(0 0 0 / .45); }
