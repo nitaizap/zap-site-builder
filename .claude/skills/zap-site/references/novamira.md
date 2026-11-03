@@ -61,7 +61,7 @@ bin/zs qa <slug> --site https://<client>.ussl.co.il         # full QA on the pus
 What `zs push` does, in order:
 1. checks the connection (WP/PHP/Elementor/Pro/theme) and refuses a site that already holds another business;
 2. **backs up the database to this machine** (`work/<slug>@<host>/backup-*.sql.gz`, restore-tested) — Novamira has no rollback;
-3. sets the **staging lock** (`zs_staging_lock`): leads are saved but never mailed to the real client, noindex;
+3. registers the staging host (`zap_staging_hosts`). Staging vs live is decided by the site's **address**, not a database flag: on a staging address leads are saved but never mailed to the client and the site is noindex; on the client's domain both switch on by themselves (plugin `inc/launch.php`);
 4. installs our child theme (Zap Base, parent Hello Elementor — Zap's base theme stays) and the Zap Site plugin,
    and anything missing (Elementor, Yoast, Ally);
 5. runs the build: options, media, pages (one per call), header/footer templates, menus, Yoast, Elementor kit;

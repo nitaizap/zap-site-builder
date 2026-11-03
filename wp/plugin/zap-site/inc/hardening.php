@@ -2,7 +2,9 @@
 /** Baseline hardening that every Zap site ships with. Host-level items are on the launch checklist. */
 defined('ABSPATH') || exit;
 
-add_filter('xmlrpc_enabled', '__return_false');
+// XML-RPC stays on for authenticated tools (Jetpack, some migration/backup services connect through it); only the
+// pingback methods are removed: they are what bots abuse, and they were the reason it was switched off.
+add_filter('xmlrpc_methods', function ($m) { unset($m['pingback.ping'], $m['pingback.extensions.getPingbacks']); return $m; });
 add_filter('wp_headers', function ($h) { unset($h['X-Pingback']); return $h; });
 
 /* No user enumeration: ?author=N and the public users endpoint. */
