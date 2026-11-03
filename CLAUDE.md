@@ -12,6 +12,17 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
   Committed on its own branch `site/<slug>`, never on `main`.
 - `work/`, `dist/`, `.tools/` – disposable (gitignored). WordPress is rebuilt from `site.json`.
 
+## The premise: Zap does not launch
+
+**Zap does not launch client sites. The deliverable is a launch-ready site.** Someone else moves it to the client's
+domain, so "done" means: staged correctly (staging mode in force), `zs qa` and `zs seo` clean, verified on desktop
+**and** mobile, and verified that the staging → live transition changes nothing. The last part is the real job: it is
+what failed on הוילה הלבנה on 03/11/2026, when a migration tool copied the `zap-base` theme and left the `zap-site`
+plugin behind, and the live site lost its menu, form and legal line while still answering HTTP 200. Everything the
+site needs to survive the move must either travel by itself or be named in the handover. The gate is
+`bin/zs launch-check <staging url> --slug <slug>` (0 FAIL, public html only, run on staging before handover); it
+writes `sites/<slug>/LAUNCH-SHEET.md`, which goes to whoever launches. Details: `.claude/skills/zap-site/references/novamira.md`.
+
 ## Rules
 
 - One client per session and per branch (`site/<slug>`). Parallel sites = parallel sessions.
@@ -42,6 +53,7 @@ upload-ready zip. Start every site with the `/zap-site` skill (`.claude/skills/z
 - **Weave budget: 100 credits per client.** Spend freely under it; only going over needs the user.
 - Before calling anything done: go through `.claude/skills/zap-site/references/qa-rules.md` (what Zap QA rejects), then `bin/zs qa <slug>` with 0 errors and `bin/zs seo <slug>` (the Zap SEO
   checklist) with 0 FAIL.
+  Then, on the staging site, `bin/zs launch-check <url> --slug <slug>` with 0 FAIL and the `LAUNCH-SHEET.md` it writes attached to the handover.
 
 ## Delegating: pick the model and effort for the job
 
