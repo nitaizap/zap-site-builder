@@ -64,7 +64,7 @@ the client supplies artwork.
 **Needed from the client:** a wordmark or logo file (PNG, transparent). Then set `logo` and regenerate
 `favicon` from its symbol, and header, footer and favicon all follow from the one file.
 
-**03/11/2026, request to put "the garage's own logo" in the header: not done.** The last chip in the "מורשים מטעם היבואן" band is the importer's *המחלקה הראשונה למסחריות* programme badge (`logo-first-dept`), not a logo of the garage: it says nothing of יד מרדכי and it is the importer's mark. Used as the site logo it would also become the footer, favicon and structured-data logo and would present the programme as the business's identity. The header keeps the name as text until the client supplies a real logo file. The band now shows the badge beside the text, as asked.
+**Decision, 03/11/2026 (recorded, no longer open): the header stays as the styled business name, with no logo.** The user was asked to put "the garage's own logo" in the header, reviewed the finding and decided to leave it. The last chip in the "מורשים מטעם היבואן" band is the importer's *המחלקה הראשונה למסחריות* programme badge (`logo-first-dept`), not a mark of the garage, so it is deliberately not used as the client's identity (it would also have become the footer, favicon and structured-data logo). No wordmark was drawn. The band keeps the badge beside the text, with the four marques in a 2x2. The only thing that changes this is a real logo file from the client (see "Needed from the client" above).
 
 ## 4 · Reviews: on (resolved)
 
