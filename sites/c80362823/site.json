@@ -80,7 +80,8 @@
       "body": "Assistant"
     },
     "radius": 2,
-    "motion": "subtle"
+    "motion": "subtle",
+    "custom_css": "/* Home hero (split). The photo sets the hero's height; the text is centred against it and fills its column. */\nhtml body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }\n@media (min-width: 901px) { html body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 11; } }\nbody.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { align-items: center; }\nbody.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; }\n@media (min-width: 768px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-top: clamp(28px, 1rem + 1.6vw, 52px); --padding-bottom: clamp(32px, 1.2rem + 1.8vw, 60px); }\n}\n@media (min-width: 768px) and (max-width: 900px) {\n  body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { row-gap: 24px; }\n}\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); }\n  body.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { --row-gap: 24px; }\n  body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(3.6rem, 1.8rem + 4.6vw, 6.4rem); line-height: 1; }\n  body.zs-hv-split .zs-hero--home .zs-hero__lead { font-size: clamp(1.2rem, 1rem + .45vw, 1.4rem); max-width: none; }\n  body.zs-hv-split .zs-hero--home .zs-hero__points .zs-checks { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 4px; }\n}\n@media (max-width: 767px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-bottom: 24px; }\n  body.zs-hv-split .zs-hero--home .e-con.zs-hero__media { overflow: hidden; border-radius: var(--r-lg); }\n  body.zs-hv-split .zs-hero--home .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }\n}\n/* Logo: the only file supplied is a 102x34 px raster, so it is shown near its pixel size (not the theme's 96px). Delete these four rules when a hi-res original arrives. */\nhtml body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 52px; max-width: 220px; }\n@media (min-width: 768px) and (max-width: 1024px) { html body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 48px; } }\n@media (max-width: 767px) { html body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 44px; max-width: 160px; } }\nhtml body .zs-footer__logo img { max-height: 52px; height: 52px; }"
   },
   "form": {
     "title": "נשמח לתכנן אתכם את ההסעה",
@@ -1410,5 +1411,6 @@
       ]
     }
   ],
-  "favicon": "assets/favicon.png"
+  "favicon": "assets/favicon.png",
+  "logo": "assets/logo.png"
 }

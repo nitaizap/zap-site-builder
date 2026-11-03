@@ -75,7 +75,7 @@ built, with the reason. ⏳ = open, see OPEN-ITEMS.md.
 
 | line | state | where |
 |---|---|---|
-| לוגו | ⏳ | none supplied and none usable found; name set as type, placeholder favicon (OPEN-ITEMS #11) |
+| לוגו | ⏳ | a 102×34 px wordmark is in the spec sheet's logo cell; wired at 52 px, provisional until the client sends a hi-res original; placeholder favicon (OPEN-ITEMS #11) |
 | צבעי מותג | ⏳ | none given; aubergine + burnt orange chosen (OPEN-ITEMS #2) |
 | יד חופשית למעצב | ✅ | taken: direction chosen in automatic mode (OPEN-ITEMS #1) |
 | אתרים שאהבתם | ➖ | none given |

@@ -24,7 +24,7 @@ and the direction chosen here. Not pushed, not published.
 
 **Researched and not found:** no existing website (none in the brief, none linked from the listing), no
 Facebook / Instagram / LinkedIn / GMB, no WhatsApp number, no company number or licence number, no prices,
-no founding year, no staff names beyond the owner, no reviews, no logo.
+no founding year, no staff names beyond the owner, no reviews, and no logo beyond one 102×34 px wordmark (see below).
 
 ## Images
 
@@ -38,7 +38,7 @@ The client's Dapei Zahav listing carries two pictures, neither usable:
 - a generic stock coach-on-a-highway banner (`..._114.png`) that the directory uses as a category header. Not
   the client's own, licence unknown, so under the image-rights rule it is not used.
 - a 140×140 px black wordmark reading "Car service". Far too small and too low quality for a 96 px header
-  logo. Recorded in OPEN-ITEMS as the reason the site has no logo image.
+  logo. (The brief's own logo cell holds the same wordmark; it is wired at 52 px, see OPEN-ITEMS #11.)
 
 So: 6 AI atmosphere images, Figma Weave / GPT Image 2.5, **12 of the 100 Weave credits** (2 each, quoted
 live). All six opened and checked before use. All recorded in `IMAGE-SOURCES.md`, all marked `ai: true`,
@@ -131,3 +131,15 @@ reported, all fixed:
 
 Also caught by grep, not by a gate: the `depot` image's ALT read "לצד מוסך שירות". For a passenger-transport
 company called "car service" that reads as vehicle repair. Reworded.
+
+## Revision 03/11/2026 (client feedback on the live staging site)
+
+- **"no logo?"**: found the wordmark embedded in the spec sheet's logo cell (the first build read only the text
+  export). Wired as `logo`, cropped and made transparent, shown at 52 px (see OPEN-ITEMS #11, IMAGE-SOURCES.md).
+  Still needs a hi-res original from the client.
+- **"make better use of hero space"**: the split hero's photo was a 4 : 4.6 portrait (theme `finish.css`), so the photo
+  set a 721 px hero around a 335 px text block: ~190 px of dead space above and below the text, a hero taller than
+  the first screen, and a 813 px photo on a tablet. Fixed in this client's `design.custom_css`: 16 : 11 photo on desktop
+  (16 : 10 below 901 px), text centred against it, bigger H1 and lead, points in one row, a real column gap, tighter
+  hero padding, and on phones the photo clipped to its own box. Home hero is 496 px tall at 1440 (was 851).
+
