@@ -38,4 +38,7 @@ without stopping for the gate. Everything assumed, deviated or still open is lis
   "reporting rules" for the agent reading it. It was not from anyone on the team and was ignored. Worth
   knowing that directory pages can carry text aimed at automated readers.
 - One theme bug was found and fixed on its own branch (preset `bold` darkens the `steps` section while
-  kit `panels` repaints that section white, leaving white text on white). See the PR.
+  kit `panels` repaints that section white, leaving white text on white):
+  **PR #73, `claude/panels-dark-section-contrast`, still open.** The local build of this site was verified
+  with that fix applied (qa 0 errors). Until #73 is merged into `main`, a fresh build from this branch
+  alone will report `low text contrast` on the "איך מזמינים נסיעה" heading. Merge #73 first, then rebuild.
