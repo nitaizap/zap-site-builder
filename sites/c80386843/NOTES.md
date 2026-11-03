@@ -46,7 +46,7 @@ wording, not a date); no licences, no prices, no ratings, no counts.
 | `base_template` | 1 | navy-on-white, offset frames. **Deliberately not template 5** (the metal-works demo, white + red): the obvious pick for a metalworker and already used by the pilot branches |
 | preset | `editorial` | serif headings, hairlines, no shadows: craft rather than heavy industry |
 | palette | primary orange `#b84606`, accent steel blue `#6b8ca6`, ink slate `#1b2a36` | **sampled from the client's own logo** once it was found on their Dapei Zahav listing. The logo's orange is `#d15301`; it is deepened to `#b84606` so white text clears 4.5:1 and the chapter headings clear 4.5:1 on the surface tint, which `design.md` allows ("a darker primary only if contrast needs it"). The logo's slate `#2c3e4f` carries the text and the footer. The site was built first on petrol steel and brass, chosen as the most distant free colour; that was replaced the moment the real brand turned up |
-| fonts | Frank Ruhl Libre / Assistant | the business is bespoke, not mass production. A serif headline against brushed steel reads as craft |
+| fonts | Alef / Alef | **Changed from Frank Ruhl Libre / Assistant on 03/11 (client feedback: "generally use a different font").** One sturdy, slab-flavoured Hebrew family for a 20-year metalwork shop: heavy 700 headings, 400 body, a Latin that suits "Dream from Steel". Already self-hosted, on the validator's readable-body list, and used as heading or body by no other client |
 | radius | 10 | sharp (2) was the first choice, but it made the measured page frame identical to mehirut-haor's |
 | hero | section variant `curve` over the workshop bay | the story archetype's opening: the photo carries the page in, the H1 sits on it, and the curved bottom edge hands over to the first chapter |
 | motion | `subtle` | the brief asks for no motion |
@@ -167,3 +167,11 @@ before ordering, and the route from drawing to finished product. Each links the 
 
 Known and not fixed: the `overlay` section's phone box is `56vh` while the browser picks a source by width,
 so a landscape photo in it is upscaled and soft. Avoided here by not using `overlay`.
+
+
+### Design pass, 03/11 (client feedback on the live site)
+
+- hero: the curve hero was 863px tall with 263px of text pushed to one side. Now about 480px at 1440x900; headline, lead and buttons across the start column, the three facts as a plate on the open side (desktop), tick marks made visible on the photo. Phones keep the stacked, centred layout
+- three-across service row: icon, title and text centred on one axis, titles larger, hairlines between the cards, no side padding skew; the section intro stacked under its title
+- ticks on the dark `split:overlap` card were dark on dark: now white
+- all in `design.custom_css`; no shared theme change. Uniqueness: worst case 0.375 (mehirut-haor) before and after; c743850 0.354 to 0.346
