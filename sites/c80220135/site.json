@@ -65,7 +65,8 @@
     "fonts": {
       "heading": "IBM Plex Sans Hebrew",
       "body": "Heebo"
-    }
+    },
+    "custom_css": "/* five marque chips on one row, in the order the spec asks for: three per row wrapped the band\n   and broke that order. Phones still stack. */\n.zs-logos.zs-v-band .zs-logos__row { flex-wrap: nowrap; gap: 14px; }\n.zs-logos.zs-v-band .zs-logos__img img { max-height: 56px; padding: 10px 14px; }\n@media (max-width: 900px) {\n  /* the keys are ordered for the RTL row (first = rightmost); stacked, that would read bottom up,\n     so the column is reversed and the marques read Mazda, Ford, Dongfeng, Voyah top down */\n  .zs-logos.zs-v-band .zs-logos__row { flex-wrap: wrap; flex-direction: column-reverse; align-items: center; }\n  .zs-logos.zs-v-band .zs-logos__img img { max-height: 64px; } }\n"
   },
   "form": {
     "title": "השאירו פרטים ונחזור אליכם",
@@ -125,6 +126,14 @@
     "logo-first-dept": {
       "src": "assets/logo-first-dept.png",
       "alt": "לוגו המחלקה הראשונה למסחריות"
+    },
+    "logo-dongfeng": {
+      "src": "assets/logo-dongfeng.png",
+      "alt": "לוגו דונגפנג"
+    },
+    "logo-voyah": {
+      "src": "assets/logo-voyah.png",
+      "alt": "לוגו וויה"
     }
   },
   "nav": [
@@ -241,6 +250,8 @@
           "intro": "מרכז השירות מורשה לרכבי מאזדה מטעם היבואן הרשמי דלק מוטורס בע״מ, לרכבי פורד, ומשנת 2025 גם לרכבי דונגפנג ולמותג הפרמיום וויה. בנוסף, המרכז מורשה לטיפול ברכבים מסחריים בתוכנית המחלקה הראשונה למסחריות של היבואן.",
           "images": [
             "logo-first-dept",
+            "logo-voyah",
+            "logo-dongfeng",
             "logo-ford",
             "logo-mazda"
           ]

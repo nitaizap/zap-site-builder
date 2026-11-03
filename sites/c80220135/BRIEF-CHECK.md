@@ -68,7 +68,7 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | אזור שירותים, קוביות לכל שירות עם קישור לעמוד | ✅ | `cards` section, six cards, each linking its page, one meaningful icon each |
 | באנר מבצע חלקים מקוריים | ✅ | `cta` `photo` band, the spec's wording including "רכבים מעל 3 שנים, ט.ל.ח" |
 | אזור חוות דעת לקוחות | ✅ | `reviews` section on the home page, Dapei Zahav customer id 80220135, verified against the API payload (its links point at this client's own listing). Renders on the pushed site only, so it is empty in the local screenshots (OPEN-ITEMS 4) |
-| לוגואים של המותגים המורשים (מאזדה, פורד, דונגפנג, וויה) | ⚠️ | only Mazda and Ford exist in the client's files. The band shows those two plus המחלקה הראשונה, all four marques are named in its text, in the facts card with their licence years, in the FAQ and on every service page (OPEN-ITEMS 5) |
+| לוגואים של המותגים המורשים (מאזדה, פורד, דונגפנג, וויה) | ✅ | all four shown. Mazda and Ford from the client's files; דונגפנג and וויה from dongfeng.co.il, the importer's own site (IMAGE-SOURCES.md). The המחלקה הראשונה badge follows them |
 | "המחלקה הראשונה למסחריות" | ✅ | in the logos band, the band's text and the home FAQ |
 | כפתורי חיוג ווואטסאפ צפים | ✅ | seen on the rendered pages: floating WhatsApp button on desktop, call + WhatsApp bar on phones, on every page |
 | מבצע חלקים מקוריים (text) | ✅ | the band plus a home FAQ answer |
@@ -81,8 +81,8 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | line | status | note |
 |---|---|---|
 | לוגו: אין לוגו לעסק | ⏳ | no header or footer logo: the name renders as text. The favicon is a stand-in brand tile so the base install's icon cannot ship. Nothing drawn or traced from the sign (OPEN-ITEMS 3) |
-| לוגואים בגודל אחיד ובמרווחים שווים | ✅ | measured on the rendered page: three chips at exactly 200×80 px, 240 px apart. The source files have very different proportions, so each was re-cut onto one shared 3:1 canvas (they rendered 252 / 182 / 155 px wide before) |
-| סדר משמאל לימין: מאזדה, פורד, דונגפנג, וויה | ⚠️ | measured left to right on the rendered page: מאזדה (x=297), פורד (x=537), המחלקה הראשונה (x=777). The order is right for the two marques that exist; דונגפנג and וויה have no logo file (OPEN-ITEMS 5) |
+| לוגואים בגודל אחיד ובמרווחים שווים | ✅ | measured on the rendered page: five chips at exactly 160 px wide, 174 px apart, one row. Each logo was re-cut onto a shared canvas and scaled to equal optical area, because the sources run from 7:1 to 1.8:1 |
+| סדר משמאל לימין: מאזדה, פורד, דונגפנג, וויה | ✅ | measured on the rendered page: מאזדה, פורד, דונגפנג, וויה, then the badge, left to right at 1440 px. On phones the column is reversed so it reads the same top down |
 | רק הלוגו המעודכן של מאזדה, לא הישן | ⚠️ | `Logo_FullColor_Horizontal.png` used. Three files show the same artwork and the spec does not say which is "המצורף" (OPEN-ITEMS 5) |
 | לוגו פורד מהאתר הקיים | ✅ | the existing site is unreachable; `לוגו-פורד-ללא-רקע.png` from the client's own files was used instead |
 | צבעי מותג | ➖ | none given |

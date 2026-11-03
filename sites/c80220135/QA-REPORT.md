@@ -15,34 +15,34 @@
 | viewport | page | errors | warnings | KB | details |
 |---|---|---|---|---|---|
 | desktop | /בלוג/ | 0 | 0 | 1088 |  |
-| desktop | /מערכות-מיזוג-אוויר/ | 0 | 0 | 1014 |  |
-| desktop | /צמיגים/ | 0 | 0 | 1029 |  |
-| desktop | /צרו-קשר/ | 0 | 0 | 959 |  |
-| desktop | /מדיניות-פרטיות/ | 0 | 0 | 880 |  |
-| desktop | /הצהרת-נגישות/ | 0 | 0 | 866 |  |
-| desktop | /אודות/ | 0 | 0 | 988 |  |
-| desktop | /מכונאות-רכב/ | 0 | 0 | 997 |  |
-| desktop | /פחחות-וצבע/ | 0 | 0 | 997 |  |
-| desktop | /דיאגנוסטיקה-ואבחון/ | 0 | 0 | 959 |  |
-| desktop | /חשמל-רכב/ | 0 | 0 | 1008 |  |
-| desktop | / | 0 | 2 | 1206 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
+| desktop | /מערכות-מיזוג-אוויר/ | 0 | 0 | 1015 |  |
+| desktop | /צמיגים/ | 0 | 0 | 1030 |  |
+| desktop | /צרו-קשר/ | 0 | 0 | 960 |  |
+| desktop | /מדיניות-פרטיות/ | 0 | 0 | 881 |  |
+| desktop | /הצהרת-נגישות/ | 0 | 0 | 867 |  |
+| desktop | /אודות/ | 0 | 0 | 989 |  |
+| desktop | /מכונאות-רכב/ | 0 | 0 | 998 |  |
+| desktop | /פחחות-וצבע/ | 0 | 0 | 998 |  |
+| desktop | /דיאגנוסטיקה-ואבחון/ | 0 | 0 | 960 |  |
+| desktop | /חשמל-רכב/ | 0 | 0 | 1009 |  |
+| desktop | / | 0 | 2 | 1210 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
 | desktop | /בלוג/נדלקה-נורית-אזהרה-ברכב/ | 0 | 0 | 1110 |  |
-| desktop | /בלוג/חלק-מקורי-או-חליפי/ | 0 | 0 | 1070 |  |
-| desktop | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 1108 |  |
-| desktop | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 1090 |  |
+| desktop | /בלוג/חלק-מקורי-או-חליפי/ | 0 | 0 | 1071 |  |
+| desktop | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 1109 |  |
+| desktop | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 1091 |  |
 | mobile | /בלוג/ | 0 | 0 | 1088 |  |
-| mobile | /מערכות-מיזוג-אוויר/ | 0 | 0 | 959 |  |
-| mobile | /צמיגים/ | 0 | 0 | 965 |  |
-| mobile | /צרו-קשר/ | 0 | 0 | 915 |  |
-| mobile | /מדיניות-פרטיות/ | 0 | 0 | 880 |  |
-| mobile | /הצהרת-נגישות/ | 0 | 0 | 866 |  |
-| mobile | /אודות/ | 0 | 0 | 918 |  |
-| mobile | /מכונאות-רכב/ | 0 | 0 | 966 |  |
-| mobile | /פחחות-וצבע/ | 0 | 0 | 953 |  |
-| mobile | /דיאגנוסטיקה-ואבחון/ | 0 | 0 | 948 |  |
-| mobile | /חשמל-רכב/ | 0 | 0 | 957 |  |
-| mobile | / | 0 | 2 | 1102 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
-| mobile | /בלוג/נדלקה-נורית-אזהרה-ברכב/ | 0 | 0 | 1065 |  |
+| mobile | /מערכות-מיזוג-אוויר/ | 0 | 0 | 960 |  |
+| mobile | /צמיגים/ | 0 | 0 | 966 |  |
+| mobile | /צרו-קשר/ | 0 | 0 | 916 |  |
+| mobile | /מדיניות-פרטיות/ | 0 | 0 | 881 |  |
+| mobile | /הצהרת-נגישות/ | 0 | 0 | 867 |  |
+| mobile | /אודות/ | 0 | 0 | 919 |  |
+| mobile | /מכונאות-רכב/ | 0 | 0 | 967 |  |
+| mobile | /פחחות-וצבע/ | 0 | 0 | 954 |  |
+| mobile | /דיאגנוסטיקה-ואבחון/ | 0 | 0 | 949 |  |
+| mobile | /חשמל-רכב/ | 0 | 0 | 958 |  |
+| mobile | / | 0 | 2 | 1105 | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'http://127.0.0.1:; console: Failed to load resource: net::ERR_FAILED |
+| mobile | /בלוג/נדלקה-נורית-אזהרה-ברכב/ | 0 | 0 | 1066 |  |
 | mobile | /בלוג/חלק-מקורי-או-חליפי/ | 0 | 0 | 1059 |  |
-| mobile | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 1077 |  |
-| mobile | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 1090 |  |
+| mobile | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 1078 |  |
+| mobile | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 1091 |  |

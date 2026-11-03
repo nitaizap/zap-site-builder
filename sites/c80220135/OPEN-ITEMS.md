@@ -79,21 +79,28 @@ Two things to know:
 - no score or review count is written anywhere in the copy, and none ever should be: the widget draws its
   own, and the validator blocks typed ratings.
 
-## 5 · Two brand logos are missing, and the brief asks for four
+## 5 · All four marque logos are now shown (resolved), with one sign-off outstanding
 
-The spec is specific: show the marque logos together at a uniform size and equal spacing, left to right
-**מאזדה | פורד | דונגפנג | וויה**, using only the updated Mazda logo supplied, and the Ford logo from the
-existing site. The F: drive has Mazda and Ford. It has **no Dongfeng logo and no Voyah logo**.
+The spec asks for the marque logos together, at a uniform size and equal spacing, in the order
+**מאזדה | פורד | דונגפנג | וויה** reading left to right. That is now what the band does, on desktop and on
+phones, with the המחלקה הראשונה למסחריות badge after them.
 
-**Default taken:** the band shows Mazda, Ford and המחלקה הראשונה למסחריות (which the spec also asks for),
-and all four marques are named in the band's text, in the facts card with their licence years, in the FAQ
-and on every service page. **Needed:** Dongfeng and Voyah logo files, after which they go into
-`images` and into the `logos` section in the spec's order.
+Mazda and Ford came from the client's own files. דונגפנג and וויה were not in them and were taken from
+**dongfeng.co.il**, the Israeli importer's own site (both it and voyah.co.il carry Delek Motors' logo, and the
+spec names דלק מוטורס as the importer that authorises this centre). Full provenance is in `IMAGE-SOURCES.md`.
 
-Also unresolved: which file is "the updated Mazda logo (המצורף)". Three candidates sit in `assets/client`
-(`Logo_FullColor_Horizontal.png`, `Logo_FullColor_Vertical.png`, `SEM_ספטמבר-21_חדש_לוגואים.PNG`) and they
-show the same artwork. `Logo_FullColor_Horizontal.png` was used, being the highest-resolution horizontal
-one. Worth one look from whoever sent the spec.
+All five were re-cut onto one shared canvas and scaled to **equal optical area** rather than a shared bounding
+box: the source files run from 7:1 (Dongfeng) to 1.8:1 (Voyah), so fitting them into one box made the wide
+wordmarks look tiny next to the round marks.
+
+**Outstanding:** marque logos are trademarks, so the question is permitted use rather than a photographer's
+copyright. An authorised centre showing its own marques is ordinary practice and the client's existing site
+already does it for Mazda and Ford, but the importer's sign-off on דונגפנג and וויה is worth having before
+launch.
+
+Also still unresolved, and minor: which file is "the updated Mazda logo (המצורף)". Three candidates sit in
+`assets/client` and they show the same artwork; `Logo_FullColor_Horizontal.png` was used, being the
+highest-resolution horizontal one.
 
 ## 6 · No blog, because the spec does not ask for one
 
