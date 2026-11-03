@@ -8,7 +8,7 @@
   "sender": "NoamR@d.co.il",
   "subject": "איפיונים חדשים לאתרי WP",
   "received": "2026-11-03T07:39:58Z",
-  "staging_url": "",
+  "staging_url": "https://743850hercules.ussl.co.il/",
   "links": [
     "https://www.hercules.co.il/"
   ],
@@ -426,8 +426,7 @@
     "F:\\SiteContent\\00743850"
   ],
   "missing": [
-    "package: no package named in the file name or the spec sheet",
-    "staging URL (the sites team sends it later)"
+    "package: no package named in the file name or the spec sheet"
   ],
   "status": "intake",
   "note": "recorded in fingerprints/clients.json - commit that file too"

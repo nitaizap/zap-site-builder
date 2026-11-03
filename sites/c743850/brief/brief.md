@@ -3,7 +3,7 @@
 - from: NoamR@d.co.il
 - subject: איפיונים חדשים לאתרי WP
 - package: 
-- staging: (not yet)
+- staging: https://743850hercules.ussl.co.il/
 
 ## Email body
 
