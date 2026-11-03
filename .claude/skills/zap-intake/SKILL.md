@@ -34,6 +34,13 @@ Full detail, and the UTF-8 console trap when calling `py engine/zs.py` instead o
 The user types the last two themselves in their own terminal; never ask for, echo or store the password.
 Reopen the terminal after `setx`.
 
+`ZS_WP_USER` is the e-mail address. The staging sites refuse it at the login form and want the
+account's **username** instead, so `zs staging` also tries the local part of the address
+(`nitaiz@d.co.il` -> `nitaiz`). The reset mail states it outright, under
+`שם משתמש:`. Set `ZS_WP_LOGIN` only when the username is not the local part.
+A password that reports "הסיסמה אופסה" and then fails to log in means the stored
+`ZS_WP_PASSWORD` is not the real one: re-run `setx` before suspecting the site.
+
 ## 1. Find new mail
 
 Desktop Outlook on this PC (the Microsoft 365 connector is blocked by the company's sign-in policy):
