@@ -20,6 +20,29 @@ Claude never hand-writes Elementor JSON, CSS per page, or SQL: that is where ear
 
 Speak to the user in their language (usually Hebrew). Keep messages short; the files carry the detail.
 
+## The whole of `references/` (there is nothing else; do not go looking for another skill)
+
+Everything this skill knows beyond the order of work is in these 15 files, next to this one. If you are
+about to ask the user how to do something, or to search for a separate skill, read the file first.
+
+| file | the question it answers |
+|---|---|
+| `playbook.md` | what went wrong on earlier builds, as rules. Read once before a new site |
+| `intake.md` | what to research and ask before planning; the research-first table |
+| `zap-standards.md` | Zap's fixed standards every client site must meet |
+| `keywords.md` | how to build the keyword map (one keyword, one page) |
+| `content-seo.md` | how to write the copy and the on-page SEO around it |
+| `site-json.md` | the `site.json` schema, every section type and every field |
+| `portfolio.md` | what Zap's real client sites do per industry (order, CTAs, tiers); images in `benchmark/portfolio/` |
+| `pool.md` | the template pool: packages, section variants, mixing rules, and the 40% anti-sameness measure |
+| `design.md` | the design bar, the motion catalogue, and brief words → concrete features |
+| `benchmark.md` | the reference screenshots in `benchmark/` and what to take from each |
+| **`images.md`** | **image rights and the `IMAGE-SOURCES.md` record; how to generate images with Figma Weave (model ids, settings, credits, the cost gate, prompt rules); Veo video; the `bin/zs image` fallback.** There is no separate "Weave" skill: this file is it |
+| `seo-checklist.md` | the team's SEO sheet row by row, and what `zs seo` checks |
+| `qa-rules.md` | everything Zap QA rejects, as rules |
+| `novamira.md` | pushing the site live into the client's WordPress |
+| `delivery.md` | the zip route: packaging, deploy script, launch checklist |
+
 ## What to read, when
 
 SKILL.md is the order of work; the depth is in `references/` (the template pool: `references/pool.md`). Read the file for a step

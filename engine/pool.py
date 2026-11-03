@@ -69,12 +69,14 @@ def known(slug):
     from fingerprint import load
     out = {}
     for f in sorted((ROOT / "fingerprints").glob("*.json")):
-        if f.stem != slug:
+        # clients.json is the client registry (id -> client), not a measured layout: reading it as one
+        # made every `zs qa` crash with KeyError 'secs' from fingerprint.similarity.
+        if f.name != "clients.json" and f.stem != slug:
             fp = load(f.read_text(encoding="utf-8"))
-            if fp:
+            if fp and "palette" in fp and "secs" in fp:   # skip the registry index (clients.json) and partial files
                 out[f.stem] = fp
     for other, _d, fp in _others(slug, files=True):
-        if fp and "palette" in fp:
+        if fp and "palette" in fp and "secs" in fp:   # same guard as above: a partial file here crashes similarity too
             out[other] = fp
     return out
 
