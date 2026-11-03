@@ -99,6 +99,9 @@ body .e-con.zs-btns > .elementor-element { width: auto; --container-widget-width
 body .e-con.zs-header__in > .zs-brand.zs-brand__name,
 body .zs-tpl .zs-brand.zs-brand__name { flex: 0 0 auto; width: auto; max-width: none; }
 body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { white-space: nowrap; }
+/* a text brand on a dark header: the heading rule's var(--c-ink) beat .zs-h-dark .zs-brand, so the
+   business name rendered dark on dark (measured 1.11) on every page */
+body.zs-h-dark .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { color: var(--c-dark-ink); }
 .zs-nav { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
 .zs-menu { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 2px; }
 .zs-menu > li { position: relative; }
@@ -164,10 +167,15 @@ body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-prima
 
 /* A block that paints its own light panel (white or surface) inside a colour band keeps the light-ground text
    tokens. Without this the band's --c-ink/--c-text (white) are inherited into the panel and the text vanishes:
-   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band. */
+   split "frame" and features "rows" measured 1.00 and 1.11 against their own panel on a primary band.
+   split "card" (1.10), steps "cards", the facts card and team members paint one the same way. */
 :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) :is(
   .zs-v-frame .e-con.zs-split__text,
+  .zs-v-card .e-con.zs-split__text,
   .zs-v-rows .e-con.zs-feature,
+  .zs-v-cards .e-con.zs-step,
+  .zs-facts__card,
+  .zs-member,
   .zs-trust__list,
   .zs-faq__list .elementor-toggle .elementor-toggle-item,
   .zs-postcard,
@@ -176,6 +184,11 @@ body .zs-bg-primary.e-con { background: var(--c-primary); --c-ink: var(--c-prima
   .zs-layers__draw
 ) { --c-ink: var(--zs-l-ink); --c-text: var(--zs-l-text); --c-muted: var(--zs-l-muted); --c-line: var(--zs-l-line);
     color: var(--zs-l-text); }
+/* steps variant "cards" repaints the whole SECTION light (a soft brand gradient), so the band class and the
+   light ground sit on the same element and the descendant rule above cannot reach its own section head */
+body .e-con:is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent).zs-v-cards {
+  --c-ink: var(--zs-l-ink); --c-text: var(--zs-l-text); --c-muted: var(--zs-l-muted); --c-line: var(--zs-l-line);
+  color: var(--zs-l-text); }
 
 .zs-eyebrow .elementor-heading-title, a.zs-eyebrow { font-family: var(--f-body); font-size: .95rem; font-weight: 700; color: var(--c-primary); letter-spacing: .02em; margin: 0; text-decoration: none; display: inline-block; }
 .zs-eyebrow { margin-bottom: 10px; }
@@ -1464,8 +1477,8 @@ body.zs-accent-low:not(.zs-tone-light) :is(.zs-cta, .zs-hero--img) .elementor-he
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon { color: #fff; fill: #fff; }
 .zs-accent-low :is(.zs-bg-primary, .zs-bg-dark, .zs-bg-accent) .zs-feature__icon .elementor-icon svg { fill: #fff; }
 /* the footer is a dark ground too: a low accent left its contact icons and the wordmark under 3:1 there */
-body.zs-accent-low:not(.zs-tone-light) .zs-footer :is(.zs-ico, svg.zs-ico) { color: #fff; }
-body.zs-accent-low:not(.zs-tone-light) .zs-footer__mark { -webkit-text-stroke-color: #fff; }
+body.zs-accent-low:not(.zs-tone-light):not(:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .zs-k-shade)) .zs-footer :is(.zs-ico, svg.zs-ico) { color: #fff; }
+body.zs-accent-low:not(.zs-tone-light):not(:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .zs-k-shade)) .zs-footer__mark { -webkit-text-stroke-color: #fff; }
 /* cta variant photo paints its panel in the accent: its button is dark by default, which disappears
    when the accent itself is dark (pool.css '.zs-cta__panel .zs-b-primary') */
 body.zs-accent-low .zs-cta__panel .zs-b-primary .elementor-button { background: #fff; color: var(--c-dark); border-color: #fff; }

@@ -63,6 +63,9 @@ def observe():
                 "client_id": r["client_id"], "name": r["name"], "package": r["package"],
                 "staging_url": r["staging_url"], "images_found": bool(r["image_dirs"]),
                 "missing": sorted(r["missing"]),
+                # underscore keys feed the invariants and are stripped before recording or comparing:
+                # the contact's name is a person's name and does not belong in a committed file.
+                "_contact_name": (r.get("spec") or {}).get("contact_name", ""),
             }
 
     rep = _zs("replies", "--json")
@@ -79,6 +82,57 @@ def observe():
     return seen
 
 
+def invariants(got):
+    """Things that must never be true, whatever the expectations file says.
+
+    tests/expectations.json only catches CHANGE: it records what the code does today, so a bug that is
+    already baked in gets enshrined as correct. These are assertions about correctness instead, and each
+    one is a mistake the pipeline actually made on 2026-11-02.
+    """
+    import re
+    sys.path.insert(0, str(ROOT / "engine"))
+    from intake import ID_RE, PACKAGES
+
+    bad = []
+    for fname, r in sorted(got["intake"].items()):
+        if "error" in r:
+            continue
+        cid, where = r["client_id"], "intake/" + fname
+
+        # a login URL was stored as a staging URL (shipped in #49, caught by a reviewer in #51)
+        url = r["staging_url"] or ""
+        if re.search(r"/wp-(login|admin)", url):
+            bad.append("%s: staging_url points at a login page, not a site: %s" % (where, url))
+
+        # another client's staging site was written onto a branch (the Bella Mare / White Villa mix-up)
+        ids = [i for i in ID_RE.findall(url.split("//")[-1].split("/")[0])] if url else []
+        if ids and cid not in ids:
+            bad.append("%s: staging_url host carries %s, not this client's %s: %s" % (where, ids, cid, url))
+
+        # NOT asserted: that the business name differs from the contact person. It was the bug of the day
+        # (every .docx stored ניק בונביוב for ניק איטום until #50) but it cannot be judged from the output:
+        # when a spec sheet has no שם העסק at all the name legitimately falls back to שם הלקוח, which is
+        # exactly what קיסוס ביץ' קלאב does. An assertion here fires on a correct client. The snapshot in
+        # expectations.json covers the regression instead - it holds every name to the one we verified.
+
+        # a package was invented out of a substring ("פרו" inside "פרויקט", until #50)
+        if r["package"] and r["package"] not in PACKAGES:
+            bad.append("%s: package %r is not one of the known packages" % (where, r["package"]))
+
+        if not cid or not ID_RE.fullmatch(cid):
+            bad.append("%s: client_id %r is not an 8-digit id" % (where, cid))
+
+    # the reply router must never hand a client a host carrying somebody else's id
+    for cid, url in sorted(got["replies"]["staging_by_client"].items()):
+        host = url.split("//")[-1].split("/")[0]
+        ids = ID_RE.findall(host)
+        if ids and cid not in ids:
+            bad.append("replies: client %s was given %s, whose host carries %s" % (cid, url, ids))
+        if re.search(r"/wp-(login|admin)", url):
+            bad.append("replies: client %s was given a login URL: %s" % (cid, url))
+    return bad
+
+
 def _diff(exp, got, path=""):
     out = []
     if isinstance(exp, dict) and isinstance(got, dict):
@@ -89,11 +143,30 @@ def _diff(exp, got, path=""):
     return out
 
 
+def _public(got):
+    """The comparable view: everything but the underscore keys the invariants use."""
+    out = json.loads(json.dumps(got))
+    for r in out.get("intake", {}).values():
+        for k in [k for k in r if k.startswith("_")]:
+            del r[k]
+    return out
+
+
 def cli(a):
     if not INBOX.is_dir():
         print("regress: no corpus at work/inbox/ on this machine - nothing to check (this is normal off the intake PC)")
         return
     got = observe()
+
+    broken = invariants(got)
+    if broken:
+        print("INVARIANT VIOLATED: %d - these are wrong no matter what expectations.json says\n" % len(broken))
+        for b in broken:
+            print("  " + b)
+        print("\nRe-recording will not help: fix the pipeline.")
+        sys.exit(2)
+
+    got = _public(got)
     if a.record:
         EXPECT.parent.mkdir(parents=True, exist_ok=True)
         EXPECT.write_text(json.dumps(got, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
