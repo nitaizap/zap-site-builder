@@ -17,6 +17,7 @@ import subprocess
 import time
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import parse_qs, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE = ROOT / "work" / "browser-profile"
@@ -30,21 +31,38 @@ foreach ($m in $items) {
   if ($m.Class -ne 43) { continue }
   if ($m.ReceivedTime -lt $since) { break }
   $b = $m.HTMLBody + ' ' + $m.Body
-  $x = [regex]::Match($b, 'https?://%HOST%/wp-login\.php\?[^\s"<>]*action=rp[^\s"<>]*')
-  if ($x.Success) { [System.Net.WebUtility]::HtmlDecode($x.Value); break }
+  # Outlook rewrites every link as a safelink, so the reset URL is percent-encoded inside
+  # eur04.safelinks.protection.outlook.com/?url=... and never appears literally. Take any URL
+  # carrying action=rp in either form; Python unwraps it and checks the host.
+  $x = [regex]::Matches($b, 'https?://[^\s"<>]*(action=rp|action%3[Dd]rp)[^\s"<>]*')
+  foreach ($h in $x) { [System.Net.WebUtility]::HtmlDecode($h.Value) }
 }
 """
 
 
 def _reset_link(host, since, wait=300):
-    ps = PS_FIND_RESET.replace("%SINCE%", since.strftime("%Y-%m-%dT%H:%M:%S")).replace("%HOST%", re.escape(host))
+    ps = PS_FIND_RESET.replace("%SINCE%", since.strftime("%Y-%m-%dT%H:%M:%S"))
     end = time.time() + wait
-    while time.time() < end:
-        out = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True).stdout.strip()
-        if out.startswith("http"):
-            return out.splitlines()[0]
+    while True:
+        out = subprocess.run(["powershell", "-NoProfile", "-Command", ps],
+                             capture_output=True, text=True).stdout
+        for raw in out.splitlines():
+            link = _unwrap(raw.strip())
+            if link.startswith("http") and host in urlsplit(link).hostname or "":
+                if "action=rp" in link:
+                    return link
+        if time.time() >= end:
+            break
         time.sleep(10)
     raise SystemExit(f"staging: no password-reset mail for {host} arrived in Outlook within {wait // 60} min")
+
+
+def _unwrap(url):
+    """The real URL behind an Outlook safelink wrapper, or the url unchanged."""
+    if "safelinks.protection.outlook.com" not in url:
+        return url
+    inner = parse_qs(urlsplit(url).query).get("url", [""])[0]
+    return unquote(inner) or url
 
 
 def _logged_in(page, url):
@@ -70,13 +88,32 @@ def _reset(page, url, host, user, pw):
     print("staging: reset requested, waiting for the mail in Outlook…", flush=True)
     link = _reset_link(host, since)
     page.goto(link, wait_until="domcontentloaded")
-    page.fill("#pass1", pw)
-    if page.locator("#pass2").count():
-        page.fill("#pass2", pw)
-    if page.locator(".pw-checkbox").count():        # "confirm use of weak password"
+    _type_secret(page, "#pass1", pw)
+    # count() matches a hidden element too. Current WordPress ships #pass2 in the DOM but hidden, so
+    # filling it unconditionally waits 30s for an element that will never be editable and then throws
+    # - with the password in the exception text. Only fill it when it is actually visible.
+    _type_secret(page, "#pass2", pw, only_if_visible=True)
+    if page.locator(".pw-checkbox").first.is_visible():   # "confirm use of weak password"
         page.check(".pw-checkbox")
     page.click("#wp-submit")
     page.wait_for_load_state("domcontentloaded")
+
+
+def _type_secret(page, selector, value, only_if_visible=False):
+    """Fill a password field without the value reaching any log.
+
+    Playwright puts the fill() argument in its timeout message, so a failure here would print the
+    shared staging password into the terminal and into whatever is reading it. Nothing in this module
+    may ever surface a credential, so the error is replaced with one that names only the selector.
+    """
+    loc = page.locator(selector).first
+    try:
+        if only_if_visible and not loc.is_visible():
+            return
+        loc.fill(value, timeout=15000)
+    except Exception as e:
+        raise SystemExit("staging: could not fill %s (%s). The value is not shown."
+                         % (selector, type(e).__name__)) from None
 
 
 def _approve(page, req):
