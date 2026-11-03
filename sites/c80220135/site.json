@@ -49,17 +49,17 @@
     "radius": 4,
     "motion": "subtle",
     "colors": {
-      "primary": "#333b41",
+      "primary": "#14525e",
       "primary_ink": "#ffffff",
       "accent": "#b45309",
       "accent_ink": "#ffffff",
       "ink": "#13181c",
       "text": "#1f262b",
-      "muted": "#4e575e",
+      "muted": "#41505a",
       "bg": "#ffffff",
-      "surface": "#f4f4f3",
+      "surface": "#e3edef",
       "line": "#d2d5d8",
-      "dark": "#1f2529",
+      "dark": "#0d3a44",
       "dark_ink": "#ffffff"
     },
     "fonts": {

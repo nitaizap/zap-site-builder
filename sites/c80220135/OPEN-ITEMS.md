@@ -19,11 +19,15 @@ launch, and that is a commercial decision, not a build one.
 The environment's network policy denied `wordpress.org` at first, so `zs build` could not provision the local
 WordPress. The user opened network access to full and everything below was then run for real:
 
-| gate | result |
-|---|---|
-| `zs qa c80220135` | **0 errors, 0 warnings** |
-| `zs seo c80220135` | **0 FAIL**, every MANUAL row looked at (NOTES.md) |
-| `zs pool c80220135` | exit 0, **37%** against the nearest other client (limit 40%) |
+| gate | result (that session) | re-run here 03/11 |
+|---|---|---|
+| `zs qa c80220135` | 0 errors, 4 warnings | **0 errors, 0 warnings**, exit 0 |
+| `zs seo c80220135` | 0 FAIL | **0 FAIL** (39 rows: 34 pass, 5 manual) |
+| `zs pool c80220135` | exit 0, 37% | **36%** against `c80386843`, exit 0 (it had risen to 40%, an ERROR; see item 17) |
+
+The 4 warnings are accounted for in item 4 and the 40% in item 17. The re-run was done in a fresh worktree
+on a Windows machine: `.tools/` (php, wp-cli, MariaDB) is gitignored and per-checkout, so it was copied from
+an existing checkout before `bin/zs build` would run at all.
 
 Two environment quirks worth knowing for the next cloud session, neither of them a site problem:
 
@@ -71,9 +75,25 @@ dated 20/10/2024) and every link in that payload points at `https://www.d.co.il/
 client's own listing from `intake.json`. The client's existing site shows the same listing, 4.84 from 31
 reviews.
 
+### The four QA warnings in the previous report were this widget, and they are gone (03/11)
+
+`QA-REPORT.md` previously carried **4 warnings**, all of them the same thing: two console errors on the home
+page (`Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' ... blocked by CORS` and
+`Failed to load resource: net::ERR_FAILED`), counted once for desktop and once for mobile. They were **not a
+site defect**: the cloud session that built this client could not reach the reviews API, so the browser logged
+the blocked request and `zs qa` reported each console error as a warning.
+
+Re-measured on 03/11 from a machine with ordinary network access, the API answers, the widget loads, and the
+report reads **0 errors and 0 warnings**, with the engine's own check `✅ reviews widget styled (stars in one
+row, review in body text)` passing for the first time. Nothing was suppressed or allowlisted to achieve that.
+
+What remains true, and is the one thing to re-check after the first push: the widget needs a real host, so if
+a future QA run is done from a restricted network these two console lines will come back. They are the
+network, not the page.
+
 Two things to know:
-- **the widget renders only on a pushed site.** Locally the browser blocks its API call (CORS from
-  127.0.0.1), so the block is empty in the preview screenshots. It was checked by answering the request with
+- **the widget renders only on a pushed site** (or from a host that can reach the API). Where the API is
+  blocked the block is empty in the screenshots; it was additionally checked by answering the request with
   the real payload: one review card, stars in a single row, a muted date, page chips and both Dapei Zahav
   links, which is what the standard describes.
 - no score or review count is written anywhere in the copy, and none ever should be: the widget draws its
@@ -97,6 +117,12 @@ wordmarks look tiny next to the round marks.
 copyright. An authorised centre showing its own marques is ordinary practice and the client's existing site
 already does it for Mazda and Ford, but the importer's sign-off on דונגפנג and וויה is worth having before
 launch.
+
+**A build warning that is a false positive, left as is:** `zs build` prints
+`images 'logo-mazda' and 'logo-voyah' look like the same shot` and the same for `logo-ford` /
+`logo-first-dept`. The near-duplicate detector is comparing five marque marks that were deliberately re-cut
+onto one shared 900×300 transparent canvas, so they share a shape and a lot of empty space. They are five
+different files (different checksums) showing five different marques. Nothing to fix; do not "keep one".
 
 Also still unresolved, and minor: which file is "the updated Mazda logo (המצורף)". Three candidates sit in
 `assets/client` and they show the same artwork; `Logo_FullColor_Horizontal.png` was used, being the
@@ -172,7 +198,8 @@ the about page. Worth one confirmation that he consents, or a replacement shot.
   `בלוג` page, the category and the three posts from site.json; the rest of the site is unaffected.
 - **The footer colour moved** from near-black to a petrol charcoal (`#0e2a30`) because the uniqueness measure
   put the home page at 38% against white-villa, and the footer colour is one of the signals it weights most.
-  It reads 37% now.
+  It read 37% then. **Superseded on 03/11** by the palette change in item 17: the whole palette is petrol now,
+  and the footer is `#0d3a44`.
 - **The marque logos were re-cut** onto one shared 3:1 canvas so all three chips render at exactly 200×80 with
   equal spacing, which is what the spec asks for ("בגודל אחיד ובמרווחים שווים"). The source files have very
   different proportions and rendered at 252, 182 and 155 px wide before this. Their order was also reversed so
@@ -194,3 +221,110 @@ original-parts programme for vehicles over 3 years all appear there in the clien
 
 Two differences, both expected: the old site names only Mazda and Ford, because it predates the 2025 Dongfeng
 and Voyah licences the spec adds; and it lists the services without the separate pages the spec now asks for.
+
+## 14 · The top strip is on, against the engine's default — one reviewer decision
+
+`header.topbar` is **on**, showing "אשקלון והסביבה · מורשה מטעם היבואן למאזדה, פורד, דונגפנג ווויה".
+The engine turns it off by default, and `references/qa-rules.md` (Round 2) records a reviewer asking to
+"remove the blue strip with the details". It is a per-site option, not a prohibition, so this is a judgement
+call rather than a rule break, and it is written down here rather than left for the QA round to find.
+
+Why it stayed, honestly:
+
+- the note first written in NOTES.md ("no other client turns the bar on") was **wrong**: four of the five
+  measured clients run one. That reason is gone;
+- it carries real content (service area + the four authorised marques) that the strip states compactly;
+- turning it off was measured and made the site **more** like another client, not less: the nearest neighbour
+  `c80386843` has no top strip, so removing ours moved the pair from 40% to 44.5% alike. That is the opposite
+  of what this site needs.
+
+**Needed from the team:** one word on whether this client's reviewer accepts a top strip. If not, turn
+`header.topbar` off in `site.json` and re-run `bin/zs qa` — but expect the uniqueness score against
+`c80386843` to rise, so a different lever (the lead band's ground, or its palette) has to come off at the
+same time.
+
+## 15 · Nothing was pushed, and nothing can be
+
+`staging_url` is still empty for this client, so `zs push`, `zs connect` and publishing were all out of scope
+and were not attempted. Everything above was measured on the local build only. The items that can only be
+confirmed on a real host are: the reviews widget on the live page (item 4), the Elementor Theme Builder
+templates after a first push (`qa-rules.md` → "Editable everywhere"), `robots.txt` opening on the client's
+own domain, and the 301s from the old site's URLs (item 13).
+
+## 16 · The six service pages are thinner than Zap QA's own bar, and the material to fix it does not exist
+
+`references/qa-rules.md` (Round 3) sets the bar for a trade's service page at **450–800 words** with "the
+client's own method, numbers and FAQ", and marks it as a human's judgement rather than a gate. No gate
+catches it: `zs qa` is 0 errors, `zs seo` is 0 FAIL and the validator is silent. Measured from `site.json`
+(prose, card and FAQ text, headings excluded where they are furniture):
+
+| page | words | bar |
+|---|---|---|
+| מכונאות רכב | 316 | 450–800 |
+| מערכות מיזוג אוויר | 273 | 450–800 |
+| פחחות וצבע | 268 | 450–800 |
+| דיאגנוסטיקה ואבחון | 267 | 450–800 |
+| חשמל רכב | 260 | 450–800 |
+| צמיגים | 224 | 450–800 |
+
+For comparison the home page is 698 words and אודות is 266.
+
+**Why this was not simply written longer.** Every service page already uses all of the spec's own wording for
+that service, and the client's existing site was read in full (`research/ym-mazdaford.co.il.md`): it is
+**946 words in total** across every page and mentions each service only three to five times, in passing. There
+is no further client material anywhere — not in the spec, not on the old site, not in the F: drive folder.
+Reaching 450 words per page means adding roughly 180 words six times over, and the only way to do that here
+would be to invent method, timings or numbers for a motor garage. That is the one thing the build rules
+forbid outright, and it is the kind of invention Zap QA catches on a factual read.
+
+**Needed from the client (one short call would cover all six):** per service, what the garage actually does
+step by step, how long it typically takes, what equipment or approval is involved, and one or two real
+numbers. With that, each page reaches the bar honestly in a single pass. Until then the pages are accurate
+and short, which is the safer of the two failure modes but is still a likely QA comment.
+
+## 17 · The uniqueness gate had actually failed, and the palette was changed to clear it (resolved)
+
+When this client was handed over the note said "pool 39%, passing but fragile". Re-measured on 03/11 it was
+no longer passing: `bin/zs qa c80220135` exited **2** with
+
+```
+ERROR home looks 40% like 'c80386843' (measured: palette, furniture, components, layout)
+WARN  home is 37% like 'mehirut-haor' / 36% 'white-villa' / 35% 'patoccina'
+```
+
+`c80386843` (Dream from Steel) is one of the four clients being built alongside this one, so the pool moved
+under it. 40% is the ERROR threshold, not a warning.
+
+**Where the 40% came from** (the measure weights palette 30%, furniture 25%, vocabulary 20%, skeleton 15%,
+frame 10%): the two sites' footers measured 0.86 alike on their own, because a graphite `#1f2529` footer and
+a steel-navy `#16222c` footer are the same colour to a visitor. Both are industrial trades, and the build had
+drifted to a graphite primary (`#333b41`) that had nothing to do with this client.
+
+**What changed** — four values in `design.colors`, nothing else:
+
+| token | was | now | why |
+|---|---|---|---|
+| `primary` | `#333b41` graphite | `#14525e` petrol | the colour of the building in the client's own 2022 photos, which is what NOTES.md reasoned from in the first place. It is also the heaviest single signal in the measure (the action button) |
+| `dark` (footer) | `#1f2529` | `#0d3a44` | the collision above |
+| `surface` | `#f4f4f3` | `#e3edef` | a petrol tint, so the lead band and the FAQ tiles read as a ground instead of as white |
+| `muted` | `#4e575e` | `#41505a` | darkened so body text keeps 6:1 on the new tinted surface (measured 6.99:1) |
+
+No section, variant, image, word or threshold was touched, and nothing under `fingerprints/`.
+
+**Result, measured here:** `bin/zs qa c80220135` **0 errors, 0 warnings, exit 0**, and the only neighbour
+still reported is `c80386843` at **36%**. Every other client fell below the 35% reporting line.
+
+Contrast was checked on the new palette before the rebuild: white on primary 8.76:1, white on the footer
+12.31:1, body text on surface 12.86:1, muted on surface 6.99:1, white on the bronze accent 5.02:1.
+
+**One piece of history that matters.** Petrol was this site's *first* palette, and it was abandoned because
+`c80386843` had independently picked petrol-and-bronze too and the pair measured 58% alike. That is no longer
+the situation: `c80386843` has since moved to burnt orange `#b84606` with a steel-blue accent, which is what
+makes petrol the right answer again rather than a step backwards. It also means this particular lever is
+**contingent on that site**: if Dream from Steel moves back toward petrol before either site is delivered,
+this one has to move again, and the lever to reach for then is the lead band's ground, not the palette.
+
+**Worth knowing:** three more clients join this pool shortly. 36% leaves about four points of room, and the
+cheapest remaining lever if it tightens again is the lead band's ground (moving it off `stack/light` is worth
+about four points on its own). Turning the top strip off is **not** a lever here: it makes this site more
+like `c80386843`, not less (item 14).

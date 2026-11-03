@@ -6,8 +6,9 @@ The spec sheet line by line against what was built.
 or enforced by a gate that passed. ➖ = deliberately not built, with the reason. ⏳ = open, waiting on someone.
 ⚠️ = built as far as the client's material allows, with a gap named.
 
-The site was built, measured and looked at: `zs qa` 0 errors / 0 warnings, `zs seo` 0 FAIL, `zs pool` 37%
-against the nearest other client. Nothing below rests on "it is in site.json".
+The site was built, measured and looked at. Re-measured in full on 03/11: `zs qa` **0 errors / 0 warnings**,
+`zs seo` **0 FAIL**, uniqueness **36%** against the nearest other client (`c80386843`, limit 40%).
+Nothing below rests on "it is in site.json".
 
 ## סוג הפרויקט
 
@@ -25,7 +26,7 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | שם העסק: מרכז שירות יד מרדכי | ✅ | `business.name`, the home H1, every SEO title, the footer |
 | מספר לקוח 80220135 | ✅ | slug `c80220135`, registered in `fingerprints/clients.json` |
 | שנות פעילות: מעל 30 שנה | ➖ | contradicts the spec's own "הוקם בשנות ה-50". No number of years is claimed (OPEN-ITEMS 8) |
-| אתר קיים | ⏳ | unreachable from this session; no content or slug could be carried over or 301'd |
+| אתר קיים | ⚠️ | ym-mazdaford.co.il was read in the end with `bin/zs grab` (output in `research/`). Every factual claim on the new site was cross-checked against it and none had to change (OPEN-ITEMS 13). Its URLs still need mapping to the new ones (301) before launch, which needs the live host |
 
 ## פרטי קשר
 
@@ -84,7 +85,7 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | לוגואים בגודל אחיד ובמרווחים שווים | ✅ | measured on the rendered page: five chips at exactly 160 px wide, 174 px apart, one row. Each logo was re-cut onto a shared canvas and scaled to equal optical area, because the sources run from 7:1 to 1.8:1 |
 | סדר משמאל לימין: מאזדה, פורד, דונגפנג, וויה | ✅ | measured on the rendered page: מאזדה, פורד, דונגפנג, וויה, then the badge, left to right at 1440 px. On phones the column is reversed so it reads the same top down |
 | רק הלוגו המעודכן של מאזדה, לא הישן | ⚠️ | `Logo_FullColor_Horizontal.png` used. Three files show the same artwork and the spec does not say which is "המצורף" (OPEN-ITEMS 5) |
-| לוגו פורד מהאתר הקיים | ✅ | the existing site is unreachable; `לוגו-פורד-ללא-רקע.png` from the client's own files was used instead |
+| לוגו פורד מהאתר הקיים | ✅ | the existing site was read; its only Ford artwork is a manufacturer stock composite of unclear licence, so `לוגו-פורד-ללא-רקע.png` from the client's own files was used instead (IMAGE-SOURCES.md) |
 | צבעי מותג | ➖ | none given |
 | יד חופשית למעצב, צבעים לפי החלטת המעצב | ✅ | petrol `#14525e` + bronze `#8a4b0a`, taken from the building as it looks in the 2022 photos. Reasoning and measured contrast in NOTES.md |
 | אתרים שאהבתם | ➖ | empty on the spec |
@@ -94,7 +95,7 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 | line | status | note |
 |---|---|---|
 | תמונת בעלים | ➖ | empty on the spec; no portrait used or generated |
-| גלריה: לקחת תמונות מהאתר הקיים | ⚠️ | the existing site is unreachable. Seven usable photographs from the F: drive are used instead; the 2020 blue-facade shots and the KIA banner are excluded (NOTES.md → Images, OPEN-ITEMS 8) |
+| גלריה: לקחת תמונות מהאתר הקיים | ⚠️ | the existing site was read and yielded **no new photographs**: its images are the same 2022 facade and pylon shots already in `assets/`, cropped to banner sizes, plus one manufacturer stock composite that is not the client's material. So the seven F: drive photographs are everything; the 2020 blue-facade shots and the KIA banner are excluded (NOTES.md → Images, OPEN-ITEMS 8) |
 
 ## כתבת תדמית
 
@@ -128,9 +129,9 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 
 | check | result |
 |---|---|
-| `zs qa` (11 URLs × 2 viewports, 19 internal links) | 0 errors, 0 warnings |
-| `zs seo` (the team's checklist, row by row) | 0 FAIL; `SEO-QA-c80220135.xlsx` written |
-| `zs pool` uniqueness against every other client | 37% (limit 40%) |
+| `zs qa` (16 URLs × 2 viewports, 24 internal links) | 0 errors, 0 warnings (re-measured 03/11) |
+| `zs seo` (the team's checklist, row by row) | 0 FAIL, 39 rows: 34 pass, 5 manual; `SEO-QA-c80220135.xlsx` written |
+| `zs pool` uniqueness against every other client | 36% against `c80386843` (limit 40%); it had risen to 40% before the palette change, see OPEN-ITEMS 17 |
 | hero above the fold at 1280×620 and 360×640 | passes |
 | mobile menu opens full screen, Escape closes | passes |
 | lead form: thank-you shown, lead saved, no mail sent from staging | passes |
@@ -142,3 +143,11 @@ against the nearest other client. Nothing below rests on "it is in site.json".
 Home page read in full at 390 px; service, contact, blog index and a blog post shot at 390; the header and
 the logos band shot at 1440 and 1280. Fixed as a result: the marque chips were different sizes and in the
 wrong order, and nine menu items did not fit a laptop header (OPEN-ITEMS 11).
+
+## Covered, but thinner than Zap QA's own bar
+
+Every service the spec names has its own page with the spec's own wording, so the brief is covered. The six
+service pages are nevertheless **224–316 words** against the 450–800 that `qa-rules.md` asks of a trade, and
+no gate catches it. There is no further client material to write from (the old site is 946 words in total),
+so the gap needs a short call with the client rather than invented copy. Recorded in OPEN-ITEMS 16.
+
