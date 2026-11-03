@@ -119,7 +119,7 @@ your judgement.
 1. `bin/zs qa <slug>` 0 errors, `bin/zs seo <slug>` 0 FAIL, then the same on the pushed site (`--site`).
 2. Look at desktop at 1280px and phones at 390px yourself: logo words readable, no overlaps, no empty bands.
 3. Read every heading once for punctuation, and every menu label against its page's H1.
-4. Write the delivery message with the human-only items (blog source, privacy fields, robots on launch).
+4. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
 
 ## Round 3 (פטוצ'ינה, 01/11/2026)
 
