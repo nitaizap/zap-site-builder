@@ -64,6 +64,8 @@ the client supplies artwork.
 **Needed from the client:** a wordmark or logo file (PNG, transparent). Then set `logo` and regenerate
 `favicon` from its symbol, and header, footer and favicon all follow from the one file.
 
+**03/11/2026, request to put "the garage's own logo" in the header: not done.** The last chip in the "מורשים מטעם היבואן" band is the importer's *המחלקה הראשונה למסחריות* programme badge (`logo-first-dept`), not a logo of the garage: it says nothing of יד מרדכי and it is the importer's mark. Used as the site logo it would also become the footer, favicon and structured-data logo and would present the programme as the business's identity. The header keeps the name as text until the client supplies a real logo file. The band now shows the badge beside the text, as asked.
+
 ## 4 · Reviews: on (resolved)
 
 The spec asks for a customer-reviews area and it is now built. `business.dpz_customer_id` is `80220135` and a
