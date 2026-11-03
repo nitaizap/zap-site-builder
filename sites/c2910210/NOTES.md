@@ -92,5 +92,10 @@ patch), exit codes read directly and not through a pipe:
 
 ## Delivery state
 
-Built and reviewed locally only. No staging URL exists for this client yet, so nothing was pushed and
-nothing was published.
+Pushed 2026-11-03 to https://2910210kfarsabataxis.ussl.co.il (staging, from SharonY's mail). Admin claimed with
+`zs staging` (password reset through Outlook), connected with `zs connect`, `zs push` exit 0.
+
+Re-measured on current `main` (`b954e40`) before the push: `zs pool` highest 35% white-villa (exit 0), `zs qa` 0
+errors, `zs seo` 0 FAIL. Live QA (`zs qa --site`): 0 errors, 0 warnings. Live pages checked by fetching them: all 13
+pages answer 200 with `<title>` = `<name> | <page>` and the real H1; no `Basic Site` / `כותרת ראשית` title anywhere;
+the base's placeholder page was moved to draft by the push.
