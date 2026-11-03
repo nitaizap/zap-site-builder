@@ -14,6 +14,7 @@ One email may carry several clients (one spec sheet per client). Spec sheets com
 Nothing is invented: what is not found stays empty and is listed under "missing".
 """
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -327,22 +328,41 @@ def spec_fields(text):
 
 # ---------- images ----------
 
-def find_client_dirs(root, cid, depth=4):
+def find_client_dirs(root, cid, depth=1):
+    """The client's image folders under the images root, or [].
+
+    F:\\SiteContent holds ~88,000 client folders on a network share. This used to walk it to depth 4
+    whenever the exact folder was missing - which is every client whose folder was never created. On
+    2026-11-02 that hung three builds past a ten-minute watchdog, and it had been silently making
+    every such intake take longer than anyone would wait. A client folder is always a direct child of
+    the root (the plain id, or the id with a name beside it as SiteDesign files them), so one listing
+    answers it; `depth` is kept for callers that knowingly ask for more.
+    """
     root = Path(root)
     if (root / cid).is_dir():             # Zap layout: F:\SiteContent\<id>\
         return [root / cid]
+    # F: pads the id to 8 digits: client 743850 is F:\SiteContent\00743850. Take that exact match
+    # before any substring search, because a substring also matches a DIFFERENT client whose id
+    # happens to contain these digits - 743850 matches 19743850, whose photos are not this client's.
+    if len(cid) < 8:
+        padded = root / cid.zfill(8)
+        if padded.is_dir():
+            return [padded]
     hits, stack = [], [(root, 0)]
     while stack:
         d, lvl = stack.pop()
         try:
-            kids = [k for k in d.iterdir() if k.is_dir()]
+            # scandir, and match the NAME before touching the share. is_dir() on ~88,000 network
+            # entries is a stat each: that is what made this unusable, not the recursion itself.
+            with os.scandir(d) as it:
+                for e in it:
+                    if cid in e.name:
+                        if e.is_dir():
+                            hits.append(Path(e.path))
+                    elif lvl + 1 < depth and e.is_dir():
+                        stack.append((Path(e.path), lvl + 1))
         except OSError:
             continue
-        for k in kids:
-            if cid in k.name:
-                hits.append(k)
-            elif lvl + 1 < depth:
-                stack.append((k, lvl + 1))
     return hits
 
 
@@ -438,13 +458,23 @@ def already_built(cid, sites_dir):
         except (OSError, ValueError):
             continue
     branches = [b.strip() for b in _git("branch", "-a", "--format=%(refname:short)").splitlines() if b.strip()]
+    # The branch you are standing on does not count. The documented flow is to cut site/c<id> and then
+    # run intake inside it, so counting it made every worktree-first run trip over itself.
+    here = _git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    mine = {"site/" + slug, "origin/site/" + slug}
     for b in branches:
-        if b == "site/" + slug or b.endswith("/site/" + slug):
+        if (b == "site/" + slug or b.endswith("/site/" + slug)) and b != here:
+            if not _git("ls-tree", "--name-only", b, "sites/%s/" % slug).strip():
+                continue                    # the branch exists but holds nothing for this client
             hits.append("branch %s exists" % b)
     for b in branches:                      # built earlier under a business-name slug
-        if "site/" not in b or b == "site/" + slug or b.endswith("/site/" + slug):
+        if "site/" not in b or b in mine or b == here:
             continue
-        hit = _git("grep", "-l", cid, b, "--", "sites/").strip()
+        # Match the client_id FIELD, not the id anywhere under sites/. One email often carries several
+        # clients and every brief embeds that whole email body, so a prose sweep made each client in a
+        # multi-client mail "name" all the others - it blocked הרקולס-גורקביץ 743850 on 2026-11-02
+        # because car service's brief quoted the same mail.
+        hit = _git("grep", "-l", '"client_id": "%s"' % cid, b, "--", "sites/*/intake.json").strip()
         if hit:
             where = hit.splitlines()[0].split(":", 1)[-1]
             hits.append("branch %s names this client (%s)" % (b, where))
