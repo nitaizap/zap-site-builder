@@ -78,12 +78,32 @@ def chunks(items, n):
 
 
 def _privacy_desc(name):
-    """150-160 characters (Zap SEO checklist), whatever the length of the business name."""
-    d = f"מדיניות הפרטיות של {name}: איזה מידע נאסף בטופסי האתר, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו"
-    for extra in (" בכל עת", " בפנייה אלינו", ", בהתאם לחוק"):
-        if len(d) + len(extra) + 1 <= 160 and len(d) < 149:
-            d += extra
-    return (d if len(d) <= 159 else d[:156].rsplit(" ", 1)[0]) + "."
+    """150-160 characters (Zap SEO checklist), whatever the length of the business name.
+
+    Whole sentences rather than glued-on fragments: the previous version appended suffixes one by one and
+    could stop at 149 for some name lengths (it failed `zs seo` row 24 on a name of 11 characters), and a
+    pair of fragments that did fit read as broken Hebrew. Here the longest sentence that lands in the window
+    wins, so every variant is one the team would write by hand.
+    """
+    head = f"מדיניות הפרטיות של {name}: איזה מידע נאסף בטופסי האתר"
+    tails = [
+        ", מי רשאי לגשת אליו, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו בכל עת, בהתאם לחוק.",
+        ", מי רשאי לגשת אליו, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או למחוק אותו בכל עת, בהתאם לחוק.",
+        ", מי רשאי לגשת אליו, איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או למחוק אותו בכל עת.",
+        ", איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו בכל עת, בהתאם לחוק.",
+        ", איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו בפנייה אלינו.",
+        ", איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או לבקש למחוק אותו בכל עת.",
+        ", איך הוא נשמר ומשמש, ואיך אפשר לעיין בו, לתקן אותו או למחוק אותו בכל עת.",
+        ", איך הוא נשמר ומשמש ואיך אפשר לעיין בו, לתקן או למחוק אותו.",
+        ", איך הוא נשמר ואיך אפשר לעיין בו או למחוק אותו.",
+        " ואיך הוא נשמר אצלנו.",
+        ".",
+    ]
+    for t in tails:
+        if 150 <= len(head) + len(t) <= 160:
+            return head + t
+    d = head + tails[0]
+    return d[:159] if len(d) > 160 else d
 
 
 def privacy_html(data):
