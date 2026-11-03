@@ -27,8 +27,8 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
   Dapei Zahav links in one row. QA fails when the stars break into a column or the review text turns bold.
 - Privacy: Zap's standard policy page built from site.json (see below); never a `#` link.
 - Hebrew URLs only, no `/category/`; one keyword per page; unique titles/descriptions.
-- Hardening: no xmlrpc, no user enumeration, version hidden, security headers, no PHP in uploads (Apache).
-- Staging is `noindex`; the package switches indexing on only for the client's own domain.
+- Hardening: XML-RPC without pingbacks (on for authenticated tools, so migration/backup services connect), no user enumeration, version hidden, security headers, no PHP in uploads (Apache).
+- **Launch-ready by address (plugin `inc/launch.php`)**: on a staging address (`*.ussl.co.il`, `*.zapsites.co.il`, local, or a host `zs push` registered) leads are saved but not mailed to the client, the site is noindex and robots.txt is `Disallow: /`. Opened on any other domain, it switches itself to live on the first request: leads mailed, indexed, robots.txt + sitemap, the old address rewritten inside Elementor's data, Elementor CSS and Yoast URLs refreshed, permalinks flushed. The launch manager migrates with any tool and changes nothing. Never reintroduce a database flag for staging (it travels with the database and silenced a live site's form).
 
 ## Needs a person ✋ (goes on LAUNCH-CHECKLIST.md automatically)
 

@@ -22,6 +22,7 @@ function zap_opt($key = null, $default = '') {
     return $v === null || $v === '' ? $default : $v;
 }
 
+require __DIR__ . '/inc/launch.php';   // staging vs live by address; self-repair after a migration
 require __DIR__ . '/inc/leads.php';
 require __DIR__ . '/inc/schema.php';
 require __DIR__ . '/inc/shortcodes.php';   // legacy: sites built before the no-shortcode rule
