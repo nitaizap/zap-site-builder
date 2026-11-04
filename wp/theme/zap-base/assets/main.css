@@ -301,7 +301,7 @@ body .e-con.zs-step { --row-gap: 8px; counter-increment: zs-step; position: rela
 body .e-con.zs-step::before { content: counter(zs-step); position: absolute; top: 0; inset-inline-start: 0; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--c-primary); color: var(--c-primary-ink); font-family: var(--f-head); font-weight: 700; font-size: 1.15rem; }
 body .e-con.zs-step::after { content: ""; position: absolute; top: 23px; inset-inline-start: 58px; inset-inline-end: -14px; height: 2px; background: repeating-linear-gradient(to left, var(--c-line) 0 8px, transparent 8px 14px); }
 body .e-con.zs-step:last-child::after { display: none; }
-.zs-step__title .elementor-heading-title { font-size: 1.15rem; margin: 0; }
+.zs-step__title .elementor-heading-title { font-size: var(--fs-h3); margin: 0; }
 .zs-step__text { color: var(--c-muted); font-size: 1rem; }
 @media (max-width: 1024px) { .e-con.zs-step::after { display: none; } }
 
@@ -321,7 +321,7 @@ body .e-con.zs-prose { max-width: 760px; margin-inline: auto; --row-gap: 0px; }
 .zs-prose__h:first-child { margin-top: 0; }
 .zs-prose__h .elementor-heading-title { margin-bottom: .5em; }
 .zs-prose__h h2.elementor-heading-title { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.85rem); }
-.zs-prose__h h3.elementor-heading-title { font-size: 1.22rem; }
+.zs-prose__h h3.elementor-heading-title { font-size: var(--fs-h3); }
 .zs-prose, .zs-prose__t { font-size: 1.08rem; line-height: 1.8; }
 .zs-prose ul, .zs-prose ol { padding-inline-start: 1.3em; margin: 0 0 1em; }
 .zs-prose li { margin-bottom: .35em; }
@@ -337,7 +337,7 @@ body .e-con.zs-faq { --content-width: min(100%, 880px); }
 .zs-faq__list .elementor-toggle { display: grid; gap: 12px; margin-top: 28px; }
 .zs-faq__list .elementor-toggle .elementor-toggle-item { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r); overflow: hidden; margin: 0; transition: border-color .2s, box-shadow .2s; }
 .zs-faq__list .elementor-toggle .elementor-toggle-item:has(.elementor-active) { border-color: color-mix(in srgb, var(--c-primary) 35%, var(--c-line)); box-shadow: var(--shadow-sm); }
-.zs-faq__list .elementor-toggle .elementor-tab-title { display: flex; align-items: center; gap: 14px; margin: 0; padding: 18px 22px; border: 0; font-family: var(--f-head); font-size: 1.08rem; font-weight: 600; line-height: 1.4; color: var(--c-ink); cursor: pointer; }
+.zs-faq__list .elementor-toggle .elementor-tab-title { display: flex; align-items: center; gap: 14px; margin: 0; padding: 18px 22px; border: 0; font-family: var(--f-head); font-size: var(--fs-h3); font-weight: 600; line-height: 1.4; color: var(--c-ink); cursor: pointer; }
 .zs-faq__list .elementor-toggle .elementor-toggle-title { color: inherit; text-decoration: none; flex: 1; order: 1; }
 .zs-faq__list .elementor-toggle .elementor-toggle-icon { order: 2; flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--c-primary) 9%, transparent); color: var(--c-primary); float: none; }
 .zs-faq__list .elementor-toggle .elementor-toggle-icon svg { width: 12px; height: 12px; fill: currentColor; }
@@ -467,7 +467,7 @@ body .e-con.zs-contact__info { --row-gap: 18px; }
 .zs-page { padding-block: clamp(32px, 5vw, 72px); }
 .zs-page__title { font-size: var(--fs-h1-page); }
 .zs-prose h2 { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.85rem); margin-top: 1.6em; }
-.zs-prose h3 { font-size: 1.22rem; margin-top: 1.4em; }
+.zs-prose h3 { font-size: var(--fs-h3); margin-top: 1.4em; }
 .zs-prose img { border-radius: var(--r); }
 .zs-post__head { background: var(--c-surface); padding: clamp(28px, 4vw, 64px) 0 clamp(64px, 8vw, 120px); }
 .zs-post__title { font-size: var(--fs-h1-page); margin-top: 10px; }
