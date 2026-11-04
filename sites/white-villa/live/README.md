@@ -179,3 +179,23 @@ still reads `055-4309532`. At 375 the footer stacks centred with no overflow.
 
 **Worth keeping:** this is a generic consequence of Elementor's icon-list markup plus an RTL site
 with LTR phone numbers. Any Zap client with a `tel:` link in an icon-list has it.
+
+### The actual footer fault: three columns, two alignments
+
+Fixing the phone's bidi placement was real but it was **not** what looked wrong. Measuring the
+whole band rather than the one column found it:
+
+| column | `text-align` | content edge (at 1920) |
+|---|---|---|
+| brand + description | **center** | logo centred at 1321-1417 |
+| הוילה menu | start | 1137 |
+| יצירת קשר | start | 721 |
+
+One centred column sitting between two start-aligned ones, so nothing lined up down the band.
+Now every column is `align-items: flex-start` / `text-align: start` at 1025px and up, the logo and
+group mark lose their auto margins, and the three content edges land at 1553 / 1137 / 721 — three
+equal 368px columns on a 48px gutter.
+
+**The lesson for next time:** two rounds were spent fixing the thing named in the complaint (the
+contact column) when the fault was the column beside it. Measure the whole band before fixing the
+part that was pointed at.
