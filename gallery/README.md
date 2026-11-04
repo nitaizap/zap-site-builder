@@ -8,4 +8,4 @@ the user corrected.
 
 | site | industry | package | handed over | entry |
 |---|---|---|---|---|
-| _(the first entry is written at the next handover)_ | | | | |
+| c80220135 מרכז שירות יד מרדכי | car service centre | standard | not yet (privacy parked) | [gallery/c80220135](c80220135/README.md) |
