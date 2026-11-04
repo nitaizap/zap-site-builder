@@ -26,6 +26,10 @@ function zs_opt($key = null, $default = '') {
     return $v === null || $v === '' ? $default : $v;
 }
 
+/* Safety net for a site that kept this theme but lost the zap-site plugin (migration): a loud admin notice and a
+   fallback menu. Hooks nothing at all while the plugin is running. */
+require __DIR__ . '/inc/plugin-missing.php';
+
 add_action('after_setup_theme', function () {
     load_theme_textdomain('zap-base');
     add_theme_support('title-tag');
@@ -337,7 +341,9 @@ add_filter('nav_menu_link_attributes', function ($atts, $item) {
 function zs_part_nav() {
     $tel = zs_opt('business.phone_e164'); $cta = zs_opt('header.cta_label', '');
     $o = '<nav id="zs-nav" class="zs-nav" aria-label="תפריט ראשי">';
-    $o .= wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'zs-menu', 'depth' => 2, 'fallback_cb' => false, 'echo' => false]) ?: '';
+    $menu = wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'zs-menu', 'depth' => 2, 'fallback_cb' => false, 'echo' => false]) ?: '';
+    if ($menu === '' && zs_plugin_missing()) $menu = zs_fallback_links('zs-menu');   // plugin gone and no menu assigned: never an empty nav
+    $o .= $menu;
     if ($tel) $o .= '<a class="zs-btn zs-btn--primary zs-nav__cta" href="' . esc_attr(zs_tel_href($tel)) . '">' . zs_icon('phone') . '<span>' . esc_html($cta ?: zs_opt('business.phone_display')) . '</span></a>';
     $o .= '</nav><button class="zs-burger" type="button" aria-expanded="false" aria-controls="zs-nav" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>';
     return $o;
@@ -437,12 +443,24 @@ add_shortcode('zap_menu', fn($a) => zs_part_menu(shortcode_atts(['location' => '
 
 /** Print the Elementor header/footer template for this slot. Elementor Pro Theme Builder first, then our saved template. */
 function zs_render_tpl($slot) {
-    if (function_exists('elementor_theme_do_location') && elementor_theme_do_location($slot)) return true;
+    // zap-site plugin gone: Elementor drops the Zap widgets and the header can come out with no menu at all
+    $net = $slot === 'header' && zs_plugin_missing();
+    if (function_exists('elementor_theme_do_location')) {
+        if ($net) ob_start();
+        $done = elementor_theme_do_location($slot);
+        if ($net) {
+            $out = (string) ob_get_clean();
+            echo $out;
+            if ($done && zs_header_needs_fallback($out)) echo zs_fallback_nav();
+        }
+        if ($done) return true;
+    }
     $id = (int) get_option("zs_tpl_$slot");
     if (!$id || !class_exists('\Elementor\Plugin') || get_post_status($id) !== 'publish') return false;
     $html = \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($id, true);
     if (!$html) return false;
     echo '<div class="zs-tpl zs-tpl-' . esc_attr($slot) . '">' . $html . '</div>';
+    if ($net && zs_header_needs_fallback($html)) echo zs_fallback_nav();
     return true;
 }
 
