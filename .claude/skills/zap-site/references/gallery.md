@@ -32,12 +32,16 @@ into `NOTES.md`:
 
 A direction below any of these is not ready to show. Measured on the approved entries in `gallery/`:
 
-| measure | floor | why |
+| measure | floor | checked by |
 |---|---|---|
-| real images on the home direction | 6+ | a direction with two images cannot be judged, and reads as a wireframe |
-| icons on conversion buttons and contact lines | all of them | `zs qa` counts the ones without |
-| a 390 frame per direction | always | mobile defects are the ones clients notice and the ones desktop hides |
-| sections on the home | 8+ (`basic` 6+) | fewer means the content is under-represented, and the page looks thin |
+| sections on the home | 8+ (`basic` 6+) | `zs preview` (error, exits 2) |
+| images the home composition asks for | 6+ (`basic` 4+) | `zs preview` (error, exits 2) |
+| a page whose buttons carry no icon at all | never | `zs qa` (warning) |
+| a 390 frame per direction | always | `zs preview` renders both; look at them |
+
+`zs preview` counts the composition in `site.json`, not the render, because a thin direction is fixed by
+composing more of the page. A direction with two images cannot be judged: the user ends up choosing between
+sketches, and the thinness comes back as a design complaint after the build.
 
 If the client's own photography cannot carry a direction, say so **at the gate**, not after the build. That is
 a brief question, and it is cheap to answer in the preview round and expensive after.
