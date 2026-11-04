@@ -127,3 +127,10 @@ and contains no `<` at all, so there was nothing for the filter to cut. Confirme
 well, by reading the rendered page: the home-hero block, the brand wordmark block and the inner-hero block
 added in this pass are all present in the served CSS, including the `clamp(32px, 4vw, 64px)` gap and the
 `56ch` lead measure.
+
+## Design-quality pass (04/11/2026, second round)
+- New checks found: h2 at 3 sizes (62.5/57.5/29.5 px) and h3 at 3 sizes on every page, no icon element on any button (QA counts DOM icons; the theme draws tel/wa icons with CSS ::before, so this warning is an engine false positive, not fixed here).
+- Fixed in site.json custom_css: one H2 size (48 px max) and one H3 size site-wide; dark prose band for the home text wall with a readable table; home now 0 errors, 1 warning.
+- Tried kit `shade` + `stage` hero for distinctiveness: it measured no lower (39%) and exposed that all 6 AI images are 1024 px, which the new check flags as upscaled when shown full width (1200). Reverted. A real step up needs larger source images (Weave regeneration, credits) or client photos: needs a decision.
+- Kit `bands` is blocked by the pool rule (used by c80220135).
+- Pool: home worst case 36% vs nick-itum (was 37%).
