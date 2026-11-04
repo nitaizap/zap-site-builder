@@ -362,6 +362,10 @@ def cmd_registry(a):
 
 
 def cmd_pool(a):
+    """Measure the local build NOW, then compare. `zs pool` used to read sites/<slug>/fingerprint.json, which only
+    `zs qa` rewrites, so after any colour or layout change it reported the previous build's number with nothing to
+    say so. It re-measures instead (and says when the stored file has fallen behind); it does not write the file,
+    because the committed number should keep coming from `zs qa`."""
     from build import load_site
     from pool import compare, recipe
     s = Site(a.slug)
@@ -369,7 +373,17 @@ def cmd_pool(a):
     r = recipe(d)
     print("levers:", " · ".join(x or "-" for x in r["levers"]), f"· base template {r['base'] or '-'}")
     print("home:  ", " → ".join(r["home"]))
-    warns = compare(a.slug, d, s.src)
+    fresh = None
+    if not getattr(a, "stored", False):
+        try:
+            from fingerprint import take
+            s.serve()
+            fresh = take({"home": s.url + "/"})["home"]
+            print("measured: the local build (not the stored fingerprint.json)")
+        except Exception as e:                      # no build, no browser: say so, never fall back silently
+            print(f"WARN  could not measure the local build ({type(e).__name__}: {str(e)[:120]}). Falling back to the "
+                  f"stored sites/{a.slug}/fingerprint.json, which may be older than the build")
+    warns = compare(a.slug, d, s.src, home=fresh)
     print("\n".join(warns) if warns else "unique: no other client branch is close (git fetch first for the latest)")
     sys.exit(2 if any(w.startswith("ERROR") for w in warns) else 0)
 
@@ -403,7 +417,7 @@ def main():
     import staging; staging.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
-    x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
+    x = sub.add_parser("pool"); x.add_argument("slug"); x.add_argument("--stored", action="store_true", help="skip the re-measure and judge the committed fingerprint.json as it stands"); x.set_defaults(f=cmd_pool)
     x = sub.add_parser("registry"); x.add_argument("slug"); x.set_defaults(f=cmd_registry)
     a = p.parse_args()
     a.f(a)
