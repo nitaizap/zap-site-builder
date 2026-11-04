@@ -243,13 +243,25 @@ Why it stayed, honestly:
 `c80386843` to rise, so a different lever (the lead band's ground, or its palette) has to come off at the
 same time.
 
-## 15 · Nothing was pushed, and nothing can be
+## 15 · Pushed to staging (superseded 04/11)
 
-`staging_url` is still empty for this client, so `zs push`, `zs connect` and publishing were all out of scope
-and were not attempted. Everything above was measured on the local build only. The items that can only be
-confirmed on a real host are: the reviews widget on the live page (item 4), the Elementor Theme Builder
-templates after a first push (`qa-rules.md` → "Editable everywhere"), `robots.txt` opening on the client's
-own domain, and the 301s from the old site's URLs (item 13).
+This item used to read "nothing was pushed, and nothing can be", from when `staging_url` was empty. The site
+has since been pushed to **https://80220135yadmordechai.ussl.co.il** with `zs push` (Novamira connected,
+WP 7.1.4 / PHP 8.4.27 / Elementor 4.3.4 + Pro 4.3.1, theme `zap-base`, a SQL backup taken first), and the
+Theme Builder templates exist there (header, footer, single-post, archive, service).
+
+Re-verified on the live page on 04/11, by reading it rather than by its status code:
+
+| check | live result |
+|---|---|
+| home `<title>` / `<h1>` | `מרכז שירות יד מרדכי \| מוסך מורשה מאזדה ופורד באשקלון` / `מרכז שירות יד מרדכי` |
+| `צרו קשר` map | real `<iframe src="https://www.google.com/maps?q=קיבוץ יד מרדכי&output=embed&hl=iw">`; map and form both end at 1596px at 1440 |
+| `צמיגים` prose column | `left 340px / right 340px` of 1440, width 760 — centred |
+| `צמיגים` FAQ | `שאלות נפוצות` heading and the `faq:aside` photograph both present |
+| top strip vs the accessibility toggle | leftmost content 64px at 1280, 56px at 1100 (toggle is 52px wide) |
+
+Still only confirmable on the client's own domain, not here: `robots.txt` opening, and the 301s from the old
+site's URLs (item 13). The reviews widget (item 4) renders on the pushed site.
 
 ## 16 · The six service pages are thinner than Zap QA's own bar, and the material to fix it does not exist
 
