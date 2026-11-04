@@ -8,4 +8,5 @@ the user corrected.
 
 | site | industry | package | handed over | entry |
 |---|---|---|---|---|
-| _(the first entry is written at the next handover)_ | | | | |
+| [מוניות כפר סבא](c2910210/README.md) | taxi | standard | staging 03/11/2026 | yellow + green flat fields, phone-first |
+| [מרכז שירות יד מרדכי](c80220135/README.md) | car service centre | standard | staging 04/11/2026 | privacy parked |
