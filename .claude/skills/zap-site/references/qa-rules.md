@@ -122,9 +122,19 @@ your judgement.
    Then the hero on its own: run `py tools/hero-space.py <url> --out <file>`, open the 1440x900 shot beside it and answer the
    four questions in `hero-space.md` (height earned, text fills or balances its column, content or air, first button in view).
    `zs qa` cannot see this one; the user has rejected heroes that passed it with 0 errors.
-3. Read every heading once for punctuation, and every menu label against its page's H1.
-4. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
-5. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
+3. **The brief pass — read the brief again with the finished site open beside it.** Walk `BRIEF-CHECK.md` row by
+   row against the live pages: every service page the spec sheet lists, the slogan where it gave one, the call
+   button on every page where it asked for one, the fleet or service list in full. A site that passes every gate
+   can still answer a different brief from the one that arrived. Where the spec sheet named sites under
+   `אתרים שאהבתם`, open them again now and ask honestly whether this site answers what the client liked.
+4. **The polish pass — look at it as a stranger, not as its builder.** Ask whether it reads as finished or merely
+   as correct: consistent rhythm between sections, one alignment per band, type that fills the space it is given,
+   images sharp at the size they are shown, no placeholder left standing, nothing that looks like the default. The
+   gates measure none of this. Every design complaint this project has had came off a site passing QA at 0 errors
+   and SEO at 0 FAIL, so budget real time here rather than treating it as a last glance.
+5. Read every heading once for punctuation, and every menu label against its page's H1.
+6. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
+7. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
 
 ## Round 3 (פטוצ'ינה, 01/11/2026)
 
@@ -142,3 +152,24 @@ your judgement.
 | "Where is the form e-mail set?" | wp-admin → פניות מהאתר → הגדרות טפסים (recipient, sender, test address, staging state); also shown in the form widget's panel. A rebuild takes `business.email_leads` from site.json, so change it there too |
 | Breadcrumbs on every site (user decision 01/11/2026) | default on every inner page; `header.breadcrumbs: false` only when a client asks to hide them |
 
+
+## Mail: check who is sending, before handover (04/11/2026)
+
+Reported from Zap as "האתר יוצר בעיות SMTP". The `zap-site` plugin used to hook `phpmailer_init` at the default
+priority 10 for the whole site, which is exactly where WP Mail SMTP, FluentSMTP, Post SMTP and the rest sit: on a
+site that has one of those, whichever loaded last won, so delivery depended on plugin load order and changed under
+an unrelated update. It also sent every message on the site as `zapsites@d.co.il`, a domain the client's site has
+no SPF alignment with. The plugin now stands down completely when another mailer is active, applies the Zap relay
+only to the lead form's own mail, and sends from `no-reply@<the site's own domain>` with the enquirer as Reply-To.
+
+Before handover, on every site:
+
+| check | how |
+|---|---|
+| Who is sending the site's mail | wp-admin → פניות מהאתר → הגדרות טפסים, the row **"מי מנהל את הדואר באתר"**. It says either `Zap Site` (our relay, lead mail only) or the name of the SMTP plugin that took over. Anything else is a bug, not a setting to change |
+| Two mailers, one site | if an SMTP plugin is installed, the row must name **it**, not Zap Site. Never configure both: another plugin's delivery always wins, and Zap's relay is only the default for a site that has none |
+| The sender is on the client's domain | the "שולח" row must read `no-reply@<client domain>`, never `zapsites@d.co.il` on a live client domain (that is what lands leads in spam) |
+| A lead actually arrives | send one test lead on the live address and open the client's inbox. Nothing else on the site (password resets, WooCommerce) goes near the Zap relay any more |
+
+`bin/zs launch-check` reports this as the `mailers` row. It reads public html only, so it can name an SMTP plugin
+whose assets the page loads but can never rule one out: the row is always MANUAL and always closed in wp-admin.
