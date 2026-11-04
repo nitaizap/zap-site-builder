@@ -199,3 +199,29 @@ equal 368px columns on a 48px gutter.
 **The lesson for next time:** two rounds were spent fixing the thing named in the complaint (the
 contact column) when the fault was the column beside it. Measure the whole band before fixing the
 part that was pointed at.
+
+## Footer design pass (desktop only, >=1025px)
+
+Alignment was correct and it still read badly. The fault was **equal widths for unequal content**:
+a logo plus a two-line paragraph, seven links, and three contact lines all forced into 368px,
+which left a ragged bottom and dead space under two of the three columns.
+
+| | before | after |
+|---|---|---|
+| column widths | 368 / 368 / 368 | **474 / 335 / 279** |
+| column heights | 166 / 301 / 149 | **166 / 198 / 162** |
+| menu | one 7-item stack | two columns, **column-major** |
+
+- Tracks are proportional to content. **The row is a CSS grid, not flex** — `flex` on the children
+  computes and does nothing; the tracks live on the parent as `grid-template-columns`. That cost a
+  round: the values were applied and inert.
+- The menu is `grid-auto-flow: column` with four rows, so it still reads 1-7 **down** the first
+  column and then the second. The obvious `grid-template-columns: repeat(2,1fr)` flows row-wise,
+  which scrambled a nav list into 1,3,5,7 beside 2,4,6.
+- One heading treatment (18px below), one item rhythm (11px), 1.6 line-height, the brand paragraph
+  capped at 42ch so it breaks on a comfortable measure.
+- A hairline above the legal bar so copyright, legal links and the group mark read as their own
+  register rather than a fourth column.
+
+Everything is inside `@media (min-width:1025px)`. Verified at 375: the menu is a plain stack again,
+no horizontal overflow, footer height unchanged.
