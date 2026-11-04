@@ -1329,11 +1329,11 @@ body { --zs-h1-cap: 9.4svh; }
 .zs-reviews zap-reviews .review_title { display: none; }   /* "חוות דעת": the section title already says it */
 .zs-reviews zap-reviews .review_score_text { grid-column: 1; grid-row: 1; font-size: .9rem; font-weight: 600; letter-spacing: .02em; color: var(--c-muted); }
 /* stars: grey row with the gold row clipped over it (width = score) */
-.zs-reviews zap-reviews .score_stars { grid-column: 1; grid-row: 2; position: relative; width: calc(5 * 22px); height: 20px; margin: 0; }
-.zs-reviews zap-reviews :is(.stars, .stars_over) { position: absolute !important; top: 0; inset-inline-start: 0; display: flex; gap: 2px; height: 20px; overflow: hidden; white-space: nowrap; direction: ltr; font-size: 0; }
+.zs-reviews zap-reviews .score_stars { grid-column: 1; grid-row: 2; position: relative; width: calc(5 * 20px); height: 18px; margin: 0; }
+.zs-reviews zap-reviews :is(.stars, .stars_over) { position: absolute !important; top: 0; inset-inline-start: 0; display: flex; gap: 2px; height: 18px; overflow: hidden; white-space: nowrap; direction: ltr; font-size: 0; }
 [dir="rtl"] .zs-reviews zap-reviews :is(.stars, .stars_over), .zs-reviews zap-reviews :is(.stars, .stars_over) { left: auto; right: 0; direction: rtl; }
 .zs-reviews zap-reviews :is(.stars, .stars_over) span { display: inline-block; flex: none; }
-.zs-reviews zap-reviews :is(.stars, .stars_over) img { display: block; width: 20px !important; height: 20px !important; max-width: none; margin: 0; }
+.zs-reviews zap-reviews :is(.stars, .stars_over) img { display: block; width: 18px !important; height: 18px !important; max-width: none; margin: 0; }
 .zs-reviews zap-reviews .review_date { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: .9rem; color: var(--c-muted); }
 .zs-reviews zap-reviews .review_text { grid-column: 1 / -1; margin-top: 12px; white-space: pre-line; text-align: start; font-size: clamp(1.05rem, 1rem + .3vw, 1.2rem); line-height: 1.75; font-weight: 400; color: var(--c-ink); max-width: 70ch; }
 /* footer: page chips + Dapei Zahav links, one tidy row (the widget floats the links and pads with nbsp spans) */
