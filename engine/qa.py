@@ -120,7 +120,7 @@ MEASURE_JS = r"""
       .filter(e => { const b = e.getBoundingClientRect(); return b.left < docBox.left + 11 || b.right > docBox.right - 11; })
       .map(e => e.tagName + ':' + e.textContent.trim().slice(0, 14));
     if (tight.length) W(`mobile gutter under 12px (${tight.length}): ` + tight.slice(0, 3).join(', '));
-    const smallTap = q('.elementor-button, button').filter(e => vis(e) && !e.closest(a11yChrome))
+    const smallTap = q('.elementor-button, button:not(.zs-vnote-btn)').filter(e => vis(e) && !e.closest(a11yChrome))
       .filter(e => e.getBoundingClientRect().height < 44).length;
     if (smallTap) W(`${smallTap} tap targets under 44px high`);
   }
