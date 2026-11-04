@@ -22,8 +22,8 @@ without stopping for the gate. Everything assumed, deviated or still open is lis
 
 | # | item |
 |---|---|
-| A | **Current photographs.** Everything on the site is the client's own, but the station and dispatch photos are from about 2006 and the night shots from 2012. New photos of the fleet, the station and the drivers would change the look of the home page immediately. No AI image was generated, so nothing pretends to be a vehicle or a driver that is not theirs. |
-| B | **Consent of the people in the photos.** Two photographs showing staff members are on the site (home page collage, about page). Confirm they agree to appear. |
+| A | **Current photographs.** (Sharpened 2026-11-04: the about page's `המוקד שלא נסגר` photo is a 2006 CRT monitor. It is the best frame the folder has that shows no person, and it is the weakest image left on the site. One current photo of the dispatch room would replace it outright.) Everything on the site is the client's own, but the station and dispatch photos are from about 2006 and the night shots from 2012. New photos of the fleet, the station and the drivers would change the look of the home page immediately. No AI image was generated, so nothing pretends to be a vehicle or a driver that is not theirs. |
+| B | ~~**Consent of the people in the photos.**~~ **Closed 2026-11-04.** The home page collage was removed in the polish pass, which took the last photograph of an identifiable person off the site. The about page's dispatch photo shows a monitor only. Nothing left to confirm. |
 | C | **Privacy policy fields.** Built from Zap's standard wording. `legal_name`, `privacy_database`, `privacy_purposes` and `privacy_email` need the client's confirmation, then `standards.privacy_confirmed: true`. Launch blocker until then. |
 | D | **Dapei Zahav customer id 2910210** is used for the reviews block. It was verified against the listing (name, רוטשילד 50 כפר סבא, same phone). Worth one human look before launch. |
 | E | **Lead e-mail** `taxikfarsaba@bezeqint.net` is taken from the spec for both "אימייל לאתר" and "מייל לטופס לידים". Confirm with the client that this inbox is read, and send one real test lead on launch day. |
@@ -44,3 +44,11 @@ without stopping for the gate. Everything assumed, deviated or still open is lis
   and re-measured against it on 2026-11-03: qa, seo and pool all exit 0. The "איך מזמינים נסיעה" heading
   renders dark on the white panel at 1440 and keeps the preset's dark band with white text at 390, which
   is the intended behaviour on both.
+
+
+## Added by the polish pass, 2026-11-04
+
+| # | item |
+|---|---|
+| I | **The logo was changed.** The header now carries the artwork from the brief's own `לוגו` cell, cropped above its slogan strip, instead of the crop of the business-card photograph. The reasoning and the side-by-side are in `IMAGE-SOURCES.md`. If the client has a vector or transparent-background version of this logo it should replace `assets/logo-brief.png`: it is the one asset on the site with no resolution to spare. |
+| J | **Engine bug, for a theme branch, not this client.** `wp/theme/zap-base/assets/main.css:347`, `.zs-cta__text { flex: 1 1 420px }`, makes any `cta` section scroll a 390px phone sideways. Worked around in this client's `custom_css`; the generic fix is still owed. |

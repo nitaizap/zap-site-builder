@@ -56,8 +56,8 @@ HTML), not "it is in site.json". ➖ = deliberately not built, with the reason. 
 | שליחויות אקספרס | ✅ | `/שליחויות-אקספרס/` |
 | צור קשר | ✅ | `/צור-קשר/` |
 | סלוגן: אל היעד הבא עם מוניות כפר סבא! | ✅ | the site tagline; not placed in an H1 (Zap QA) |
-| **כפתור חיוג בולט בכל עמוד** | ✅ | the phone button sits in the header on every page, desktop and phone, and the two hero buttons on the home page are "חייגו עכשיו" and "הזמנת מונית" |
-| **הזמנת מונית בכל עמוד** | ✅ | the lead form band sits above the footer on every page except the contact page, which carries the full contact form; the home hero also has its own one-row form card |
+| **כפתור חיוג בולט בכל עמוד** | ✅ | **Re-verified mechanically 2026-11-04** by loading all 13 pages at 1440 and at 390 and querying the DOM: a visible header call control on every page, and 3 to 6 visible `tel:` links on each. It is now genuinely בולט: a filled taxi-yellow pill with the number in it on desktop and tablet, the standard plain phone icon on phones (qa-rules). The home hero keeps "חייגו עכשיו" and "הזמנת מונית", and a yellow call band with the number inside the button sits after the service cards |
+| **הזמנת מונית בכל עמוד** | ✅ | **Re-verified mechanically 2026-11-04**, same run: a taxi-ordering form present on all 13 pages at both widths. The lead form band sits above the footer on every page except the contact page, which carries the full contact form; the home hero also has its own one-row form card |
 | מאמרים — blank | ✅ three written | from the spec and the company's own Dapei Zahav text only. OPEN-ITEMS 6 |
 
 ### למה אנחנו (every line)
@@ -75,17 +75,17 @@ HTML), not "it is in site.json". ➖ = deliberately not built, with the reason. 
 
 | line | state | where |
 |---|---|---|
-| לוגו — blank | ✅ | taken from the client's own business card photo, IMAGE-SOURCES.md |
-| צבעי מותג — blank | ✅ | sampled from that card and the station sign: deep green + taxi yellow |
+| לוגו — **not blank** | ✅ **corrected 2026-11-04** | the `לוגו` cell is empty in `brief.md`, but that file is a text export and drops embedded images. The `.docx` opened as a zip holds the real logo at `word/media/image1.png` (200x200), referenced from the `לוגו` cell. The site now uses it, cropped above its slogan strip per qa-rules. Decision and side-by-side: IMAGE-SOURCES.md |
+| צבעי מותג — blank | ✅ | sampled from the client's own card and station sign: deep green + taxi yellow. The brief's logo is the same green and yellow, which confirms the sampling. Since 2026-11-04 the yellow does real work rather than trim: the header call button and a full-width call band |
 | יד חופשית למעצב — blank | ✅ | read as a free hand; the direction was chosen here and recorded in NOTES.md |
-| אתרים שאהבתם: nitzav-taxi.co.il, moniot.info | ✅ noted | used as a signal of taste (a direct, phone-first taxi site), not copied |
+| אתרים שאהבתם: nitzav-taxi.co.il, moniot.info | ✅ | **Both opened and studied 2026-11-04**, desktop and scrolled. Four shared signals were taken, none of their layout: the phone number written out inside a loud button; one strong accent used as a large flat fill; an ordering action high on the page and repeated; flat and direct, no ornament. What was not taken: moniot's keyword-stuffed title and footer link farm, nitzav's WhatsApp bubble (the brief leaves וואטסאפ blank). `zs pool` unchanged at 35%. NOTES.md carries the detail |
 
 ## תמונות
 
 | line | state | where |
 |---|---|---|
 | תמונת בעלים — blank | ➖ | none exists in the material; no AI portrait was made |
-| גלריה — blank | ✅ | ten of the client's own photographs were prepared, nine are placed. IMAGE-SOURCES.md |
+| גלריה — blank | ✅ | ten of the client's own photographs were prepared, seven are placed (2026-11-04: the home collage band and its two weakest photos came out). IMAGE-SOURCES.md |
 | email body: "יש לייצר תמונות/לקחת ממאגר" | ✅ not needed | the client's own folder `F:\SiteContent\02910210` turned out to hold 227 files including real photographs of their taxis, station and dispatch room. 0 AI images, 0 Weave credits |
 
 ## כתבת תדמית
@@ -100,3 +100,20 @@ The spec names no prohibited topic. Checked across `site.json`: no price, no rat
 award, no "הטוב ביותר"/"מספר 1"/"המוביל", no em dash or en dash (the validator stops the build on either),
 no "תמונה להמחשה", no invented staff, fleet size or case numbers. Every number that appears (1955, 24, 7,
 6, the ten towns, the phone) traces to a row in NOTES.md.
+
+
+## Polish pass, 2026-11-04
+
+Re-read against the brief after the first pass was judged to have drifted. Three brief lines moved from
+"built" to "built and shown to be true":
+
+| brief line | what changed |
+|---|---|
+| לוגו | the brief was not blank after all. Its `.docx` hides a 200x200 logo that the text export drops. The site now carries that artwork, cropped above its slogan strip |
+| כפתור חיוג בולט בכל עמוד | "בולט" was taken seriously: the header call control is a filled taxi-yellow pill with the number in it, and a yellow call band repeats the number mid-page. Presence on all 13 pages re-verified by querying the DOM, not by reading site.json |
+| אתרים שאהבתם | both sites were actually opened and what they share was written down and answered, instead of being noted and left |
+
+Nothing on the site states a fact that is not in NOTES.md. The new call band's copy
+("המוקד עונה בכל שעה, גם בשישי, בשבת ובמוצאי שבת") and the added facts paragraph are the brief's own
+שעות פעילות and למה אנחנו lines reworded. No price, rating, review count, award, superlative, em dash or
+en dash was introduced; `zs build`'s validator and `zs qa` both pass at 0.

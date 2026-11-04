@@ -76,9 +76,10 @@
       "body": "Heebo"
     },
     "radius": 16,
-    "motion": "subtle"
+    "motion": "subtle",
+    "custom_css": "/* The brief asks for a prominent call button on every page. On desktop the header phone is a taxi-yellow\n   pill inside the green outline the standard already gives it (the outline is what carries the 3:1\n   control contrast against the white header, WCAG 1.4.11). At 1024px and below the theme turns the\n   control into the standard plain phone icon (qa-rules), so the fill stops there. */\n@media (min-width: 1025px) {\n  html body .zs-header__cta .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-primary); font-weight: 700; }\n  html body .zs-header__cta .elementor-button:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); }\n}\n\n/* Phones: the engine gives .zs-cta__text flex-basis 420px (main.css), which is wider than a 390px\n   screen, so the accent call band pushed the page sideways. Let it take the full row here. */\n@media (max-width: 600px) {\n  html body .elementor .e-con.zs-cta__text { flex-basis: 100%; min-width: 0; }\n  html body .elementor .zs-cta .e-con.zs-btns { width: 100%; flex-wrap: wrap; }\n}\n"
   },
-  "logo": "assets/logo.png",
+  "logo": "assets/logo-brief.png",
   "favicon": "assets/favicon.png",
   "form": {
     "title": "להזמנת מונית או הסעה",
@@ -385,6 +386,21 @@
           ]
         },
         {
+          "type": "cta",
+          "bg": "accent",
+          "eyebrow": "מוקד 24 שעות",
+          "title": "צריכים מונית עכשיו?",
+          "text": "המוקד עונה בכל שעה, גם בשישי, בשבת ובמוצאי שבת. חייגו ונשלח אליכם את המונית הפנויה הקרובה.",
+          "cta": {
+            "label": "חייגו 072-3257979",
+            "href": "tel"
+          },
+          "cta2": {
+            "label": "השאירו טלפון",
+            "href": "#leave-details"
+          }
+        },
+        {
           "type": "overlay",
           "image": "taxi-street",
           "eyebrow": "כפר סבא והשרון",
@@ -443,7 +459,7 @@
         {
           "type": "facts",
           "title": "זמינות ואזורי שירות",
-          "text": "<p>המוקד שלנו עובד סביב השעון, גם בשישי, בשבת ובמוצאי שבת. אנחנו אוספים נוסעים בכפר סבא ובכל יישובי השרון ומסיעים לכל חלקי הארץ.</p>",
+          "text": "<p>המוקד שלנו עובד סביב השעון, גם בשישי, בשבת ובמוצאי שבת. אנחנו אוספים נוסעים בכפר סבא ובכל יישובי השרון ומסיעים לכל חלקי הארץ.</p><p>אפשר להזמין בטלפון, דרך האתר או באמצעות האפליקציה, ואפשר לסגור מראש הסדר נסיעות קבוע. חברות וועדי עובדים יכולים לפתוח אצלנו הסדר אשראי, והמוקד נותן שירות גם באנגלית וגם ברוסית.</p>",
           "card_title": "בקצרה",
           "items": [
             {
@@ -467,19 +483,6 @@
               "value": "עברית, אנגלית, רוסית"
             }
           ],
-          "cta": {
-            "label": "להזמנת נסיעה",
-            "href": "#leave-details"
-          }
-        },
-        {
-          "type": "collage",
-          "eyebrow": "התחנה והמוקד",
-          "title": "איפה זה קורה",
-          "text": "התחנה שלנו נמצאת ברחוב רוטשילד 50 בכפר סבא, ליד בית החולים מאיר, והמוקד שמעליה מאויש סביב השעון. משם יוצאות כל ההזמנות, בבוקר, בערב ובאמצע הלילה.",
-          "image": "taxi-night",
-          "image2": "dispatch-desk",
-          "ghost": "מוקד",
           "cta": {
             "label": "להזמנת נסיעה",
             "href": "#leave-details"

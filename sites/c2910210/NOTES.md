@@ -99,3 +99,77 @@ Re-measured on current `main` (`b954e40`) before the push: `zs pool` highest 35%
 errors, `zs seo` 0 FAIL. Live QA (`zs qa --site`): 0 errors, 0 warnings. Live pages checked by fetching them: all 13
 pages answer 200 with `<title>` = `<name> | <page>` and the real H1; no `Basic Site` / `כותרת ראשית` title anywhere;
 the base's placeholder page was moved to draft by the push.
+
+
+## Polish pass, 2026-11-04 (branch `pub-c2910210`, `main` merged in at 017122d)
+
+Brief in hand again, both reference sites opened, every page looked at at 1440 and 390. The brief's own
+`.docx` was opened as a zip this time: `word/media/` holds exactly one image, the logo in the `לוגו` cell.
+Nothing else was hidden by the text export.
+
+### What the two "אתרים שאהבתם" actually show
+
+`nitzav-taxi.co.il` and `moniot.info` are not sites to copy, and they were not copied, but they agree on
+four things, and the build now answers all four:
+
+1. **The phone number is written out and loud.** nitzav puts it in the top bar at display size; moniot puts
+   the digits inside the button. Here the header call control is now a filled taxi-yellow pill with the
+   number in it, on every page, desktop and tablet (the phone header keeps the standard plain icon).
+2. **A single strong accent used as a large flat fill**, not as trim. nitzav fills whole service tiles with
+   its lime; moniot's page is yellow. Here the client's own taxi yellow now carries a full-width call band.
+3. **An ordering action high on the page and repeated.** nitzav puts the booking form inside the hero;
+   moniot puts a phone band directly under the header. Here the hero form stays, and the new accent band
+   repeats the action right after the nine service cards, where a visitor has just found their service.
+4. **Flat and direct, with no ornament.** That is what the ghost watermark and the overlapping collage were
+   breaking, so both are gone.
+
+What was deliberately *not* taken: moniot's keyword-stuffed title and footer link farm, nitzav's sticky
+WhatsApp bubble (the brief leaves וואטסאפ blank), and both sites' layouts. `bin/zs pool` is unchanged at a
+35% high-water mark, so nothing drifted toward another client either.
+
+### Changes
+
+| # | change | why |
+|---|---|---|
+| 1 | `logo` to `assets/logo-brief.png`: the artwork embedded in the brief's `לוגו` cell, cropped above its slogan strip | the better-sourced file, flat instead of a photographed scan, and the only one that spells the business name. Full reasoning and the side-by-side in `IMAGE-SOURCES.md` |
+| 2 | header call button: filled taxi yellow inside its existing green outline, desktop only (`design.custom_css`) | the brief asks for a "כפתור חיוג בולט ... בכל עמוד" and it was a quiet white outline. The outline stays because it is what carries the 3:1 control contrast against the white header (WCAG 1.4.11); yellow on white is 1.68 and `zs qa` catches it |
+| 3 | new `cta` band with `bg: accent` after the services cards, phone number inside the primary button | the client's taxi yellow had no real presence on the page, and the only call to action above the footer sat in the hero |
+| 4 | home `collage` band removed | the worst band on the site: a giant pale "מוקד" ghost word that read as a rendering accident, over two overlapping photos at mismatched scales. Its content (the station at רוטשילד 50, the round-the-clock dispatch) is already carried by the `split:frame` band just above it, by the facts card, and by the about and contact pages, so nothing was lost |
+| 5 | `facts` band: second paragraph added, from the brief's own `למה אנחנו` lines | the column held three short lines against a 430px card, with roughly 700px of bare ground beside it. Exactly `hero-space.md` symptom 2, in a band that is not the hero |
+| 6 | `cta2` label shortened to "השאירו טלפון" | reads better, and the long label was part of what pushed the band past 390px |
+| 7 | `design.custom_css`: `.zs-cta__text` takes the full row under 600px | works around the engine bug below; without it the home page scrolled sideways at 390 (434px against 390px) |
+
+### An engine/theme bug found here and NOT fixed (out of scope on a client branch)
+
+`wp/theme/zap-base/assets/main.css:347` sets `.elementor .e-con.zs-cta__text { flex: 1 1 420px; }`. A
+420px flex-basis cannot fit a 390px viewport and the item does not shrink below it, so **any** client with
+a `cta` section overflows horizontally on a phone: measured here at `document.documentElement.scrollWidth`
+= 434 against a 390 viewport, which `zs qa` reports as "page scrolls sideways". Worked around in this
+client's `custom_css` only. The generic fix belongs in the theme (a `min-width: 0` on the item, or a
+smaller basis under the phone breakpoint) and should be made on its own branch, tested on
+`examples/sample-plumber`.
+
+### Left alone on purpose
+
+- **The hero.** Confirmed fine; `finish.css:102` was not touched and this client needs no override.
+- **The about page's dispatch photo** (`dispatch-room`, a 2006 CRT showing a street map). It is dated, but
+  it is the client's own, it shows no person, and there is no better frame in the 227-file folder:
+  `dispatch-night` and `dispatch-phone` are blurrier and both show identifiable staff. The real fix is new
+  photographs, already OPEN-ITEMS A.
+- **Palette, kit, archetype, fonts, page tree, copy, and all 13 pages' structure.** This was a polish pass.
+- **The two phone numbers** (OPEN-ITEMS 4) and the privacy confirmation (OPEN-ITEMS C) still need a human.
+
+### Gate numbers
+
+| gate | before | after |
+|---|---|---|
+| `bin/zs qa c2910210` | 0 errors, 0 warnings | **0 errors, 0 warnings** (38 page x viewport checks, 31 internal links all 200) |
+| `bin/zs seo c2910210` | 0 FAIL | **0 FAIL** (39 rows: 32 pass, 0 fail, 5 manual) |
+| `bin/zs pool c2910210` | 35% white-villa (highest) | **35% white-villa**, then 34% c80386843, 34% kisos-beach-club, 33% patoccina |
+
+Side effect worth recording: with `dispatch-desk` off the home page, **no identifiable person appears
+anywhere on the site any more**, so OPEN-ITEMS B (consent of the people in the photos) is closed.
+
+Mechanically verified on all 13 pages at 1440 and at 390, by loading each page and querying the DOM: a
+visible header call control, 3 to 6 visible `tel:` links, and a taxi-ordering form on every one. The
+brief's "כפתור חיוג בולט והזמנת מונית בכל עמוד" is true, not assumed.
