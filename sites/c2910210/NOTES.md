@@ -139,15 +139,30 @@ WhatsApp bubble (the brief leaves וואטסאפ blank), and both sites' layouts
 | 6 | `cta2` label shortened to "השאירו טלפון" | reads better, and the long label was part of what pushed the band past 390px |
 | 7 | `design.custom_css`: `.zs-cta__text` takes the full row under 600px | works around the engine bug below; without it the home page scrolled sideways at 390 (434px against 390px) |
 
-### An engine/theme bug found here and NOT fixed (out of scope on a client branch)
+### RETRACTED: the "engine/theme bug" reported in this pass was not real
 
-`wp/theme/zap-base/assets/main.css:347` sets `.elementor .e-con.zs-cta__text { flex: 1 1 420px; }`. A
-420px flex-basis cannot fit a 390px viewport and the item does not shrink below it, so **any** client with
-a `cta` section overflows horizontally on a phone: measured here at `document.documentElement.scrollWidth`
-= 434 against a 390 viewport, which `zs qa` reports as "page scrolls sideways". Worked around in this
-client's `custom_css` only. The generic fix belongs in the theme (a `min-width: 0` on the item, or a
-smaller basis under the phone breakpoint) and should be made on its own branch, tested on
-`examples/sample-plumber`.
+**This section originally reported a theme bug and it was wrong. Corrected 2026-11-04 after PR #88.**
+
+I reported that `wp/theme/zap-base/assets/main.css:347`, `.zs-cta__text { flex: 1 1 420px }`, made any
+`cta` section scroll a phone sideways, having measured `document.documentElement.scrollWidth` = 434
+against a 390 viewport, and I worked around it in this client's `custom_css`.
+
+Re-measured on the merged theme with the workaround deleted, and with **real scrollbars**
+(`ignore_default_args=["--hide-scrollbars"]`, which Playwright otherwise hides):
+
+| viewport | scrollWidth | clientWidth | sideways? | overflowing elements | `.zs-cta__text` |
+|---|---|---|---|---|---|
+| 390x800 | 375 | 375 | no | **0** | `flex-direction: column`, `flex-basis: auto`, 335px wide |
+| 360x640 | 345 | 345 | no | **0** | same, 305px wide |
+
+The container has had `flex-direction: column` since late October, so that basis applies to the cross axis
+and cannot push width at all. The 434px I measured was a transient state of my own work-in-progress CSS
+during the same pass (I was mid-edit on the hero button sizes and broke and fixed the row within it). I
+measured a symptom I had just created and attributed it to the theme.
+
+**The workaround has been deleted.** It also widened `.zs-btns`, which was a side effect nothing asked for.
+Nothing in the theme needed fixing. The lesson for next time is the dull one: measure a suspected engine
+bug from a clean build, not from the middle of your own edit.
 
 ### Left alone on purpose
 
@@ -223,5 +238,30 @@ term, which is 30% of the score: `palette .30x0.785 + chrome .25x0.333 + vocab .
 burnt orange `#b84606` with slate blue, their kit is `frame`, their hero is `curve` on dark). Putting the
 call band back to taxi yellow restored the sampled brand colour to `#0C5137` and the score to 35%.
 
-Note for whoever meets this next: `bin/zs pool` reads the stored `sites/<slug>/fingerprint.json`, which is
-written by `zs qa`. After a change that alters colours, run `zs qa` before trusting `zs pool`.
+**Both halves of that trap are fixed in the engine as of PR #88 (`main` at `6a9a262`), so do not follow
+the workaround I originally wrote here.** The sampler now returns the site's real `--c-primary` instead of
+reading whichever button happens to come first, and `bin/zs pool` re-measures the build rather than reading
+the stored `fingerprint.json` (it prints "measured: the local build" and warns when the stored file is
+stale). The "run `zs qa` before `zs pool`" dance this note used to prescribe is no longer needed.
+
+
+## Round 3, 2026-11-04: merged `main` at `6a9a262` (PR #88)
+
+Merged into `pub-c2910210` at `cc391eb`, rebuilt, re-measured, re-pushed.
+
+- **`design.custom_css` is no longer passed through `wp_strip_all_tags`**, which used to silently delete
+  any rule containing a `<` and everything up to the next `>`. Checked this site's `custom_css`: it
+  contains no `<` at all, so nothing of ours had been truncated. (It does contain `>` child combinators,
+  which were harmless on their own.)
+- **The `.zs-cta__text` workaround was deleted** after re-measuring; see the retraction above.
+- **The first screen survives the rebuild unchanged**, which was the point of re-checking:
+
+| | 1440x900 | 1280x800 | 390x800 |
+|---|---|---|---|
+| yellow field `rgb(242,194,0)` | y=149, 801px tall | y=149, 776px | y=67, 576px |
+| phone as the primary button | y=346, 25.6px | 25.6px | 18.2px |
+| ordering form | y=643, in the fold | y=626, in the fold | hero button jumps to it |
+
+- **Gates on the merged theme:** `zs qa` 0 errors / 0 warnings (31 links, 0 non-200, 0 timeouts),
+  `zs seo` 0 FAIL (32 pass, 5 manual), `zs pool` exit 0, highest **35% `c80386843`**. Pool is **35%
+  before the merge and 35% after**, so neither the new sampler nor the theme changes moved this site.
