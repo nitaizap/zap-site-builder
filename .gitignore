@@ -7,3 +7,9 @@ sites/sample/
 .DS_Store
 Thumbs.db
 sites/mhtest/
+
+# A spent `zs connect` device code, written by --handoff and consumed within ~14 minutes.
+# Committing it is pointless and it collides: two site branches hit an add/add conflict on it
+# during the 04/11 design round, the merge aborted, and both sites were then rebuilt and pushed
+# WITHOUT the theme fix that merge was carrying. Nothing reported an error.
+sites/*/inbox/connect-request.json
