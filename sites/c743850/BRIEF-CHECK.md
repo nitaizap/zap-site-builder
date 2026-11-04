@@ -64,8 +64,8 @@ A ✅ means it was seen on the rendered page (screenshot or page HTML), never "i
 
 | line | status | note |
 |---|---|---|
-| לוגו — empty in the form | ✅ | taken from the client's own artwork on F: (OPEN-ITEMS 8) |
-| צבעי מותג — empty | ✅ | sampled from the logo: `#BD3C42`, carried as the accent (NOTES → palette) |
+| לוגו | ✅ | **the form is not empty.** `brief.md` is a text export and drops embedded images; the .docx carries one (`word/media/aa1a0db8e4c2367b079c9d7adf3e028ac19e19fb.png`), and it sits in the לוגו row: the client's official lockup, emblem + "Hercules-Gurkiewicz" + "הרקולס-גורקביץ" + a small tagline. Since 04/11/2026 the header and footer logo is cut from it (the tagline cropped off, per qa-rules) over the emblem from the client's own logo.tif. Checked on the rendered header at 1440 and 390 |
+| צבעי מותג — empty | ✅ | sampled from the logo: `#BD3C42`, carried as the accent. Confirmed 04/11/2026 against the lockup embedded in the brief (its Latin wordmark is that red) and against the old site's own CSS, which sets `#bd3c42` |
 | יד חופשית למעצב — empty | ✅ | direction chosen here and written up in NOTES.md |
 | אתרים שאהבתם — empty | ➖ | nothing to follow |
 
@@ -81,7 +81,7 @@ A ✅ means it was seen on the rendered page (screenshot or page HTML), never "i
 
 | line | status | note |
 |---|---|---|
-| "יש לוודא ששואב את כל תמונות המוצרים מהאתר הקיים" | ✅ | all 108 product photographs on hercules.co.il were pulled, each with its product name, and placed on its category page |
+| "יש לוודא ששואב את כל תמונות המוצרים מהאתר הקיים" | ✅ | **verified independently on 04/11/2026**, not taken on trust: all 11 Hebrew gallery pages of hercules.co.il were fetched again and every `<img>` listed. The site carries **108** product photographs (ids 042-148 plus 726-730); `sites/c743850/assets/` holds **108**, and each one is byte for byte identical to the file the live site serves. Missing: 0. Extra: 0. The live site serves only one resolution per photograph (the lightbox links the same file), so nothing larger exists to pull. 16 of the 108 are small at source (250x188 to 338x450, mostly the משאיות set at 300x225); they are used on product cards, never as a page's lead photo |
 
 ## Gates
 

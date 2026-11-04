@@ -28,11 +28,18 @@ below is a decision made on the best safe default, or something that needs a per
    full list (חנויות, חניונים, צמתים, מחסנים) is in the page's own text and meta description.
 7. **Business name shown as "הרקולס גורקביץ".** The full legal name is 45 characters, which breaks the
    `<client> | <page>` SEO title length rule on every page. The legal name is in the schema and the footer.
-8. **Header logo is the Hercules emblem, not the full wordmark.** The only wordmark file (the existing
-   site's header image) is 573x65, which at the required 96px header height would be 846px wide, far over
-   the 160px phone limit, and it carries a small tagline. The emblem (the script name over the vintage car)
-   is the client's own artwork from `F:\...\חומר-גרפי\logo.tif`, trimmed, never redrawn. **If the client
-   has a vector or high-resolution logo, send it and it replaces this in one place (Site Identity).**
+8. **Header logo: the brief did supply one, and it is now used.** The earlier note here said the form left
+   "לוגו" empty and that only the old site's 573x65 wordmark existed. That was wrong: `brief/brief.md` is a
+   text export and drops embedded images, and the `.docx` carries one
+   (`word/media/aa1a0db8e4c2367b079c9d7adf3e028ac19e19fb.png`) sitting in the "לוגו" row: the client's
+   official lockup, emblem + "Hercules-Gurkiewicz" + "הרקולס-גורקביץ" + a small tagline in both languages.
+   Since 04/11/2026 the site's logo is cut from the client's own artwork: the emblem from `logo.tif` above
+   the Hebrew wordmark from that lockup, with the tagline lines cropped away (qa-rules: a logo with a small
+   tagline gets a version without it, cropped, never redrawn). It renders 216x96 on desktop and 71px tall on
+   a 390px phone, and the header now carries the company's name in Hebrew, which it did not before.
+   **If the client has a vector or high-resolution logo, send it: the Hebrew wordmark here comes from a
+   573x65 raster and is only just sharp enough at header size.**
+
 9. **Product names follow the brief, not the old site's ALT text.** The existing site's image ALTs carry
    typos ("בנוני", "אונברסלי", "וולבן", "לבטחון", "אלומניום"). Each photograph was matched to its product
    by catalogue number and the brief's spelling was used.
@@ -54,3 +61,36 @@ below is a decision made on the best safe default, or something that needs a per
 - No `zs push`, no `zs package`, no publishing: there is no staging host for this client yet.
 - The Dapei Zahav reviews block, the accessibility toolbar and Elementor's font icons only render on a
   pushed site, so they have not been seen live.
+
+## Added in the quality pass, 04/11/2026
+
+15. **No photograph of a lamp exists.** "פנסים לכל סוגי הרכב" is a new page in the brief; neither
+    hercules.co.il nor the client's archive on F: has a single picture of a lamp, and the brief forbids a
+    stock or AI image for a product. The page itself is text and features with no photograph, and its card in
+    the home grid uses `mirror-on-car`, the client's own photograph of a car with its side mirror, as context
+    rather than as a product shot. It is 227x180 after the frame was cropped off, the softest image on the
+    site. **Send one photograph of a lamp and both slots improve.**
+
+16. **Two of the client's archive photographs had a frame baked in.** `mirror-on-car.jpg` and
+    `blindspot-in-use.jpg` came off the old site as web graphics with a black rounded border and a red striped
+    corner painted into the pixels. Both were cropped on 04/11/2026 (see IMAGE-SOURCES.md). Nothing else in
+    the file changed.
+
+17. **The client's own photography has its limits, and they are visible.** Several convex-mirror photographs
+    show the photographer reflected in the mirror (p-kmurot-089 to 095), the truck set is 300x225 at source,
+    and three categories are shot on a red cloth while the rest are on blue or white. Only the client can
+    replace them. The pass moved the weakest frames out of the lead slots; it did not retouch anything.
+
+18. **Engine and theme findings, written up and not fixed** (shared code, another client's agent is in the
+    same repo):
+    - `wp/theme/zap-base/assets/finish.css`: the inner-page `split` photo is boxed `aspect-ratio: 4 / 4.4`
+      whatever the source is, the same shape as the home hero's 4 / 4.6 in `hero-space.md`. On this client it
+      cropped 600x450 and 800x532 archive photographs to a corner and upscaled them on all 12 category pages.
+      Worked around in this client's `design.custom_css` (4 / 3.1 from 1025px up, the arch shape excluded).
+    - `wp/theme/zap-base/assets/editorial.css` (`.zs-film__img`): the filmstrip divides the page width by the
+      number of photos, so six photos give 188x306 portrait frames that cut landscape product photography in
+      half. Worked around here by using four photos and a shorter frame.
+    - `.zs-cards--overlay` adds a `01 /` counter to every card. `design.md` lists fake sequence numbers as a
+      tell of a generated site; a category grid is not a sequence. Left alone (theme-wide).
+    - The carousel counter renders "2 / 8" as "8 / 2" in an RTL page: a bidi issue in the counter markup,
+      visible on every RTL site that uses a carousel. Left alone (theme-wide).

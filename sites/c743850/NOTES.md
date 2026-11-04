@@ -110,3 +110,56 @@ Plus the generated privacy and accessibility pages, and 3 posts in 3 categories.
 - **9 the client's images** — 117 files, all the client's own (see `IMAGE-SOURCES.md`), 0 AI.
 - **+1 phone, e-mail, address** — match the brief exactly.
 - **+6 1280 and mobile** — looked at both; the hero, the category pages and the footer were checked by eye.
+
+## Quality pass, 04/11/2026
+
+The first pass passed every gate and still did not read as finished. What was wrong was not in the copy or
+the structure; it was in which photograph went where, and in two shared crops that cut the client's
+photography to pieces. Nothing was rebuilt.
+
+**The brief was re-read from the `.docx`, not from the text export.** `brief/brief.md` drops embedded
+images, and the `.docx` has one: the client's official logo lockup, in the "לוגו" row of section 6
+(`word/media/aa1a0db8e4c2367b079c9d7adf3e028ac19e19fb.png`, 573x65, emblem + "Hercules-Gurkiewicz" +
+"הרקולס-גורקביץ" + a small tagline in both languages). The site's header had been showing the bare vintage
+car emblem with no Hebrew name at all. The logo is now cut from the client's own artwork: the emblem from
+`logo.tif` over the Hebrew wordmark from that lockup, tagline cropped away. The lockup's red also confirms
+the accent `#BD3C42` that was sampled in the first pass, and the old site's own CSS sets the same value.
+"אתרים שאהבתם" is empty in the brief, so there was nothing to open.
+
+**Product images, checked rather than assumed.** All 11 Hebrew gallery pages of hercules.co.il were fetched
+again and every image listed: 108 product photographs, and `assets/` holds the same 108, byte for byte
+identical. Missing 0, extra 0. Each of the 94 products in the brief's own lists has its photograph on its
+category page; the other 14 files are alternate shots used in the strip, the carousel and the lead photos.
+The site serves one resolution per photograph (its lightbox links the same file), so nothing sharper exists
+to pull. The English pages carry a second upload of the same photographs under other ids, plus about a dozen
+alternate shots and two traffic-mirror sizes the brief does not list; one of them, image 189, is the
+`traffic-mirror-street` photograph already in use, whose source row was vague and is now exact.
+
+**What changed, and why**
+
+| change | reason |
+|---|---|
+| header and footer logo | the brief's own lockup, found in the `.docx`; the header had no Hebrew name |
+| home hero photo: a street traffic mirror → the client's own trade-fair stand | the hero now shows "Hercules Gurkiewicz Ltd." over a wall of mirrors, which is the brief's headline ("יבואני ויצרני מראות לכל סוגי הרכבים"), instead of one niche category |
+| 11 photographs swapped across the home and the category pages | every page had its lead photo repeated in the grid below it, and the home repeated the hero photo and the FAQ photo as catalogue cards. Fixed everywhere a second photograph of that category exists; פרטיים, משאיות, אופנועים and אספנות have none, every photograph there is a product card |
+| the private-cars card was a scan of a Mercedes parts label | English model text filled the card. Now a product photograph |
+| the security card was a crop of a man's legs on a pavement | now the scanning mirror itself |
+| `mirror-on-car`, `blindspot-in-use` cropped | both came off the old site with a black frame and a striped corner baked into the pixels |
+| filmstrip: 6 photos → 4, frames landscape | six photos divided the page into 188x306 portrait slits that cut landscape product shots in half. Two captions no longer matched their photographs after the swaps; both of those photographs were the ones dropped |
+| category `split` photo ratio, in this client's CSS | the theme boxes it 4:4.4 portrait, so 600x450 archive photographs were cropped to a corner and upscaled on all 12 category pages. 4:3.1 from 1025px up; the arch-shaped home split keeps its tall box |
+| the 13th catalogue card | 13 categories in a 4-column grid left one card alone on a row. It now spans the middle two columns on desktop |
+
+**Gates, before → after:** `zs qa` 0 errors / 0 warnings → 0 / 0. `zs seo` 0 FAIL → 0 FAIL.
+`zs pool` max 38% (betzel-hateena) → max 38% (betzel-hateena); mehirut-haor 36%, patoccina 36%,
+c80386843 35%, all unchanged. Nothing under `fingerprints/` was touched.
+
+**Hero, the four questions of `hero-space.md`** (measured at 1440x900 on the built site):
+height 558px (0.62vh), the text block 456px against a 456px photo (text/photo 1.00, against 0.47 when the
+hero was rejected on 03/11), H1 77px, lead 25px, both buttons and the three points above the fold at 1440
+and at 390. The photo is the message here: it is the client's own stand at an international fair, which is
+what "יצרן ויבואן" and "הפצה בינלאומית" mean on this site.
+
+**Left alone on purpose:** the copy, the sitemap, the keyword map, the palette, the kit, the archetype and
+the section order (they carry the 38% pool number); the `01 /` counters on overlay cards and the RTL carousel
+counter (theme-wide, written up in OPEN-ITEMS 18); the `zap-site` plugin and anything to do with mail.
+

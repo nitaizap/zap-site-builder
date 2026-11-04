@@ -6,17 +6,23 @@ required ("יש לוודא ששואב את כל תמונות המוצרים מה
 
 **No AI image was generated for this client. Weave credits spent: 0 of the 100 budget.**
 
-Uploaded: 2026-11-03, by Claude (session c743850).
+Uploaded: 2026-11-03, by Claude (session c743850). Reviewed again on 2026-11-04 by Claude in the
+quality pass: no image was added from any new source and none was generated. The logo was re-cut from
+the client's own artwork (including the lockup embedded in the brief's .docx), and two photographs had
+a decorative frame cropped off. Every change is dated in the rows below.
+
+All 108 product photographs on hercules.co.il were re-checked against the live site on 2026-11-04:
+108 on the site, 108 here, byte for byte identical to the originals, none missing and none extra.
 
 | file | source | licence |
 |---|---|---|
-| `assets/logo.png` | derived from F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/logo.tif (the client's own logo artwork), trimmed and recoloured, not redrawn | client's own logo |
-| `assets/logo-light.png` | same source as assets/logo.png, white version for the dark footer | client's own logo |
+| `assets/logo.png` | re-cut 2026-11-04 by Claude from two pieces of the client's own artwork set one above the other, nothing redrawn: (a) the emblem (the "Hercules" script over the vintage car) from the client's archive on Zap's content share, file חומר-גרפי/logo.tif, as before; (b) the Hebrew wordmark הרקולס-גורקביץ cropped out of the client's official logo lockup, which is embedded in the brief itself (brief/.docx -> word/media/aa1a0db8e4c2367b079c9d7adf3e028ac19e19fb.png, the image under section 6 עיצוב ומותג / לוגו that the text export of the brief silently drops). The lockup's two small tagline lines were cropped away, per qa-rules | client's own logo |
+| `assets/logo-light.png` | same source as assets/logo.png, white version for the dark footer, re-cut 2026-11-04 | client's own logo |
 | `assets/favicon.png` | same source as assets/logo.png, squared to 512px | client's own logo |
 | `assets/about-expo.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/פרופיל_094.jpg | client's own photograph |
-| `assets/blindspot-in-use.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/פרופיל_091.jpg | client's own photograph |
+| `assets/blindspot-in-use.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/פרופיל_091.jpg , cropped 2026-11-04 by Claude to remove the decorative black frame and striped corner that the old site's web graphic had baked into the file; no other change | client's own photograph |
 | `assets/iso-9001.png` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/תו-תקן.png | client's own photograph |
-| `assets/mirror-on-car.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/פרופיל_092.jpg | client's own photograph |
+| `assets/mirror-on-car.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/פרופיל_092.jpg , cropped 2026-11-04 by Claude to remove the decorative black frame and striped corner that the old site's web graphic had baked into the file; no other change | client's own photograph |
 | `assets/p-betihut-100.jpg` | https://www.hercules.co.il/ (the client's own existing site), image for "ראי לביטחון מוט טלסקופי מק"ט 6420 מתוצרת הרקולס גורקביץ" | client's own product photograph |
 | `assets/p-betihut-101.jpg` | https://www.hercules.co.il/ (the client's own existing site), image for "ראי לביטחון קוטר 30 ס"מ מק"ט 6420 מתוצרת הרקולס גורקביץ" | client's own product photograph |
 | `assets/p-betihut-102.jpg` | https://www.hercules.co.il/ (the client's own existing site), image for "ראי לביטחון מוט טלסקופי עם גלגלים מק"ט 6421 מתוצרת הרקולס גורקביץ" | client's own product photograph |
@@ -126,7 +132,7 @@ Uploaded: 2026-11-03, by Claude (session c743850).
 | `assets/p-zroot-137.jpg` | https://www.hercules.co.il/ (the client's own existing site), image for "זרוע לג׳יפ שמאל מתוצרת הרקולס גורקביץ" | client's own product photograph |
 | `assets/p-zroot-138.jpg` | https://www.hercules.co.il/ (the client's own existing site), image for "זרוע לג׳יפ ימין מתוצרת הרקולס גורקביץ" | client's own product photograph |
 | `assets/panoramic-wide.jpg` | F:\SiteContent43850 (the client's own archive on Zap's content share), file חומר-גרפי/גלריה-17.12.18/DSC_4530.JPG | client's own photograph |
-| `assets/traffic-mirror-street.jpg` | https://www.hercules.co.il/ (the client's own existing site), product gallery image | client's own photograph |
+| `assets/traffic-mirror-street.jpg` | https://www.hercules.co.il/traffic-mirrors (the client's own existing site, English gallery), image 189, alt "round mirror 75 cm with sign". Traced and confirmed byte for byte on 2026-11-04; the earlier row said only "product gallery image" | client's own product photograph |
 
 Not used, and why: `חומרים-ישנים_Mini-Site-Image_743850_minisite.jpg` from F: is a stock-looking
 photograph of a driver adjusting a mirror, supplied with the Zap mini-site. Its origin and licence

@@ -63,7 +63,7 @@
     },
     "radius": 8,
     "motion": "subtle",
-    "custom_css": "/* home hero (split): the generic rule gives the photo a portrait 4:4.6 box whatever the text needs, which made the hero 786px tall with a 307px text column floating in it. Landscape photo, a larger H1 and lead, balanced padding. */@media (min-width:1025px){html body.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img{aspect-ratio:4/3.2!important}html body.zs-hv-split .zs-hero--home .e-con.zs-hero__text{--row-gap:26px}html body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(3.6rem,1.6rem + 3.6vw,5.6rem)}html body.zs-hv-split .zs-hero--home .zs-hero__lead{font-size:clamp(1.25rem,1rem + .6vw,1.55rem)}html body .e-con.zs-hero--home{--padding-top:clamp(32px,1.2rem + 2vw,56px);--padding-bottom:clamp(36px,1.2rem + 2.4vw,64px)}}@media (max-width:1024px){html body .zs-hero--home .zs-hero__media :is(.elementor-widget-image,.elementor-widget-container){height:100%}html body .zs-hero--home .zs-hero__media img{height:100%!important;width:100%;object-fit:cover;object-position:50% 52%}}"
+    "custom_css": "/* home hero (split): the generic rule gives the photo a portrait 4:4.6 box whatever the text needs, which made the hero 786px tall with a 307px text column floating in it. Landscape photo, a larger H1 and lead, balanced padding. */@media (min-width:1025px){html body.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img{aspect-ratio:4/3.2!important}html body.zs-hv-split .zs-hero--home .e-con.zs-hero__text{--row-gap:26px}html body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(3.6rem,1.6rem + 3.6vw,5.6rem)}html body.zs-hv-split .zs-hero--home .zs-hero__lead{font-size:clamp(1.25rem,1rem + .6vw,1.55rem)}html body .e-con.zs-hero--home{--padding-top:clamp(32px,1.2rem + 2vw,56px);--padding-bottom:clamp(36px,1.2rem + 2.4vw,64px)}}@media (max-width:1024px){html body .zs-hero--home .zs-hero__media :is(.elementor-widget-image,.elementor-widget-container){height:100%}html body .zs-hero--home .zs-hero__media img{height:100%!important;width:100%;object-fit:cover;object-position:50% 52%}}/* catalogue: 13 categories in a 4-column grid left the 13th alone on a row of its own */@media (min-width:1025px){.zs-cards .zs-grid--4 > .zs-card:nth-child(13):last-child{grid-column:2/span 2}}/* filmstrip: the client's archive is landscape, and the generic strip crops it into 2:3 portrait slivers */@media (min-width:768px){html body .zs-film .elementor-widget-image.zs-film__img img{height:clamp(200px,24vh,250px)!important}html body .zs-film__img:nth-child(2n){margin-top:4vh!important}}/* inner-page split: the theme boxes the photo 4:4.4 portrait whatever the source is, so the client's 600x450 and 800x532 archive photos were cropped to a corner and upscaled. Same cause as the hero, see hero-space.md; kept in this client's CSS because the theme rule is shared. The arch photo keeps its tall box. */@media (min-width:1025px){html body .zs-split:not(.zs-shape-arch) .zs-split__img img{aspect-ratio:4/3.1!important}}"
   },
   "logo": "assets/logo.png",
   "logo_light": "assets/logo-light.png",
@@ -711,7 +711,7 @@
       "sections": [
         {
           "type": "hero",
-          "image": "traffic-mirror-street",
+          "image": "about-expo",
           "title": "הרקולס גורקביץ",
           "lead": "יבואני ויצרני מראות לכל סוגי הרכבים. ייצור ותיקון מראות לכל סוגי הרכב, משנת 1949",
           "points": [
@@ -808,7 +808,7 @@
               "title": "מראות לרכבים פרטיים",
               "text": "מראות צד ומראות חלופיות לרכבים פרטיים, לטנדרים ולג׳יפים, מדגמים חדשים ועד רכבי ענתיקה",
               "href": "page:מראות-לרכבים-פרטיים",
-              "image": "p-pratiyim-051"
+              "image": "p-pratiyim-060"
             },
             {
               "title": "מראות למשאיות",
@@ -826,7 +826,7 @@
               "title": "מראות קמורות לאיתור גניבות",
               "text": "מראות קמורות פנורמיות לאיתור גניבות בחנויות, לצמתים מסוכנים, ליציאות מחניונים ולמחסנים",
               "href": "page:מראות-קמורות-לאיתור-גניבות",
-              "image": "traffic-mirror-street"
+              "image": "p-kmurot-090"
             },
             {
               "title": "מראות לאיפור",
@@ -838,13 +838,13 @@
               "title": "מראות בטיחות",
               "text": "מראות סריקה וביטחון לבדיקת תחתית רכבים ולאיתור חפצים חשודים",
               "href": "page:מראות-בטיחות",
-              "image": "p-betihut-100"
+              "image": "p-betihut-107"
             },
             {
               "title": "מראות פנימיות",
               "text": "מראות פנימיות ופנורמיות המונעות סנוור ומאפשרות שדה ראייה רחב עד פי 2.5 מהרגיל",
               "href": "page:מראות-פנימיות",
-              "image": "panoramic-wide"
+              "image": "p-pnimiyot-128"
             },
             {
               "title": "זרועות למראות",
@@ -874,7 +874,7 @@
               "title": "מראות לרכבי אספנות",
               "text": "מראות ניקל בעיצוב קלאסי ומראות לרכבי ענתיקה, גם לדגמים שקשה למצוא להם חלפים",
               "href": "page:מראות-לרכבי-אספנות",
-              "image": "p-pratiyim-056"
+              "image": "p-pratiyim-057"
             }
           ],
           "columns": 4
@@ -883,7 +883,7 @@
           "type": "split",
           "anchor": "about",
           "image_shape": "arch",
-          "image": "about-expo",
+          "image": "traffic-mirror-street",
           "image_side": "start",
           "title": "משנת 1949, דור שישי של מומחים באופטיקה",
           "points": [
@@ -918,20 +918,12 @@
               "caption": "ראי פנורמי גדול למורה נהיגה"
             },
             {
-              "image": "p-masaiyot-062",
-              "caption": "ראי מאן למשאית"
-            },
-            {
               "image": "p-betihut-104",
-              "caption": "מראת סריקה לביטחון"
+              "caption": "מראות סריקה וביטחון"
             },
             {
-              "image": "p-ipur-098",
-              "caption": "ראי מגדיל גרמושקה"
-            },
-            {
-              "image": "p-zroot-136",
-              "caption": "זרועות ותושבות למראות"
+              "image": "p-zroot-134",
+              "caption": "זרוע מס׳ 3"
             }
           ]
         },
@@ -1126,7 +1118,7 @@
               "title": "מראות לרכבים פרטיים",
               "text": "מראות צד ומראות חלופיות לרכבים פרטיים, לטנדרים ולג׳יפים, מדגמים חדשים ועד רכבי ענתיקה",
               "href": "page:מראות-לרכבים-פרטיים",
-              "image": "p-pratiyim-051"
+              "image": "p-pratiyim-060"
             },
             {
               "title": "מראות למשאיות",
@@ -1144,7 +1136,7 @@
               "title": "מראות קמורות לאיתור גניבות",
               "text": "מראות קמורות פנורמיות לאיתור גניבות בחנויות, לצמתים מסוכנים, ליציאות מחניונים ולמחסנים",
               "href": "page:מראות-קמורות-לאיתור-גניבות",
-              "image": "traffic-mirror-street"
+              "image": "p-kmurot-090"
             },
             {
               "title": "מראות לאיפור",
@@ -1156,13 +1148,13 @@
               "title": "מראות בטיחות",
               "text": "מראות סריקה וביטחון לבדיקת תחתית רכבים ולאיתור חפצים חשודים",
               "href": "page:מראות-בטיחות",
-              "image": "p-betihut-100"
+              "image": "p-betihut-107"
             },
             {
               "title": "מראות פנימיות",
               "text": "מראות פנימיות ופנורמיות המונעות סנוור ומאפשרות שדה ראייה רחב עד פי 2.5 מהרגיל",
               "href": "page:מראות-פנימיות",
-              "image": "panoramic-wide"
+              "image": "p-pnimiyot-128"
             },
             {
               "title": "זרועות למראות",
@@ -1192,7 +1184,7 @@
               "title": "מראות לרכבי אספנות",
               "text": "מראות ניקל בעיצוב קלאסי ומראות לרכבי ענתיקה, גם לדגמים שקשה למצוא להם חלפים",
               "href": "page:מראות-לרכבי-אספנות",
-              "image": "p-pratiyim-056"
+              "image": "p-pratiyim-057"
             }
           ],
           "columns": 3
@@ -1220,7 +1212,7 @@
         {
           "type": "split",
           "title": "על מראות עזר לכיסוי שטחים מתים",
-          "image": "p-shtachim-metim-044",
+          "image": "p-shtachim-metim-050",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>השטחים המתים סביב הרכב הם אחד הגורמים המרכזיים לתאונות בזמן נהיגה, חניה ונסיעה לאחור. מראות העזר של הרקולס גורקביץ מרחיבות את שדה הראייה של הנהג ומכסות את האזורים שהמראה הרגילה אינה מראה, לנהיגה בטוחה יותר ולחניה קלה יותר. המראות מיוצרות במגוון גדלים, קטן, בינוני וגדול, ומתאימות לרכבים פרטיים, מסחריים, משאיות ואוטובוסים. קיימת גם גרסה הניתנת לצביעה בהתאם לצבע הרכב.</p>"
@@ -1305,7 +1297,7 @@
         {
           "type": "split",
           "title": "על מראות לרכבים פרטיים",
-          "image": "p-pratiyim-051",
+          "image": "p-pratiyim-058",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>מראות צד ומראות חלופיות לרכבים פרטיים, טנדרים וג׳יפים, מדגמים חדשים ועד רכבי ענתיקה. בהרקולס גורקביץ תמצאו מראות מקוריות וחלופיות, מראות אוניברסליות המתאימות למגוון דגמים, מראות ניקל בעיצוב קלאסי וכיסויים למראות. כל המראות עשויות קריסטל אופטי איכותי ועומדות בתקנים ישראליים ובינלאומיים.</p>"
@@ -1403,7 +1395,7 @@
         {
           "type": "split",
           "title": "על מראות למשאיות",
-          "image": "p-masaiyot-062",
+          "image": "p-masaiyot-073",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>משאית זקוקה למראות גדולות, יציבות ועמידות, המעניקות לנהג שדה ראייה רחב לאורך כל הרכב. הרקולס גורקביץ מייצרת ומספקת מראות למשאיות מכל היצרנים המובילים, מאן, איסוזו, וולבו, דאף, מרצדס ועוד, כולל מראות פריזמטיות המרחיבות את זווית הראייה ומקטינות את השטחים המתים.</p>"
@@ -1505,7 +1497,7 @@
         {
           "type": "split",
           "title": "על מראות לאוטובוסים",
-          "image": "p-otobusim-074",
+          "image": "p-otobusim-730",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>מראות חיצוניות ופנימיות לאוטובוסים ולמיניבוסים, המותאמות לדרישות הבטיחות של תחבורה ציבורית. הרקולס גורקביץ מספקת מראות לחברות התחבורה הגדולות בישראל, בהן אגד ודן, ומייצרת מראות פריזמטיות, מראות בקטרים שונים ומראות פנימיות לצפייה בנוסעים.</p>"
@@ -1713,7 +1705,7 @@
         {
           "type": "split",
           "title": "על מראות לאיפור",
-          "image": "p-ipur-098",
+          "image": "p-ipur-099",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>מראות מגדילות עד פי 7 לאיפור ולגילוח, באיכות האופטית של הרקולס גורקביץ. המראות מתאימות לבית ולמספרה, מראה שולחנית ומראת גרמושקה הנפתחת לקיר, וזמינות בגימור זהב או ניקל.</p>"
@@ -2081,7 +2073,7 @@
         {
           "type": "split",
           "title": "על מראות לתינוק",
-          "image": "p-tinok-143",
+          "image": "p-tinok-140",
           "image_side": "end",
           "image_shape": "square",
           "text": "<p>מראה לתינוק מאפשרת להשגיח על התינוק במושב האחורי מבלי לסובב את הראש בזמן הנסיעה. הרקולס גורקביץ מייצרת מראות לתינוק בגדלים קטן, בינוני וגדול, וכן מראה פנורמית משולבת עם מראה לתינוק, לנסיעה בטוחה ושקטה יותר.</p>"
