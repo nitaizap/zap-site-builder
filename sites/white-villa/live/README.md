@@ -225,3 +225,19 @@ which left a ragged bottom and dead space under two of the three columns.
 
 Everything is inside `@media (min-width:1025px)`. Verified at 375: the menu is a plain stack again,
 no horizontal overflow, footer height unchanged.
+
+### Correction: even thirds, not content-proportional
+
+Sizing the tracks to their content (474/335/279) fixed the ragged bottom but read as **lopsided** —
+unequal widths look like a mistake even when the reasoning behind them is sound. Reverted to equal
+thirds and kept everything else:
+
+| | ragged original | content-proportional | **now** |
+|---|---|---|---|
+| widths | 368 / 368 / 368 | 474 / 335 / 279 | **357 / 357 / 357** |
+| heights | 166 / 301 / 149 | 166 / 198 / 162 | **166 / 219 / 168** |
+
+The thing that actually fixed the ragged bottom was the **two-column menu**, not the unequal
+tracks: it halves the tallest column. With equal widths and that menu, the spread is 53px instead
+of 152px, and the band reads as a deliberate grid. Gutters widened to 64px, heading gap 20px, item
+rhythm 13px.
