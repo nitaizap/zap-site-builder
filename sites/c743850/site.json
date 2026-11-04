@@ -63,7 +63,7 @@
     },
     "radius": 8,
     "motion": "subtle",
-    "custom_css": "/* home hero (split): the generic rule gives the photo a portrait 4:4.6 box whatever the text needs, which made the hero 786px tall with a 307px text column floating in it. Landscape photo, a larger H1 and lead, balanced padding. */@media (min-width:901px){html body.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img{aspect-ratio:4/3.2!important}html body.zs-hv-split .zs-hero--home .e-con.zs-hero__text{--row-gap:26px}html body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(3.6rem,1.6rem + 3.6vw,5.6rem)}html body.zs-hv-split .zs-hero--home .zs-hero__lead{font-size:clamp(1.25rem,1rem + .6vw,1.55rem)}html body .e-con.zs-hero--home{--padding-top:clamp(32px,1.2rem + 2vw,56px);--padding-bottom:clamp(36px,1.2rem + 2.4vw,64px)}}@media (max-width:900px){html body .zs-hero--home .zs-hero__media :is(.elementor-widget-image,.elementor-widget-container){height:100%}html body .zs-hero--home .zs-hero__media img{height:100%!important;width:100%;object-fit:cover;object-position:50% 52%}}/* catalogue: 13 categories in a 4-column grid left the 13th alone on a row of its own */@media (min-width:901px){.zs-cards .zs-grid--4 > .zs-card:nth-child(13):last-child{grid-column:2/span 2}}/* inner-page split: the theme boxes the photo 4:4.4 portrait whatever the source is, so the client's 600x450 and 800x532 archive photos were cropped to a corner and upscaled. Same cause as the hero, see hero-space.md; kept in this client's CSS because the theme rule is shared. The arch photo keeps its tall box. */@media (min-width:901px){html body .zs-split:not(.zs-shape-arch) .zs-split__img img{aspect-ratio:4/3.1!important}}/* hero: the theme's row puts the photo and the text edge to edge (column gap 0 at 1440, 1280 and 1024, measured on the live page), so the lead ran straight into the photograph. */@media (min-width:768px){html body .e-con.zs-hero--home > .e-con-inner{--column-gap:clamp(36px,3.4vw,72px);column-gap:clamp(36px,3.4vw,72px)}}/* footer catalogue: the 13 categories are grouped. The theme renders this menu at depth 1, so the four group labels are items in the same flat list, told apart by having no link. *//* the four group labels are the items with no link; everything else in the list is a category */.zs-footer__links a:not([href]),.zs-footer__links a[href='']{font-weight:700;color:var(--c-ink);cursor:default;pointer-events:none;text-decoration:none;letter-spacing:.01em}.zs-footer__links li:has(> a:not([href])),.zs-footer__links li:has(> a[href='']){margin-top:14px}.zs-footer__links li:first-child{margin-top:0}/* the home's reserved video frame (brief: וידאו (פריים) לסרטון שיופק ללקוח). The theme's overlay band is 88vh tall; this one is held at 16:9, the ratio the finished clip will use, so the band is composed the same before and after the clip replaces the still. */@media (min-width:768px){html body .zs-anchor-video .e-con.zs-overlay__media{height:auto;aspect-ratio:16/9}}"
+    "custom_css": "/* home hero (split): the generic rule gives the photo a portrait 4:4.6 box whatever the text needs, which made the hero 786px tall with a 307px text column floating in it. Landscape photo, a larger H1 and lead, balanced padding. */@media (min-width:901px){html body.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img{aspect-ratio:4/3.2!important}html body.zs-hv-split .zs-hero--home .e-con.zs-hero__text{--row-gap:26px}html body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title{font-size:clamp(3.6rem,1.6rem + 3.6vw,5.6rem)}html body.zs-hv-split .zs-hero--home .zs-hero__lead{font-size:clamp(1.25rem,1rem + .6vw,1.55rem)}html body .e-con.zs-hero--home{--padding-top:clamp(32px,1.2rem + 2vw,56px);--padding-bottom:clamp(36px,1.2rem + 2.4vw,64px)}}@media (max-width:900px){html body .zs-hero--home .zs-hero__media :is(.elementor-widget-image,.elementor-widget-container){height:100%}html body .zs-hero--home .zs-hero__media img{height:100%!important;width:100%;object-fit:cover;object-position:50% 52%}}/* catalogue: 13 categories in a 4-column grid left the 13th alone on a row of its own */@media (min-width:901px){.zs-cards .zs-grid--4 > .zs-card:nth-child(13):last-child{grid-column:2/span 2}}/* inner-page split: the theme boxes the photo 4:4.4 portrait whatever the source is, so the client's 600x450 and 800x532 archive photos were cropped to a corner and upscaled. Same cause as the hero, see hero-space.md; kept in this client's CSS because the theme rule is shared. The arch photo keeps its tall box. */@media (min-width:901px){html body .zs-split:not(.zs-shape-arch) .zs-split__img img{aspect-ratio:4/3.1!important}}/* hero: the theme's row puts the photo and the text edge to edge (column gap 0 at 1440, 1280 and 1024, measured on the live page), so the lead ran straight into the photograph. */@media (min-width:768px){html body .e-con.zs-hero--home > .e-con-inner{--column-gap:clamp(36px,3.4vw,72px);column-gap:clamp(36px,3.4vw,72px)}}/* footer catalogue: the 13 categories are grouped. The theme renders this menu at depth 1, so the four group labels are items in the same flat list, told apart by having no link. *//* the four group labels are the items with no link; everything else in the list is a category */.zs-footer__links a:not([href]),.zs-footer__links a[href='']{font-weight:700;color:var(--c-ink);cursor:default;pointer-events:none;text-decoration:none;letter-spacing:.01em}.zs-footer__links li:has(> a:not([href])),.zs-footer__links li:has(> a[href='']){margin-top:14px}.zs-footer__links li:first-child{margin-top:0}/* the home's reserved video frame (brief: וידאו (פריים) לסרטון שיופק ללקוח). The theme's overlay band is 88vh tall; this one is held at 16:9, the ratio the finished clip will use, so the band is composed the same before and after the clip replaces the still. */html body .zs-anchor-video .e-con.zs-overlay__media{height:auto;aspect-ratio:16/9}/* images are never shown larger than their own pixels (UX acceptance): the client's archive photos are 227 to 480px wide. Category and product cards show the photo at its own size, centred on the card; the lamp card (a 227px context photo) does the same on its dark ground. */html body .zs-cards:not(.zs-cards--overlay) .zs-card--img .zs-card__img img,html body .zs-cards--overlay .zs-card__img img[src*='mirror-on-car']{width:auto!important;max-width:100%;height:auto!important;aspect-ratio:auto!important;margin-inline:auto;display:block;object-fit:contain}/* the reviews widget draws its 18x17 star at 20x20 with object-fit:fill */zap-reviews img,.zap-reviews img,[class*='reviews'] img[src*='star']{object-fit:contain}/* one H2 size per site: the overlay and filmstrip variants carry their own smaller clamp, which put the home's H2 at three sizes. */html body .zs-overlay .zs-sec__title .elementor-heading-title,html body .zs-film .zs-sec__title .elementor-heading-title{font-size:var(--fs-h2);line-height:inherit}/* split photos: the client's 513 to 800px archive photos sit at their own size, centred in the photo's box */html body .zs-split:not(.zs-shape-arch) .zs-split__img img{width:auto!important;max-width:100%;height:auto!important;aspect-ratio:auto!important;margin-inline:auto;display:block}/* the review stars are 18px files: draw them at 18px */html body span img[src*='/star'],html body img[src*='/star']{width:18px!important;min-width:0!important;max-width:18px!important;height:17px!important;object-fit:contain}/* article photos at their own size (the client's archive photos are 242 to 532px wide) */html body .zs-post__hero img,html body .zs-postcard__img img{width:auto!important;max-width:100%;height:auto!important;margin-inline:auto;display:block;object-fit:contain}/* the lead band is solid brand colour now (its photo was a 800px file under a 1440px band): a red button on maroon measured 1.34:1, so the submit is light on it */html body .zs-leadbar .zs-form__submit{background:#fff;color:#1b1f23;border-color:#fff}html body .zs-leadbar .zs-form__submit:hover{background:#f1e4e4}/* the one portrait archive photo (333x500) stays at its own size in the gallery */html body img[src*='p-shtachim-metim-043']{width:auto!important;max-width:100%;height:auto!important;aspect-ratio:auto!important;margin-inline:auto;display:block;object-fit:contain}"
   },
   "logo": "assets/logo.png",
   "logo_light": "assets/logo-light.png",
@@ -822,7 +822,7 @@
               "title": "מראות עזר לכיסוי שטחים מתים",
               "text": "מראות עזר שמרחיבות את שדה הראייה ומכסות את האזורים שהמראה הרגילה לא מראה",
               "href": "page:מראות-עזר-לכיסוי-שטחים-מתים",
-              "image": "p-shtachim-metim-044"
+              "image": "p-shtachim-metim-049"
             },
             {
               "title": "מראות לרכבים פרטיים",
@@ -834,7 +834,7 @@
               "title": "מראות למשאיות",
               "text": "מראות גדולות, יציבות ועמידות למשאיות מכל היצרנים המובילים, כולל מראות פריזמטיות",
               "href": "page:מראות-למשאיות",
-              "image": "p-masaiyot-062"
+              "image": "p-masaiyot-073"
             },
             {
               "title": "מראות לאוטובוסים",
@@ -926,8 +926,6 @@
         },
         {
           "type": "leadbar",
-          "variant": "photo",
-          "image": "p-kmurot-089",
           "title": "זקוקים למראה חדשה לרכב?",
           "text": "השאירו פרטים ונחזור אליכם עם הצעת מחיר"
         },
@@ -970,7 +968,7 @@
               "caption": "ראי פנורמי גדול מק\"ט 1300"
             },
             {
-              "image": "p-masaiyot-067",
+              "image": "p-otobusim-727",
               "caption": "ראי פריזמטי וולבו דאף מק\"ט 3309"
             },
             {
@@ -990,7 +988,7 @@
               "caption": "זרוע כפולה ארוכה"
             },
             {
-              "image": "p-ipur-097",
+              "image": "p-kmurot-096",
               "caption": "ראי מגדיל שולחן קוטר 18 ס\"מ"
             },
             {
@@ -1214,7 +1212,8 @@
               "image": "p-pratiyim-057"
             }
           ],
-          "columns": 3
+          "columns": 3,
+          "style": "classic"
         }
       ]
     },
@@ -1274,7 +1273,8 @@
               "title": "ראי עזר גדול מק\"ט 1320",
               "image": "p-shtachim-metim-049"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "gallery",
@@ -1379,7 +1379,8 @@
               "title": "מאפרה לרכב ולטנדרים",
               "image": "p-pratiyim-061"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -1481,7 +1482,8 @@
               "title": "ראי ראש פיורינו 14X19 מק\"ט 1308",
               "image": "p-masaiyot-073"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -1583,7 +1585,8 @@
               "title": "ראי דגם וולבו 88 מק\"ט 2141",
               "image": "p-otobusim-083"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "gallery",
@@ -1682,7 +1685,8 @@
               "title": "ראי קוטר 92 ס\"מ עם גב אלומיניום",
               "image": "p-kmurot-088"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "gallery",
@@ -1751,7 +1755,8 @@
               "title": "ראי מגדיל שולחן קוטר 18 ס\"מ מק\"ט 6409",
               "image": "p-ipur-097"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -1833,7 +1838,8 @@
               "title": "ערכת חבלן",
               "image": "p-betihut-105"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -1967,7 +1973,8 @@
               "title": "ראי פנורמי בינוני עם ראי לתינוק",
               "image": "p-pnimiyot-128"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -2057,7 +2064,8 @@
               "title": "זרוע לג׳יפ ימין",
               "image": "p-zroot-138"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -2131,7 +2139,8 @@
               "title": "ראי פנימי לשטח מת",
               "image": "p-tinok-139"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -2189,7 +2198,8 @@
               "title": "מראות לכל סוגי הקטנועים, כולל החלפת העדשה",
               "image": "p-ofanoim-148"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
@@ -2342,7 +2352,8 @@
               "title": "מראות לג׳יפ CJ וסופה",
               "image": "p-pratiyim-060"
             }
-          ]
+          ],
+          "style": "classic"
         },
         {
           "type": "faq",
