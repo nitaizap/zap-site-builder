@@ -292,7 +292,7 @@ body .e-con.zs-card__body { --padding-top: 24px; --padding-bottom: 26px; --paddi
 
 /* ---------- features ---------- */
 body .e-con.zs-feature { --row-gap: 10px; }
-.zs-feature__title .elementor-heading-title { font-size: 1.15rem; margin: 6px 0 0; }
+.zs-feature__title .elementor-heading-title { font-size: var(--fs-h3); margin: 6px 0 0; }
 .zs-feature__text { color: var(--c-muted); font-size: 1rem; }
 
 /* ---------- steps ---------- */
@@ -369,7 +369,7 @@ body .e-con.zs-logos__row > .elementor-element { width: auto; }
 .zs-postcard__img img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
 .zs-postcard__img:empty { display: none; }
 .zs-postcard__body { padding: 20px 22px 24px; }
-.zs-postcard__title { font-size: 1.15rem; margin: 0 0 8px; }
+.zs-postcard__title { font-size: var(--fs-h3); margin: 0 0 8px; }
 .zs-postcard__title a { color: var(--c-ink); text-decoration: none; }
 .zs-postcard__title a::after { content: ""; position: absolute; inset: 0; }
 .zs-postcard p { color: var(--c-muted); font-size: .98rem; margin: 0; }
@@ -1457,7 +1457,7 @@ body .e-con.zs-layers__item > * { grid-column: 2; }
 body .e-con.zs-layers__item > .zs-layers__num { grid-column: 1; grid-row: 1 / span 3; }
 body .e-con.zs-layers__item.is-hl { background: var(--c-bg); border-color: color-mix(in srgb, var(--c-accent) 45%, transparent); box-shadow: var(--shadow-sm); transform: translateX(-4px); }
 .zs-layers__num .elementor-heading-title { font-family: var(--f-head); font-weight: 800; font-size: 1.5rem; line-height: 1; color: var(--c-accent); margin: 0; }
-.zs-layers__title .elementor-heading-title { font-size: 1.15rem; margin: 0; }
+.zs-layers__title .elementor-heading-title { font-size: var(--fs-h3); margin: 0; }
 .zs-layers__spec .elementor-heading-title { display: inline-block; font-family: var(--f-body); font-size: .9rem; font-weight: 700; color: var(--c-primary); background: color-mix(in srgb, var(--c-primary) 10%, transparent); padding: 2px 10px; border-radius: 99px; margin: 4px 0 0; }
 .zs-layers__text p { margin: 0; }
 .zs-motion .zs-layers__stack.zs-reveal { opacity: 1; transform: none; }
@@ -1730,7 +1730,7 @@ body .e-con.zs-layers__item.is-hl { transform: none; }
 /* inner-page hero: the lead centred under the centred title */
 .zs-hero--page .zs-hero__lead, .zs-hero--page .zs-hero__lead :is(p, .elementor-widget-container), .zs-hero--page .zs-crumbs { text-align: center; }
 /* blog cards: modest titles, up to two lines, never cut mid-word */
-body .zs-postcard__title { font-size: 1.15rem !important; line-height: 1.35; }
+body .zs-postcard__title { font-size: var(--fs-h3) !important; line-height: 1.35; }
 body .zs-postcard__title a { white-space: normal; overflow: hidden; text-overflow: clip; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 /* "קרא עוד" is a button */
 .zs-postcard__more { margin-top: 14px; padding: 9px 18px; border: 1.5px solid var(--c-primary); border-radius: var(--r, 10px); background: transparent; color: var(--c-primary); gap: 8px; transition: background .2s, color .2s; }
