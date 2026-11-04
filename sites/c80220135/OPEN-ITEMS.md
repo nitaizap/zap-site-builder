@@ -476,3 +476,10 @@ before the merge and after it behave identically, which is consistent.
 
 **`zs pool` now errors rather than warns when it cannot measure a built site.** It ran clean here and
 reported `measured: the local build (not the stored fingerprint.json)`, which is the new behaviour.
+
+## 20 · Design-quality pass 04/11/2026 (staging refreshed)
+
+- Staging https://80220135yadmordechai.ussl.co.il pushed. Live `zs qa --site`: 0 errors, 38 warnings (reviews-widget CORS console noise from the Zap API, h3 at 19.2/19.5/17.3px). `zs launch-check`: 0 FAIL, 14 checks; LAUNCH-SHEET.md written. `zs seo`: 0 FAIL.
+- Service heroes (מכונאות, דיאגנוסטיקה) and two blog posts used 800px interior photos at 844-1440px; swapped to the 1600px facade photos.
+- **This site's clean numbers depend on PR #91 (review stars 18px, CSS-icon buttons) landing in `main`.** It is merged into this branch's tree only.
+- Not redone: pool uniqueness re-measure, a fresh brief walk-through, full 390px pass per page.
