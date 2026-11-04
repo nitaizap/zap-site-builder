@@ -22,7 +22,7 @@ Speak to the user in their language (usually Hebrew). Keep messages short; the f
 
 ## The whole of `references/` (there is nothing else; do not go looking for another skill)
 
-Everything this skill knows beyond the order of work is in these 15 files, next to this one. If you are
+Everything this skill knows beyond the order of work is in these 16 files, next to this one. If you are
 about to ask the user how to do something, or to search for a separate skill, read the file first.
 
 | file | the question it answers |
@@ -40,6 +40,7 @@ about to ask the user how to do something, or to search for a separate skill, re
 | **`images.md`** | **image rights and the `IMAGE-SOURCES.md` record; how to generate images with Figma Weave (model ids, settings, credits, the cost gate, prompt rules); Veo video; the `bin/zs image` fallback.** There is no separate "Weave" skill: this file is it |
 | `seo-checklist.md` | the team's SEO sheet row by row, and what `zs seo` checks |
 | `qa-rules.md` | everything Zap QA rejects, as rules |
+| `hero-space.md` | what "make better use of the hero" means, the four questions to answer before delivery, the evidence on six heroes, and how a measured check gets earned. Measure with `py tools/hero-space.py <url>` |
 | `novamira.md` | pushing the site live into the client's WordPress |
 | `delivery.md` | the zip route: packaging, deploy script, launch checklist |
 
@@ -219,6 +220,13 @@ git add sites/<slug> && git commit -m "<slug>: pushed to <host>" && git push
   effects (route rider, progress bar, reveals) run only on the real page. Also check the viewer's OS
   "reduce motion" setting (Windows: Animation effects) — the site parks all motion then, by design — and
   cache (open in a private window). Verify yourself on the front end before answering.
+
+**Zap does not launch client sites; the deliverable is a launch-ready site.** Before handover, on staging, run
+`bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL) and attach `sites/<slug>/LAUNCH-SHEET.md`: it
+proves the plugin-dependent parts render (a copy by a migration tool can leave the `zap-site` plugin behind: no menu,
+no form, no legal line, still HTTP 200, as on הוילה הלבנה), staging mode is in force, nothing pins the staging host, QA
+is clean on desktop and mobile, and lists what the person launching must redo (the Elementor Pro licence is tied to
+the domain). Details: `references/novamira.md`, "Handover".
 
 Needs a connection: `zs connect` (run it in the background, give the user the link + code in one line, wait), or
 the `ZS_NOVAMIRA` secret from the one-time base-site setup. Without either, say so, do everything else, offer the zip. A live (non-staging) domain needs `--live` and the

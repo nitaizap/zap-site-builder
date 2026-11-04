@@ -51,6 +51,46 @@ Application passwords live in the database, so every site cloned from the base c
 user: no per-site codes or passwords. Never paste the password into a chat, a file or the repo; a password
 that has been in a transcript is burned (revoke and issue a new one).
 
+## Handover: the launch-ready gate (`zs launch-check`) — Zap does not launch, so this runs on STAGING
+
+Someone else moves the site to `https://<client>.co.il`. What Zap delivers is a **launch-ready** site: staged correctly,
+QA and SEO clean, verified on desktop and mobile, and verified that the staging → live move **changes nothing**. The
+last clause is what this gate is for. It reads only the public html (no login), changes nothing, and runs **on the
+staging site, before handover**:
+
+```bash
+bin/zs qa <slug> --site https://<client>.ussl.co.il                       # every page at 1440 desktop and 390 mobile
+bin/zs launch-check https://<client>.ussl.co.il --slug <slug>             # exit 0 = launch-ready, 2 = a named check FAILed
+```
+
+It FAILs by name (Hebrew/English) when: no `zap-*` widget is on an Elementor-built home page, or the Theme Builder
+header/footer template renders none; a `[zap_*]` shortcode is printed as text; the header has no navigation; there is no
+enquiry `<form>` on the home or contact page; staging mode is not in force (indexable page, or a robots.txt that does not
+`Disallow: /`; the same step of `launch.php` sets the lead routing, so this is the observable proof it ran); the page
+pins something the launch's address rewrite cannot catch (another staging host, this host written scheme-less or
+percent-encoded); QA is not clean on both desktop **and** mobile (it reads `sites/<slug>/QA-REPORT-live.md`).
+It lists as MANUAL what only a person can do: re-activating anything licensed to the domain (the Elementor Pro licence
+says "מפתח הרישיון אינו תואם לדומיין הנוכחי" after a move; the Ally toolbar must be connected again) and confirming a
+test lead is saved, never mailed, on staging (a public check would mail the client if staging mode had failed).
+`--staging` / `--live` override the address rule for a host outside Zap's usual domains. Never read its exit status
+through a pipe (`| tail` hides it): redirect to a file and read `$?`.
+
+**It writes `sites/<slug>/LAUNCH-SHEET.md`** (next to `QA-REPORT.md` and `SEO-QA.md`; attach it to the handover): what
+must travel (the `zap-site` plugin above all), what must be redone on the new domain, and what to verify straight after.
+
+Why the plugin heads that list. The site reaches its domain one of two ways, and only one is safe by construction:
+`zs push --live` installs the theme **and** the plugin (`engine/remote.py` `install_code`, idempotent), so the plugin cannot
+be left behind; a **copy by a migration tool** (uPress clone, All-in-One, Duplicator, WPvivid...) carries what it is
+pointed at, and on 03/11/2026 on הוילה הלבנה (`thewhite-villa.co.il`) the `zap-base` theme travelled and the `zap-site`
+plugin did not. Elementor drops a widget whose type is not registered *without a word*: no logo, no menu, no burger, no
+form, no legal line, HTTP 200. `launch.php` lives in the plugin, so nothing switched to live either. The theme now
+raises a red admin notice on every wp-admin screen (and an admin-bar item on the site) and prints a plain fallback menu
+whenever the plugin is not running; that is a lifeline and a siren, not a repair.
+
+After the move, the person launching runs the same command on the live address (`bin/zs launch-check https://<client>.co.il`):
+every row PASS proves the launch took (indexable, no staging links, plugin running). `bin/zs launch-check --selftest`
+proves the checks offline in both directions and runs inside `zs selftest`.
+
 ## Push
 
 ```bash
