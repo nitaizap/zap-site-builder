@@ -252,3 +252,10 @@ YouTube or Vimeo link, it can instead become the hero's own loop (`videos` + `he
 
 **What is not promised:** no date, anywhere on the site or in the copy above. If the clip never arrives the
 band is a finished part of the page and nobody has to do anything.
+
+## 04/11 design-quality pass
+
+- **Staging push not done.** `bin/zs push` to `80386843dreamfromsteel.ussl.co.il` was denied by the permission classifier in this session; push, live qa, shots and launch-check still to run.
+- Weave: 44 of 100 credits now (16 + 14 spent on 1024px results because `resolution: "2K"` is not a GPT Image 2.5 parameter + 14 at 1920x1440). The first-batch 1024px images were discarded.
+- Fidelity pass: no preview image of the direction exists (automatic mode dropped `directions`); compared against the NOTES home order instead. Order and bands match.
+- Needs the client: photographs of completed work, the video file for the reserved band, privacy fields.
