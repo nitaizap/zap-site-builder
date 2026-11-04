@@ -1,6 +1,6 @@
 # Launch sheet / דף השקה: c743850
 
-Checked 2026-11-04 on `https://743850hercules.ussl.co.il` by `zs launch-check`. Gate: **READY (nothing failed)**; 2 item(s) below still need a person.
+Checked 2026-11-04 on `https://743850hercules.ussl.co.il` by `zs launch-check`. Gate: **READY (nothing failed)**; 3 item(s) below still need a person.
 Zap does not launch client sites. This is what whoever launches this one needs. / זאפ לא מבצעת השקה. זה מה שמי שמשיק צריך.
 
 ## 1. What must travel with the site / מה חייב לנסוע
@@ -21,13 +21,14 @@ Zap does not launch client sites. This is what whoever launches this one needs. 
 2. wp-admin → Dashboard shows **no red notice** "חסר התוסף Zap Site" (the theme raises it when the plugin is not running).
 3. Look at the home page on a phone (390px) and a laptop (1280px): logo, menu and burger, the form, the footer legal line.
 4. Send one real test lead: it must arrive in the client's inbox (staging never mails them) and appear in wp-admin → Leads.
+   If it does not arrive, open wp-admin → פניות מהאתר → הגדרות טפסים: the row "מי מנהל את הדואר באתר" says whether Zap's relay is sending or has stood down for an SMTP plugin installed on the site. Zap's relay only ever handles the lead form's own mail; everything else the site sends goes the site's normal way.
 5. Re-do the section 2 items; Elementor → License must not say the key does not match the domain.
 
 ## Gate results on staging / תוצאות הבדיקה לפני ההעברה
 
 | check | status | note |
 |---|---|---|
-| reachable | ✅ PASS | https://743850hercules.ussl.co.il -> HTTP 200, 149 KB / האתר נטען |
+| reachable | ✅ PASS | https://743850hercules.ussl.co.il -> HTTP 200, 151 KB / האתר נטען |
 | zap-widgets | ✅ PASS | 11 zap-* widgets on the home page: zap-call-line, zap-copyright, zap-footer-contact, zap-form, zap-group-logo, zap-legal, zap-logo, zap-menu, zap-nav, zap-reviews, zap-topbar-meta / 11 ווידג'טים של זאפ בדף הבית |
 | template-widgets | ✅ PASS | header: 3 zap widgets; footer: 8 zap widgets / תבניות הכותרת והפוטר מציגות ווידג'טים |
 | raw-shortcodes | ✅ PASS | no unrendered [zap_*] shortcode / אין שורטקוד גולמי |
@@ -39,4 +40,5 @@ Zap does not launch client sites. This is what whoever launches this one needs. 
 | migration-pins | ✅ PASS | no foreign staging host and no scheme-less / encoded copy of this host: the address rewrite has nothing to miss / אין כתובות שההשקה תפספס |
 | leads-not-mailed | 👁 MANUAL | cannot be observed from public html (a test lead would mail the client if staging mode failed). launch.php sets noindex and the lead routing in the same step, so noindex + Disallow in force above is the proof it ran; confirm once in wp-admin → Leads that a test lead was saved, never mailed / לא ניתן לבדוק מבחוץ |
 | domain-licences | 👁 MANUAL | tied to the domain, redo them on the new one: Elementor Pro licence, Ally accessibility toolbar (details in the launch sheet) / מקושרים לדומיין, יש לחדש בדומיין החדש |
+| mailers | 👁 MANUAL | no mailer plugin visible in the public html (they rarely load front-end assets, so this proves nothing). Open wp-admin -> פניות מהאתר -> הגדרות טפסים: the row "מי מנהל את הדואר באתר" says who sends, and one test lead must arrive / לא ניתן לראות מבחוץ: בדקו בהגדרות הטפסים מי מנהל את הדואר ושלחו פנייה לבדיקה |
 | desktop-mobile | ✅ PASS | desktop 24 pages, mobile 24 pages, 0 errors / דסקטופ ומובייל נבדקו, 0 שגיאות |
