@@ -331,6 +331,26 @@ def screenshots(site, paths, directions=False, mobile_only=False):
     return files
 
 
+def _count_images(node):
+    """Every image a composition asks for, at any depth: `image`, `images`, `bg`, `photo`, `logo`.
+    Counts what was composed rather than what rendered, because a thin direction is fixed in site.json."""
+    n = 0
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if k in ("image", "bg", "photo", "logo") and isinstance(v, str) and v.strip():
+                n += 1
+            elif k in ("image", "bg", "photo", "logo") and isinstance(v, dict) and v:
+                n += 1
+            elif k == "images" and isinstance(v, list):
+                n += len([x for x in v if x])
+            else:
+                n += _count_images(v)
+    elif isinstance(node, list):
+        for v in node:
+            n += _count_images(v)
+    return n
+
+
 def preview(site):
     """Gate material: the real home page under every design direction, desktop + mobile, in one PREVIEW.md.
     Lives in sites/<slug>/preview/ so it renders on GitHub once the site branch is pushed."""
@@ -362,6 +382,22 @@ def preview(site):
              "דמיון בין הכיוונים (מדוד מהדף עצמו): " + ", ".join(f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items()), ""]
     base = data.get("design", {})
     home = next((p.get("sections", []) for p in data.get("pages", []) if p.get("type") == "home"), [])
+    # The floor a direction has to clear before the user sees it (references/gallery.md). A direction
+    # under it reads as a wireframe and cannot be judged; the user is then choosing between sketches.
+    # Counted from the composition, not the render: it is the composition that has to be fixed.
+    # A BasiX site is a smaller site by design (portfolio.md), so its floor is lower, not waived.
+    basic = data.get("tier") in (None, "basic")
+    min_sections, min_images = (6, 4) if basic else (8, 6)
+    thin = []
+    for k, d in dirs.items():
+        secs = d.get("home") or home
+        imgs = _count_images(secs)
+        if len(secs) < min_sections or imgs < min_images:
+            thin.append((k, len(secs), imgs))
+            print(f"ERROR direction {k} is under the floor: {len(secs)} sections (want {min_sections}+), "
+                  f"{imgs} images (want {min_images}+). Compose more of the page, or say at the gate that the "
+                  f"client's photography cannot carry it (references/gallery.md)")
+    site._preview_thin = thin
     for k, d in dirs.items():
         f = d.get("fonts", base.get("fonts", {}))
         recipe = " → ".join(s.get("type", "") + (":" + s["variant"] if s.get("variant") else "") for s in (d.get("home") or home))
