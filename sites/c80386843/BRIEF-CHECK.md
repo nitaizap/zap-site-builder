@@ -100,3 +100,14 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 
 No gallery wording, no "שער", "מעקה", "פרויקטים שביצענו" or "תיק עבודות" (there is no portfolio to claim);
 no rating, review count or stars; no price or ₪; no "להמחשה" label; no em dash.
+
+## Re-checked 04/11, second pass (at 1440, 1280 and 390, screenshots read)
+
+| line | status | what changed |
+|---|---|---|
+| כפתורי חיוג לאופיר | ✅ | re-tested the reading that each page's hero should carry one. `zs build` rejects it: "inner-page hero has buttons; Zap QA: buttons only in the home hero". The ask is met by the header call button on every page at every width, and by the fixed four-action bar on phones (מייל / ניווט / וואטסאפ / התקשרו). OPEN-ITEMS, 04/11 |
+| **דגש: דברים מיוחדים ולא סטנדרטיים** | ✅ | asked page by page rather than once. Home, `/אודות/` and the blog archive argued it already. The three service pages said it in their words and not in their shape: an unbroken column of paragraphs. Their opening paragraph now leads and each H2 carries the brand rule, so the page reads as chapters. No word moved. `/צור-קשר/` does not argue it and should not |
+| עמודי שירות (the brief's own three) | ✅ | the home page's only mention of them, the `cards:framed` row, rendered as a 220px strip of small icons. Given the room the brief's page list earns: 64px icons, real padding, larger titles |
+| לוגו | ✅ | the footer's copy of it was a white silhouette on a white footer, i.e. invisible on every page. Fixed. Resolution is still the one open part: OPEN-ITEMS 4, with the message to send |
+| אתרים שאהבתם | ➖ | unchanged: genuinely empty in the `.docx`. The one URL in the brief is the client's own Zap listing, which was read again in full on 04/11 and holds no photograph, no review and no wording the site does not already carry. OPEN-ITEMS, 04/11 |
+| תמונת בעלים / גלריה | ⏳ | unchanged, and confirmed unanswerable from the listing. Still needs the client |

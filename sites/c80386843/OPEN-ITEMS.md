@@ -158,3 +158,42 @@ what evidence, and raise it with Ofir before go-live.
 13. **schema.org type** is `ProfessionalService`: schema.org has no metalworker type.
 14. **No staging URL yet,** which is expected. Nothing was published: no `zs push`, no `zs package`. The
     site was built and checked locally only.
+
+---
+
+## 04/11, second pass: the Zap listing was read again, in full. It holds nothing more.
+
+Both listings for this customer id were fetched and read line by line on 04/11, specifically to see
+whether items 1, 2, 4 or 6 could be answered from them without the client. They cannot.
+
+| looked for | found on `d.co.il/80386843/33060/` and `/30120/` |
+|---|---|
+| photographs of completed work | **none.** One image belongs to this customer, `Customers/80386843/acb7aca1e2f6445ab3dd097419f2f064.png`, and it is the logo already in use. It is rendered twice per page. Everything else is Zap's own category cover (`Umbraco/8844/coverimagedesktop.png`, `Umbraco/8977/coverimage-מסגריות.png`) |
+| a photo of the workshop, or of Ofir | **none.** The owner's name does not appear on either listing |
+| reviews | **none.** Both say "לעסק זה אין חוות דעת" / "היה הראשון לדרג!". No count, no stars |
+| a bigger copy of the logo | **no.** `acb7aca…png` is the 140x140 already in use |
+| a legal name, ח.פ., ע.מ. or בע"מ | **none**, as recorded on 02/11. The privacy blocker still needs the client |
+| the promised AI promo video | not referenced anywhere |
+| category and service wording | `תחומי העסק`: מסגריות, ייצור מוצרי מתכת. `שירותים עיקריים`: מסגרות מתכת, עבודות מסגרות. Breadcrumbs: מתכות - ייצור מוצרים, מסגריות. All of it is wording the site already carries from the spec sheet; nothing new was taken, so no `IMAGE-SOURCES.md` row was added |
+| facts | ותק 20 שנה, הרימון 89 נווה ימין, א׳-ה׳ 07:00-20:00, אזור שירות כפר סבא, phone 072-2594285. Every one matches the spec sheet and the site |
+
+Two small confirmations of earlier decisions, from the listing's own text: it says Zap routes the
+072 as a virtual number ("זאפ גרופ עושה שימוש במספר וירטואלי"), which is why the site displays it
+(item 1); and the WhatsApp button there is `wa.me/972559686670`, a Zap service line, not the
+client's 050, which is why the site's WhatsApp uses the 050 from the spec sheet instead.
+
+**Items 1, 2 and 6 stay open and still need the client.** Nothing was closed by this; what is
+closed is the question of whether the listing might hold the answer. It does not, and it does not
+need opening again.
+
+## 04/11: the logo resolution ask, in one message
+
+Item 4's remaining part, written so it can be sent as it stands:
+
+> היי אופיר, לאתר חסר קובץ הלוגו באיכות גבוהה. מה שיש לנו כרגע זה הסמל בגודל 140x140 פיקסלים, וזה
+> קטן מדי בשביל אייקון האתר ובשביל מסכים חדים. אפשר לשלוח את הקובץ המקורי של הלוגו? SVG או AI או
+> EPS הכי טוב, ואם אין אז PNG ברוחב 512 פיקסלים ומעלה, עם רקע שקוף. זה מה שהמעצב הכין בזמנו.
+
+That is the whole of what is missing on the logo: provenance was settled on 04/11 (the same badge
+is embedded in the brief's own `.docx`), and 140x140 is the largest copy that exists anywhere we
+can reach, the directory and the brief both.

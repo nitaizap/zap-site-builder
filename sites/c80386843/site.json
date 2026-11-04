@@ -1,850 +1,851 @@
 {
- "tier": "standard",
- "site": {
-  "lang": "he",
-  "index": false,
-  "tagline": ""
- },
- "business": {
-  "name": "מסגרית Dream from Steel",
-  "legal_name": "מסגרית Dream from Steel",
-  "schema_type": "ProfessionalService",
-  "phone_display": "072-2594285",
-  "phone_e164": "+972722594285",
-  "phone_is_virtual": true,
-  "phone_regular": "050-9254010",
-  "whatsapp_e164": "+972509254010",
-  "whatsapp_text": "היי, הגעתי מהאתר ואשמח להצעת מחיר לעבודת מסגרות",
-  "email_leads": "ofir.elc@gmail.com",
-  "email_public": "ofir.elc@gmail.com",
-  "address": "הרימון 89, נווה ימין",
-  "street": "הרימון 89",
-  "city": "נווה ימין",
-  "hours": [
-   "א׳–ה׳ 07:00–20:00"
-  ],
-  "opening_hours": [
-   "Su-Th 07:00-20:00"
-  ],
-  "area_served": [
-   "כפר סבא",
-   "נווה ימין"
-  ],
-  "dpz_customer_id": "80386843",
-  "author_name": "אופיר אלחנתי",
-  "author_credentials": "בעל מסגרית Dream from Steel, 20 שנה בעבודות מסגרות וייצור מוצרי מתכת"
- },
- "standards": {
-  "privacy_url": "",
-  "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
- },
- "design": {
-  "kit": "frame",
-  "archetype": "story",
-  "base_template": 1,
-  "preset": "editorial",
-  "hero": "centered",
-  "header": "light",
-  "colors": {
-   "primary": "#b84606",
-   "primary_ink": "#ffffff",
-   "accent": "#6b8ca6",
-   "accent_ink": "#111a21",
-   "ink": "#1b2a36",
-   "text": "#2c3e4f",
-   "muted": "#4b5d69",
-   "bg": "#ffffff",
-   "surface": "#eef1f4",
-   "line": "#d6dde3",
-   "dark": "#16222c",
-   "dark_ink": "#e9eef2"
+  "tier": "standard",
+  "site": {
+    "lang": "he",
+    "index": false,
+    "tagline": ""
   },
-  "fonts": {
-   "heading": "Heebo",
-   "body": "Heebo"
+  "business": {
+    "name": "מסגרית Dream from Steel",
+    "legal_name": "מסגרית Dream from Steel",
+    "schema_type": "ProfessionalService",
+    "phone_display": "072-2594285",
+    "phone_e164": "+972722594285",
+    "phone_is_virtual": true,
+    "phone_regular": "050-9254010",
+    "whatsapp_e164": "+972509254010",
+    "whatsapp_text": "היי, הגעתי מהאתר ואשמח להצעת מחיר לעבודת מסגרות",
+    "email_leads": "ofir.elc@gmail.com",
+    "email_public": "ofir.elc@gmail.com",
+    "address": "הרימון 89, נווה ימין",
+    "street": "הרימון 89",
+    "city": "נווה ימין",
+    "hours": [
+      "א׳–ה׳ 07:00–20:00"
+    ],
+    "opening_hours": [
+      "Su-Th 07:00-20:00"
+    ],
+    "area_served": [
+      "כפר סבא",
+      "נווה ימין"
+    ],
+    "dpz_customer_id": "80386843",
+    "author_name": "אופיר אלחנתי",
+    "author_credentials": "בעל מסגרית Dream from Steel, 20 שנה בעבודות מסגרות וייצור מוצרי מתכת"
   },
-  "radius": 10,
-  "motion": "subtle",
-  "custom_css": "/* hero: shorter, text across the full measure, the three facts as a plate on the open side.\n   !important and the extra class beat pool.css' short-laptop floor (min-height:100svh-120px),\n   which otherwise put this hero back to 690px at 1280x720. */\nhtml body .e-con.zs-hero.zs-hero--home.zs-hero--img.zs-v-curve { min-height: clamp(380px, 46vh, 440px) !important; padding-bottom: calc(var(--sec-y) * .34 + 2.2vw); }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__lead { max-width: 52ch; text-wrap: pretty; }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li::before { background-color: rgb(255 255 255 / .92); }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks { color: #fff; font-weight: 700; }\n@media (min-width: 992px) {\n  html body .e-con.zs-hero--home.zs-v-curve .e-con.zs-hero__text { max-width: none; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); column-gap: 72px; row-gap: 0; align-items: center; align-content: center; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__text > :not(.zs-hero__points) { grid-column: 1; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__text .zs-btns { margin-top: 8px; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin: 0; padding: 26px 30px; background: rgb(14 22 29 / .8); border-top: 4px solid var(--c-primary); border-radius: var(--r-sm); text-shadow: none; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks { display: grid; justify-content: stretch; gap: 18px; font-size: 1.15rem; text-align: start; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li { padding-inline-start: 38px; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li::before { top: .12em; width: 26px; height: 26px; background-size: 15px; }\n}\n/* three-across service row: icon, title and text on one centred axis */\nhtml body .zs-cards.zs-v-framed .e-con.zs-card__body { padding-inline: 32px; align-items: center; --align-items: center; text-align: center; }\nbody .zs-cards .zs-card__icon .elementor-icon-wrapper { text-align: center; }\nbody .zs-cards .zs-card__title .elementor-heading-title { font-size: clamp(1.2rem, 1.05rem + .5vw, 1.45rem); line-height: 1.25; text-align: center; }\nbody .zs-cards .zs-card__text { max-width: 36ch; }\nbody .zs-cards .zs-card__text p { text-wrap: pretty; text-align: center; }\n@media (min-width: 768px) { body .zs-cards .zs-grid--3 { column-gap: 0; }\n  body .zs-cards .zs-grid--3 > .e-con.zs-card + .e-con.zs-card { border-inline-start: 1px solid var(--c-line); } }\nbody .zs-cards.zs-cards--linked .e-con.zs-card__body::after { content: none; }\n/* ticks on the dark overlap card were dark on dark */\nhtml body .zs-split.zs-v-overlap .zs-checks li::before { background-color: rgb(255 255 255 / .92); }\n/* FAQ on the dark plate: the questions were the accent steel blue on near-black (4.56:1, so the\n   4.5 gate never saw them) and read as disabled text. qa-rules: on dark grounds titles are white\n   and the accent marks them with a rule, not by colouring the words. */\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title,\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title a,\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title.elementor-active { color: #fff; }\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title.elementor-active { box-shadow: inset 3px 0 0 0 var(--c-primary); }\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-toggle-icon { color: #fff; }\n/* one colour for the same action: the lead-bar submit was the steel-blue accent while every other\n   submit on the site is the brand orange */\nhtml body .zs-leadbar__box .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }"
- },
- "form": {
-  "title": "ספרו לנו מה צריך לייצר",
-  "text": "שם, טלפון ושתי שורות על העבודה. אופיר יחזור אליכם בשעות הפעילות.",
-  "button": "שלחו לי הצעת מחיר",
-  "thanks": "קיבלנו את הפרטים. נחזור אליכם בשעות הפעילות, א׳–ה׳ בין 07:00 ל-20:00."
- },
- "footer": {
-  "about": "מסגרית Dream from Steel מנווה ימין: עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית, מהתכנון ועד המוצר המוגמר.",
-  "links_title": "השירותים שלנו",
-  "ai_images_note": "תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק"
- },
- "header": {
-  "cta_label": "התקשרו אלינו",
-  "mobile_bar": [
-   "waze",
-   "email"
-  ],
-  "topbar": false
- },
- "content": {
-  "disclaimer": ""
- },
- "og_image": "hero",
- "images": {
-  "hero": {
-   "src": "assets/hero.webp",
-   "alt": "בית מלאכה למסגרות: מדפי פרופילי מתכת, שולחן עבודה ומלחציים",
-   "ai": true
+  "standards": {
+    "privacy_url": "",
+    "accessibility_url": "https://zap.dbusiness.co/js/accessibility.html"
   },
-  "fabrication": {
-   "src": "assets/fabrication.webp",
-   "alt": "שולחן עבודה במסגרייה עם מלחציים, זווית מדידה וכפפות ריתוך",
-   "ai": true
+  "design": {
+    "kit": "frame",
+    "archetype": "story",
+    "base_template": 1,
+    "preset": "editorial",
+    "hero": "centered",
+    "header": "light",
+    "colors": {
+      "primary": "#b84606",
+      "primary_ink": "#ffffff",
+      "accent": "#6b8ca6",
+      "accent_ink": "#111a21",
+      "ink": "#1b2a36",
+      "text": "#2c3e4f",
+      "muted": "#4b5d69",
+      "bg": "#ffffff",
+      "surface": "#eef1f4",
+      "line": "#d6dde3",
+      "dark": "#16222c",
+      "dark_ink": "#e9eef2"
+    },
+    "fonts": {
+      "heading": "Heebo",
+      "body": "Heebo"
+    },
+    "radius": 10,
+    "motion": "subtle",
+    "custom_css": "/* ---- hero ----------------------------------------------------------------\n   Shorter than the engine's photo-hero floor, text across the full measure, the\n   three facts as a plate on the open side. pool.css' short-laptop rule (768px\n   or wider, 760px tall or shorter) now reads its floor from --zs-hero-floor, so\n   that case is answered by setting the variable rather than by out-specifying\n   an !important (what the 04/11 pass had to do). The !important below is still\n   needed against Elementor's own inline min-height on taller screens, where the\n   pool.css rule does not apply.\n\n   Never write a \"less than\" sign anywhere in this field, comments included:\n   the theme passes it through wp_strip_all_tags (functions.php:184), which\n   deletes everything from that character to the next \"greater than\" sign. One\n   in this comment silently removed the hero rule and the two after it. */\n:root { --zs-hero-floor: 440px; }\nhtml body .e-con.zs-hero.zs-hero--home.zs-v-curve { min-height: clamp(380px, 46vh, 440px) !important; padding-bottom: calc(var(--sec-y) * .34 + 2.2vw); }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__lead { max-width: 52ch; text-wrap: pretty; }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li::before { background-color: rgb(255 255 255 / .92); }\nhtml body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks { color: #fff; font-weight: 700; }\n@media (min-width: 992px) {\n  html body .e-con.zs-hero--home.zs-v-curve .e-con.zs-hero__text { max-width: none; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); column-gap: 72px; row-gap: 0; align-items: center; align-content: center; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__text > :not(.zs-hero__points) { grid-column: 1; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__text .zs-btns { margin-top: 8px; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin: 0; padding: 26px 30px; background: rgb(14 22 29 / .8); border-top: 4px solid var(--c-primary); border-radius: var(--r-sm); text-shadow: none; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks { display: grid; justify-content: stretch; gap: 18px; font-size: 1.15rem; text-align: start; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li { padding-inline-start: 38px; }\n  html body .zs-hero--home.zs-v-curve .zs-hero__points .zs-checks li::before { top: .12em; width: 26px; height: 26px; background-size: 15px; }\n}\n\n/* ---- chapters ------------------------------------------------------------\n   Three chapters in a 2-up grid at 390 left the third alone on its own row with\n   its two-word title broken across two lines. One per row on a phone. */\n@media (max-width: 600px) {\n  html body .e-con.zs-chapters .e-con.zs-chapters__row { grid-template-columns: 1fr; }\n  html body .e-con.zs-chapters .e-con.zs-chapter { border-inline-start: 0; }\n  html body .zs-chapters .zs-chapter__title .elementor-heading-title { font-size: 1.3rem; }\n}\n\n/* ---- services row: the brief's three pages -------------------------------\n   \"מה אפשר להזמין אצלנו\" is the only place the home page names the three service\n   pages the brief ordered, and it rendered as a 220px strip of small icons under\n   a full-width section title. Given the room that page list earns: a larger\n   icon, real card padding, and the link said out loud instead of only implied. */\nhtml body .zs-cards.zs-v-framed .e-con.zs-card__body { padding: 40px 32px 34px; align-items: center; --align-items: center; text-align: center; }\nbody .zs-cards .zs-card__icon .elementor-icon-wrapper { text-align: center; }\nhtml body .zs-cards.zs-v-framed .zs-card__icon .elementor-icon { width: 64px; height: 64px; font-size: 26px; }\nbody .zs-cards .zs-card__title .elementor-heading-title { font-size: clamp(1.3rem, 1.1rem + .6vw, 1.6rem); line-height: 1.25; text-align: center; }\nbody .zs-cards .zs-card__text { max-width: 36ch; }\nbody .zs-cards .zs-card__text p { text-wrap: pretty; text-align: center; }\n@media (min-width: 768px) { body .zs-cards .zs-grid--3 { column-gap: 0; }\n  body .zs-cards .zs-grid--3 > .e-con.zs-card + .e-con.zs-card { border-inline-start: 1px solid var(--c-line); } }\n/* No \"read more\" marker is added here on purpose: main.css, standards.css and\n   pool.css each remove the arrow from a linked card, so the card title being the\n   link is the house pattern and not an oversight. */\n\n/* ---- split:overlap -------------------------------------------------------\n   The whole card was centred: a three-line Hebrew title broke ragged, and the\n   tick rows, whose markers sit at the inline start of each row, lined up on\n   neither edge. Reading matter in RTL starts at one edge; the card now does. */\nhtml body .zs-split.zs-v-overlap .e-con.zs-split__text,\nhtml body .zs-split.zs-v-overlap .zs-split__text :is(.zs-sec__title, .elementor-heading-title, p, .zs-checks, .zs-checks li) { text-align: start; }\nhtml body .zs-split.zs-v-overlap .zs-split__text .zs-checks { display: inline-grid; justify-items: start; }\nhtml body .zs-split.zs-v-overlap .zs-split__text .zs-btns { justify-content: flex-start; }\nhtml body .zs-split.zs-v-overlap .zs-checks li::before { background-color: rgb(255 255 255 / .92); }\n\n/* ---- service-page prose --------------------------------------------------\n   The three service pages are the brief's own page list and carry its strongest\n   line (\"דברים מיוחדים ולא סטנדרטיים\"), but they rendered as an unbroken column\n   of paragraphs: the argument was in the words and nowhere in the page. The\n   opening paragraph now leads and each chapter heading carries the brand rule\n   the home page's section titles already use. No copy changed. */\nhtml body .zs-prose > .zs-prose__t:first-child p:first-child { font-size: clamp(1.15rem, 1.02rem + .45vw, 1.38rem); line-height: 1.65; color: var(--c-ink); font-weight: 500; }\nhtml body .zs-prose .zs-prose__h h2.elementor-heading-title::before { content: ''; display: block; width: 44px; height: 4px; border-radius: 4px; background: var(--c-primary); margin-bottom: 14px; }\nhtml body .zs-prose .zs-prose__h { margin-top: 2em; }\n\n/* ---- lead bar ------------------------------------------------------------\n   Three 170px fields and a detached submit inside a 900px box: the band's own\n   form looked slighter than the identical one in the footer. */\n@media (min-width: 992px) {\n  html body .e-con.zs-leadbar__box { width: 1080px; max-width: 100%; }\n  html body .zs-leadbar__box .zs-form { width: 100%; }\n  html body .zs-leadbar__box .zs-form__row { flex: 1 1 auto; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }\n}\n\n/* ---- one colour for one action -------------------------------------------\n   pool.css paints the lead-bar submit with --c-accent, so this band's submit was\n   steel blue while the identical submit on the contact page and in the footer\n   was the brand orange. */\nhtml body .zs-leadbar__box .zs-form__submit { background: var(--c-primary); color: var(--c-primary-ink); }\n\n/* ---- faq:dark ------------------------------------------------------------\n   The white question colour and the white toggle icon that used to stand here\n   are now in the theme (pool.css: the questions take --c-dark-ink instead of the\n   accent). Only this site's own marker for the open question is left. */\nhtml body .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title.elementor-active { box-shadow: inset 3px 0 0 0 var(--c-primary); }\n"
   },
-  "materials": {
-   "src": "assets/materials.webp",
-   "alt": "מלאי חומרי גלם: פרופילי מתכת מרובעים, זוויתנים ומוטות עגולים",
-   "ai": true
+  "form": {
+    "title": "ספרו לנו מה צריך לייצר",
+    "text": "שם, טלפון ושתי שורות על העבודה. אופיר יחזור אליכם בשעות הפעילות.",
+    "button": "שלחו לי הצעת מחיר",
+    "thanks": "קיבלנו את הפרטים. נחזור אליכם בשעות הפעילות, א׳–ה׳ בין 07:00 ל-20:00."
   },
-  "steel": {
-   "src": "assets/steel-texture.webp",
-   "alt": "משטח פלדה מוברשת באור חם",
-   "ai": true
+  "footer": {
+    "about": "מסגרית Dream from Steel מנווה ימין: עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית, מהתכנון ועד המוצר המוגמר.",
+    "links_title": "השירותים שלנו",
+    "ai_images_note": "תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק"
   },
-  "drawing": {
-   "src": "assets/drawing.webp",
-   "alt": "שרטוט עבודה של פריט מתכת על שולחן המסגרייה, לצידו סרגל פלדה ומחוגה",
-   "ai": true
+  "header": {
+    "cta_label": "התקשרו אלינו",
+    "mobile_bar": [
+      "waze",
+      "email"
+    ],
+    "topbar": false
   },
-  "sparks": {
-   "src": "assets/sparks.webp",
-   "alt": "מסור חיתוך חותך פרופיל מתכת מרובע המהודק במלחציים, ניצוצות נפרשים",
-   "ai": true
+  "content": {
+    "disclaimer": ""
   },
-  "weld": {
-   "src": "assets/weld.webp",
-   "alt": "תפר ריתוך בחיבור של שני פרופילי מתכת, המתכת סביבו עדיין כחולה מהחום",
-   "ai": true
+  "og_image": "hero",
+  "images": {
+    "hero": {
+      "src": "assets/hero.webp",
+      "alt": "בית מלאכה למסגרות: מדפי פרופילי מתכת, שולחן עבודה ומלחציים",
+      "ai": true
+    },
+    "fabrication": {
+      "src": "assets/fabrication.webp",
+      "alt": "שולחן עבודה במסגרייה עם מלחציים, זווית מדידה וכפפות ריתוך",
+      "ai": true
+    },
+    "materials": {
+      "src": "assets/materials.webp",
+      "alt": "מלאי חומרי גלם: פרופילי מתכת מרובעים, זוויתנים ומוטות עגולים",
+      "ai": true
+    },
+    "steel": {
+      "src": "assets/steel-texture.webp",
+      "alt": "משטח פלדה מוברשת באור חם",
+      "ai": true
+    },
+    "drawing": {
+      "src": "assets/drawing.webp",
+      "alt": "שרטוט עבודה של פריט מתכת על שולחן המסגרייה, לצידו סרגל פלדה ומחוגה",
+      "ai": true
+    },
+    "sparks": {
+      "src": "assets/sparks.webp",
+      "alt": "מסור חיתוך חותך פרופיל מתכת מרובע המהודק במלחציים, ניצוצות נפרשים",
+      "ai": true
+    },
+    "weld": {
+      "src": "assets/weld.webp",
+      "alt": "תפר ריתוך בחיבור של שני פרופילי מתכת, המתכת סביבו עדיין כחולה מהחום",
+      "ai": true
+    },
+    "workshop": {
+      "src": "assets/workshop.webp",
+      "alt": "בית מלאכה למסגרות: שולחן ריתוך, מקדחת עמוד, לוח כלים ומדפי פרופילי מתכת",
+      "ai": true
+    }
   },
-  "workshop": {
-   "src": "assets/workshop.webp",
-   "alt": "בית מלאכה למסגרות: שולחן ריתוך, מקדחת עמוד, לוח כלים ומדפי פרופילי מתכת",
-   "ai": true
-  }
- },
- "nav": [
-  {
-   "label": "דף הבית",
-   "href": "page:"
-  },
-  {
-   "label": "מסגרות בהתאמה אישית",
-   "href": "page:מסגרות-בהתאמה-אישית"
-  },
-  {
-   "label": "ייצור מוצרי מתכת ייחודיים",
-   "href": "page:ייצור-מוצרי-מתכת-ייחודיים"
-  },
-  {
-   "label": "תכנון מוצרי מתכת",
-   "href": "page:תכנון-מוצרי-מתכת"
-  },
-  {
-   "label": "אודות",
-   "href": "page:אודות"
-  },
-  {
-   "label": "בלוג",
-   "href": "page:בלוג"
-  },
-  {
-   "label": "צור קשר",
-   "href": "page:צור-קשר"
-  }
- ],
- "footer_nav": [
-  {
-   "label": "דף הבית",
-   "href": "page:"
-  },
-  {
-   "label": "מסגרות בהתאמה אישית",
-   "href": "page:מסגרות-בהתאמה-אישית"
-  },
-  {
-   "label": "ייצור מוצרי מתכת ייחודיים",
-   "href": "page:ייצור-מוצרי-מתכת-ייחודיים"
-  },
-  {
-   "label": "תכנון מוצרי מתכת",
-   "href": "page:תכנון-מוצרי-מתכת"
-  },
-  {
-   "label": "אודות",
-   "href": "page:אודות"
-  },
-  {
-   "label": "בלוג",
-   "href": "page:בלוג"
-  },
-  {
-   "label": "צור קשר",
-   "href": "page:צור-קשר"
-  }
- ],
- "categories": [
-  {
-   "slug": "עבודות-מתכת",
-   "name": "עבודות מתכת",
-   "description": "מדריכים של מסגרית Dream from Steel על עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית: איך בוחרים חומר גלם, מה להכין לפני הזמנה ואיך נראה המסלול עד המוצר המוגמר."
-  }
- ],
- "pages": [
-  {
-   "key": "",
-   "type": "home",
-   "title": "דף הבית",
-   "order": 0,
-   "seo": {
-    "title": "מסגרית Dream from Steel | מסגרייה בכפר סבא",
-    "description": "מסגרייה בכפר סבא ובנווה ימין, 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית. תכנון, ייצור ומסירה של מוצר לפי דרישה. לייעוץ והצעת מחיר: 072-2594285",
-    "keyword": "מסגרייה בכפר סבא"
-   },
-   "sections": [
+  "nav": [
     {
-     "type": "hero",
-     "title": "מסגרית Dream from Steel",
-     "lead": "מסגרייה בכפר סבא, עם בית מלאכה בנווה ימין ו-20 שנה בעבודות מסגרות ובייצור מוצרי מתכת. כל עבודה נבנית בהתאמה אישית לפי הצורך של הלקוח, מהתכנון ועד המוצר המוגמר.",
-     "points": [
-      "20 שנה בעבודות מסגרות",
-      "ייצור אישי לפי דרישת הלקוח",
-      "תכנון, ייצור ומסירה במקום אחד"
-     ],
-     "cta": {
-      "label": "השאירו פרטים",
-      "href": "#leave-details"
-     },
-     "cta2": {
-      "label": "072-2594285",
-      "href": "tel"
-     },
-     "image": "hero",
-     "variant": "curve"
+      "label": "דף הבית",
+      "href": "page:"
     },
     {
-     "type": "chapters",
-     "items": [
-      {
-       "title": "מה אנחנו עושים",
-       "label": "שלושה תחומי עבודה",
-       "href": "#שירותים"
-      },
-      {
-       "title": "איך זה עובד",
-       "label": "מהשיחה ועד המסירה",
-       "href": "#תהליך"
-      },
-      {
-       "title": "למי מייצרים",
-       "label": "פרטיים, אדריכלים ותעשייה",
-       "href": "#לקוחות"
-      }
-     ]
+      "label": "מסגרות בהתאמה אישית",
+      "href": "page:מסגרות-בהתאמה-אישית"
     },
     {
-     "type": "prose",
-     "variant": "band",
-     "html": "<p>אין אצלנו קטלוג. כל מה שיוצא מבית המלאכה נבנה פעם אחת, למקום אחד ולשימוש אחד, לפי מידה שנמדדה ולפי חומר שנבחר בשבילו.</p><p>אופיר אלחנתי עובד בתחום המסגרות וייצור מוצרי המתכת כבר 20 שנה. הניסיון הזה הוא מה שמאפשר לקחת עבודות מורכבות לביצוע, ולהגיד מראש מה אפשר לייצר, מה כדאי לשנות בתכנון ולמה.</p>"
+      "label": "ייצור מוצרי מתכת ייחודיים",
+      "href": "page:ייצור-מוצרי-מתכת-ייחודיים"
     },
     {
-     "type": "split",
-     "variant": "overlap",
-     "image": "fabrication",
-     "image_side": "start",
-     "title": "הדיוק נקבע הרבה לפני הריתוך",
-     "text": "<p>המידות, החומר ושיטת החיבור נסגרים בשלב התכנון. זו הסיבה שאפשר להגיד מראש מה יוצא מבית המלאכה, ומתי.</p>",
-     "points": [
-      "מדידה לפני תכנון",
-      "חומר לפי השימוש",
-      "בקרה על המידות לאורך הייצור"
-     ],
-     "cta": {
-      "label": "על תכנון מוצרי מתכת",
+      "label": "תכנון מוצרי מתכת",
       "href": "page:תכנון-מוצרי-מתכת"
-     }
     },
     {
-     "type": "steps",
-     "variant": "stack",
-     "anchor": "תהליך",
-     "title": "מהשיחה הראשונה ועד המוצר המוגמר",
-     "items": [
-      {
-       "title": "שיחה ואפיון",
-       "text": "מספרים מה צריך, לאיזה שימוש ובאיזה מקום. בשלב הזה מבררים מידות, חומר ואילוצים."
-      },
-      {
-       "title": "תכנון",
-       "text": "מתכננים את המוצר לפי הצורך שעלה בשיחה, כולל התאמה של החומר ושל שיטת החיבור."
-      },
-      {
-       "title": "ייצור בבית המלאכה",
-       "text": "חיתוך, ריתוך והרכבה בבית המלאכה בנווה ימין, עם בקרה על הדיוק לאורך העבודה."
-      },
-      {
-       "title": "מסירה",
-       "text": "מוסרים את המוצר המוגמר במועד שנקבע מראש מול הלקוח."
-      }
-     ]
-    },
-    {
-     "type": "cards",
-     "style": "classic",
-     "columns": 3,
-     "anchor": "שירותים",
-     "title": "מה אפשר להזמין אצלנו",
-     "intro": "שלושה תחומים שמרכיבים כמעט כל פנייה שמגיעה לבית המלאכה.",
-     "items": [
-      {
-       "title": "מסגרות בהתאמה אישית",
-       "text": "עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי דרישת הלקוח, כולל פרויקטים מורכבים לביצוע.",
-       "href": "page:מסגרות-בהתאמה-אישית",
-       "icon": "wrench"
-      },
-      {
-       "title": "ייצור מוצרי מתכת ייחודיים",
-       "text": "ייצור מוצרי מתכת לפי דרישה, מפריט בודד ועד סדרה קטנה, בעיבוד מתכות מתקדם.",
-       "href": "page:ייצור-מוצרי-מתכת-ייחודיים",
-       "icon": "bolt"
-      },
-      {
-       "title": "תכנון מוצרי מתכת",
-       "text": "תכנון של מוצר מתכת מותאם אישית לפי השימוש, המידות והחומר, עוד לפני שמתחילים לייצר.",
-       "href": "page:תכנון-מוצרי-מתכת",
-       "icon": "document"
-      }
-     ],
-     "variant": "framed",
-     "head": "stack"
-    },
-    {
-     "type": "collage",
-     "title": "החומר קובע את התוצאה",
-     "text": "<p>פרופיל, זוויתן, פח או מוט, בעובי ובגימור שמתאימים לשימוש ולמקום שבו המוצר יעמוד. הבחירה הזו נעשית בשלב התכנון, לפני שנחתך החומר הראשון.</p><p>הדגש על איכות החומרים הוא חלק מהעבודה ולא תוספת לה, והוא מה שקובע כמה המוצר יחזיק ואיך הוא ייראה אחרי שנה.</p>",
-     "image": "materials",
-     "image2": "weld",
-     "cta": {
-      "label": "קצת עלינו",
+      "label": "אודות",
       "href": "page:אודות"
-     }
     },
     {
-     "type": "facts",
-     "anchor": "לקוחות",
-     "title": "למי אנחנו מייצרים",
-     "text": "<p>הלקוחות של בית המלאכה מגיעים מכמה עולמות שונים: לקוחות פרטיים שמחפשים פתרון לבית או לעסק, אדריכלים שצריכים שפרט בתוכנית ייצא לפועל, נגרים שמשלבים מתכת ועץ, וחברות משוק הרחפנים ומשוק התעופה שמגיעות עם מפרט ועם דרישת דיוק.</p><p>התהליך נשאר זהה לכולם, וההתאמה נעשית לפי מה שכל עבודה דורשת.</p>",
-     "card_title": "בית המלאכה",
-     "items": [
-      {
-       "label": "ותק בתחום",
-       "value": "20 שנה"
-      },
-      {
-       "label": "כתובת",
-       "value": "הרימון 89, נווה ימין"
-      },
-      {
-       "label": "אזור שירות",
-       "value": "כפר סבא"
-      },
-      {
-       "label": "שעות פעילות",
-       "value": "א׳–ה׳ 07:00–20:00"
-      },
-      {
-       "label": "סוג העבודה",
-       "value": "ייצור אישי לפי דרישה"
-      }
-     ]
+      "label": "בלוג",
+      "href": "page:בלוג"
     },
     {
-     "type": "leadbar",
-     "variant": "photo",
-     "image": "steel",
-     "title": "רוצים לבדוק אם אפשר לייצר את זה",
-     "text": "השאירו שם, טלפון ותיאור קצר של העבודה, ונחזור אליכם בשעות הפעילות."
-    },
-    {
-     "type": "cta",
-     "title": "יש לכם רעיון, מידה או שרטוט",
-     "text": "שלחו אלינו את הפרטים ונחזור אליכם עם ייעוץ מקצועי ועם הצעת מחיר."
-    },
-    {
-     "type": "faq",
-     "variant": "dark",
-     "title": "שאלות נפוצות על עבודות מסגרות בהתאמה אישית",
-     "items": [
-      {
-       "q": "אפשר לייצר מוצר לפי שרטוט שלי?",
-       "a": "כן. אפשר להגיע עם שרטוט, עם סקיצה או רק עם תיאור של הצורך, ואנחנו משלימים את התכנון מול השימוש, המידות והחומר."
-      },
-      {
-       "q": "אתם מייצרים גם פריט בודד?",
-       "a": "כן. רוב העבודות בבית המלאכה הן ייצור אישי לפי דרישה, כולל פריט אחד. אין אצלנו קטלוג קבוע של מוצרי מדף."
-      },
-      {
-       "q": "באילו אזורים אתם נותנים שירות?",
-       "a": "בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא."
-      },
-      {
-       "q": "כמה זמן לוקח לייצר מוצר בהתאמה אישית?",
-       "a": "לוח הזמנים נקבע לפי המוצר, לפי החומר ולפי העומס בבית המלאכה. המועד נמסר בשלב ההצעה, והעבודה נמסרת בזמן שסוכם."
-      },
-      {
-       "q": "איך מקבלים הצעת מחיר?",
-       "a": "מתקשרים ל-072-2594285, שולחים הודעת וואטסאפ ל-050-9254010 או משאירים פרטים בטופס. נחזור אליכם עם שאלות השלמה ועם הצעה."
-      }
-     ]
+      "label": "צור קשר",
+      "href": "page:צור-קשר"
     }
-   ]
-  },
-  {
-   "key": "מסגרות-בהתאמה-אישית",
-   "type": "service",
-   "title": "מסגרות בהתאמה אישית",
-   "order": 1,
-   "featured_image": "fabrication",
-   "excerpt": "עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי דרישת הלקוח ולפי המידות של המקום.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | מסגרות בהתאמה אישית",
-    "description": "מסגרות בהתאמה אישית בכפר סבא ובנווה ימין: עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי מידה, לפי שימוש ולפי החומר. 20 שנה ניסיון. חייגו 072-2594285",
-    "keyword": "מסגרות בהתאמה אישית"
-   },
-   "sections": [
+  ],
+  "footer_nav": [
     {
-     "type": "hero",
-     "title": "מסגרות בהתאמה אישית",
-     "lead": "מסגרות בהתאמה אישית הן עבודות שנבנות למקום אחד ולשימוש אחד: מידה שנמדדת באתר, חומר שנבחר לפי התנאים וייצור בבית המלאכה בנווה ימין.",
-     "image": "fabrication"
+      "label": "דף הבית",
+      "href": "page:"
     },
     {
-     "type": "prose",
-     "html": "<p>מסגרות בהתאמה אישית הן עבודות מתכת שמתוכננות ומיוצרות עבור מקום מסוים ועבור שימוש מסוים, במקום להתאים את המקום למוצר קיים. אצלנו זו עיקר העבודה: הלקוח מגיע עם צורך, עם מידה או עם בעיה, ומקבל מוצר שנבנה בדיוק סביבם.</p><h2>מתי צריך עבודת מסגרות מיוחדת</h2><p>הפנייה מגיעה בדרך כלל כשמוצר סטנדרטי לא נכנס, לא מחזיק או לא נראה נכון. מידות לא שגרתיות, חיבור בין מתכת לחומר אחר, עומס שצריך לשאת, או פרט אדריכלי שמופיע בתוכנית ואין לו מוצר מדף. בכל אחד מהמקרים האלה הפתרון מתחיל במדידה ובתכנון, לא בקטלוג.</p><h2>איך עובדת אצלנו עבודת מסגרות בהתאמה אישית</h2><p>השלב הראשון הוא שיחה קצרה: מה צריך, לאיזה שימוש, באיזה מקום ומה התנאים שם. אחריה מגיעים למדידה כשצריך, ומתכננים את העבודה. התכנון כולל את המידות, את החומר, את עובי החתך ואת שיטת החיבור, כך שלא מתגלות הפתעות בשלב הייצור.</p><p>הייצור עצמו נעשה בבית המלאכה שלנו בנווה ימין: חיתוך, ריתוך, עיבוד והרכבה. אנחנו עובדים עם בקרה על המידות לאורך העבודה, כי בעבודה בהתאמה אישית סטייה קטנה בשלב מוקדם מתגלגלת לכל המוצר. בסיום מגיעה המסירה, במועד שנקבע מראש מול הלקוח.</p><h2>פרויקטים מורכבים לביצוע</h2><p>חלק מהעבודות שמגיעות אלינו הן כאלה שבתי מלאכה אחרים העדיפו לא לקחת: מידות חריגות, צורות שאינן ישרות, חיבורים שצריכים להישאר נקיים לעין, או דרישות דיוק שמגיעות מתחומים תעשייתיים. 20 שנה בתחום מאפשרות לנו להגיד מראש מה אפשר לייצר, מה כדאי לשנות בתכנון ומה המשמעות של כל בחירה על התוצאה ועל המחיר.</p><h2>מי מזמין אצלנו עבודות מסגרות</h2><p>לקוחות פרטיים שמחפשים פתרון לבית או לעסק, אדריכלים שצריכים שפרט בתוכנית ייצא לפועל בדיוק כפי שתוכנן, נגרים שמשלבים מתכת ברהיט או במבנה, וחברות משוק הרחפנים ומשוק התעופה שמגיעות עם מפרט משלהן. כל אחד מהם מקבל את אותו תהליך: אפיון, תכנון, ייצור ומסירה.</p><h2>מה כדאי להביא לשיחה הראשונה</h2><p>כל מה שיש: מידות, תמונה של המקום, שרטוט או סקיצה ביד. גם תיאור מילולי מספיק כדי להתחיל, ואת החסר נשלים יחד. ככל שהמידע מדויק יותר בשלב הזה, כך ההצעה מדויקת יותר ולוח הזמנים ברור יותר.</p><p>אפשר להמשיך ולקרוא על <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a>, השלב שבא לפני הייצור בכל עבודה כזו.</p>"
+      "label": "מסגרות בהתאמה אישית",
+      "href": "page:מסגרות-בהתאמה-אישית"
     },
     {
-     "type": "features",
-     "variant": "rows",
-     "columns": 2,
-     "title": "מה נכלל בעבודה",
-     "items": [
-      {
-       "title": "מדידה ואפיון",
-       "text": "בירור השימוש, המקום והתנאים לפני התכנון.",
-       "icon": "ruler"
+      "label": "ייצור מוצרי מתכת ייחודיים",
+      "href": "page:ייצור-מוצרי-מתכת-ייחודיים"
+    },
+    {
+      "label": "תכנון מוצרי מתכת",
+      "href": "page:תכנון-מוצרי-מתכת"
+    },
+    {
+      "label": "אודות",
+      "href": "page:אודות"
+    },
+    {
+      "label": "בלוג",
+      "href": "page:בלוג"
+    },
+    {
+      "label": "צור קשר",
+      "href": "page:צור-קשר"
+    }
+  ],
+  "categories": [
+    {
+      "slug": "עבודות-מתכת",
+      "name": "עבודות מתכת",
+      "description": "מדריכים של מסגרית Dream from Steel על עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית: איך בוחרים חומר גלם, מה להכין לפני הזמנה ואיך נראה המסלול עד המוצר המוגמר."
+    }
+  ],
+  "pages": [
+    {
+      "key": "",
+      "type": "home",
+      "title": "דף הבית",
+      "order": 0,
+      "seo": {
+        "title": "מסגרית Dream from Steel | מסגרייה בכפר סבא",
+        "description": "מסגרייה בכפר סבא ובנווה ימין, 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית. תכנון, ייצור ומסירה של מוצר לפי דרישה. לייעוץ והצעת מחיר: 072-2594285",
+        "keyword": "מסגרייה בכפר סבא"
       },
-      {
-       "title": "בחירת חומר",
-       "text": "פרופיל, זוויתן, פח או מוט לפי העומס ולפי הגימור הנדרש.",
-       "icon": "award"
+      "sections": [
+        {
+          "type": "hero",
+          "title": "מסגרית Dream from Steel",
+          "lead": "מסגרייה בכפר סבא, עם בית מלאכה בנווה ימין ו-20 שנה בעבודות מסגרות ובייצור מוצרי מתכת. כל עבודה נבנית בהתאמה אישית לפי הצורך של הלקוח, מהתכנון ועד המוצר המוגמר.",
+          "points": [
+            "20 שנה בעבודות מסגרות",
+            "ייצור אישי לפי דרישת הלקוח",
+            "תכנון, ייצור ומסירה במקום אחד"
+          ],
+          "cta": {
+            "label": "השאירו פרטים",
+            "href": "#leave-details"
+          },
+          "cta2": {
+            "label": "072-2594285",
+            "href": "tel"
+          },
+          "image": "hero",
+          "variant": "curve"
+        },
+        {
+          "type": "chapters",
+          "items": [
+            {
+              "title": "מה אנחנו עושים",
+              "label": "שלושה תחומי עבודה",
+              "href": "#שירותים"
+            },
+            {
+              "title": "איך זה עובד",
+              "label": "מהשיחה ועד המסירה",
+              "href": "#תהליך"
+            },
+            {
+              "title": "למי מייצרים",
+              "label": "פרטיים, אדריכלים ותעשייה",
+              "href": "#לקוחות"
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "variant": "band",
+          "html": "<p>אין אצלנו קטלוג. כל מה שיוצא מבית המלאכה נבנה פעם אחת, למקום אחד ולשימוש אחד, לפי מידה שנמדדה ולפי חומר שנבחר בשבילו.</p><p>אופיר אלחנתי עובד בתחום המסגרות וייצור מוצרי המתכת כבר 20 שנה. הניסיון הזה הוא מה שמאפשר לקחת עבודות מורכבות לביצוע, ולהגיד מראש מה אפשר לייצר, מה כדאי לשנות בתכנון ולמה.</p>"
+        },
+        {
+          "type": "split",
+          "variant": "overlap",
+          "image": "fabrication",
+          "image_side": "start",
+          "title": "הדיוק נקבע הרבה לפני הריתוך",
+          "text": "<p>המידות, החומר ושיטת החיבור נסגרים בשלב התכנון. זו הסיבה שאפשר להגיד מראש מה יוצא מבית המלאכה, ומתי.</p>",
+          "points": [
+            "מדידה לפני תכנון",
+            "חומר לפי השימוש",
+            "בקרה על המידות לאורך הייצור"
+          ],
+          "cta": {
+            "label": "על תכנון מוצרי מתכת",
+            "href": "page:תכנון-מוצרי-מתכת"
+          }
+        },
+        {
+          "type": "steps",
+          "variant": "stack",
+          "anchor": "תהליך",
+          "title": "מהשיחה הראשונה ועד המוצר המוגמר",
+          "items": [
+            {
+              "title": "שיחה ואפיון",
+              "text": "מספרים מה צריך, לאיזה שימוש ובאיזה מקום. בשלב הזה מבררים מידות, חומר ואילוצים."
+            },
+            {
+              "title": "תכנון",
+              "text": "מתכננים את המוצר לפי הצורך שעלה בשיחה, כולל התאמה של החומר ושל שיטת החיבור."
+            },
+            {
+              "title": "ייצור בבית המלאכה",
+              "text": "חיתוך, ריתוך והרכבה בבית המלאכה בנווה ימין, עם בקרה על הדיוק לאורך העבודה."
+            },
+            {
+              "title": "מסירה",
+              "text": "מוסרים את המוצר המוגמר במועד שנקבע מראש מול הלקוח."
+            }
+          ]
+        },
+        {
+          "type": "cards",
+          "style": "classic",
+          "columns": 3,
+          "anchor": "שירותים",
+          "title": "מה אפשר להזמין אצלנו",
+          "intro": "שלושה תחומים שמרכיבים כמעט כל פנייה שמגיעה לבית המלאכה.",
+          "items": [
+            {
+              "title": "מסגרות בהתאמה אישית",
+              "text": "עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי דרישת הלקוח, כולל פרויקטים מורכבים לביצוע.",
+              "href": "page:מסגרות-בהתאמה-אישית",
+              "icon": "wrench"
+            },
+            {
+              "title": "ייצור מוצרי מתכת ייחודיים",
+              "text": "ייצור מוצרי מתכת לפי דרישה, מפריט בודד ועד סדרה קטנה, בעיבוד מתכות מתקדם.",
+              "href": "page:ייצור-מוצרי-מתכת-ייחודיים",
+              "icon": "bolt"
+            },
+            {
+              "title": "תכנון מוצרי מתכת",
+              "text": "תכנון של מוצר מתכת מותאם אישית לפי השימוש, המידות והחומר, עוד לפני שמתחילים לייצר.",
+              "href": "page:תכנון-מוצרי-מתכת",
+              "icon": "document"
+            }
+          ],
+          "variant": "framed",
+          "head": "stack"
+        },
+        {
+          "type": "collage",
+          "title": "החומר קובע את התוצאה",
+          "text": "<p>פרופיל, זוויתן, פח או מוט, בעובי ובגימור שמתאימים לשימוש ולמקום שבו המוצר יעמוד. הבחירה הזו נעשית בשלב התכנון, לפני שנחתך החומר הראשון.</p><p>הדגש על איכות החומרים הוא חלק מהעבודה ולא תוספת לה, והוא מה שקובע כמה המוצר יחזיק ואיך הוא ייראה אחרי שנה.</p>",
+          "image": "materials",
+          "image2": "weld",
+          "cta": {
+            "label": "קצת עלינו",
+            "href": "page:אודות"
+          }
+        },
+        {
+          "type": "facts",
+          "anchor": "לקוחות",
+          "title": "למי אנחנו מייצרים",
+          "text": "<p>הלקוחות של בית המלאכה מגיעים מכמה עולמות שונים: לקוחות פרטיים שמחפשים פתרון לבית או לעסק, אדריכלים שצריכים שפרט בתוכנית ייצא לפועל, נגרים שמשלבים מתכת ועץ, וחברות משוק הרחפנים ומשוק התעופה שמגיעות עם מפרט ועם דרישת דיוק.</p><p>התהליך נשאר זהה לכולם, וההתאמה נעשית לפי מה שכל עבודה דורשת.</p>",
+          "card_title": "בית המלאכה",
+          "items": [
+            {
+              "label": "ותק בתחום",
+              "value": "20 שנה"
+            },
+            {
+              "label": "כתובת",
+              "value": "הרימון 89, נווה ימין"
+            },
+            {
+              "label": "אזור שירות",
+              "value": "כפר סבא"
+            },
+            {
+              "label": "שעות פעילות",
+              "value": "א׳–ה׳ 07:00–20:00"
+            },
+            {
+              "label": "סוג העבודה",
+              "value": "ייצור אישי לפי דרישה"
+            }
+          ]
+        },
+        {
+          "type": "leadbar",
+          "variant": "photo",
+          "image": "steel",
+          "title": "רוצים לבדוק אם אפשר לייצר את זה",
+          "text": "השאירו שם, טלפון ותיאור קצר של העבודה, ונחזור אליכם בשעות הפעילות."
+        },
+        {
+          "type": "cta",
+          "title": "יש לכם רעיון, מידה או שרטוט",
+          "text": "שלחו אלינו את הפרטים ונחזור אליכם עם ייעוץ מקצועי ועם הצעת מחיר."
+        },
+        {
+          "type": "faq",
+          "variant": "dark",
+          "title": "שאלות נפוצות על עבודות מסגרות בהתאמה אישית",
+          "items": [
+            {
+              "q": "אפשר לייצר מוצר לפי שרטוט שלי?",
+              "a": "כן. אפשר להגיע עם שרטוט, עם סקיצה או רק עם תיאור של הצורך, ואנחנו משלימים את התכנון מול השימוש, המידות והחומר."
+            },
+            {
+              "q": "אתם מייצרים גם פריט בודד?",
+              "a": "כן. רוב העבודות בבית המלאכה הן ייצור אישי לפי דרישה, כולל פריט אחד. אין אצלנו קטלוג קבוע של מוצרי מדף."
+            },
+            {
+              "q": "באילו אזורים אתם נותנים שירות?",
+              "a": "בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא."
+            },
+            {
+              "q": "כמה זמן לוקח לייצר מוצר בהתאמה אישית?",
+              "a": "לוח הזמנים נקבע לפי המוצר, לפי החומר ולפי העומס בבית המלאכה. המועד נמסר בשלב ההצעה, והעבודה נמסרת בזמן שסוכם."
+            },
+            {
+              "q": "איך מקבלים הצעת מחיר?",
+              "a": "מתקשרים ל-072-2594285, שולחים הודעת וואטסאפ ל-050-9254010 או משאירים פרטים בטופס. נחזור אליכם עם שאלות השלמה ועם הצעה."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "מסגרות-בהתאמה-אישית",
+      "type": "service",
+      "title": "מסגרות בהתאמה אישית",
+      "order": 1,
+      "featured_image": "fabrication",
+      "excerpt": "עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי דרישת הלקוח ולפי המידות של המקום.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | מסגרות בהתאמה אישית",
+        "description": "מסגרות בהתאמה אישית בכפר סבא ובנווה ימין: עבודות מסגרות מיוחדות ולא סטנדרטיות, בייצור אישי לפי מידה, לפי שימוש ולפי החומר. 20 שנה ניסיון. חייגו 072-2594285",
+        "keyword": "מסגרות בהתאמה אישית"
       },
-      {
-       "title": "ייצור בבית המלאכה",
-       "text": "חיתוך, ריתוך והרכבה תחת בקרה על המידות.",
-       "icon": "wrench"
+      "sections": [
+        {
+          "type": "hero",
+          "title": "מסגרות בהתאמה אישית",
+          "lead": "מסגרות בהתאמה אישית הן עבודות שנבנות למקום אחד ולשימוש אחד: מידה שנמדדת באתר, חומר שנבחר לפי התנאים וייצור בבית המלאכה בנווה ימין.",
+          "image": "fabrication"
+        },
+        {
+          "type": "prose",
+          "html": "<p>מסגרות בהתאמה אישית הן עבודות מתכת שמתוכננות ומיוצרות עבור מקום מסוים ועבור שימוש מסוים, במקום להתאים את המקום למוצר קיים. אצלנו זו עיקר העבודה: הלקוח מגיע עם צורך, עם מידה או עם בעיה, ומקבל מוצר שנבנה בדיוק סביבם.</p><h2>מתי צריך עבודת מסגרות מיוחדת</h2><p>הפנייה מגיעה בדרך כלל כשמוצר סטנדרטי לא נכנס, לא מחזיק או לא נראה נכון. מידות לא שגרתיות, חיבור בין מתכת לחומר אחר, עומס שצריך לשאת, או פרט אדריכלי שמופיע בתוכנית ואין לו מוצר מדף. בכל אחד מהמקרים האלה הפתרון מתחיל במדידה ובתכנון, לא בקטלוג.</p><h2>איך עובדת אצלנו עבודת מסגרות בהתאמה אישית</h2><p>השלב הראשון הוא שיחה קצרה: מה צריך, לאיזה שימוש, באיזה מקום ומה התנאים שם. אחריה מגיעים למדידה כשצריך, ומתכננים את העבודה. התכנון כולל את המידות, את החומר, את עובי החתך ואת שיטת החיבור, כך שלא מתגלות הפתעות בשלב הייצור.</p><p>הייצור עצמו נעשה בבית המלאכה שלנו בנווה ימין: חיתוך, ריתוך, עיבוד והרכבה. אנחנו עובדים עם בקרה על המידות לאורך העבודה, כי בעבודה בהתאמה אישית סטייה קטנה בשלב מוקדם מתגלגלת לכל המוצר. בסיום מגיעה המסירה, במועד שנקבע מראש מול הלקוח.</p><h2>פרויקטים מורכבים לביצוע</h2><p>חלק מהעבודות שמגיעות אלינו הן כאלה שבתי מלאכה אחרים העדיפו לא לקחת: מידות חריגות, צורות שאינן ישרות, חיבורים שצריכים להישאר נקיים לעין, או דרישות דיוק שמגיעות מתחומים תעשייתיים. 20 שנה בתחום מאפשרות לנו להגיד מראש מה אפשר לייצר, מה כדאי לשנות בתכנון ומה המשמעות של כל בחירה על התוצאה ועל המחיר.</p><h2>מי מזמין אצלנו עבודות מסגרות</h2><p>לקוחות פרטיים שמחפשים פתרון לבית או לעסק, אדריכלים שצריכים שפרט בתוכנית ייצא לפועל בדיוק כפי שתוכנן, נגרים שמשלבים מתכת ברהיט או במבנה, וחברות משוק הרחפנים ומשוק התעופה שמגיעות עם מפרט משלהן. כל אחד מהם מקבל את אותו תהליך: אפיון, תכנון, ייצור ומסירה.</p><h2>מה כדאי להביא לשיחה הראשונה</h2><p>כל מה שיש: מידות, תמונה של המקום, שרטוט או סקיצה ביד. גם תיאור מילולי מספיק כדי להתחיל, ואת החסר נשלים יחד. ככל שהמידע מדויק יותר בשלב הזה, כך ההצעה מדויקת יותר ולוח הזמנים ברור יותר.</p><p>אפשר להמשיך ולקרוא על <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a>, השלב שבא לפני הייצור בכל עבודה כזו.</p>"
+        },
+        {
+          "type": "features",
+          "variant": "rows",
+          "columns": 2,
+          "title": "מה נכלל בעבודה",
+          "items": [
+            {
+              "title": "מדידה ואפיון",
+              "text": "בירור השימוש, המקום והתנאים לפני התכנון.",
+              "icon": "ruler"
+            },
+            {
+              "title": "בחירת חומר",
+              "text": "פרופיל, זוויתן, פח או מוט לפי העומס ולפי הגימור הנדרש.",
+              "icon": "award"
+            },
+            {
+              "title": "ייצור בבית המלאכה",
+              "text": "חיתוך, ריתוך והרכבה תחת בקרה על המידות.",
+              "icon": "wrench"
+            },
+            {
+              "title": "מסירה במועד",
+              "text": "מועד שנקבע מראש מול הלקוח ונמסר בזמן.",
+              "icon": "clock"
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "מתכננים עבודת מסגרות לא סטנדרטית",
+          "text": "ספרו לנו מה צריך, ונחזור אליכם עם ייעוץ והצעת מחיר."
+        },
+        {
+          "type": "faq",
+          "title": "שאלות נפוצות על מסגרות בהתאמה אישית",
+          "items": [
+            {
+              "q": "אתם מגיעים למדידה במקום?",
+              "a": "כשהעבודה דורשת מידות מדויקות של המקום, מגיעים למדידה לפני התכנון. בעבודות שבהן הלקוח מספק מידות או שרטוט, אפשר להתחיל בלי ביקור."
+            },
+            {
+              "q": "אפשר לשלב מתכת עם עץ או עם חומר אחר?",
+              "a": "כן. חלק מהעבודות מגיעות דרך נגרים ומשלבות מתכת עם עץ, ואת שיטת החיבור בין החומרים קובעים בשלב התכנון."
+            },
+            {
+              "q": "מה ההבדל בין עבודה בהתאמה אישית למוצר מדף?",
+              "a": "מוצר מדף מיוצר במידה קבועה ומראש. עבודה בהתאמה אישית מתוכננת למקום ולשימוש שלכם, ולכן המידה, החומר והגימור נבחרים בכל פעם מחדש."
+            },
+            {
+              "q": "אפשר לקבל הצעת מחיר לפני התחלת העבודה?",
+              "a": "כן. ההצעה נמסרת אחרי האפיון, וכוללת את היקף העבודה ואת מועד המסירה."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ייצור-מוצרי-מתכת-ייחודיים",
+      "type": "service",
+      "title": "ייצור מוצרי מתכת ייחודיים",
+      "order": 2,
+      "featured_image": "sparks",
+      "excerpt": "ייצור מוצרי מתכת ייחודיים בהתאם לדרישת הלקוח, מפריט בודד ועד סדרה קטנה.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | ייצור מוצרי מתכת ייחודיים",
+        "description": "ייצור מוצרי מתכת בהתאם לדרישת הלקוח: פריט בודד או סדרה קטנה, בעיבוד מתכות מתקדם ובדגש על איכות החומרים. בית מלאכה בנווה ימין. להצעת מחיר חייגו 072-2594285",
+        "keyword": "ייצור מוצרי מתכת"
       },
-      {
-       "title": "מסירה במועד",
-       "text": "מועד שנקבע מראש מול הלקוח ונמסר בזמן.",
-       "icon": "clock"
+      "sections": [
+        {
+          "type": "hero",
+          "title": "ייצור מוצרי מתכת ייחודיים",
+          "lead": "ייצור מוצרי מתכת בהתאם לדרישת הלקוח: מוצר שאין לו מקבילה בקטלוג, שמיוצר בבית המלאכה בנווה ימין לפי מפרט, מידה וחומר שנקבעו מראש.",
+          "image": "sparks"
+        },
+        {
+          "type": "prose",
+          "html": "<p>ייצור מוצרי מתכת ייחודיים הוא ההמשך הטבעי של עבודת המסגרות: במקום להתאים מוצר קיים, מייצרים אותו מההתחלה לפי הדרישה. זה יכול להיות פריט אחד עבור לקוח פרטי, רכיב שחוזר בכמה עותקים עבור חברה, או חלק שמשתלב במוצר גדול יותר.</p><h2>מה נחשב מוצר מתכת ייחודי</h2><p>כל מוצר שהמידה, הצורה או השימוש שלו לא מאפשרים לקנות אותו מוכן. לעיתים זה עניין של מידה חריגה, לעיתים של עומס שצריך לשאת, ולעיתים של דרישת דיוק שמגיעה מתחום תעשייתי. בכל המקרים האלה התכנון והייצור נעשים יחד, כדי שהמוצר יתאים לשימוש ולא רק לשרטוט.</p><h2>עיבוד מתכות מתקדם</h2><p>העבודה כוללת חיתוך, כיפוף, ריתוך, עיבוד והרכבה, לפי מה שהמוצר דורש. הבחירה בין שיטות החיבור אינה טכנית בלבד: היא משפיעה על החוזק, על המראה הסופי ועל האפשרות לפרק ולהרכיב בהמשך. לכן היא נקבעת בשלב התכנון ולא תוך כדי ייצור.</p><h2>איכות החומרים</h2><p>איכות החומר קובעת כמה המוצר יחזיק ואיך הוא ייראה אחרי שנה. אנחנו בוחרים את חומר הגלם לפי התנאים שבהם המוצר יעמוד: בפנים או בחוץ, בעומס או בעומס משתנה, במגע עם חומרים אחרים או לבד. העובי והגימור נגזרים מאותה בחירה.</p><h2>פריט בודד או סדרה קטנה</h2><p>יש הבדל בין ייצור של פריט אחד לבין ייצור של כמה עותקים זהים. בפריט בודד ההשקעה היא בתכנון ובהתאמה למקום. בסדרה קטנה צריך לוודא שכל יחידה יוצאת זהה לקודמת, ולכן הדיוק נבדק לאורך הייצור ולא רק בסופו. שני סוגי העבודה נעשים אצלנו באותו בית מלאכה.</p><h2>הלקוחות שמזמינים ייצור</h2><p>לקוחות פרטיים, אדריכלים, נגרים וחברות משוק הרחפנים ומשוק התעופה. החברות מגיעות בדרך כלל עם מפרט מוכן ועם דרישת דיוק, והלקוחות הפרטיים מגיעים עם צורך ועם מידות. כל אחד מהם מקבל את אותו ליווי של בעל המקצוע לאורך הדרך.</p><p>אם עוד אין מפרט או שרטוט, השלב המתאים הוא <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a>. אם מדובר בעבודה שמותקנת במקום מסוים, ראו <a href=\"/מסגרות-בהתאמה-אישית/\">מסגרות בהתאמה אישית</a>.</p>"
+        },
+        {
+          "type": "steps",
+          "variant": "stack",
+          "title": "שלבי הייצור",
+          "items": [
+            {
+              "title": "מפרט ומידות",
+              "text": "מקבלים או בונים יחד את המפרט: מידות, חומר, עובי ושימוש."
+            },
+            {
+              "title": "הכנה וחיתוך",
+              "text": "בוחרים את חומר הגלם המתאים וחותכים אותו למידות העבודה."
+            },
+            {
+              "title": "ריתוך והרכבה",
+              "text": "מחברים ומרכיבים לפי שיטת החיבור שנקבעה בתכנון."
+            },
+            {
+              "title": "בדיקה ומסירה",
+              "text": "בודקים מידות וגימור, ומוסרים את המוצר המוגמר."
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "יש מוצר שצריך לייצר",
+          "text": "שלחו מפרט, שרטוט או תיאור, ונחזור אליכם עם הצעת מחיר."
+        },
+        {
+          "type": "faq",
+          "title": "שאלות נפוצות על ייצור מוצרי מתכת",
+          "items": [
+            {
+              "q": "אתם מייצרים גם כמות קטנה של אותו פריט?",
+              "a": "כן. אפשר להזמין פריט בודד או סדרה קטנה של יחידות זהות, והדיוק בין היחידות נבדק לאורך הייצור."
+            },
+            {
+              "q": "אילו חומרים נכנסים לעבודה?",
+              "a": "פרופילים, זוויתנים, פחים ומוטות בעוביים שונים. החומר נבחר לפי השימוש של המוצר ולפי התנאים שבהם הוא יעמוד."
+            },
+            {
+              "q": "אפשר להזמין ייצור לפי מפרט של החברה שלנו?",
+              "a": "כן. חברות מגיעות אלינו עם מפרט ועם דרישות דיוק, ואנחנו עובדים לפיהם ומעירים מראש אם משהו בתכנון דורש התאמה."
+            },
+            {
+              "q": "מה קורה אם צריך שינוי אחרי שהתחלנו?",
+              "a": "ככל שהשינוי מגיע מוקדם יותר, כך הוא פשוט יותר. לכן אנחנו סוגרים מפרט ברור לפני הייצור ומעדכנים את הלקוח בכל נקודה שבה נדרשת החלטה."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "תכנון-מוצרי-מתכת",
+      "type": "service",
+      "title": "תכנון מוצרי מתכת",
+      "order": 3,
+      "featured_image": "drawing",
+      "excerpt": "תכנון של מוצרי מתכת מותאמים אישית לפי דרישת הלקוח, לפני שמתחילים לייצר.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | תכנון מוצרי מתכת",
+        "description": "תכנון מוצרי מתכת מותאמים אישית לפי דרישת הלקוח: מידות, חומר, שיטת חיבור וגימור נקבעים לפני הייצור. ייעוץ מקצועי מבית מלאכה בנווה ימין. חייגו 072-2594285",
+        "keyword": "תכנון מוצרי מתכת"
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "title": "תכנון מוצרי מתכת",
+          "lead": "תכנון מוצרי מתכת מותאמים אישית לפי דרישת הלקוח: השלב שבו נקבעים המידות, החומר, שיטת החיבור והגימור, עוד לפני שנחתך החומר הראשון.",
+          "image": "drawing"
+        },
+        {
+          "type": "prose",
+          "html": "<p>רוב הבעיות במוצר מתכת נולדות בתכנון ולא בייצור. מידה שנמדדה פעם אחת בלבד, חומר דק מדי לעומס, או חיבור שלא לוקח בחשבון איך מרכיבים את המוצר במקום. לכן אנחנו מתייחסים לתכנון כשלב נפרד בעבודה, גם כשהלקוח מגיע עם רעיון ברור.</p><h2>מה נקבע בשלב התכנון</h2><p>המידות המדויקות ואופן המדידה שלהן, סוג חומר הגלם והעובי שלו, שיטת החיבור בין החלקים, סדר ההרכבה, והגימור. לכל אחת מההחלטות האלה יש השפעה על החוזק, על המראה, על לוח הזמנים ועל המחיר, והן מוצגות ללקוח לפני שמתחילים.</p><h2>מרעיון לשרטוט</h2><p>לא כל לקוח מגיע עם שרטוט, וזה בסדר. אפשר להתחיל מתיאור, מתמונה של המקום או מסקיצה ביד. מתוכם בונים תכנון שאפשר לייצר לפיו, ומסבירים לאורך הדרך מה אפשר, מה כדאי לשנות ולמה. ללקוחות שמגיעים עם תוכנית אדריכלית או עם מפרט, התכנון מתמקד בהתאמת הפרט לייצור בפועל.</p><h2>תכנון מול אילוצים אמיתיים</h2><p>מוצר מתכת לא עומד לבדו: הוא מתחבר לקיר, לרצפה, לרהיט או למוצר אחר, והוא צריך להיכנס דרך דלת או מעלית. התכנון לוקח בחשבון גם את אופן ההובלה וההרכבה, ולא רק את המוצר הגמור. זו אחת הסיבות שבגללן עדיף שהתכנון והייצור יהיו באותו מקום.</p><h2>ייעוץ מקצועי לפני החלטה</h2><p>לפעמים התוצאה של שלב התכנון היא שינוי ברעיון המקורי: חומר אחר, חלוקה לשני חלקים במקום אחד, או שיטת חיבור שמאפשרת פירוק בעתיד. 20 שנה בתחום מאפשרות להגיד את זה מראש ולא אחרי שהמוצר כבר יוצר.</p><p>כשהתכנון סגור, ממשיכים אל <a href=\"/ייצור-מוצרי-מתכת-ייחודיים/\">ייצור מוצרי מתכת ייחודיים</a> באותו בית מלאכה.</p>"
+        },
+        {
+          "type": "features",
+          "columns": 3,
+          "title": "מה מקבלים בשלב התכנון",
+          "items": [
+            {
+              "title": "מידות סגורות",
+              "text": "מידות שנבדקו מול המקום ומול השימוש.",
+              "icon": "ruler"
+            },
+            {
+              "title": "בחירת חומר",
+              "text": "סוג החומר והעובי שמתאימים לעומס ולתנאים.",
+              "icon": "shield"
+            },
+            {
+              "title": "שיטת חיבור",
+              "text": "איך מתחברים החלקים ואיך מרכיבים אותם במקום.",
+              "icon": "tools"
+            },
+            {
+              "title": "לוח זמנים",
+              "text": "מועד ייצור ומסירה שנקבע לפני תחילת העבודה.",
+              "icon": "calendar"
+            },
+            {
+              "title": "הצעת מחיר",
+              "text": "הצעה שמבוססת על תכנון סגור ולא על הערכה.",
+              "icon": "document"
+            },
+            {
+              "title": "ייעוץ מקצועי",
+              "text": "מה אפשר לייצר, מה כדאי לשנות ולמה.",
+              "icon": "chat"
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "יש רעיון שעוד לא הפך לתוכנית",
+          "text": "דברו איתנו, ונבנה יחד תכנון שאפשר לייצר לפיו."
+        },
+        {
+          "type": "faq",
+          "title": "שאלות נפוצות על תכנון מוצרי מתכת",
+          "items": [
+            {
+              "q": "אפשר להזמין תכנון בלי ייצור?",
+              "a": "הפנייה הרגילה אלינו היא לתכנון ולייצור יחד, כי התכנון נעשה מתוך היכרות עם מה שאפשר לייצר בבית המלאכה. על בקשה לתכנון בלבד אפשר לדבר איתנו בטלפון."
+            },
+            {
+              "q": "אני לא יודע להסביר בדיוק מה אני רוצה, אפשר בכל זאת להתחיל?",
+              "a": "זה המצב הנפוץ. מתחילים מהשימוש ומהמקום, ומשם מגיעים למידות ולחומר. אפשר להביא תמונה, סקיצה או דוגמה שראיתם."
+            },
+            {
+              "q": "אני אדריכל ויש לי פרט בתוכנית, מה אתם צריכים ממני?",
+              "a": "את הפרט, את המידות ואת ההקשר שבו הוא מותקן. נעבור עליו ונעיר אם משהו דורש התאמה לייצור בפועל."
+            },
+            {
+              "q": "התכנון משנה את המחיר?",
+              "a": "תכנון סגור מאפשר הצעת מחיר מדויקת במקום הערכה, וגם מונע שינויים יקרים באמצע הייצור."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "אודות",
+      "type": "about",
+      "title": "אודות",
+      "order": 4,
+      "featured_image": "workshop",
+      "excerpt": "20 שנה של עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית, מבית מלאכה בנווה ימין.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | אודות",
+        "description": "מסגרייה בנווה ימין בניהול אופיר אלחנתי: 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית, לקוחות פרטיים, אדריכלים, נגרים וחברות תעשייה. 072-2594285",
+        "keyword": "מסגרייה בנווה ימין"
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "title": "אודות מסגרית Dream from Steel",
+          "lead": "מסגרייה בנווה ימין בניהולו של אופיר אלחנתי, עם 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית.",
+          "image": "workshop"
+        },
+        {
+          "type": "prose",
+          "html": "<p>מסגרית Dream from Steel עוסקת בעבודות מסגרות ובייצור מוצרי מתכת כבר 20 שנה. הניסיון שנצבר לאורך השנים מאפשר להתמודד עם כל סוג של פרויקט מסגרות וייצור מוצרים מתכתיים, כולל עבודות מורכבות לביצוע.</p><h2>מה מייחד את העבודה כאן</h2><p>העסק לא מחזיק קטלוג של מוצרי מדף. כל עבודה היא ייצור אישי: מוצר שמתוכנן לפי הצורך של הלקוח, לפי המידות של המקום ולפי החומר שמתאים לשימוש. זה נכון לפריט בודד לבית פרטי ונכון לרכיב שמיוצר לפי מפרט של חברה.</p><h2>תכנון, ייצור ומסירה במקום אחד</h2><p>כל פרויקט מטופל באופן אישי, מהתכנון ועד המוצר המוגמר. העובדה שהתכנון והייצור נמצאים תחת אותה קורת גג מקצרת את הדרך: מה שמוחלט בשלב התכנון מגיע לבית המלאכה בלי תיווך, והדיוק נשמר לאורך הייצור.</p><h2>מי הלקוחות</h2><p>לקוחות פרטיים, אדריכלים, נגרים, חברות משוק הרחפנים וחברות משוק התעופה. כל קהל מביא דרישה אחרת: אדריכל מביא פרט מתוכנית, נגר מביא שילוב של מתכת ועץ, וחברה תעשייתית מביאה מפרט ודרישת דיוק. התהליך נשאר זהה, וההתאמה נעשית לפי מה שכל עבודה דורשת.</p><h2>איפה אנחנו</h2><p>בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא. שעות הפעילות הן א׳–ה׳ בין 07:00 ל-20:00.</p>"
+        },
+        {
+          "type": "split",
+          "variant": "frame",
+          "image": "materials",
+          "image_side": "end",
+          "title": "דגש על איכות החומרים",
+          "text": "<p>החומר שנכנס לעבודה נבחר לפי השימוש ולפי התנאים שבהם המוצר יעמוד, ולא לפי מה שזמין באותו רגע. זו הסיבה שבגללה שלב התכנון קודם לרכש ולא להפך.</p>",
+          "points": [
+            "בחירת חומר גלם לפי השימוש",
+            "עיבוד מתכות מתקדם בבית המלאכה",
+            "בקרה על המידות לאורך הייצור"
+          ]
+        },
+        {
+          "type": "features",
+          "variant": "rows",
+          "columns": 2,
+          "title": "איך אנחנו עובדים",
+          "items": [
+            {
+              "title": "ליווי אישי",
+              "text": "בעל המקצוע מלווה את העבודה מהשיחה הראשונה ועד המסירה.",
+              "icon": "user"
+            },
+            {
+              "title": "התאמה מלאה",
+              "text": "כל מוצר נבנה לפי דרישת הלקוח ולא לפי מידה קיימת.",
+              "icon": "wrench"
+            },
+            {
+              "title": "ביצוע מדויק",
+              "text": "בקרה על מידות וגימור בכל שלב של העבודה.",
+              "icon": "target"
+            },
+            {
+              "title": "עמידה במועד",
+              "text": "מועד מסירה שנקבע מראש מול הלקוח.",
+              "icon": "clock"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "צור-קשר",
+      "type": "contact",
+      "title": "צור קשר",
+      "order": 5,
+      "excerpt": "טלפון, וואטסאפ, כתובת בית המלאכה ושעות הפעילות של מסגרית Dream from Steel.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | צור קשר",
+        "description": "צור קשר עם מסגרית Dream from Steel: טלפון 072-2594285, וואטסאפ 050-9254010, בית המלאכה ברחוב הרימון 89 בנווה ימין. פתוח בימים א׳–ה׳ בין 07:00 ל-20:00.",
+        "keyword": "צור קשר מסגרית Dream from Steel"
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "title": "צור קשר",
+          "lead": "אפשר להתקשר, לשלוח וואטסאפ או להשאיר פרטים בטופס. נחזור אליכם בשעות הפעילות עם ייעוץ והצעת מחיר."
+        },
+        {
+          "type": "contact",
+          "title": "פרטי התקשרות",
+          "text": "בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא. ככל שתפרטו יותר על העבודה, כך נוכל לחזור אליכם עם תשובה מדויקת יותר.",
+          "map": true
+        }
+      ]
+    },
+    {
+      "key": "בלוג",
+      "type": "blog",
+      "title": "בלוג",
+      "order": 6,
+      "excerpt": "מדריכים קצרים על עבודות מסגרות, בחירת חומרי גלם ותהליך הייצור של מוצר מתכת בהתאמה אישית.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | בלוג",
+        "description": "מדריכים על עבודות מסגרות ועל ייצור מוצרי מתכת בהתאמה אישית: איך בוחרים חומר גלם, מה כדאי להכין לפני הזמנת עבודה ואיך נראה המסלול מהשרטוט ועד המוצר המוגמר.",
+        "keyword": "מדריכים לעבודות מתכת"
       }
-     ]
-    },
-    {
-     "type": "cta",
-     "title": "מתכננים עבודת מסגרות לא סטנדרטית",
-     "text": "ספרו לנו מה צריך, ונחזור אליכם עם ייעוץ והצעת מחיר."
-    },
-    {
-     "type": "faq",
-     "title": "שאלות נפוצות על מסגרות בהתאמה אישית",
-     "items": [
-      {
-       "q": "אתם מגיעים למדידה במקום?",
-       "a": "כשהעבודה דורשת מידות מדויקות של המקום, מגיעים למדידה לפני התכנון. בעבודות שבהן הלקוח מספק מידות או שרטוט, אפשר להתחיל בלי ביקור."
-      },
-      {
-       "q": "אפשר לשלב מתכת עם עץ או עם חומר אחר?",
-       "a": "כן. חלק מהעבודות מגיעות דרך נגרים ומשלבות מתכת עם עץ, ואת שיטת החיבור בין החומרים קובעים בשלב התכנון."
-      },
-      {
-       "q": "מה ההבדל בין עבודה בהתאמה אישית למוצר מדף?",
-       "a": "מוצר מדף מיוצר במידה קבועה ומראש. עבודה בהתאמה אישית מתוכננת למקום ולשימוש שלכם, ולכן המידה, החומר והגימור נבחרים בכל פעם מחדש."
-      },
-      {
-       "q": "אפשר לקבל הצעת מחיר לפני התחלת העבודה?",
-       "a": "כן. ההצעה נמסרת אחרי האפיון, וכוללת את היקף העבודה ואת מועד המסירה."
-      }
-     ]
     }
-   ]
-  },
-  {
-   "key": "ייצור-מוצרי-מתכת-ייחודיים",
-   "type": "service",
-   "title": "ייצור מוצרי מתכת ייחודיים",
-   "order": 2,
-   "featured_image": "sparks",
-   "excerpt": "ייצור מוצרי מתכת ייחודיים בהתאם לדרישת הלקוח, מפריט בודד ועד סדרה קטנה.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | ייצור מוצרי מתכת ייחודיים",
-    "description": "ייצור מוצרי מתכת בהתאם לדרישת הלקוח: פריט בודד או סדרה קטנה, בעיבוד מתכות מתקדם ובדגש על איכות החומרים. בית מלאכה בנווה ימין. להצעת מחיר חייגו 072-2594285",
-    "keyword": "ייצור מוצרי מתכת"
-   },
-   "sections": [
+  ],
+  "posts": [
     {
-     "type": "hero",
-     "title": "ייצור מוצרי מתכת ייחודיים",
-     "lead": "ייצור מוצרי מתכת בהתאם לדרישת הלקוח: מוצר שאין לו מקבילה בקטלוג, שמיוצר בבית המלאכה בנווה ימין לפי מפרט, מידה וחומר שנקבעו מראש.",
-     "image": "sparks"
+      "slug": "איך-בוחרים-חומר-גלם-לעבודת-מתכת",
+      "title": "איך בוחרים חומר גלם לעבודת מתכת",
+      "category": "עבודות-מתכת",
+      "image": "materials",
+      "related_page": "תכנון-מוצרי-מתכת",
+      "date": "2026-10-12",
+      "excerpt": "פרופיל, זוויתן, פח או מוט: מה מבדיל ביניהם, ואיך בוחרים את החומר והעובי לפי השימוש של המוצר.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | בחירת חומר גלם לעבודת מתכת",
+        "description": "מדריך לבחירת חומר גלם לעבודת מתכת: מה ההבדל בין פרופיל, זוויתן, פח ומוט, איך העובי נגזר מהעומס, ומה חשוב לבדוק עוד לפני הזמנת עבודת מסגרות בהתאמה אישית.",
+        "keyword": "בחירת חומר גלם לעבודת מתכת"
+      },
+      "html": "<p>בחירת חומר גלם לעבודת מתכת היא ההחלטה שמשפיעה הכי הרבה על התוצאה: על החוזק, על המראה ועל כמה שנים המוצר יחזיק. היא נעשית בשלב התכנון, לפני שנחתך החומר הראשון.</p><h2>ארבעת סוגי החומר הנפוצים</h2><p><strong>פרופיל</strong> הוא חתך חלול, מרובע או מלבני. הוא נותן חוזק יחסית למשקל ולכן משמש הרבה במסגרות ובמבנים. <strong>זוויתן</strong> הוא חתך בצורת האות L, ומשמש לחיזוק פינות, למסגור ולחיבור בין מישורים. <strong>פח</strong> משמש למשטחים, לכיסויים ולחלקים מכופפים. <strong>מוט</strong> הוא חתך מלא, עגול או מרובע, ומשמש כשצריך חוזק מלא בחתך קטן.</p><h2>העובי נגזר מהעומס</h2><p>אותו פרופיל בשני עוביים שונים מתנהג אחרת לגמרי. חומר דק מדי יתעוות תחת עומס או עם הזמן, וחומר עבה מדי מייקר את העבודה ומוסיף משקל שלא תמיד צריך. לכן בשלב התכנון שואלים מה המוצר נושא, האם העומס קבוע או משתנה, והאם מישהו עומד עליו או נשען עליו.</p><h2>בפנים או בחוץ</h2><p>מוצר שעומד בחוץ חשוף לגשם, לשמש ולהפרשי טמפרטורה. זה משפיע על בחירת החומר ועל הגימור, ולעיתים גם על שיטת החיבור. מוצר שנמצא בפנים מושפע פחות מהתנאים, ולכן אפשר לשים דגש גדול יותר על המראה.</p><h2>מה שחשוב לבדוק לפני שמזמינים</h2><ul><li>לאיזה שימוש המוצר נועד, ומי משתמש בו</li><li>איפה הוא עומד: בפנים, בחוץ, על קיר או על רצפה</li><li>מה המידות של המקום, ואיך מכניסים את המוצר לשם</li><li>האם המוצר צריך להיות ניתן לפירוק בעתיד</li><li>איזה גימור מתאים לסביבה שבה הוא נמצא</li></ul><h2>למה זה שייך לשלב התכנון</h2><p>אחרי שהחומר נחתך קשה לחזור אחורה. כשהחומר, העובי ושיטת החיבור נקבעים מראש, ההצעה מדויקת יותר ואין הפתעות באמצע העבודה. זו הסיבה שבגללה <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a> הוא שלב נפרד בעבודה ולא חלק מהייצור.</p>",
+      "faq": [
+        {
+          "q": "מה ההבדל בין פרופיל למוט?",
+          "a": "פרופיל הוא חתך חלול ומוט הוא חתך מלא. הפרופיל נותן חוזק טוב ביחס למשקל, והמוט נותן חוזק מלא בחתך קטן יותר."
+        },
+        {
+          "q": "איך יודעים איזה עובי צריך?",
+          "a": "העובי נגזר מהעומס שהמוצר נושא ומהתנאים שבהם הוא עומד. את זה קובעים בשלב התכנון, אחרי שמבררים את השימוש."
+        },
+        {
+          "q": "אפשר לשלב כמה סוגי חומר במוצר אחד?",
+          "a": "כן, וזה נפוץ. חשוב שהשילוב ייבחר בתכנון, כי הוא משפיע על שיטת החיבור ועל הגימור."
+        }
+      ]
     },
     {
-     "type": "prose",
-     "html": "<p>ייצור מוצרי מתכת ייחודיים הוא ההמשך הטבעי של עבודת המסגרות: במקום להתאים מוצר קיים, מייצרים אותו מההתחלה לפי הדרישה. זה יכול להיות פריט אחד עבור לקוח פרטי, רכיב שחוזר בכמה עותקים עבור חברה, או חלק שמשתלב במוצר גדול יותר.</p><h2>מה נחשב מוצר מתכת ייחודי</h2><p>כל מוצר שהמידה, הצורה או השימוש שלו לא מאפשרים לקנות אותו מוכן. לעיתים זה עניין של מידה חריגה, לעיתים של עומס שצריך לשאת, ולעיתים של דרישת דיוק שמגיעה מתחום תעשייתי. בכל המקרים האלה התכנון והייצור נעשים יחד, כדי שהמוצר יתאים לשימוש ולא רק לשרטוט.</p><h2>עיבוד מתכות מתקדם</h2><p>העבודה כוללת חיתוך, כיפוף, ריתוך, עיבוד והרכבה, לפי מה שהמוצר דורש. הבחירה בין שיטות החיבור אינה טכנית בלבד: היא משפיעה על החוזק, על המראה הסופי ועל האפשרות לפרק ולהרכיב בהמשך. לכן היא נקבעת בשלב התכנון ולא תוך כדי ייצור.</p><h2>איכות החומרים</h2><p>איכות החומר קובעת כמה המוצר יחזיק ואיך הוא ייראה אחרי שנה. אנחנו בוחרים את חומר הגלם לפי התנאים שבהם המוצר יעמוד: בפנים או בחוץ, בעומס או בעומס משתנה, במגע עם חומרים אחרים או לבד. העובי והגימור נגזרים מאותה בחירה.</p><h2>פריט בודד או סדרה קטנה</h2><p>יש הבדל בין ייצור של פריט אחד לבין ייצור של כמה עותקים זהים. בפריט בודד ההשקעה היא בתכנון ובהתאמה למקום. בסדרה קטנה צריך לוודא שכל יחידה יוצאת זהה לקודמת, ולכן הדיוק נבדק לאורך הייצור ולא רק בסופו. שני סוגי העבודה נעשים אצלנו באותו בית מלאכה.</p><h2>הלקוחות שמזמינים ייצור</h2><p>לקוחות פרטיים, אדריכלים, נגרים וחברות משוק הרחפנים ומשוק התעופה. החברות מגיעות בדרך כלל עם מפרט מוכן ועם דרישת דיוק, והלקוחות הפרטיים מגיעים עם צורך ועם מידות. כל אחד מהם מקבל את אותו ליווי של בעל המקצוע לאורך הדרך.</p><p>אם עוד אין מפרט או שרטוט, השלב המתאים הוא <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a>. אם מדובר בעבודה שמותקנת במקום מסוים, ראו <a href=\"/מסגרות-בהתאמה-אישית/\">מסגרות בהתאמה אישית</a>.</p>"
+      "slug": "מה-להכין-לפני-הזמנת-עבודת-מסגרות",
+      "title": "מה להכין לפני הזמנת עבודת מסגרות",
+      "category": "עבודות-מתכת",
+      "image": "drawing",
+      "related_page": "מסגרות-בהתאמה-אישית",
+      "date": "2026-10-19",
+      "excerpt": "חמישה דברים שכדאי להביא לשיחה הראשונה עם המסגרייה, כדי לקבל הצעת מחיר מדויקת ולוח זמנים ברור.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | הזמנת עבודת מסגרות: מה להכין",
+        "description": "מה כדאי להכין לפני הזמנת עבודת מסגרות בהתאמה אישית: הגדרת שימוש, מידות, תמונות של המקום, שרטוט ואילוצי הרכבה. כך מקבלים הצעה מדויקת ולוח זמנים ברור יותר.",
+        "keyword": "הזמנת עבודת מסגרות"
+      },
+      "html": "<p>הזמנת עבודת מסגרות בהתאמה אישית מתחילה בשיחה. ככל שהמידע בשיחה הזו מדויק יותר, כך ההצעה מדויקת יותר ולוח הזמנים ברור יותר. אלה הדברים שכדאי להכין מראש.</p><h2>1. מה המוצר צריך לעשות</h2><p>זו השאלה הראשונה ולא המידות. מוצר שנועד לשאת משקל, מוצר שנועד להפריד בין שני חללים ומוצר שנועד להחזיק משהו קל נראים אחרת לגמרי, גם אם המידות זהות. תיאור קצר של השימוש מכוון את כל שאר ההחלטות.</p><h2>2. מידות, גם אם הן לא מדויקות</h2><p>מידות ראשוניות מספיקות כדי להתחיל. אפשר למדוד בסרט מדידה ולציין מה נמדד בדיוק ומה בערך. בעבודות שדורשות התאמה מלאה למקום, מגיעים למדידה לפני התכנון כדי לסגור את המידות הסופיות.</p><h2>3. תמונות של המקום</h2><p>תמונה אחת של המקום חוסכת הרבה שאלות. היא מראה את הסביבה, את החומרים שמסביב ואת הדרך שבה המוצר יתחבר למה שכבר נמצא שם. כדאי לצלם גם מרחוק וגם מקרוב.</p><h2>4. שרטוט או סקיצה, אם יש</h2><p>אדריכלים ונגרים מגיעים בדרך כלל עם פרט או עם תוכנית. לקוחות פרטיים לא חייבים: סקיצה ביד או תמונה של משהו דומה שראיתם מספיקות כדי להסביר את הכיוון. את ההמשך משלימים יחד בשלב התכנון.</p><h2>5. אילוצי הרכבה</h2><p>המוצר צריך להגיע למקום שלו. דלת צרה, מדרגות, מעלית קטנה או חניה רחוקה משפיעים על התכנון, ולעיתים מובילים לחלוקה של המוצר לשני חלקים שמורכבים באתר. עדיף לדעת את זה מראש ולא ביום המסירה.</p><h2>מה קורה אחרי השיחה</h2><p>אחרי שהמידע נאסף, עוברים לתכנון: מידות, חומר, עובי, שיטת חיבור וגימור. רק אז נמסרת הצעת מחיר ומועד. אפשר לקרוא עוד על <a href=\"/מסגרות-בהתאמה-אישית/\">מסגרות בהתאמה אישית</a> ועל מה שנכלל בעבודה.</p>",
+      "faq": [
+        {
+          "q": "אני לא יודע למדוד, זו בעיה?",
+          "a": "לא. אפשר להתחיל מתיאור ומתמונות, ובעבודות שדורשות דיוק מגיעים למדידה לפני התכנון."
+        },
+        {
+          "q": "חייבים שרטוט כדי להזמין?",
+          "a": "לא. סקיצה ביד או תיאור מילולי מספיקים כדי להתחיל, והתכנון נבנה מהם."
+        },
+        {
+          "q": "מתי מקבלים מועד מסירה?",
+          "a": "המועד נמסר יחד עם הצעת המחיר, אחרי שהתכנון סגור."
+        }
+      ]
     },
     {
-     "type": "steps",
-     "variant": "stack",
-     "title": "שלבי הייצור",
-     "items": [
-      {
-       "title": "מפרט ומידות",
-       "text": "מקבלים או בונים יחד את המפרט: מידות, חומר, עובי ושימוש."
+      "slug": "מהשרטוט-למוצר-המוגמר",
+      "title": "מהשרטוט למוצר המוגמר",
+      "category": "עבודות-מתכת",
+      "image": "weld",
+      "related_page": "ייצור-מוצרי-מתכת-ייחודיים",
+      "date": "2026-10-26",
+      "excerpt": "איך נראה המסלול של מוצר מתכת בבית המלאכה, משלב המפרט ועד הבדיקה האחרונה לפני המסירה.",
+      "seo": {
+        "title": "מסגרית Dream from Steel | מהשרטוט עד המוצר המוגמר",
+        "description": "תהליך ייצור מוצר מתכת שלב אחר שלב: מפרט ומידות, בחירת חומר גלם, חיתוך, ריתוך והרכבה, גימור, בדיקת מידות ומסירה. מה נבדק בכל שלב, ולמה הסדר הזה כל כך חשוב.",
+        "keyword": "תהליך ייצור מוצר מתכת"
       },
-      {
-       "title": "הכנה וחיתוך",
-       "text": "בוחרים את חומר הגלם המתאים וחותכים אותו למידות העבודה."
-      },
-      {
-       "title": "ריתוך והרכבה",
-       "text": "מחברים ומרכיבים לפי שיטת החיבור שנקבעה בתכנון."
-      },
-      {
-       "title": "בדיקה ומסירה",
-       "text": "בודקים מידות וגימור, ומוסרים את המוצר המוגמר."
-      }
-     ]
-    },
-    {
-     "type": "cta",
-     "title": "יש מוצר שצריך לייצר",
-     "text": "שלחו מפרט, שרטוט או תיאור, ונחזור אליכם עם הצעת מחיר."
-    },
-    {
-     "type": "faq",
-     "title": "שאלות נפוצות על ייצור מוצרי מתכת",
-     "items": [
-      {
-       "q": "אתם מייצרים גם כמות קטנה של אותו פריט?",
-       "a": "כן. אפשר להזמין פריט בודד או סדרה קטנה של יחידות זהות, והדיוק בין היחידות נבדק לאורך הייצור."
-      },
-      {
-       "q": "אילו חומרים נכנסים לעבודה?",
-       "a": "פרופילים, זוויתנים, פחים ומוטות בעוביים שונים. החומר נבחר לפי השימוש של המוצר ולפי התנאים שבהם הוא יעמוד."
-      },
-      {
-       "q": "אפשר להזמין ייצור לפי מפרט של החברה שלנו?",
-       "a": "כן. חברות מגיעות אלינו עם מפרט ועם דרישות דיוק, ואנחנו עובדים לפיהם ומעירים מראש אם משהו בתכנון דורש התאמה."
-      },
-      {
-       "q": "מה קורה אם צריך שינוי אחרי שהתחלנו?",
-       "a": "ככל שהשינוי מגיע מוקדם יותר, כך הוא פשוט יותר. לכן אנחנו סוגרים מפרט ברור לפני הייצור ומעדכנים את הלקוח בכל נקודה שבה נדרשת החלטה."
-      }
-     ]
+      "html": "<p>תהליך ייצור מוצר מתכת נראה מבחוץ כמו שלב אחד: מזמינים ומקבלים. בפועל יש כאן כמה תחנות, ולכל אחת מהן יש נקודת בדיקה משלה. הנה המסלול כפי שהוא עובר בבית המלאכה.</p><h2>מפרט ומידות</h2><p>בתחנה הראשונה סוגרים מה בדיוק מייצרים: מידות, חומר, עובי, שיטת חיבור וגימור. לקוח שמגיע עם מפרט מוכן עובר עליו יחד איתנו, ולקוח שמגיע עם צורך בלבד בונה את המפרט בשלב התכנון. בלי מפרט סגור אי אפשר לתת הצעה מדויקת.</p><h2>הכנת החומר וחיתוך</h2><p>בוחרים את חומר הגלם לפי מה שנקבע, וחותכים אותו למידות העבודה. בשלב הזה כבר נבדקות המידות מול התכנון, כי סטייה קטנה בחיתוך מתגלגלת הלאה לכל ההרכבה.</p><h2>ריתוך והרכבה</h2><p>החלקים מחוברים לפי שיטת החיבור שנקבעה. סדר ההרכבה אינו מקרי: הוא נקבע כך שאפשר יהיה להגיע לכל נקודת חיבור, ושהמוצר יישאר ישר לאורך העבודה. בעבודות שמורכבות באתר, מחלקים את המוצר לחלקים כבר בשלב הזה.</p><h2>גימור</h2><p>הגימור אינו רק עניין של מראה. הוא מגן על המתכת, ובמוצרים שעומדים בחוץ הוא חלק מהחוזק של המוצר לאורך זמן. סוג הגימור נבחר בתכנון יחד עם החומר.</p><h2>בדיקה ומסירה</h2><p>לפני המסירה נבדקות המידות הסופיות והגימור. בסדרה קטנה נבדקת גם האחידות בין היחידות. המוצר נמסר במועד שנקבע מראש מול הלקוח.</p><h2>למה הסדר הזה חשוב</h2><p>כל תחנה נשענת על הקודמת. מפרט לא סגור מוביל לשינויים באמצע, שינוי באמצע משפיע על החומר שכבר נחתך, וחומר שנחתך לא חוזר אחורה. לכן ההשקעה בשלבים הראשונים היא מה שמאפשר <a href=\"/ייצור-מוצרי-מתכת-ייחודיים/\">ייצור מוצרי מתכת ייחודיים</a> בזמן ובמידה.</p>",
+      "faq": [
+        {
+          "q": "כמה זמן לוקח התהליך?",
+          "a": "לוח הזמנים נקבע לפי המוצר, לפי החומר ולפי העומס בבית המלאכה, ונמסר יחד עם הצעת המחיר."
+        },
+        {
+          "q": "אפשר לשנות משהו באמצע הייצור?",
+          "a": "ככל שהשינוי מגיע מוקדם יותר כך הוא פשוט יותר. אחרי שהחומר נחתך, שינוי עשוי לדרוש חומר חדש ולהשפיע על המועד."
+        },
+        {
+          "q": "המוצר מגיע מורכב או מפורק?",
+          "a": "זה נקבע בתכנון לפי המידות ולפי דרך הגישה למקום. מוצר גדול מחולק לחלקים ומורכב באתר."
+        }
+      ]
     }
-   ]
-  },
-  {
-   "key": "תכנון-מוצרי-מתכת",
-   "type": "service",
-   "title": "תכנון מוצרי מתכת",
-   "order": 3,
-   "featured_image": "drawing",
-   "excerpt": "תכנון של מוצרי מתכת מותאמים אישית לפי דרישת הלקוח, לפני שמתחילים לייצר.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | תכנון מוצרי מתכת",
-    "description": "תכנון מוצרי מתכת מותאמים אישית לפי דרישת הלקוח: מידות, חומר, שיטת חיבור וגימור נקבעים לפני הייצור. ייעוץ מקצועי מבית מלאכה בנווה ימין. חייגו 072-2594285",
-    "keyword": "תכנון מוצרי מתכת"
-   },
-   "sections": [
-    {
-     "type": "hero",
-     "title": "תכנון מוצרי מתכת",
-     "lead": "תכנון מוצרי מתכת מותאמים אישית לפי דרישת הלקוח: השלב שבו נקבעים המידות, החומר, שיטת החיבור והגימור, עוד לפני שנחתך החומר הראשון.",
-     "image": "drawing"
-    },
-    {
-     "type": "prose",
-     "html": "<p>רוב הבעיות במוצר מתכת נולדות בתכנון ולא בייצור. מידה שנמדדה פעם אחת בלבד, חומר דק מדי לעומס, או חיבור שלא לוקח בחשבון איך מרכיבים את המוצר במקום. לכן אנחנו מתייחסים לתכנון כשלב נפרד בעבודה, גם כשהלקוח מגיע עם רעיון ברור.</p><h2>מה נקבע בשלב התכנון</h2><p>המידות המדויקות ואופן המדידה שלהן, סוג חומר הגלם והעובי שלו, שיטת החיבור בין החלקים, סדר ההרכבה, והגימור. לכל אחת מההחלטות האלה יש השפעה על החוזק, על המראה, על לוח הזמנים ועל המחיר, והן מוצגות ללקוח לפני שמתחילים.</p><h2>מרעיון לשרטוט</h2><p>לא כל לקוח מגיע עם שרטוט, וזה בסדר. אפשר להתחיל מתיאור, מתמונה של המקום או מסקיצה ביד. מתוכם בונים תכנון שאפשר לייצר לפיו, ומסבירים לאורך הדרך מה אפשר, מה כדאי לשנות ולמה. ללקוחות שמגיעים עם תוכנית אדריכלית או עם מפרט, התכנון מתמקד בהתאמת הפרט לייצור בפועל.</p><h2>תכנון מול אילוצים אמיתיים</h2><p>מוצר מתכת לא עומד לבדו: הוא מתחבר לקיר, לרצפה, לרהיט או למוצר אחר, והוא צריך להיכנס דרך דלת או מעלית. התכנון לוקח בחשבון גם את אופן ההובלה וההרכבה, ולא רק את המוצר הגמור. זו אחת הסיבות שבגללן עדיף שהתכנון והייצור יהיו באותו מקום.</p><h2>ייעוץ מקצועי לפני החלטה</h2><p>לפעמים התוצאה של שלב התכנון היא שינוי ברעיון המקורי: חומר אחר, חלוקה לשני חלקים במקום אחד, או שיטת חיבור שמאפשרת פירוק בעתיד. 20 שנה בתחום מאפשרות להגיד את זה מראש ולא אחרי שהמוצר כבר יוצר.</p><p>כשהתכנון סגור, ממשיכים אל <a href=\"/ייצור-מוצרי-מתכת-ייחודיים/\">ייצור מוצרי מתכת ייחודיים</a> באותו בית מלאכה.</p>"
-    },
-    {
-     "type": "features",
-     "columns": 3,
-     "title": "מה מקבלים בשלב התכנון",
-     "items": [
-      {
-       "title": "מידות סגורות",
-       "text": "מידות שנבדקו מול המקום ומול השימוש.",
-       "icon": "ruler"
-      },
-      {
-       "title": "בחירת חומר",
-       "text": "סוג החומר והעובי שמתאימים לעומס ולתנאים.",
-       "icon": "shield"
-      },
-      {
-       "title": "שיטת חיבור",
-       "text": "איך מתחברים החלקים ואיך מרכיבים אותם במקום.",
-       "icon": "tools"
-      },
-      {
-       "title": "לוח זמנים",
-       "text": "מועד ייצור ומסירה שנקבע לפני תחילת העבודה.",
-       "icon": "calendar"
-      },
-      {
-       "title": "הצעת מחיר",
-       "text": "הצעה שמבוססת על תכנון סגור ולא על הערכה.",
-       "icon": "document"
-      },
-      {
-       "title": "ייעוץ מקצועי",
-       "text": "מה אפשר לייצר, מה כדאי לשנות ולמה.",
-       "icon": "chat"
-      }
-     ]
-    },
-    {
-     "type": "cta",
-     "title": "יש רעיון שעוד לא הפך לתוכנית",
-     "text": "דברו איתנו, ונבנה יחד תכנון שאפשר לייצר לפיו."
-    },
-    {
-     "type": "faq",
-     "title": "שאלות נפוצות על תכנון מוצרי מתכת",
-     "items": [
-      {
-       "q": "אפשר להזמין תכנון בלי ייצור?",
-       "a": "הפנייה הרגילה אלינו היא לתכנון ולייצור יחד, כי התכנון נעשה מתוך היכרות עם מה שאפשר לייצר בבית המלאכה. על בקשה לתכנון בלבד אפשר לדבר איתנו בטלפון."
-      },
-      {
-       "q": "אני לא יודע להסביר בדיוק מה אני רוצה, אפשר בכל זאת להתחיל?",
-       "a": "זה המצב הנפוץ. מתחילים מהשימוש ומהמקום, ומשם מגיעים למידות ולחומר. אפשר להביא תמונה, סקיצה או דוגמה שראיתם."
-      },
-      {
-       "q": "אני אדריכל ויש לי פרט בתוכנית, מה אתם צריכים ממני?",
-       "a": "את הפרט, את המידות ואת ההקשר שבו הוא מותקן. נעבור עליו ונעיר אם משהו דורש התאמה לייצור בפועל."
-      },
-      {
-       "q": "התכנון משנה את המחיר?",
-       "a": "תכנון סגור מאפשר הצעת מחיר מדויקת במקום הערכה, וגם מונע שינויים יקרים באמצע הייצור."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "key": "אודות",
-   "type": "about",
-   "title": "אודות",
-   "order": 4,
-   "featured_image": "workshop",
-   "excerpt": "20 שנה של עבודות מסגרות וייצור מוצרי מתכת בהתאמה אישית, מבית מלאכה בנווה ימין.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | אודות",
-    "description": "מסגרייה בנווה ימין בניהול אופיר אלחנתי: 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית, לקוחות פרטיים, אדריכלים, נגרים וחברות תעשייה. 072-2594285",
-    "keyword": "מסגרייה בנווה ימין"
-   },
-   "sections": [
-    {
-     "type": "hero",
-     "title": "אודות מסגרית Dream from Steel",
-     "lead": "מסגרייה בנווה ימין בניהולו של אופיר אלחנתי, עם 20 שנה בעבודות מסגרות ובייצור מוצרי מתכת בהתאמה אישית.",
-     "image": "workshop"
-    },
-    {
-     "type": "prose",
-     "html": "<p>מסגרית Dream from Steel עוסקת בעבודות מסגרות ובייצור מוצרי מתכת כבר 20 שנה. הניסיון שנצבר לאורך השנים מאפשר להתמודד עם כל סוג של פרויקט מסגרות וייצור מוצרים מתכתיים, כולל עבודות מורכבות לביצוע.</p><h2>מה מייחד את העבודה כאן</h2><p>העסק לא מחזיק קטלוג של מוצרי מדף. כל עבודה היא ייצור אישי: מוצר שמתוכנן לפי הצורך של הלקוח, לפי המידות של המקום ולפי החומר שמתאים לשימוש. זה נכון לפריט בודד לבית פרטי ונכון לרכיב שמיוצר לפי מפרט של חברה.</p><h2>תכנון, ייצור ומסירה במקום אחד</h2><p>כל פרויקט מטופל באופן אישי, מהתכנון ועד המוצר המוגמר. העובדה שהתכנון והייצור נמצאים תחת אותה קורת גג מקצרת את הדרך: מה שמוחלט בשלב התכנון מגיע לבית המלאכה בלי תיווך, והדיוק נשמר לאורך הייצור.</p><h2>מי הלקוחות</h2><p>לקוחות פרטיים, אדריכלים, נגרים, חברות משוק הרחפנים וחברות משוק התעופה. כל קהל מביא דרישה אחרת: אדריכל מביא פרט מתוכנית, נגר מביא שילוב של מתכת ועץ, וחברה תעשייתית מביאה מפרט ודרישת דיוק. התהליך נשאר זהה, וההתאמה נעשית לפי מה שכל עבודה דורשת.</p><h2>איפה אנחנו</h2><p>בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא. שעות הפעילות הן א׳–ה׳ בין 07:00 ל-20:00.</p>"
-    },
-    {
-     "type": "split",
-     "variant": "frame",
-     "image": "materials",
-     "image_side": "end",
-     "title": "דגש על איכות החומרים",
-     "text": "<p>החומר שנכנס לעבודה נבחר לפי השימוש ולפי התנאים שבהם המוצר יעמוד, ולא לפי מה שזמין באותו רגע. זו הסיבה שבגללה שלב התכנון קודם לרכש ולא להפך.</p>",
-     "points": [
-      "בחירת חומר גלם לפי השימוש",
-      "עיבוד מתכות מתקדם בבית המלאכה",
-      "בקרה על המידות לאורך הייצור"
-     ]
-    },
-    {
-     "type": "features",
-     "variant": "rows",
-     "columns": 2,
-     "title": "איך אנחנו עובדים",
-     "items": [
-      {
-       "title": "ליווי אישי",
-       "text": "בעל המקצוע מלווה את העבודה מהשיחה הראשונה ועד המסירה.",
-       "icon": "user"
-      },
-      {
-       "title": "התאמה מלאה",
-       "text": "כל מוצר נבנה לפי דרישת הלקוח ולא לפי מידה קיימת.",
-       "icon": "wrench"
-      },
-      {
-       "title": "ביצוע מדויק",
-       "text": "בקרה על מידות וגימור בכל שלב של העבודה.",
-       "icon": "target"
-      },
-      {
-       "title": "עמידה במועד",
-       "text": "מועד מסירה שנקבע מראש מול הלקוח.",
-       "icon": "clock"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "key": "צור-קשר",
-   "type": "contact",
-   "title": "צור קשר",
-   "order": 5,
-   "excerpt": "טלפון, וואטסאפ, כתובת בית המלאכה ושעות הפעילות של מסגרית Dream from Steel.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | צור קשר",
-    "description": "צור קשר עם מסגרית Dream from Steel: טלפון 072-2594285, וואטסאפ 050-9254010, בית המלאכה ברחוב הרימון 89 בנווה ימין. פתוח בימים א׳–ה׳ בין 07:00 ל-20:00.",
-    "keyword": "צור קשר מסגרית Dream from Steel"
-   },
-   "sections": [
-    {
-     "type": "hero",
-     "title": "צור קשר",
-     "lead": "אפשר להתקשר, לשלוח וואטסאפ או להשאיר פרטים בטופס. נחזור אליכם בשעות הפעילות עם ייעוץ והצעת מחיר."
-    },
-    {
-     "type": "contact",
-     "title": "פרטי התקשרות",
-     "text": "בית המלאכה נמצא ברחוב הרימון 89 בנווה ימין, והשירות ניתן בכפר סבא. ככל שתפרטו יותר על העבודה, כך נוכל לחזור אליכם עם תשובה מדויקת יותר.",
-     "map": true
-    }
-   ]
-  },
-  {
-   "key": "בלוג",
-   "type": "blog",
-   "title": "בלוג",
-   "order": 6,
-   "excerpt": "מדריכים קצרים על עבודות מסגרות, בחירת חומרי גלם ותהליך הייצור של מוצר מתכת בהתאמה אישית.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | בלוג",
-    "description": "מדריכים על עבודות מסגרות ועל ייצור מוצרי מתכת בהתאמה אישית: איך בוחרים חומר גלם, מה כדאי להכין לפני הזמנת עבודה ואיך נראה המסלול מהשרטוט ועד המוצר המוגמר.",
-    "keyword": "מדריכים לעבודות מתכת"
-   }
-  }
- ],
- "posts": [
-  {
-   "slug": "איך-בוחרים-חומר-גלם-לעבודת-מתכת",
-   "title": "איך בוחרים חומר גלם לעבודת מתכת",
-   "category": "עבודות-מתכת",
-   "image": "materials",
-   "related_page": "תכנון-מוצרי-מתכת",
-   "date": "2026-10-12",
-   "excerpt": "פרופיל, זוויתן, פח או מוט: מה מבדיל ביניהם, ואיך בוחרים את החומר והעובי לפי השימוש של המוצר.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | בחירת חומר גלם לעבודת מתכת",
-    "description": "מדריך לבחירת חומר גלם לעבודת מתכת: מה ההבדל בין פרופיל, זוויתן, פח ומוט, איך העובי נגזר מהעומס, ומה חשוב לבדוק עוד לפני הזמנת עבודת מסגרות בהתאמה אישית.",
-    "keyword": "בחירת חומר גלם לעבודת מתכת"
-   },
-   "html": "<p>בחירת חומר גלם לעבודת מתכת היא ההחלטה שמשפיעה הכי הרבה על התוצאה: על החוזק, על המראה ועל כמה שנים המוצר יחזיק. היא נעשית בשלב התכנון, לפני שנחתך החומר הראשון.</p><h2>ארבעת סוגי החומר הנפוצים</h2><p><strong>פרופיל</strong> הוא חתך חלול, מרובע או מלבני. הוא נותן חוזק יחסית למשקל ולכן משמש הרבה במסגרות ובמבנים. <strong>זוויתן</strong> הוא חתך בצורת האות L, ומשמש לחיזוק פינות, למסגור ולחיבור בין מישורים. <strong>פח</strong> משמש למשטחים, לכיסויים ולחלקים מכופפים. <strong>מוט</strong> הוא חתך מלא, עגול או מרובע, ומשמש כשצריך חוזק מלא בחתך קטן.</p><h2>העובי נגזר מהעומס</h2><p>אותו פרופיל בשני עוביים שונים מתנהג אחרת לגמרי. חומר דק מדי יתעוות תחת עומס או עם הזמן, וחומר עבה מדי מייקר את העבודה ומוסיף משקל שלא תמיד צריך. לכן בשלב התכנון שואלים מה המוצר נושא, האם העומס קבוע או משתנה, והאם מישהו עומד עליו או נשען עליו.</p><h2>בפנים או בחוץ</h2><p>מוצר שעומד בחוץ חשוף לגשם, לשמש ולהפרשי טמפרטורה. זה משפיע על בחירת החומר ועל הגימור, ולעיתים גם על שיטת החיבור. מוצר שנמצא בפנים מושפע פחות מהתנאים, ולכן אפשר לשים דגש גדול יותר על המראה.</p><h2>מה שחשוב לבדוק לפני שמזמינים</h2><ul><li>לאיזה שימוש המוצר נועד, ומי משתמש בו</li><li>איפה הוא עומד: בפנים, בחוץ, על קיר או על רצפה</li><li>מה המידות של המקום, ואיך מכניסים את המוצר לשם</li><li>האם המוצר צריך להיות ניתן לפירוק בעתיד</li><li>איזה גימור מתאים לסביבה שבה הוא נמצא</li></ul><h2>למה זה שייך לשלב התכנון</h2><p>אחרי שהחומר נחתך קשה לחזור אחורה. כשהחומר, העובי ושיטת החיבור נקבעים מראש, ההצעה מדויקת יותר ואין הפתעות באמצע העבודה. זו הסיבה שבגללה <a href=\"/תכנון-מוצרי-מתכת/\">תכנון מוצרי מתכת</a> הוא שלב נפרד בעבודה ולא חלק מהייצור.</p>",
-   "faq": [
-    {
-     "q": "מה ההבדל בין פרופיל למוט?",
-     "a": "פרופיל הוא חתך חלול ומוט הוא חתך מלא. הפרופיל נותן חוזק טוב ביחס למשקל, והמוט נותן חוזק מלא בחתך קטן יותר."
-    },
-    {
-     "q": "איך יודעים איזה עובי צריך?",
-     "a": "העובי נגזר מהעומס שהמוצר נושא ומהתנאים שבהם הוא עומד. את זה קובעים בשלב התכנון, אחרי שמבררים את השימוש."
-    },
-    {
-     "q": "אפשר לשלב כמה סוגי חומר במוצר אחד?",
-     "a": "כן, וזה נפוץ. חשוב שהשילוב ייבחר בתכנון, כי הוא משפיע על שיטת החיבור ועל הגימור."
-    }
-   ]
-  },
-  {
-   "slug": "מה-להכין-לפני-הזמנת-עבודת-מסגרות",
-   "title": "מה להכין לפני הזמנת עבודת מסגרות",
-   "category": "עבודות-מתכת",
-   "image": "drawing",
-   "related_page": "מסגרות-בהתאמה-אישית",
-   "date": "2026-10-19",
-   "excerpt": "חמישה דברים שכדאי להביא לשיחה הראשונה עם המסגרייה, כדי לקבל הצעת מחיר מדויקת ולוח זמנים ברור.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | הזמנת עבודת מסגרות: מה להכין",
-    "description": "מה כדאי להכין לפני הזמנת עבודת מסגרות בהתאמה אישית: הגדרת שימוש, מידות, תמונות של המקום, שרטוט ואילוצי הרכבה. כך מקבלים הצעה מדויקת ולוח זמנים ברור יותר.",
-    "keyword": "הזמנת עבודת מסגרות"
-   },
-   "html": "<p>הזמנת עבודת מסגרות בהתאמה אישית מתחילה בשיחה. ככל שהמידע בשיחה הזו מדויק יותר, כך ההצעה מדויקת יותר ולוח הזמנים ברור יותר. אלה הדברים שכדאי להכין מראש.</p><h2>1. מה המוצר צריך לעשות</h2><p>זו השאלה הראשונה ולא המידות. מוצר שנועד לשאת משקל, מוצר שנועד להפריד בין שני חללים ומוצר שנועד להחזיק משהו קל נראים אחרת לגמרי, גם אם המידות זהות. תיאור קצר של השימוש מכוון את כל שאר ההחלטות.</p><h2>2. מידות, גם אם הן לא מדויקות</h2><p>מידות ראשוניות מספיקות כדי להתחיל. אפשר למדוד בסרט מדידה ולציין מה נמדד בדיוק ומה בערך. בעבודות שדורשות התאמה מלאה למקום, מגיעים למדידה לפני התכנון כדי לסגור את המידות הסופיות.</p><h2>3. תמונות של המקום</h2><p>תמונה אחת של המקום חוסכת הרבה שאלות. היא מראה את הסביבה, את החומרים שמסביב ואת הדרך שבה המוצר יתחבר למה שכבר נמצא שם. כדאי לצלם גם מרחוק וגם מקרוב.</p><h2>4. שרטוט או סקיצה, אם יש</h2><p>אדריכלים ונגרים מגיעים בדרך כלל עם פרט או עם תוכנית. לקוחות פרטיים לא חייבים: סקיצה ביד או תמונה של משהו דומה שראיתם מספיקות כדי להסביר את הכיוון. את ההמשך משלימים יחד בשלב התכנון.</p><h2>5. אילוצי הרכבה</h2><p>המוצר צריך להגיע למקום שלו. דלת צרה, מדרגות, מעלית קטנה או חניה רחוקה משפיעים על התכנון, ולעיתים מובילים לחלוקה של המוצר לשני חלקים שמורכבים באתר. עדיף לדעת את זה מראש ולא ביום המסירה.</p><h2>מה קורה אחרי השיחה</h2><p>אחרי שהמידע נאסף, עוברים לתכנון: מידות, חומר, עובי, שיטת חיבור וגימור. רק אז נמסרת הצעת מחיר ומועד. אפשר לקרוא עוד על <a href=\"/מסגרות-בהתאמה-אישית/\">מסגרות בהתאמה אישית</a> ועל מה שנכלל בעבודה.</p>",
-   "faq": [
-    {
-     "q": "אני לא יודע למדוד, זו בעיה?",
-     "a": "לא. אפשר להתחיל מתיאור ומתמונות, ובעבודות שדורשות דיוק מגיעים למדידה לפני התכנון."
-    },
-    {
-     "q": "חייבים שרטוט כדי להזמין?",
-     "a": "לא. סקיצה ביד או תיאור מילולי מספיקים כדי להתחיל, והתכנון נבנה מהם."
-    },
-    {
-     "q": "מתי מקבלים מועד מסירה?",
-     "a": "המועד נמסר יחד עם הצעת המחיר, אחרי שהתכנון סגור."
-    }
-   ]
-  },
-  {
-   "slug": "מהשרטוט-למוצר-המוגמר",
-   "title": "מהשרטוט למוצר המוגמר",
-   "category": "עבודות-מתכת",
-   "image": "weld",
-   "related_page": "ייצור-מוצרי-מתכת-ייחודיים",
-   "date": "2026-10-26",
-   "excerpt": "איך נראה המסלול של מוצר מתכת בבית המלאכה, משלב המפרט ועד הבדיקה האחרונה לפני המסירה.",
-   "seo": {
-    "title": "מסגרית Dream from Steel | מהשרטוט עד המוצר המוגמר",
-    "description": "תהליך ייצור מוצר מתכת שלב אחר שלב: מפרט ומידות, בחירת חומר גלם, חיתוך, ריתוך והרכבה, גימור, בדיקת מידות ומסירה. מה נבדק בכל שלב, ולמה הסדר הזה כל כך חשוב.",
-    "keyword": "תהליך ייצור מוצר מתכת"
-   },
-   "html": "<p>תהליך ייצור מוצר מתכת נראה מבחוץ כמו שלב אחד: מזמינים ומקבלים. בפועל יש כאן כמה תחנות, ולכל אחת מהן יש נקודת בדיקה משלה. הנה המסלול כפי שהוא עובר בבית המלאכה.</p><h2>מפרט ומידות</h2><p>בתחנה הראשונה סוגרים מה בדיוק מייצרים: מידות, חומר, עובי, שיטת חיבור וגימור. לקוח שמגיע עם מפרט מוכן עובר עליו יחד איתנו, ולקוח שמגיע עם צורך בלבד בונה את המפרט בשלב התכנון. בלי מפרט סגור אי אפשר לתת הצעה מדויקת.</p><h2>הכנת החומר וחיתוך</h2><p>בוחרים את חומר הגלם לפי מה שנקבע, וחותכים אותו למידות העבודה. בשלב הזה כבר נבדקות המידות מול התכנון, כי סטייה קטנה בחיתוך מתגלגלת הלאה לכל ההרכבה.</p><h2>ריתוך והרכבה</h2><p>החלקים מחוברים לפי שיטת החיבור שנקבעה. סדר ההרכבה אינו מקרי: הוא נקבע כך שאפשר יהיה להגיע לכל נקודת חיבור, ושהמוצר יישאר ישר לאורך העבודה. בעבודות שמורכבות באתר, מחלקים את המוצר לחלקים כבר בשלב הזה.</p><h2>גימור</h2><p>הגימור אינו רק עניין של מראה. הוא מגן על המתכת, ובמוצרים שעומדים בחוץ הוא חלק מהחוזק של המוצר לאורך זמן. סוג הגימור נבחר בתכנון יחד עם החומר.</p><h2>בדיקה ומסירה</h2><p>לפני המסירה נבדקות המידות הסופיות והגימור. בסדרה קטנה נבדקת גם האחידות בין היחידות. המוצר נמסר במועד שנקבע מראש מול הלקוח.</p><h2>למה הסדר הזה חשוב</h2><p>כל תחנה נשענת על הקודמת. מפרט לא סגור מוביל לשינויים באמצע, שינוי באמצע משפיע על החומר שכבר נחתך, וחומר שנחתך לא חוזר אחורה. לכן ההשקעה בשלבים הראשונים היא מה שמאפשר <a href=\"/ייצור-מוצרי-מתכת-ייחודיים/\">ייצור מוצרי מתכת ייחודיים</a> בזמן ובמידה.</p>",
-   "faq": [
-    {
-     "q": "כמה זמן לוקח התהליך?",
-     "a": "לוח הזמנים נקבע לפי המוצר, לפי החומר ולפי העומס בבית המלאכה, ונמסר יחד עם הצעת המחיר."
-    },
-    {
-     "q": "אפשר לשנות משהו באמצע הייצור?",
-     "a": "ככל שהשינוי מגיע מוקדם יותר כך הוא פשוט יותר. אחרי שהחומר נחתך, שינוי עשוי לדרוש חומר חדש ולהשפיע על המועד."
-    },
-    {
-     "q": "המוצר מגיע מורכב או מפורק?",
-     "a": "זה נקבע בתכנון לפי המידות ולפי דרך הגישה למקום. מוצר גדול מחולק לחלקים ומורכב באתר."
-    }
-   ]
-  }
- ],
- "favicon": "assets/favicon.png",
- "logo": "assets/logo.png"
+  ],
+  "favicon": "assets/favicon.png",
+  "logo": "assets/logo.png",
+  "logo_light": "assets/logo.png"
 }

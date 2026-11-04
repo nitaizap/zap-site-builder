@@ -269,3 +269,74 @@ footer form was brand orange. Both are now orange (5.36:1). Every submit on the 
 | `faq:dark` colours the questions `--c-accent` on `--c-dark`. Same shape as PR #74 and the same reason the gate misses it: a palette whose accent lands just over 4.5:1 passes while looking like disabled text. The variant should paint them white and spend the accent on a rule, as `split:overlap` now does | `wp/theme/zap-base/assets/pool.css:210` |
 | `pool.css:442`'s short-laptop hero floor is `!important`, so a site cannot shorten its own hero at 1280x720 without matching `!important` and out-specifying it. It also fights the `curve` variant, whose clip already eats the bottom of the box | `wp/theme/zap-base/assets/pool.css:442` |
 | `zs qa`'s link check opens 8 connections at once (`ThreadPoolExecutor(8)`) with a 20s timeout, against a local dev server that serialises requests. With several client sessions building on the same PC at once, pages that answer 200 in 1.4-4.4s on their own start reporting `link timed out`, and `zs qa` calls them **errors**. On 04/11 the same unchanged build scored 0 errors in a quiet window and 13 then 8 "errors" while four other agents ran `zs qa`. Nothing is wrong with the pages; the gate is reporting machine load as a site defect, which is the kind of false red that gets a gate ignored. Worth a smaller pool, a longer timeout, or treating a timeout as a WARN distinct from a real non-200 | `engine/qa.py:318-335` |
+
+### Quality pass, 04/11 (second round: "adhere to the brief, look better and higher quality")
+
+Branch merged with `main` at `6bf9eba` first. Three of the four things that pass brought are this
+site's: `.zs-prose` is centred in the theme (confirmed: the service-page column now measures
+x=340 w=760 inside the 1200 wrap, i.e. 220px of margin on each side instead of all 440 on one),
+the accessibility toggle clears the header call button at 768/1024/1280, and the short-laptop hero
+floor is a variable.
+
+**Deleted from `design.custom_css`, because `main` now does it:**
+
+| deleted | now in |
+|---|---|
+| the three rules painting the `faq:dark` questions `#fff`, and the one painting the toggle icon white | `pool.css` paints the question `--c-dark-ink` and the icon was already white. Only this site's own orange rule on the open question is kept |
+| `.zs-hero--img` in the hero selector, there only to out-specify `pool.css`'s `!important` floor | `--zs-hero-floor: 440px` on `:root`. The `!important` on the plain rule stays: it is for Elementor's inline `min-height` on screens taller than 760px, where the `pool.css` rule does not apply |
+
+Re-measured with `py tools/hero-space.py`, after the change:
+
+| viewport | height | empty | biggest bare rect | both buttons |
+|---|---|---|---|---|
+| 1440x900 | 487px (0.54vh) | 81% | 43% | above the fold |
+| 1280x720 | **507px (0.70vh)** | 81% | 39% | above the fold |
+| 390x844 | 490px (0.58vh) | 46% | 14% | above the fold |
+
+1280 is 60px taller than the 447px the `!important` version produced, because the floor is now a
+real `min-height: 440px` rather than a `clamp()` that could go under it. It is nowhere near the
+690px that was rejected, the bare rectangle is smaller than before (39% against 44%), and the rule
+is one line a future reader can understand. Worth the 60px.
+
+**Two theme defects found this pass. Neither is fixed here (`sites/` only).**
+
+| defect | where | what it did |
+|---|---|---|
+| `design.custom_css` is run through `wp_strip_all_tags`, which deletes everything from a `<` to the next `>`. A CSS comment containing `<=760px` silently removed the hero rule and the two rules after it; the page still rendered, the build printed nothing, and `zs qa` passed with 0 errors while the hero was back to 863px. **Never put a `<` in that field, comments included.** The theme should strip `<script` and the like, not every angle bracket | `wp/theme/zap-base/functions.php:184` | cost one round here; would silently break any client CSS that uses `<` in a media-query comment |
+| `footer_logo()` chooses the white-silhouette logo whenever `design.tone` is not `"light"`, but `kits.css:129` paints the footer light for six kits (`atelier`, `gallery`, `quiet`, `panels`, **`frame`**, `shade`) regardless of tone. On this site that put a **white logo on a white footer**: a 96x96 empty hole on every page, which `zs qa` does not see because it checks links, not whether an image decoded | `engine/sections.py:900` vs `wp/theme/zap-base/assets/kits.css:129` | fixed here by naming the real artwork as `logo_light` in `site.json`, which is the documented optional key and, unlike `design.tone`, is not part of the pool recipe |
+
+**What else changed, and why (all `design.custom_css`, no copy moved):**
+
+- **`split:overlap`** was centred end to end: a three-line Hebrew title broke ragged, and the tick
+  rows, whose markers sit at the inline start of each row, lined up on neither edge. The card now
+  starts at one edge, title, rule, paragraph, ticks and button together.
+- **the services row** (`cards:framed`, "מה אפשר להזמין אצלנו") is the only place the home page
+  names the three service pages the brief ordered, and it rendered as a 220px strip of small icons
+  under a full-width section title. Icon 50 → 64px, real card padding, larger titles. No "read
+  more" marker was added: `main.css:1682`, `standards.css:222` and `pool.css:344` each remove the
+  arrow from a linked card, so the title being the link is the house pattern, not an oversight.
+- **the three service pages** carry the brief's strongest line and rendered as an unbroken column
+  of paragraphs: the argument was in the words and nowhere in the page. The opening paragraph now
+  leads and each H2 carries the brand rule the home page's section titles already use.
+- **`chapters` at 390** put three items in a 2-up grid, leaving the third alone on its own row with
+  its two-word title broken across two lines. One per row on a phone.
+- **the `leadbar` form** was three 171px fields and a detached submit inside a 900px box, so the
+  band's own form looked slighter than the identical one in the footer. Box 1080px, three equal
+  fields at 240px, submit on its own line under them.
+
+**Tried and reverted:** call and form buttons in the five inner-page heroes, on the reading that
+the brief's "כפתורי חיוג לאופיר" wants one above the fold on every page. `zs build` rejected it:
+*"inner-page hero has buttons; Zap QA: buttons only in the home hero (the page and the lead form
+carry the action)"*. That is a house standard and it outranks the reading. The ask is already met
+another way: the header's call button is on every page at every width, and phones carry the
+four-action bar (מייל / ניווט / וואטסאפ / התקשרו) fixed to the bottom of every screen.
+
+**Does every page still argue "דברים מיוחדים ולא סטנדרטיים"?** Asked page by page, at 1440, 1280
+and 390. The home page always did. The three service pages said it in their words and not in their
+shape, and that is what the prose change above addresses. `/אודות/` argues it through the owner and
+the material (`split:frame`, `features:rows`). `/צור-קשר/` does not argue it and should not: it is
+two columns of facts and a form. The blog archive carries it in the three post titles.
+
+**Pool:** 38% / 36% / 36% before the pass and after it. Nothing in this pass touched a measured
+lever (palette, kit, archetype, heading font, section order, base template); it is all alignment,
+spacing and type inside sections that already existed.

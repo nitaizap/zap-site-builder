@@ -79,3 +79,22 @@ client's material. It is not used and must not be.
 
 The footer of every page carries, next to the copyright:
 "תמונות האתר הופקו בכלי בינה מלאכותית ואינן מציגות עבודות של העסק".
+
+### The listing re-read, 04/11/2026 (second pass)
+
+Both Dapei Zahav listings for this customer id were fetched and read again, to see whether any
+photograph of the business or its work exists there. **Exactly one image on either page belongs to
+this customer**, `img.d.co.il/Customers/80386843/acb7aca1e2f6445ab3dd097419f2f064.png`, and it is
+the logo already recorded in the table above. The two other images are Zap's own category covers
+(`img.d.co.il/Umbraco/8844/coverimagedesktop.png` and `Umbraco/8977/coverimage-מסגריות.png`); they
+are stock belonging to the directory, not to this client, and are not used.
+
+No photograph was taken from the listing in this pass, and no row was added. The list under "Still
+needed from the client" above is unchanged and still correct.
+
+### The footer logo, 04/11/2026
+
+`assets/logo.png` is now also named as `logo_light` in `site.json`. No new file and no new artwork:
+the engine was generating a white silhouette of this same badge for the footer and the kit paints
+the footer white, so the footer's logo was invisible. Naming the real file makes the footer show
+the badge already recorded above. Nothing about the image's source changes.
