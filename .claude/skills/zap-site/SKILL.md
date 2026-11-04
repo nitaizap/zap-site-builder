@@ -22,7 +22,7 @@ Speak to the user in their language (usually Hebrew). Keep messages short; the f
 
 ## The whole of `references/` (there is nothing else; do not go looking for another skill)
 
-Everything this skill knows beyond the order of work is in these 16 files, next to this one. If you are
+Everything this skill knows beyond the order of work is in these 17 files, next to this one. If you are
 about to ask the user how to do something, or to search for a separate skill, read the file first.
 
 | file | the question it answers |
@@ -37,6 +37,7 @@ about to ask the user how to do something, or to search for a separate skill, re
 | `pool.md` | the template pool: packages, section variants, mixing rules, and the 40% anti-sameness measure |
 | `design.md` | the design bar, the motion catalogue, and brief words → concrete features |
 | `benchmark.md` | the reference screenshots in `benchmark/` and what to take from each |
+| `gallery.md` | our own shipped sites in `gallery/`: the floor a direction must clear, and what the user corrected on every previous build. Read before composing, write after handover |
 | **`images.md`** | **image rights and the `IMAGE-SOURCES.md` record; how to generate images with Figma Weave (model ids, settings, credits, the cost gate, prompt rules); Veo video; the `bin/zs image` fallback.** There is no separate "Weave" skill: this file is it |
 | `seo-checklist.md` | the team's SEO sheet row by row, and what `zs seo` checks |
 | `qa-rules.md` | everything Zap QA rejects, as rules |
@@ -78,10 +79,10 @@ before doing the step — every one encodes mistakes already made.
    Several sites = several sessions in parallel. Never mix two clients in one conversation.
 5. **Everything durable lives in `sites/<slug>/`** and is committed. `work/` and `dist/` are disposable:
    `zs build` recreates the WordPress from `site.json` on any machine.
-6. **The brief's style line is a requirement, not a mood.** "אנימציות של רכבים זזים", "צבעים על בסיס
+7. **The brief's style line is a requirement, not a mood.** "אנימציות של רכבים זזים", "צבעים על בסיס
    הלוגו", "אתר חדשני" each map to concrete features (`references/design.md` → *Brief words → features*)
    and get a row in `BRIEF-CHECK.md`. A demand you can't meet is said out loud, never dropped silently.
-7. **No em dashes (—) or en dashes (–) in any site copy**: headings, text, captions, SEO titles, FAQ, footer.
+8. **No em dashes (—) or en dashes (–) in any site copy**: headings, text, captions, SEO titles, FAQ, footer.
    Rewrite with a comma, colon, period, parentheses or a line break (`"keyword\nbrand"` puts the brand on its
    own H1 line). The validator stops the build on either character. Only Zap's verbatim privacy template keeps
    its legal citations as they are.
@@ -89,7 +90,7 @@ before doing the step — every one encodes mistakes already made.
    parts are the plugin's native `zap-*` widgets (category "Zap" in the Elementor panel); never the shortcode
    widget and never `[zap_*]` text in a page, template or post. `zs build` stops on one, `zs qa` reports one.
    Sites built before the rule keep their shortcodes; do not reverse them unless asked.
-8. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
+9. **Generic fixes only.** A visual bug the user points at (a screenshot, "this looks weird") is almost always
    a theme/engine bug: fix it in `wp/theme` or `engine/` for every site, re-test on the sample, then on
    this site locally **and on the pushed site**.
 
@@ -126,6 +127,9 @@ email do block.
   ~20 section types × fonts): never copy a previous client's site.json, section order or look. Each site's
   composition is chosen from its own brief and audience (`references/design.md` → *No two sites alike*).
 - Images: `references/images.md` (client photos > old-site photos > Weave AI images, one batched credit approval > none).
+- **Before composing, open the 1-2 nearest entries in `gallery/`** (`references/gallery.md`): their screenshots and
+  their "what the user corrected" section, then write **Borrow** and **Must differ** into NOTES.md. `pool.md`
+  measures sameness as a number; the gallery is the only record of this user's taste a fresh session can read.
 
 ## 3 · Preview — ⏸ the one gate
 
@@ -138,6 +142,11 @@ git add sites/<slug> && git commit -m "<slug>: plan + preview" && git push -u or
 
 `zs preview` and `bin/zs pool <slug>` must both exit 0 (measured layout: no two directions, and no direction
 and another client, ≥ 85% alike) before the user sees anything.
+
+Then check each direction against the floor in `references/gallery.md`: **6+ real images** on the home, an icon on
+every conversion button and contact line, a 390 frame, **8+ sections** (`basic` 6+). A direction under any of them
+is not ready to show: it reads as a wireframe and the user cannot judge it. If the client's own photography cannot
+carry a direction, say so here. It is a brief question, cheap now and expensive after the build.
 
 Want to click through it? `bin/zs static <slug>` → `dist/<slug>-preview.zip` (open index.html, no server;
 Windows-safe names; the form and Dapei Zahav reviews only work live). Look at the preview images yourself first (Read them); fix anything ugly before the user sees it.
@@ -174,17 +183,23 @@ direction, say which and why in one line, and continue without waiting.
    **Above the fold** (a Zap standard): the H1, the lead and both hero buttons show without scrolling on a
    short laptop and a small phone; `zs qa` fails it at 1280×620 and 360×640. Don't fix it per site with
    fixed pixel sizes: the theme sizes the home hero by screen height.
-5. **Motion check**: everything the brief asks to move must move on desktop *and* phone (the hero video
+5. **Fidelity pass against the approved direction.** Open the preview image of the direction the user chose
+   and the built page side by side, at 1440 and at 390, and walk it band by band. What goes missing between
+   a preview and a build is always the same: spacing collapsed to the theme default, a weight that fell back
+   to 400, an image crop that lost its subject, the one bold element flattened, the mobile order changed.
+   A band that no longer matches is either fixed or named in the report. `zs qa` cannot see any of this: it
+   measures the page against itself, never against what was approved.
+6. **Motion check**: everything the brief asks to move must move on desktop *and* phone (the hero video
    is desktop-only, so phones need their own movement: `hero.ride`, `road`, `route`). Scroll-driven parts
    need a scrolled screenshot, not just a full-page one.
-6. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
+7. **`sites/<slug>/BRIEF-CHECK.md`**: the brief line by line (design/branding, client details, every page
    and its content, components, prohibitions such as "no food deliveries", delivery) → ✅ / ➖ with the
    reason / ⏳ open. A ✅ means you saw it on the rendered page (a shot or the page HTML), never "it is in
    site.json". Grep site.json for every prohibited word. Format: a table per brief section, one row per line of the brief.
-7. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
+8. Read `references/zap-standards.md` once before you call it done; most of it is automatic, some is not.
    Then audit the site the way the QA team will: `.claude/skills/bestlink-site-qa/SKILL.md` (spelling pass over every
    page's visible text, the sitewide-fixes list, UX at three widths). Attach `SEO-QA-<slug>.xlsx` to the delivery message.
-8. Go through `references/qa-rules.md` (Zap QA's rejections as rules): the "you" column is not automatic: the
+9. Go through `references/qa-rules.md` (Zap QA's rejections as rules): the "you" column is not automatic: the
    home H1 is the client's name only, titles `<client> | <page>`, slug = H1 = menu label, no full stop on headings,
    a legible logo without a tiny tagline, a favicon, 3 blog posts from the client's own material, `phone_is_virtual`
    when the display number is a Zap number.
@@ -244,6 +259,17 @@ git add sites/<slug> && git commit -m "<slug>: delivered" && git push
 Reply with: the site link (or download link), the Elementor editor link, what was built (pages, posts,
 direction), the QA numbers, and the human-only blockers from `LAUNCH-CHECKLIST.md`. Never write "everything
 is ready" while a blocker exists.
+
+## After handover: write the gallery entry
+
+The last step of a site, not an optional one. Create `gallery/<slug>/` from the template in
+`references/gallery.md`: the home at 1440 and 390 and one inner page (`bin/zs shots <slug>` output is
+already the right thing), the direction that was chosen and why, the tokens, where the images came from,
+and - the part that matters - **every correction the user made, in their own words**, from the preview
+round onward. Add the row to `gallery/README.md`.
+
+Skipping it costs the next site a round. Each of this project's design complaints was a lesson that
+existed only in one finished session's context, and the next build could not read it.
 
 ## Revisions
 
