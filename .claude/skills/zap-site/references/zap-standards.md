@@ -46,3 +46,15 @@ Verified against live Zap client sites. ✅ = the engine does it, nothing to do.
 - Copy `zapgroup.co.il/terms` onto a client site (it names Zap as the operator of the client's site).
 - Invent reviews, ratings, awards, case counts, or a founding year.
 - Mail the real client during the build.
+
+## Mail / דואר (04/11/2026)
+
+- **Lead mail only.** The Zap relay (`relay.d.co.il:25`) is applied to the lead form's own message and to nothing
+  else on the site. Password resets, WooCommerce and any other plugin's mail go the site's normal way. ✅ automatic
+- **Another mailer always wins.** When WP Mail SMTP, FluentSMTP, Post SMTP, Easy WP SMTP, WP Offload SES, Brevo,
+  SendGrid or Mailgun is active (or anything else is already on `phpmailer_init`), `zap-site` stands down entirely
+  and says so in wp-admin. Never configure both. ✅ automatic
+- **The sender is the client's own domain** (`no-reply@<domain>`), with the enquirer as Reply-To, so SPF/DMARC
+  align and the lead does not land in spam. `zapsites@d.co.il` is only the fallback on staging and local builds. ✅ automatic
+- ✋ Before handover: wp-admin → פניות מהאתר → הגדרות טפסים, read the row **"מי מנהל את הדואר באתר"**, and send one
+  test lead on the live address. `zs launch-check` puts this on the launch sheet as the `mailers` row.

@@ -247,6 +247,24 @@ DOMAIN_BOUND = {
 }
 
 
+# mailer plugins that take wp_mail over. The zap-site plugin stands down when one of these is active (see the
+# plugin's inc/leads.php), because another plugin's configured delivery must always win over Zap's default relay.
+# Kept in step with zap_known_mailers() in wp/plugin/zap-site/inc/leads.php.
+MAILERS = {
+    "wp-mail-smtp": "WP Mail SMTP", "wp-mail-smtp-pro": "WP Mail SMTP Pro", "fluent-smtp": "FluentSMTP",
+    "post-smtp": "Post SMTP", "easy-wp-smtp": "Easy WP SMTP", "wp-ses": "WP Offload SES",
+    "amazon-ses-for-wordpress": "WP Offload SES", "mailin": "Brevo (Sendinblue)",
+    "sendgrid-email-delivery-simplified": "SendGrid", "wp-sendgrid-mailer": "SendGrid",
+    "mailgun": "Mailgun", "wp-mailgun-smtp": "Mailgun", "smtp-mailer": "SMTP Mailer", "wp-smtp": "WP SMTP",
+    "gmail-smtp": "Gmail SMTP", "postman-smtp": "Postman SMTP",
+}
+
+
+def mailers_seen(html_text):
+    """Known mailer plugins whose assets this page loads. Most load none, so absence proves nothing."""
+    return sorted({MAILERS[x] for x in plugins_seen(html_text) if x in MAILERS})
+
+
 def region(root, kind):
     """The Elementor Theme Builder template of this kind (`data-elementor-type`), or None."""
     for n in root.walk():
@@ -461,6 +479,24 @@ def analyse(home, contact=None, robots=None, mode=None, qa_report=None):
       ("tied to the domain, redo them on the new one: " + ", ".join(b[1] for b in bound) + " (details in the launch sheet) / "
        "מקושרים לדומיין, יש לחדש בדומיין החדש") if bound else "no domain-bound plugin detected on the page / לא זוהה תוסף הקשור לדומיין")
 
+    # 6b - two mailers on one site. zap-site stands down when another mailer is active, but a site where both are
+    # configured is where "בעיות SMTP" come from, so it is named on the launch sheet either way. Mail plugins usually
+    # print no front-end assets, so public html can only ever confirm one, never rule it out: this row is always for
+    # a person to close in wp-admin.
+    mail = mailers_seen(home["html"]) + (mailers_seen(contact["html"]) if contact and contact.get("html") else [])
+    mail = sorted(set(mail))
+    zap_here = bool(widgets) or plugin_markup(root)
+    if mail and zap_here:
+        R("mailers", "MANUAL", "TWO mailers on this site: " + ", ".join(mail) + " alongside zap-site. zap-site must have stood "
+          "down (it does so by itself when a mailer plugin is active). Confirm in wp-admin -> פניות מהאתר -> הגדרות טפסים that "
+          "the line \"מי מנהל את הדואר באתר\" names " + mail[0] + ", and send one test lead / שתי מערכות דואר באתר: ודאו בהגדרות הטפסים מי מנהל את הדואר")
+    elif mail:
+        R("mailers", "MANUAL", "mailer plugin detected: " + ", ".join(mail) + " / זוהה תוסף דואר")
+    else:
+        R("mailers", "MANUAL", "no mailer plugin visible in the public html (they rarely load front-end assets, so this proves "
+          "nothing). Open wp-admin -> פניות מהאתר -> הגדרות טפסים: the row \"מי מנהל את הדואר באתר\" says who sends, and one test "
+          "lead must arrive / לא ניתן לראות מבחוץ: בדקו בהגדרות הטפסים מי מנהל את הדואר ושלחו פנייה לבדיקה")
+
     # 7 - launch-ready includes desktop AND mobile: zs qa measures every page at both
     if qa_report is None:
         R("desktop-mobile", "MANUAL", "no zs qa report given: run `zs qa <slug> --site <url>` (every page at 1440 desktop and 390 mobile) "
@@ -586,6 +622,9 @@ def launch_sheet(home, rows, slug, today=None):
            "2. wp-admin → Dashboard shows **no red notice** \"חסר התוסף Zap Site\" (the theme raises it when the plugin is not running).",
            "3. Look at the home page on a phone (390px) and a laptop (1280px): logo, menu and burger, the form, the footer legal line.",
            "4. Send one real test lead: it must arrive in the client's inbox (staging never mails them) and appear in wp-admin → Leads.",
+           "   If it does not arrive, open wp-admin → פניות מהאתר → הגדרות טפסים: the row \"מי מנהל את הדואר באתר\" says whether Zap's "
+           "relay is sending or has stood down for an SMTP plugin installed on the site. Zap's relay only ever handles the lead form's "
+           "own mail; everything else the site sends goes the site's normal way." + (f" Mailer plugin(s) seen on the page: {', '.join(mailers_seen(home['html']))}." if mailers_seen(home["html"]) else ""),
            "5. Re-do the section 2 items; Elementor → License must not say the key does not match the domain.", "",
            "## Gate results on staging / תוצאות הבדיקה לפני ההעברה", "", "| check | status | note |", "|---|---|---|"]
     md += [f"| {n} | {icon[s]} {s} | {note.replace('|', '/')} |" for n, s, note in rows]
@@ -660,6 +699,14 @@ def selftest(say=print):
     pro = HEALTHY.replace("<head>", '<head><link rel="stylesheet" href="/wp-content/plugins/elementor-pro/a.css">')
     expect("domain-licences: Elementor Pro on the page -> MANUAL", run(pro, "https://x.ussl.co.il/")["domain-licences"][0], "MANUAL")
     expect("domain-licences: none -> PASS", h["domain-licences"][0], "PASS")
+    # two mailers on one site: the row must name the other mailer, and must be there even when none is visible
+    smtp = HEALTHY.replace("<head>", '<head><link rel="stylesheet" href="/wp-content/plugins/wp-mail-smtp/a.css">')
+    r_smtp = run(smtp, "https://x.ussl.co.il/")
+    expect("mailers: WP Mail SMTP beside zap-site -> MANUAL", r_smtp["mailers"][0], "MANUAL")
+    expect("mailers: the row names the other mailer", "WP Mail SMTP" in r_smtp["mailers"][1], True)
+    expect("mailers: row is present even when nothing is visible", h["mailers"][0], "MANUAL")
+    expect("mailers: nothing visible -> the row does not claim a mailer", "WP Mail SMTP" in h["mailers"][1], False)
+    expect("mailers_seen reads the plugin folder", mailers_seen(smtp), ["WP Mail SMTP"])
     rep = "| viewport | page |\n|---|---|\n| desktop | / | 0 | 0 | 90 |  |\n| mobile | / | 0 | 0 | 90 |  |\n"
     expect("desktop-mobile: both viewports, 0 errors -> PASS", run(HEALTHY, "https://x.ussl.co.il/", qa_report=rep)["desktop-mobile"][0], "PASS")
     expect("desktop-mobile: desktop only -> FAIL", run(HEALTHY, "https://x.ussl.co.il/", qa_report=rep.split("| mobile")[0])["desktop-mobile"][0], "FAIL")
