@@ -98,19 +98,36 @@ def check_measured(slug, fps):
     return out
 
 
-def compare(slug, d, src=None):
-    """-> list of ERROR/WARN lines. The measured layout (fingerprint.json from zs qa, preview/fingerprints.json
-    from zs preview) decides: ERROR when a home reads as another client's. Names of sections only warn."""
+def compare(slug, d, src=None, home=None):
+    """-> list of ERROR/WARN lines. The measured layout decides: ERROR when a home reads as another client's.
+    Names of sections only warn.
+
+    `home` is a fingerprint measured from the local build just now (zs pool does this). Only `zs qa` rewrites
+    the stored sites/<slug>/fingerprint.json, so reading that file was reporting the PREVIOUS build's number
+    after any colour or layout change, with nothing to say it was old; a false 49% was accepted twice that way.
+    When `home` is given it is what gets compared, and a stored file that disagrees is called out as stale.
+    `zs pool` never rewrites fingerprint.json itself: that stays `zs qa`'s job, so the committed number always
+    comes from the same command that gates on it."""
+    import json as _json
     from fingerprint import CLOSE, TOO_CLOSE, load, similarity
-    mine = {}
+    mine, out0 = {}, []
     if src is not None:
         f = load((src / "fingerprint.json").read_text(encoding="utf-8")) if (src / "fingerprint.json").exists() else None
-        if f:
+        if home is not None:
+            mine["home"] = home
+            if f is None:
+                out0.append("WARN  no sites/%s/fingerprint.json yet: measured the local build instead. Run `zs qa %s` "
+                            "to write the file that gets committed" % (slug, slug))
+            elif _json.dumps(f, sort_keys=True) != _json.dumps(home, sort_keys=True):
+                out0.append("WARN  sites/%s/fingerprint.json is STALE: it does not match the local build, so the "
+                            "numbers below are the build's, not the file's. Run `zs qa %s` to refresh the file "
+                            "before committing (only `zs qa` writes it)" % (slug, slug))
+        elif f:
             mine["home"] = f
         pf = src / "preview" / "fingerprints.json"
         if d.get("directions") and pf.exists():
             mine.update({f"direction {k}": v for k, v in (load(pf.read_text(encoding="utf-8")) or {}).items()})
-    me, out, seen = recipe(d), [], set()
+    me, out, seen = recipe(d), list(out0), set()
     last = recent(slug)
     des = d.get("design") or {}
     opts = [("design", des)] + [(f"direction {k}", {**des, **v}) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]
@@ -120,7 +137,8 @@ def compare(slug, d, src=None):
             if hit:
                 out.append(f"ERROR {name}: {lever} '{dz[lever]}' was used by {', '.join(hit)} (one of the last {RECENT} sites): pick another")
     if src is not None and not mine:
-        out.append("WARN  no measured layout yet: run zs qa (or zs preview at the gate) first, then zs pool")
+        out.append("ERROR no measured layout: the local build could not be measured and no fingerprint.json exists. "
+                   "Run `zs build <slug> && zs qa <slug>` first; zs pool cannot judge this site without one")
     out += check_measured(slug, mine)
     for other, od in _others(slug):
         if other in seen:
