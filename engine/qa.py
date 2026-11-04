@@ -63,6 +63,67 @@ MEASURE_JS = r"""
   q('img').forEach(i => { if (!i.hasAttribute('alt')) E(`img without alt: ${i.src.split('/').pop()}`);
     else if (i.alt === '' && !i.closest('[aria-hidden="true"]') && vis(i) && i.width > 120) W(`empty alt on visible image ${i.src.split('/').pop()}`);
     if (i.complete && i.naturalWidth === 0 && vis(i)) E(`broken image ${i.src.split('/').pop()}`); });
+  // --- design conformance: one scale, real pixels, one type system ---------------------
+  // Correctness checks pass on a page that is merely ugly. These are the measurable half of
+  // design.md: they catch drift (a second H2 size), softness (a photo blown past its pixels)
+  // and a type system that grew a third family, none of which any other check can see.
+  const a11yChrome = '[id^="pojo-a11y"], [class*="pojo-a11y"], #ea11y-root';
+  const r2 = n => Math.round(n * 2) / 2;
+  const scale = [];
+  ['h1', 'h2', 'h3'].forEach(tag => {
+    const sizes = new Set(q(tag).filter(vis)
+      .filter(e => e.textContent.trim() && !e.closest(a11yChrome))
+      .map(e => r2(parseFloat(getComputedStyle(e).fontSize))));
+    if (!sizes.size) return;
+    const list = [...sizes].sort((a, b) => b - a);
+    scale.push(tag + ':' + list.join('/'));
+    // design.md: "Boldness never touches the heading scale". A warning, not an error: a card title and a
+    // section title legitimately share a tag, and the theme sizes them fluidly. Four sizes for one level is
+    // drift worth looking at; it is not a reason to stop a handover.
+    if (list.length > 2) W(`${tag} renders at ${list.length} sizes on one page: ${list.join('/')}px (design.md wants one)`);
+  });
+  out.info.scale = scale.join(' ');
+  // An image shown wider than its own pixels is visibly soft; object-fit:fill distorts faces and logos.
+  const upscaled = [], stretched = [];
+  q('img').forEach(i => {
+    if (!vis(i) || !i.naturalWidth || /\.svg($|\?)/i.test(i.currentSrc || i.src)) return;
+    const b = i.getBoundingClientRect(), cs = getComputedStyle(i);
+    if (b.width > i.naturalWidth * 1.02) upscaled.push(`${i.src.split('/').pop()} ${Math.round(b.width)}>${i.naturalWidth}`);
+    const want = i.naturalWidth / i.naturalHeight;
+    if (cs.objectFit === 'fill' && Math.abs(b.width / b.height - want) > want * 0.05) stretched.push(i.src.split('/').pop());
+  });
+  if (upscaled.length) E(`image shown larger than its own pixels (${upscaled.length}): ` + upscaled.slice(0, 3).join(', '));
+  if (stretched.length) E(`image stretched out of ratio (${stretched.length}): ` + stretched.slice(0, 3).join(', '));
+  // One type system: a heading family and a body family. A third is a widget that escaped the kit.
+  const fams = new Set();
+  q('body *').forEach(el => {
+    if (!vis(el) || el.closest(a11yChrome + ', svg, script, style')) return;
+    if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
+    const f = getComputedStyle(el).fontFamily.split(',')[0].replace(/["']/g, '').trim();
+    if (/^(font ?awesome|eicons|icomoon|material)/i.test(f)) return;   // icon fonts are not type
+    fams.add(f);
+  });
+  out.info.fonts = [...fams].join('/');
+  // Two is the design (headings + body). A third is usually a host plugin or a widget that escaped the kit,
+  // which is worth seeing but not always ours to fix; a fourth is the kit not being applied at all.
+  if (fams.size > 3) E(`${fams.size} font families on one page: ${[...fams].join(', ')} (want 2: headings + body)`);
+  else if (fams.size === 3) W(`3 font families: ${[...fams].join(', ')} (want 2: headings + body)`);
+  // Icons on conversion buttons are a choice, not a rule, so this fires once per page and only when the page
+  // uses none at all - the case where nobody decided, rather than the case where somebody decided no.
+  const btns = q('.elementor-button').filter(vis);
+  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon')))
+    W(`no button on this page carries an icon (${btns.length} buttons)`);
+  if (window.innerWidth < 768) {
+    const docBox = document.documentElement.getBoundingClientRect();
+    const tight = q('h1,h2,h3,p,li,label,.elementor-button').filter(e => vis(e) && e.textContent.trim()
+        && !e.closest('.zs-nav, .zs-skip, ' + a11yChrome) && getComputedStyle(e).position !== 'fixed')
+      .filter(e => { const b = e.getBoundingClientRect(); return b.left < docBox.left + 11 || b.right > docBox.right - 11; })
+      .map(e => e.tagName + ':' + e.textContent.trim().slice(0, 14));
+    if (tight.length) W(`mobile gutter under 12px (${tight.length}): ` + tight.slice(0, 3).join(', '));
+    const smallTap = q('.elementor-button, button').filter(e => vis(e) && !e.closest(a11yChrome))
+      .filter(e => e.getBoundingClientRect().height < 44).length;
+    if (smallTap) W(`${smallTap} tap targets under 44px high`);
+  }
   // phone links must dial what they show
   const dig = s => { let d = s.replace(/\D/g, ''); if (d.startsWith('0')) d = '972' + d.slice(1); return d; };
   q('a[href^="tel:"]').forEach(a => { const shown = a.textContent.replace(/\D/g, ''); if (shown.length >= 7 && dig(a.textContent) !== dig(a.getAttribute('href').slice(4))) E(`tel mismatch: shows ${a.textContent.trim()} dials ${a.getAttribute('href')}`); });
@@ -560,10 +621,12 @@ def run_qa(site):
              f"- Errors: **{errors}** · Warnings: **{warns}**", ""]
     for name, ok in extra:
         lines.append(f"- {'✅' if ok else '❌'} {name}")
-    lines += ["", "| viewport | page | errors | warnings | KB | details |", "|---|---|---|---|---|---|"]
+    lines += ["", "| viewport | page | errors | warnings | KB | type scale | fonts | details |",
+              "|---|---|---|---|---|---|---|---|"]
     for vp, path, m in rows:
         det = "; ".join(m["err"] + m["warn"])[:300].replace("|", "/")
-        lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | {det} |")
+        lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | "
+                     f"{m['info'].get('scale', '')} | {m['info'].get('fonts', '')} | {det} |")
     if bad_links:
         lines += ["", "## Links the server answered with a non-200 status", ""] + [f"- {c} {u}" for u, c in bad_links]
     if no_answer:
