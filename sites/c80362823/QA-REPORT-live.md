@@ -13,7 +13,7 @@
 | viewport | page | errors | warnings | KB | type scale | fonts | details |
 |---|---|---|---|---|---|---|---|
 | desktop | /שירותי-הסעות/הסעות-ילדים-ותלמידים/ | 0 | 0 | 653 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
-| desktop | /שירותי-הסעות/הסעות-לגיל-הזהב/ | 0 | 0 | 628 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
+| desktop | /שירותי-הסעות/הסעות-לגיל-הזהב/ | 0 | 0 | 627 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | desktop | /שירותי-הסעות/הסעות-יוקרה/ | 0 | 0 | 487 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | desktop | /שירותי-הסעות/טיולים-מאורגנים/ | 0 | 0 | 459 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | desktop | /שירותי-הסעות/הסעות-לנמל-התעופה/ | 0 | 0 | 486 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
@@ -26,11 +26,11 @@
 | desktop | /בלוג/ | 0 | 1 | 485 | h1:59 h2:48 | Assistant/Noto Sans Hebrew | <title> length 18 |
 | desktop | /אודות/ | 0 | 1 | 482 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew | <title> length 19 |
 | desktop | /שירותי-הסעות/ | 0 | 0 | 471 | h1:59 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
-| desktop | / | 0 | 0 | 938 | h1:64.5 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
-| desktop | /בלוג/לוח-זמנים-להסעת-קבוצה/ | 0 | 0 | 487 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
-| desktop | /בלוג/בטיחות-בהסעה-מאורגנת/ | 0 | 0 | 458 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
-| desktop | /בלוג/מיניבוס-או-אוטובוס/ | 0 | 0 | 493 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
-| desktop | /בלוג/מדריכי-הסעות/ | 0 | 0 | 480 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
+| desktop | / | 0 | 0 | 937 | h1:64.5 h2:48 h3:18.5 | Assistant/Noto Sans Hebrew |  |
+| desktop | /בלוג/לוח-זמנים-להסעת-קבוצה/ | 0 | 0 | 486 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
+| desktop | /בלוג/בטיחות-בהסעה-מאורגנת/ | 0 | 0 | 459 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
+| desktop | /בלוג/מיניבוס-או-אוטובוס/ | 0 | 0 | 487 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
+| desktop | /בלוג/מדריכי-הסעות/ | 0 | 0 | 486 | h1:59 h2:48 | Assistant/Noto Sans Hebrew |  |
 | mobile | /שירותי-הסעות/הסעות-ילדים-ותלמידים/ | 0 | 0 | 601 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /שירותי-הסעות/הסעות-לגיל-הזהב/ | 0 | 0 | 575 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /שירותי-הסעות/הסעות-יוקרה/ | 0 | 0 | 433 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
@@ -41,12 +41,12 @@
 | mobile | /שירותי-הסעות/הסעות-עובדים/ | 0 | 0 | 429 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /הצהרת-נגישות/ | 0 | 0 | 369 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /מדיניות-פרטיות/ | 0 | 0 | 369 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
-| mobile | /צור-קשר/ | 0 | 0 | 403 | h1:33.5 | Assistant/Noto Sans Hebrew |  |
-| mobile | /בלוג/ | 0 | 1 | 481 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew | <title> length 18 |
+| mobile | /צור-קשר/ | 0 | 0 | 399 | h1:33.5 | Assistant/Noto Sans Hebrew |  |
+| mobile | /בלוג/ | 0 | 1 | 485 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew | <title> length 18 |
 | mobile | /אודות/ | 0 | 1 | 427 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew | <title> length 19 |
-| mobile | /שירותי-הסעות/ | 0 | 0 | 418 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
-| mobile | / | 0 | 0 | 682 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
+| mobile | /שירותי-הסעות/ | 0 | 0 | 414 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
+| mobile | / | 0 | 0 | 686 | h1:33.5 h2:30.5 h3:18.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /בלוג/לוח-זמנים-להסעת-קבוצה/ | 0 | 0 | 432 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
-| mobile | /בלוג/בטיחות-בהסעה-מאורגנת/ | 0 | 0 | 425 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
+| mobile | /בלוג/בטיחות-בהסעה-מאורגנת/ | 0 | 0 | 421 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
 | mobile | /בלוג/מיניבוס-או-אוטובוס/ | 0 | 0 | 432 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
-| mobile | /בלוג/מדריכי-הסעות/ | 0 | 0 | 482 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
+| mobile | /בלוג/מדריכי-הסעות/ | 0 | 0 | 486 | h1:33.5 h2:30.5 | Assistant/Noto Sans Hebrew |  |
