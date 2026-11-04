@@ -70,10 +70,10 @@ site.json". ➖ = not applicable, with the reason. ⏳ = open, see `OPEN-ITEMS.m
 
 | line | status | where |
 |---|---|---|
-| לוגו — blank | ✅ | blank on the spec, but the client's real logo was found on their Dapei Zahav listing and is in the header and the footer, with the favicon cut from it and the whole palette sampled from it. Only the source file at full resolution is still wanted. OPEN-ITEMS 4 |
+| לוגו — ~~blank~~ **not blank: an embedded image** | ✅ | **Corrected 04/11.** This row reads blank only in `brief/brief.md`, which is a text export and silently drops embedded pictures. The real `.docx`, opened as a zip, carries the logo at `word/media/8b835a…png`, referenced as `rId7` from this very row. It is the same badge already in use (both 140x140, same grey backing, mean absolute difference 3.7/255), so the logo in the header, the footer, the favicon and the palette is now confirmed from the client's own spec sheet and not only from the directory listing. Resolution is the only open part. IMAGE-SOURCES.md, OPEN-ITEMS 4 |
 | צבעי מותג — blank | ✅ | sampled from the client's own logo once it was found: orange `#b84606` and slate `#1b2a36`. NOTES.md |
 | יד חופשית למעצב — blank | ✅ | treated as a free hand, since nothing was specified. Re-exercised on 03/11: kit `sidebar`→`frame`, archetype `statement`→`story`, home resequenced, for uniqueness headroom. Every word, link and image is unchanged; only the order and the skeleton moved. NOTES.md "Uniqueness pass, 03/11" |
-| אתרים שאהבתם — blank | ➖ | nothing to match |
+| אתרים שאהבתם — blank | ➖ | nothing to match. Re-checked 04/11 against the `.docx` itself, in case this row too had something the text export dropped: the row is genuinely empty, no text and no embedded image. There is no reference site for this client |
 
 ## 7 · תמונות
 

@@ -78,6 +78,11 @@ what evidence, and raise it with Ofir before go-live.
    enough at the header's 96px but soft on a high-density screen and too small for a crisp 512px favicon. Ask
    the client for the source (SVG, AI/EPS, or a PNG of 512px or more); dropping it in is one file plus a
    rebuild. Provenance is recorded in `IMAGE-SOURCES.md`.
+   **Update 04/11: provenance is now settled, resolution is not.** The brief's own `.docx` was opened as a
+   zip and it does carry the logo, embedded under the "לוגו" row (`word/media/8b835a…png`, `rId7`); only the
+   `brief.md` text export dropped it. It is the same file already in use (both 140x140, same grey backing,
+   mean absolute difference 3.7/255), so there is no longer any doubt that this is the client's own mark or
+   that the client supplied it. There is also no bigger copy hiding in the brief: ask Ofir, as above.
 
 5. **Favicon** is now cut from the real logo (see item 4), so this is closed except for the resolution point
    above.

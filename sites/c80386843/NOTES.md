@@ -46,7 +46,7 @@ wording, not a date); no licences, no prices, no ratings, no counts.
 | `base_template` | 1 | navy-on-white, offset frames. **Deliberately not template 5** (the metal-works demo, white + red): the obvious pick for a metalworker and already used by the pilot branches |
 | preset | `editorial` | serif headings, hairlines, no shadows: craft rather than heavy industry |
 | palette | primary orange `#b84606`, accent steel blue `#6b8ca6`, ink slate `#1b2a36` | **sampled from the client's own logo** once it was found on their Dapei Zahav listing. The logo's orange is `#d15301`; it is deepened to `#b84606` so white text clears 4.5:1 and the chapter headings clear 4.5:1 on the surface tint, which `design.md` allows ("a darker primary only if contrast needs it"). The logo's slate `#2c3e4f` carries the text and the footer. The site was built first on petrol steel and brass, chosen as the most distant free colour; that was replaced the moment the real brand turned up |
-| fonts | Alef / Alef | **Changed from Frank Ruhl Libre / Assistant on 03/11 (client feedback: "generally use a different font").** One sturdy, slab-flavoured Hebrew family for a 20-year metalwork shop: heavy 700 headings, 400 body, a Latin that suits "Dream from Steel". Already self-hosted, on the validator's readable-body list, and used as heading or body by no other client |
+| fonts | Heebo / Heebo | **Frank Ruhl Libre / Assistant → Alef on 03/11** (client feedback: "generally use a different font"), **→ Heebo on 04/11**: Alef turned out to have old-style figures as its only figure set, with 3, 4, 5, 7 and 9 below the baseline and no `lnum` to switch them off, which wrecked the phone number and "20 שנה". Heebo is the same kind of sturdy plain Hebrew sans, self-hosted, on the readable-body list, variable 100-900, and the heading font of no other client (the pool measure looks only at the heading). Full reasoning in the 04/11 polish pass below |
 | radius | 10 | sharp (2) was the first choice, but it made the measured page frame identical to mehirut-haor's |
 | hero | section variant `curve` over the workshop bay | the story archetype's opening: the photo carries the page in, the H1 sits on it, and the curved bottom edge hands over to the first chapter |
 | motion | `subtle` | the brief asks for no motion |
@@ -175,3 +175,97 @@ so a landscape photo in it is upscaled and soft. Avoided here by not using `over
 - three-across service row: icon, title and text centred on one axis, titles larger, hairlines between the cards, no side padding skew; the section intro stacked under its title
 - ticks on the dark `split:overlap` card were dark on dark: now white
 - all in `design.custom_css`; no shared theme change. Uniqueness: worst case 0.375 (mehirut-haor) before and after; c743850 0.354 to 0.346
+
+### Polish pass, 04/11 ("cleaner, more pristine, closer to the brief")
+
+A quality pass over the 03/11 build, not a rebuild. Four changes, all in `design.custom_css` and
+`design.fonts`; nothing in `engine/`, `wp/theme/` or `wp/plugin/`.
+
+**1. Body and heading font Alef → Heebo.** The 03/11 pass flagged Alef's digits as "slightly techy" and
+left the call open. Measured rather than eyeballed (glyph ink boxes at 100px, via canvas
+`actualBoundingBoxAscent/Descent`):
+
+| | digit ink tops | digits below the baseline | cap height | x-height |
+|---|---|---|---|---|
+| Alef | 53-66 | **3, 4, 5, 7, 9** | 70 | 52 |
+| Heebo | 71-72 | none | 71 | 54 |
+
+Alef ships **old-style (text) figures as its only figure set**: most digits sit at x-height, 6 and 8
+ascend, and five of the ten drop below the baseline. It is not a style choice that can be switched off:
+`font-variant-numeric: lining-nums` and `font-feature-settings: "lnum" 1` both render identically to the
+default, so the font has no lining alternative to call on.
+
+That is not a small matter on this site. The two most important strings on it are the מספר מקשר
+**072-2594285**, which is the conversion, and the brief's headline claim **20 שנה**; the step list also
+runs **01 02 03 04**. In Hebrew setting it is worse than it would be in Latin, because Hebrew letters have
+no ascenders or descenders and sit on one even band, so the bouncing digits are the only thing breaking the
+line and read as a rendering fault rather than as a typographic style.
+
+Heebo keeps what Alef was picked for: a sturdy, plain, slightly industrial Hebrew sans, self-hosted, on the
+validator's readable-body list. Two things it adds: it is a variable face (100-900), so the 800 headings
+are a real weight and not a synthesised one, and its bold Latin is a Roboto-grade grotesque, which is much
+closer to the logo's own DREAM / FROM / STEEL wordmark than Alef's humanist Latin was.
+
+Uniqueness cost: none. `engine/pool.py` puts only the **heading** font in the measured recipe, and Heebo is
+the heading font of no other client (it is body on `c2910210`, `c743850`, `c80220135` and `lehem-erez`,
+which the measure does not look at). Measured before and after below.
+
+**2. The hero fix of 03/11 did not hold at 1280.** It was reported as "about 480px" and it is, at 1440 and
+only at 1440. At 1280x720 the hero was still **690px (0.96vh)** with 298px of bare photo under the text,
+which is the state the user rejected. Cause: `pool.css:442`, a `@media (min-width:768px) and
+(max-height:760px)` rule that sets `min-height: min(100svh - 120px, 820px)` **`!important`** on the home
+cover/inset/curve hero to keep the buttons above the fold on short laptops. The 03/11 custom rule had the
+same specificity and no `!important`, so it lost. The rule now carries `!important` and an extra class
+(`.zs-hero--img`) to win outright.
+
+Measured with `py tools/hero-space.py`, same build, before and after:
+
+| viewport | height | empty | biggest bare rect | first button |
+|---|---|---|---|---|
+| 1440x900 | 494 → **487** px | 81% → 81% | 45% → **43%** | above the fold, both |
+| 1280x720 | **690 → 447** px (0.96 → 0.62vh) | 86% → **78%** | 44% → **36%** | above the fold, both |
+| 390x844 | 502 → **490** px | 49% → **46%** | 18% → **14%** | above the fold, both |
+
+**3. The FAQ questions on the dark plate were the accent on near-black.** `pool.css:210` sets
+`.zs-faq.zs-v-dark .elementor-tab-title { color: var(--c-accent) }`. On this palette that is steel blue
+`#6b8ca6` on `#16222c` = **4.56:1**, which clears the 4.5 floor by luck, so `zs qa` passed it with 0 errors,
+exactly as it passed the `split:overlap` title that became PR #74. On screen the questions read as disabled
+text, and they were the dimmest thing on a page whose section title directly above them is white.
+`qa-rules.md`: "On dark grounds titles are white; the accent marks them with a rule or a chip, not by
+colouring the words." The questions are now white (16.16:1) and the open one carries an orange rule instead.
+This is a **generic theme defect, written up and not fixed here** (see the table below).
+
+**4. One colour for one action.** `pool.css:71` paints the lead-bar submit with `--c-accent`, so
+"שלחו לי הצעת מחיר" in the band was steel blue while the identical submit on the contact page and in the
+footer form was brand orange. Both are now orange (5.36:1). Every submit on the site is now one colour.
+
+**Looked at and deliberately left alone:**
+
+- the `collage` section. A full-page screenshot showed a bare white panel hanging off the inset photo; it
+  is an artifact of the screenshot, not the page. Playwright's `full_page` capture resizes the viewport to
+  the whole document, and this theme sizes the collage in `vh` (`editorial.css:170`, `height: clamp(420px,
+  64vh, 620px)`), so the layout measured in the capture is not the layout a visitor sees. Re-shot clipped
+  to a real 1440x900 viewport the inset fills its white frame exactly (image 287x280 inside a 307x300 box,
+  a 10px border all round). **Do not judge this theme from a full-page screenshot.**
+- the `split:overlap` card's centred text. Title, body, ticks and button are all `text-align: center`; the
+  ragged title only looks mixed because of where its three lines break.
+- the hero's remaining bare band at 1440 (a full-width 1440x208 strip under the buttons, 43% of the hero
+  box). Worth saying why, because 43% is the same number the rejected 863px hero measured and it looks at
+  first like the fix did not work. It is the same number because the metric is a share **of the hero box**,
+  so shrinking the hero shrinks the strip and the box together and the ratio barely moves (863px → 487px
+  took it from 0.43 to 0.43). The ratio is structural to any full-bleed photo hero with a centred text
+  block, and it is what the two heroes the user *approved* look like as well (yadmordechai `cover` 90%
+  empty, thewhite-villa `cover` 92%) which is `hero-space.md`'s own conclusion about this site: "steel
+  (`curve`) is a full-bleed photo with text over it, exactly like the approved `cover` heroes". What was
+  actually wrong was the height, and that is fixed. Shrinking further would buy nothing on this metric and
+  would start pushing the curve's clip into the facts plate, whose left edge sits where the ellipse already
+  cuts at 94% of the box height. The photo is the message here (a workshop bay stacked with stock), which
+  `hero-space.md` question 1 allows when it is said out loud, so it is said here.
+- the palette, kit, archetype, section order and all copy. Nothing in the brief asked for them to move and
+  the 03/11 uniqueness work depends on them.
+
+| theme defect found, not fixed | where |
+|---|---|
+| `faq:dark` colours the questions `--c-accent` on `--c-dark`. Same shape as PR #74 and the same reason the gate misses it: a palette whose accent lands just over 4.5:1 passes while looking like disabled text. The variant should paint them white and spend the accent on a rule, as `split:overlap` now does | `wp/theme/zap-base/assets/pool.css:210` |
+| `pool.css:442`'s short-laptop hero floor is `!important`, so a site cannot shorten its own hero at 1280x720 without matching `!important` and out-specifying it. It also fights the `curve` variant, whose clip already eats the bottom of the box | `wp/theme/zap-base/assets/pool.css:442` |
+| `zs qa`'s link check opens 8 connections at once (`ThreadPoolExecutor(8)`) with a 20s timeout, against a local dev server that serialises requests. With several client sessions building on the same PC at once, pages that answer 200 in 1.4-4.4s on their own start reporting `link timed out`, and `zs qa` calls them **errors**. On 04/11 the same unchanged build scored 0 errors in a quiet window and 13 then 8 "errors" while four other agents ran `zs qa`. Nothing is wrong with the pages; the gate is reporting machine load as a site defect, which is the kind of false red that gets a gate ignored. Worth a smaller pool, a longer timeout, or treating a timeout as a WARN distinct from a real non-200 | `engine/qa.py:318-335` |

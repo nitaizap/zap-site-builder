@@ -58,6 +58,23 @@ redrawn. The favicon is the same badge, centred on the logo's slate.
 
 Still wanted: the original file at a usable resolution. 140x140 is all the CDN has.
 
+### Confirmed against the brief's own .docx, 04/11/2026
+
+The brief is also held as `brief/איפיון אתר - מסגרית Dream from Steel - 80386843.docx`, and the text export
+`brief/brief.md` silently drops what is embedded in it. Opened as a zip, `word/media/` holds the logo
+(`8b835a2258d1de5fad7db48f12750f040832ecd1.png`, referenced as `rId7` from the "לוגו" row of section 6), so
+**the logo the site uses is confirmed as the client's own, from the client's own spec sheet** and not only
+from the directory listing. The two files are the same image: both 140x140, both flattened onto the same
+grey backing, mean absolute difference 3.7/255 against the keyed copy recomposited on that grey.
+
+That closes the question of whether a logo exists and whether this is it. It does **not** close the
+resolution item: the brief's copy is 140x140 as well, so there is still no file big enough for a crisp
+favicon, and the original is still worth asking Ofir for.
+
+`word/media/image1.png` in the same archive is a 200x200 advert for מוניות כפר סבא. It is referenced from
+nowhere in `word/document.xml` (only `rId7` is), so it is a leftover of the form template, not this
+client's material. It is not used and must not be.
+
 ## What the site says about these images
 
 The footer of every page carries, next to the copyright:
