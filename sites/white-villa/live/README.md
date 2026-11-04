@@ -241,3 +241,33 @@ The thing that actually fixed the ragged bottom was the **two-column menu**, not
 tracks: it halves the tallest column. With equal widths and that menu, the spread is 53px instead
 of 152px, and the band reads as a deliberate grid. Gutters widened to 64px, heading gap 20px, item
 rhythm 13px.
+
+### Final shape: brand on its own row
+
+Three attempts at balancing a three-column band all read wrong, so the shape was put to the user
+rather than guessed at a fourth time. The chosen layout:
+
+```
+[logo]  הוילה הלבנה ינוב          ← full width, 1200px
+וילה פרטית לנופש ומתחם לאירועים…
+──────────────────────────────── ← hairline
+יצירת קשר            הוילה        ← two 568px columns
+055-4309532          דף הבית  גלריה
+shimon@…             אודות    בלוג
+מורד התאנה 29        וילה…    צרו קשר
+```
+
+The brand column spans `grid-column: 1 / -1` with a hairline beneath it; the menu and contact
+share a two-track row (568px each, 64px gutter) with the menu keeping its column-major pair of
+sub-columns. Heights beneath the rule are 219 and 168.
+
+This removes the thing that kept reading as lopsided: a short brand column standing beside two
+lists it had nothing in common with. Nothing is centred, nothing is proportionally sized, and the
+only full-width element is the one that earns it.
+
+Verified at 375: a single 335px track, three stacked blocks, no horizontal overflow, footer height
+unchanged. All of it is still inside `@media (min-width:1025px)`.
+
+**Process note.** Three rounds were spent adjusting a layout against my own taste while the user
+kept saying it was wrong. Offering three concrete shapes and letting them choose settled it in one.
+When a design is rejected twice, stop tuning and present alternatives.
