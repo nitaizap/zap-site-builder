@@ -113,3 +113,23 @@ this pass; the Weave total stays **16 of 100**.
 The `logo_light` entry added earlier the same day is gone from `site.json`. The theme now decides the
 footer logo from whether the footer ground is light, so it picks the real badge on its own. Nothing about
 any image's source changes, and no file was added or removed.
+
+### The logo file was renamed, 04/11/2026
+
+`assets/logo.png` is now `assets/logo-badge.png`. Same bytes, same source, same everything recorded in
+the table above: only the filename changed, and `site.json`'s `logo` key points at the new name.
+
+Why: on staging, attachment 1290 held `2026/11/logo.webp` and **the file had gone missing from disk**
+(`file_exists` false), so the logo was a broken image in the header and the footer of every live page
+while the page still rendered and `zs qa` still scored 0 errors (it checks links, not whether an image
+decodes). The attachment's meta shows the host's own image optimiser had converted the uploaded PNG to
+WebP and kept a backup under `uploads/nn-backups/logo.png`; the converted file is the one that vanished.
+`zs push` could not heal it, including with `--full`: the server matches media by `_zs_key` and skips
+anything whose `_zs_hash` is unchanged, so an attachment with the right hash and no file is invisible to
+it. Fixed by clearing that one meta value on the server so the next push re-uploaded, and by giving the
+file a new name so the new upload does not land back on the optimiser's stale record. Nothing was deleted.
+The stale `logo_light_id` option left by the workaround removed earlier the same day was cleared at the
+same time.
+
+Worth knowing for any site: **a missing media file is invisible to every gate we have.** The check that
+caught it was counting images whose `naturalWidth` is 0 after a full scroll, on the live page.
