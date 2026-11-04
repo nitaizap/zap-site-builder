@@ -511,6 +511,9 @@ def run_qa(site):
     from playwright.sync_api import sync_playwright
     data = load_site(site.src)
     urls = urls_for(site, data)
+    # A run that dies half way must not leave the previous run's report behind: a stale file reads exactly like
+    # a pass. Remove it first; it is written again only when the whole sweep completes.
+    (site.src / getattr(site, "qa_report", "QA-REPORT.md")).unlink(missing_ok=True)
     rows, links, errors, warns = [], set(), 0, 0
     extra = []
     def one_viewport(vp, w, h):
@@ -523,7 +526,14 @@ def run_qa(site):
             page.on("console", lambda m: console.append(m.text) if m.type == "error" else None)
             for u in urls:
                 console.clear()
-                resp = page.goto(u, wait_until="networkidle")
+                for _try in range(3):      # the machine sleeping or the network dropping mid-run (net::ERR_NETWORK_IO_SUSPENDED, ERR_NETWORK_CHANGED) is retried, not fatal
+                    try:
+                        resp = page.goto(u, wait_until="networkidle")
+                        break
+                    except Exception as e:
+                        if _try == 2 or "net::ERR_" not in str(e):
+                            raise
+                        page.wait_for_timeout(4000)
                 for _ in range(2):     # a gateway hiccup (proxy / host) is retried, a real error stays
                     if resp is None or resp.status not in (502, 503, 504):
                         break
