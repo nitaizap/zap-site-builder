@@ -6,10 +6,12 @@ The spec sheet line by line against what was built.
 or enforced by a gate that passed. ➖ = deliberately not built, with the reason. ⏳ = open, waiting on someone.
 ⚠️ = built as far as the client's material allows, with a gap named.
 
-The site was built, measured and looked at. Re-measured in full on 04/11, after merging `main` at `1aa7aa2`
-(the shared theme and plugin fixes in PR #86): `zs qa` **0 errors / 0 warnings**, `zs seo` **0 FAIL**,
-`zs pool` raises nothing and the highest measured likeness to any other client is **33%** (`mehirut-haor`,
-limit 40%). Nothing below rests on "it is in site.json".
+The site was built, measured and looked at. Re-measured in full on 04/11, after merging `main` at `6a9a262`
+(PR #86 then PR #88, the shared theme, engine and plugin fixes): `zs qa` **0 errors / 0 warnings**,
+`zs seo` **0 FAIL**, `zs pool` raises nothing and the highest measured likeness to any other client is
+**33%** (`mehirut-haor`, limit 40%). Every width below was measured **with a real 15px scrollbar**
+(Playwright hides scrollbars by default, which hides this class of fault completely). Nothing below rests
+on "it is in site.json".
 
 ## סוג הפרויקט
 
@@ -66,7 +68,7 @@ limit 40%). Nothing below rests on "it is in site.json".
 | מערכות מיזוג אוויר | ✅ | own page, same pattern |
 | צמיגים | ✅ | own page, same pattern |
 | מכונאות רכב | ✅ | own page, same pattern |
-| צרו קשר: טופס לידים, טלפון, כתובת ומפה | ✅ | all four present. Form, phone and address in the `contact` section + NAP block; the map renders as a real `<iframe src="https://www.google.com/maps?q=קיבוץ יד מרדכי&output=embed&hl=iw">` with the title `מפת הגעה: מרכז שירות יד מרדכי`. Closed 04/11 after merging `main` at `1aa7aa2` (PR #86), which stops the part widget passing a blank control to the shortcode, so `business.address` applies. The per-client workaround that hid the empty container and collapsed the contact row to one column was **deleted** in the same pass. Measured at 1440: map and form now end on the same line (both bottom 1599px), so the column is full, not half-empty |
+| צרו קשר: טופס לידים, טלפון, כתובת ומפה | ✅ | all four present. Form, phone and address in the `contact` section + NAP block; the map renders as a real `<iframe src="https://www.google.com/maps?q=קיבוץ יד מרדכי&output=embed&hl=iw">` with the title `מפת הגעה: מרכז שירות יד מרדכי`. Closed 04/11 after merging `main` at `1aa7aa2` (PR #86), which stops the part widget passing a blank control to the shortcode, so `business.address` applies. The per-client workaround that hid the empty container and collapsed the contact row to one column was **deleted** in the same pass. Measured at 1440 with a real scrollbar: map and form end on the same line (both 1599px locally, 1596px live), and at 1280 both end at 1583px, so the column is full, not half-empty |
 | אזור שירותים, קוביות לכל שירות עם קישור לעמוד | ✅ | `cards` section, six cards, each linking its page, one meaningful icon each |
 | באנר מבצע חלקים מקוריים | ✅ | `cta` `photo` band, the spec's wording including "רכבים מעל 3 שנים, ט.ל.ח" |
 | אזור חוות דעת לקוחות | ✅ | `reviews` section on the home page, Dapei Zahav customer id 80220135, verified against the API payload (its links point at this client's own listing). Renders on the pushed site only, so it is empty in the local screenshots (OPEN-ITEMS 4) |
@@ -130,13 +132,13 @@ limit 40%). Nothing below rests on "it is in site.json".
 
 | check | result |
 |---|---|
-| `zs qa` (16 URLs × 2 viewports, 24 internal links) | 0 errors, 0 warnings (re-measured 04/11 after the `main` merge) |
+| `zs qa` (16 URLs × 2 viewports, 24 internal links) | 0 errors, 0 warnings (re-measured 04/11 on `main` at `6a9a262`) |
 | `zs seo` (the team's checklist, row by row) | 0 FAIL, 39 rows: 34 pass, 5 manual; `SEO-QA-c80220135.xlsx` written |
 | `zs pool` uniqueness against every other client | no warning; highest measured likeness 33% against `mehirut-haor` (limit 40%). It had risen to 40% before the palette change, see OPEN-ITEMS 17 |
 | hero above the fold at 1280×620 and 360×640 | passes |
 | mobile menu opens full screen, Escape closes | passes |
 | lead form: thank-you shown, lead saved, no mail sent from staging | passes |
-| header at 1536 / 1440 / 1366 / 1280 / 1100 / 1025 | no overlap, no horizontal scroll, no wrapped labels. Re-measured 04/11 against the fixed accessibility toggle (52×52, fixed in the viewport's left corner): the header row's leftmost item starts at 60px or more at 768 / 1024 / 1280 / 1366 / 1440, so `main`'s fix holds here. The **top strip above it** was still being clipped (leftmost content at 0px at 1100, 8px at 1280, 51px at 1366); 56px of inline-end room was reserved for it in this client's CSS, and it now starts at 56px or more at every width |
+| header + top strip at 1536 / 1440 / 1366 / 1280 / 1100 / 1025 | no overlap, no horizontal scroll, no wrapped labels. Re-measured 04/11 on `main` at `6a9a262` **with a real 15px scrollbar**, against the accessibility toggle (fixed in the viewport's left corner, right edge at 52px). Leftmost content, header row and top strip alike: **92 / 92 / 60 / 76 / 113 / 161px** at 1025 / 1100 / 1280 / 1366 / 1440 / 1536, i.e. clearances of 40 / 40 / 8 / 24 / 61 / 109px. The theme reserves the room from the layout width for both rows, so the per-client `.zs-topbar__in` rule this site carried was **deleted**. The same numbers on the live staging site |
 | every image | converted to WebP and under 100 KB by the build |
 
 ## Looked at by eye

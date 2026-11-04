@@ -419,10 +419,9 @@ the `.zs-prose` centring rule (item 18) and the empty-map collapse (item 20).
 **Added or changed:**
 
 1. The contact grid stretches so the map fills its column beside the form (item 20).
-2. The top strip reserves 56px of inline-end room between 1025 and 1439px. The accessibility toggle is
-   fixed in the viewport's left corner and is 52×52; the strip is only 38px tall, so the toggle covered its
-   left-hand item entirely. Measured before: leftmost content at 0px (1100), 8px (1280), 51px (1366).
-   After: 56px or more at every width. `main`'s own fix covers the header row below the strip, not the strip.
+2. The top strip reserved 56px of inline-end room between 1025 and 1439px, because PR #86's fix covered
+   the header row below the strip and not the strip itself. **Superseded and deleted on 04/11** — see
+   item 22.
 3. The six service pages no longer say the same sentence twice at the top. The hero keeps the spec's own
    wording and the first prose paragraph was rewritten to add something. On פחחות וצבע and
    מערכות מיזוג אוויר the spec's punchier line moved into the hero instead. Three paragraphs further down
@@ -436,3 +435,44 @@ client are item 16 (service-page depth: one twenty-minute call with ערן שט�
 recorded in `BRIEF-CHECK.md` (new photographs at 1600px or wider, of work actually being done). Neither can
 be closed from here, and neither is closed by the client's own Facebook or Instagram: both were read on
 04/11 and give a logged-out reader nothing beyond the profile name and a grid of thumbnails.
+
+## 22 · Third pass, 04/11: `main` at `6a9a262` (PR #88), and the topbar workaround deleted
+
+**Deleted:** the `.zs-topbar__in { padding-inline-end: 56px }` rule this site carried between 1025 and
+1439px (item 21, point 2). PR #88 reserves the toggle's room from the layout width for **both** header rows
+at once, in `standards.css`:
+
+    padding-inline-end: calc(var(--gutter, 32px) + max(0px, 60px - max(0px, (100% - var(--wrap, 1200px)) / 2)));
+
+so the client rule would have added to it. It came out in the same push as the theme fix, not before or
+after, so the site was never left with neither and never with both.
+
+**Measured with real scrollbars**, locally and again on the live staging site. Playwright hides scrollbars
+by default (`--hide-scrollbars`), which conceals this fault entirely; every number below was taken with
+`ignore_default_args=["--hide-scrollbars"]` and a confirmed 15px scrollbar. The toggle's right edge is 52px.
+
+| viewport | topbar leftmost (was) | header leftmost | clearance | h-scroll |
+|---|---|---|---|---|
+| 1025 | 92 | 92 | 40px | none |
+| 1100 | 92 (**0**) | 92 | 40px | none |
+| 1280 | 60 (**8**) | 60 | 8px | none |
+| 1366 | 76 (**51**) | 76 | 24px | none |
+| 1440 | 113 | 113 | 61px | none |
+| 1536 | 161 | 161 | 109px | none |
+
+The 1440 header figure is the one PR #88's note warns about: the old reserve was computed from `100vw`,
+which includes the scrollbar, and left as little as 0.5px at some wrap widths. With `100%` it is 61px here.
+
+Also re-measured after the merge, on the live site: the map still renders
+`<iframe src="https://www.google.com/maps?q=קיבוץ יד מרדכי&output=embed&hl=iw">` and its column still ends
+level with the form (1596px at 1440, 1579px at 1280); the prose column is centred to the pixel
+(333/333 at 1440, 253/253 at 1280, width 760).
+
+**`custom_css` truncation: nothing was lost here.** PR #88 stopped running `design.custom_css` through
+`wp_strip_all_tags`, which used to delete everything from any `<` to the next `>`, silently. This site's
+CSS was checked character by character: **it contains no `<` at all** (2 `>`, both child combinators), so
+there was never anything for the old strip to eat and nothing in it had been truncated. The rules measured
+before the merge and after it behave identically, which is consistent.
+
+**`zs pool` now errors rather than warns when it cannot measure a built site.** It ran clean here and
+reported `measured: the local build (not the stored fingerprint.json)`, which is the new behaviour.
