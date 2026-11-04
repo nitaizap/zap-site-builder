@@ -77,7 +77,7 @@
     },
     "radius": 16,
     "motion": "subtle",
-    "custom_css": "/* The brief asks for a prominent call button on every page. On desktop the header phone is a taxi-yellow\n   pill inside the green outline the standard already gives it (the outline is what carries the 3:1\n   control contrast against the white header, WCAG 1.4.11). At 1024px and below the theme turns the\n   control into the standard plain phone icon (qa-rules), so the fill stops there. */\n@media (min-width: 1025px) {\n  html body .zs-header__cta .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-primary); font-weight: 700; }\n  html body .zs-header__cta .elementor-button:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); }\n}\n\n/* Phones: the engine gives .zs-cta__text flex-basis 420px (main.css), which is wider than a 390px\n   screen, so the accent call band pushed the page sideways. Let it take the full row here. */\n@media (max-width: 600px) {\n  html body .elementor .e-con.zs-cta__text { flex-basis: 100%; min-width: 0; }\n  html body .elementor .zs-cta .e-con.zs-btns { width: 100%; flex-wrap: wrap; }\n}\n"
+    "custom_css": "/* ---- first screen -------------------------------------------------------------------------------\n   The brief's two reference sites both lead with a big saturated colour field and a phone number you\n   cannot miss. The hero band carries the client's own taxi yellow (section bg: accent, dark ink), and\n   the rules below make the call button display size and bring the ordering form up into the fold. */\n\n/* The home split hero's photo is forced to a 4:4.6 portrait by the theme (finish.css:102), which made\n   the hero 1045px tall and pushed the lead form ~50px below a 900px fold. This client's hero is\n   landscape, so the text, both buttons and the form card all fit the first screen. Scoped to this\n   site only; the theme-level fix is not approved. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 2.9; }\n/* the theme offsets the photo with a taxi-yellow block, which is invisible on a yellow hero: make it\n   the brand green so the photo keeps its offset corner. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { background: var(--c-primary); }\n\n@media (min-width: 1025px) {\n  /* \"כפתור חיוג בולט\": the hero's call button at display size, not body text. */\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button {\n    font-size: 1.6rem; font-weight: 800; letter-spacing: .01em; padding: .62em 1.15em; gap: .5em;\n  }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button :is(svg, i) { width: 1.1em; height: 1.1em; font-size: 1.1em; }\n  html body .zs-hero--home .zs-btns .zs-b-ghost .elementor-button { font-size: 1.1rem; padding: .85em 1.4em; }\n\n  /* The header phone is a filled taxi-yellow pill inside the green outline the standard already gives\n     it (that outline is what carries the 3:1 control contrast, WCAG 1.4.11: yellow on white is 1.68).\n     At 1024px and below the theme turns the control into the standard plain phone icon (qa-rules). */\n  html body .zs-header__cta .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-primary); font-weight: 700; }\n  html body .zs-header__cta .elementor-button:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); }\n}\n\n/* Phones: Zap QA keeps the two hero buttons side by side, one line each (standards.css), so the call\n   button is given the larger share of the row instead of being stacked. Side by side at equal width\n   the number does not fit 167px and was clipped; at 1.5 of the row it sits on one line and is still\n   the dominant control, which is what \"כפתור חיוג בולט\" has to mean on a phone. */\n@media (max-width: 1024px) {\n  html body .zs-hero--home .zs-btns > .zs-b-tel { flex: 1.5 1 0; }\n  html body .zs-hero--home .zs-btns > .zs-b-ghost { flex: 1 1 0; }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button { font-size: 1.14rem; font-weight: 800; padding-inline: 8px; }\n}\n\n/* ---- the engine bug this client has to work around ----------------------------------------------\n   wp/theme/zap-base/assets/main.css:347 gives .zs-cta__text a 420px flex-basis, which cannot fit a\n   390px screen and does not shrink, so any cta section scrolls the page sideways on a phone\n   (measured here: scrollWidth 434 against a 390 viewport). The generic fix belongs in the theme. */\n@media (max-width: 600px) {\n  html body .elementor .e-con.zs-cta__text { flex-basis: 100%; min-width: 0; }\n  html body .elementor .zs-cta .e-con.zs-btns { width: 100%; flex-wrap: wrap; }\n}\n"
   },
   "logo": "assets/logo-brief.png",
   "favicon": "assets/favicon.png",
@@ -272,7 +272,7 @@
           "image": "taxi-side",
           "form": true,
           "cta": {
-            "label": "חייגו עכשיו",
+            "label": "חייגו 072-3257979",
             "href": "tel"
           },
           "cta2": {
@@ -283,7 +283,8 @@
             "מוקד 24/7",
             "פועלים משנת 1955",
             "כפר סבא והשרון"
-          ]
+          ],
+          "bg": "accent"
         },
         {
           "type": "features",

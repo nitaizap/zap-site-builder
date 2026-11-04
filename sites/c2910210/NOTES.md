@@ -173,3 +173,55 @@ anywhere on the site any more**, so OPEN-ITEMS B (consent of the people in the p
 Mechanically verified on all 13 pages at 1440 and at 390, by loading each page and querying the DOM: a
 visible header call control, 3 to 6 visible `tel:` links, and a taxi-ordering form on every one. The
 brief's "כפתור חיוג בולט והזמנת מונית בכל עמוד" is true, not assumed.
+
+
+## Round 2, 2026-11-04: the first screen
+
+Round 1 extracted the right traits from the two reference sites but landed them below the fold. Measured
+on the live home page at 1440x900 before this round: the hero was white, the first non-white element on
+the page was a `#eef3f1` feature card at **y=1364** against a 900px fold, the booking form began at
+**y=947**, and every phone number in the first screen rendered at **16-17px**. Both reference sites lead
+with a large saturated colour field and a phone number you cannot miss. Ours led with white and body text.
+
+### What changed
+
+| # | change | where |
+|---|---|---|
+| 8 | the home hero carries the client's taxi yellow as a full-bleed field (`bg: accent`, dark ink) | `site.json`, hero section |
+| 9 | hero primary button is the number itself, "חייגו 072-3257979", at **25.6px** on desktop and 18px on phones, dark green on yellow | `site.json` + `custom_css` |
+| 10 | the home split hero's photo ratio overridden from the theme's 4:4.6 portrait to 4:2.9, which shortens the hero from 1045px to 801px and lifts the ordering form into the fold | `custom_css`, this site only |
+| 11 | the theme offsets the hero photo with a taxi-yellow block, invisible on a yellow hero: recoloured to the brand green | `custom_css` |
+| 12 | phones: the call button takes 1.5 of the hero button row instead of half | `custom_css` |
+
+### Measured after (fold = viewport height)
+
+| | 1440x900 | 1280x800 | 390x800 |
+|---|---|---|---|
+| first saturated field | **y=149**, `rgb(242,194,0)`, 801px tall | y=149, 776px | y=67, 576px |
+| hero call button | y=346, **25.6px** | y=334, 25.6px | y=247, 18.2px |
+| ordering form | **y=643** (in the fold) | y=626 (in the fold) | hero button jumps to it (the theme drops the hero form card on phones by design) |
+| `scrollWidth` | 1440 | 1280 | 390 |
+
+### Two things the references do that were deliberately not copied
+
+- **nitzav's top bar with the phone at display size.** The engine supports one (`header.topbar`) but it is
+  off by default with the comment "Zap QA: remove the blue strip with the details", and it is hidden under
+  1024px. The display-size number went into the hero instead, where phones see it too.
+- **Either site's layout**, moniot's keyword-stuffed title, and its footer link farm.
+
+### What colour-forward cost on the uniqueness gate: nothing
+
+`bin/zs pool` is **35% (c80386843) before and 35% after**, exit 0. Worth recording honestly, because the
+gate did fire once during this round, at **49% against c80386843**, and the cause was not the yellow:
+
+I had briefly made the mid-page call band green (`bg: primary`) so the page alternated. On a
+`zs-bg-primary` ground the theme renders `.zs-b-tel` **white**, and `fingerprint.py` samples the page's
+brand colour from the first `.zs-b-primary` outside the hero, which is exactly that button. So the measure
+read our brand colour as white and matched c80386843's near-white `#e9eef2` sample at 0.785 on the palette
+term, which is 30% of the score: `palette .30x0.785 + chrome .25x0.333 + vocab .20x0.512 + skeleton
+.15x0.175 + frame .10x0.444 = 0.492`. The two sites do not resemble each other at all (their palette is
+burnt orange `#b84606` with slate blue, their kit is `frame`, their hero is `curve` on dark). Putting the
+call band back to taxi yellow restored the sampled brand colour to `#0C5137` and the score to 35%.
+
+Note for whoever meets this next: `bin/zs pool` reads the stored `sites/<slug>/fingerprint.json`, which is
+written by `zs qa`. After a change that alters colours, run `zs qa` before trusting `zs pool`.

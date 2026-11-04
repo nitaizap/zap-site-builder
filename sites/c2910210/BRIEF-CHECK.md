@@ -117,3 +117,20 @@ Nothing on the site states a fact that is not in NOTES.md. The new call band's c
 ("המוקד עונה בכל שעה, גם בשישי, בשבת ובמוצאי שבת") and the added facts paragraph are the brief's own
 שעות פעילות and למה אנחנו lines reworded. No price, rating, review count, award, superlative, em dash or
 en dash was introduced; `zs build`'s validator and `zs qa` both pass at 0.
+
+
+## Round 2, 2026-11-04: the first screen
+
+The user compared the site against the two named reference sites and said it looked nothing like them. The
+traits were right, the placement was not. Three brief lines were re-answered where they are actually seen:
+
+| brief line | before | after |
+|---|---|---|
+| אתרים שאהבתם (both lead with a saturated colour field) | first non-white element at y=1364, against a 900px fold | the hero itself is a taxi-yellow field from y=149, 801px tall |
+| כפתור חיוג בולט | 16-17px in the first screen | the number is the hero's primary button at 25.6px desktop, 18px phones, and still a filled yellow pill in the header on every page |
+| הזמנת מונית בכל עמוד | booking form began at y=947, below the fold | form card at y=643 at 1440x900 and y=626 at 1280x800, inside the fold; on phones the hero's "הזמנת מונית" button jumps to it |
+
+The displayed number is **072-3257979**, the Zap tracking number the site already treats as primary.
+**OPEN-ITEMS 4 is still unresolved** (the spec also gives 09-7661111 as "טלפון לאתר"); the real number
+stays behind the standard "מספר מקשר" popup. Changing which one is displayed is one line in site.json,
+and it now appears at display size in the hero, so the decision matters more than it did.
