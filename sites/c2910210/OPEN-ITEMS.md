@@ -52,3 +52,13 @@ without stopping for the gate. Everything assumed, deviated or still open is lis
 |---|---|
 | I | **The logo was changed.** The header now carries the artwork from the brief's own `לוגו` cell, cropped above its slogan strip, instead of the crop of the business-card photograph. The reasoning and the side-by-side are in `IMAGE-SOURCES.md`. If the client has a vector or transparent-background version of this logo it should replace `assets/logo-brief.png`: it is the one asset on the site with no resolution to spare. |
 | J | ~~Engine bug: `.zs-cta__text` flex-basis~~ **WITHDRAWN 2026-11-04.** There was no bug. Re-measured on `main` `6a9a262` with real scrollbars and the workaround removed: `scrollWidth == clientWidth` at 390 and 360, zero overflowing elements, and the container has had `flex-direction: column` since late October so the basis cannot affect width. The 434px I originally measured came from my own work-in-progress CSS. The workaround has been deleted from this client's `custom_css`. Nothing is owed to the theme. |
+
+## Design-quality round, 04/11/2026
+
+- Pushed to staging; live qa 0 errors (65 warnings), `launch-check` passed (14 checks), local seo 0 FAIL.
+- Still open from the new warnings: home H2 at three sizes, mobile tap targets under 44px (19 pages), no icon on
+  the mobile home's buttons. Not fixed this round.
+- No `preview/` exists (automatic mode), so the fidelity pass was done against the two reference sites, not an approved direction.
+- Services tiles carry no photos or per-tile phone button (moniot.info does). Needs current client photography (item A).
+- Theme bug for a separate PR: reviews star images are drawn at 20px from 18px files (`main.css` ~line 1336); worked around in this site's custom_css.
+- Domain-tied licences (Elementor Pro, Ally) and a test lead still manual at launch; see LAUNCH-SHEET.md.
