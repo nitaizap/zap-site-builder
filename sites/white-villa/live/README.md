@@ -111,3 +111,39 @@ an unencrypted hop. Passed to the open mail PR (#85).
 
 The sender misalignment (`zapsites@d.co.il` on a client domain) also lives in **WP Mail SMTP's
 own settings** here, not only in our plugin, so fixing the plugin's sender does not reach it.
+
+## The dependency ran deeper than the header and footer
+
+Fixing the two theme templates was not the whole job. The site leans on `zap-site` in four more
+places, and every one of them rendered as nothing or as a raw placeholder:
+
+| where | was | now |
+|---|---|---|
+| `עמוד שירות` template (2021) | `zap-title` / `zap-excerpt` **dynamic tags**, falling back to the literal `__ZS_TITLE__` and `__ZS_LEAD__`; `zap-page-content`; `zap-breadcrumbs` | `heading` + `text-editor` with Elementor's own `post-title` / `post-excerpt` tags, `theme-post-content`, breadcrumbs dropped |
+| blog archive (1718) | `zap-archive-title`, `zap-archive-intro`, `zap-archive-posts`, `zap-breadcrumbs` | `heading` ("בלוג"), `text-editor`, Elementor `archive-posts` |
+| single post (1716) | `zap-post-title`, `zap-post-meta`, `zap-post-image`, `zap-post-extras`, `zap-more-posts` | `heading` + `post-title` tag, `post-info`, `theme-post-featured-image`; extras and more-posts dropped |
+| `צרו קשר` page (1322) | `zap-nap`, `zap-form`, `zap-map`, `zap-breadcrumbs` | `icon-list` (phone/e-mail/address), Elementor form → `shimon@ashrh.co.il`, `google_maps`, breadcrumbs dropped |
+
+**Elementor's `archive-title` renders nothing on a static posts page**, so the blog H1 is a plain
+heading reading "בלוג" rather than a dynamic one.
+
+Also added, in the header's `html` widget so it applies site-wide: a few lines of JS that compare
+`location.pathname` with each nav link and set `is-active` + `aria-current="page"`, styled with a
+brass underline on desktop and an inset bar in the phone menu; and footer CSS giving the three
+columns equal widths (they were 451 / 368 / 368 and misaligned).
+
+### Verified after the change
+
+Every page 200, **zero** `__ZS_` placeholders, **zero** `zap-` widgets left anywhere:
+home, אודות, וילה לנופש, מסיבות ואירועים, גלריה, בלוג, צרו קשר, מדיניות פרטיות, הצהרת נגישות —
+each with a real `<h1>`. Blog lists 3 posts; a post opens with its own title, featured image and
+body. Contact has 10 form fields, the NAP block and the map. Footer columns measure 368px each at
+a common top.
+
+### The judgement this leaves open
+
+Every one of these replacements reimplements, less well, something the plugin already does — the
+breadcrumbs are simply gone, and "more posts" with them. **The site was built for `zap-site`.**
+The honest fix is to ship the mail-safe plugin (PR #85, which stands down when another mailer is
+present — and this site runs WP Mail SMTP) and activate it, rather than to keep hand-rebuilding
+the site around its absence.
