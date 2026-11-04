@@ -147,3 +147,35 @@ breadcrumbs are simply gone, and "more posts" with them. **The site was built fo
 The honest fix is to ship the mail-safe plugin (PR #85, which stands down when another mailer is
 present — and this site runs WP Mail SMTP) and activate it, rather than to keep hand-rebuilding
 the site around its absence.
+
+## The footer's ragged contact column — and how two measurements lied
+
+The יצירת קשר column looked ragged: the phone number sat at the far left while the e-mail and
+address sat right. Two measurements said it was fine before one said what was wrong:
+
+1. Measuring the `<li>` boxes: all three identical (`left 113, right 481`). **Looked correct.**
+2. Measuring the anchors' bounding boxes after a first fix: all three `right: 481`. **Looked fixed.**
+3. Measuring the **glyphs**, with `Range.selectNodeContents()`: phone at `113–194`, e-mail at
+   `352–481`. **The actual fault.**
+
+The boxes were always identical; only the text inside them moved. A box measurement cannot see
+this, and a scaled screenshot was too coarse to settle it either way.
+
+**The cause is flex, not text alignment.** The theme sets `direction: ltr` on `tel:` links so the
+digits read in order. Elementor renders the link as `display: flex` with the label in a child
+span, so the span is a **flex item** sized to its content (82px of a 368px anchor) and placed by
+`justify-content` — which, in an LTR flex container, is the left edge. `text-align: right` cannot
+move a flex item, which is why the second attempt measured right and still rendered left.
+
+The fix keeps the anchor **RTL** (so flex-start is the right edge) and makes only the digits LTR:
+
+```css
+.zs-footer__contact a[href^="tel:"]{direction:rtl;justify-content:flex-start}
+.zs-footer__contact a[href^="tel:"] .elementor-icon-list-text{direction:ltr;unicode-bidi:embed}
+```
+
+Verified at 1440: all three contact glyphs end at 481, the menu column at 897, and the number
+still reads `055-4309532`. At 375 the footer stacks centred with no overflow.
+
+**Worth keeping:** this is a generic consequence of Elementor's icon-list markup plus an RTL site
+with LTR phone numbers. Any Zap client with a `tel:` link in an icon-list has it.
