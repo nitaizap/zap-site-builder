@@ -127,6 +127,8 @@ your judgement.
    button on every page where it asked for one, the fleet or service list in full. A site that passes every gate
    can still answer a different brief from the one that arrived. Where the spec sheet named sites under
    `אתרים שאהבתם`, open them again now and ask honestly whether this site answers what the client liked.
+   The brief's written asks and that row outrank the pool number; see `pool.md`. If answering them
+   moves the gate, report the number and the trade-off rather than diluting the design.
 4. **The polish pass — look at it as a stranger, not as its builder.** Ask whether it reads as finished or merely
    as correct: consistent rhythm between sections, one alignment per band, type that fills the space it is given,
    images sharp at the size they are shown, no placeholder left standing, nothing that looks like the default. The
