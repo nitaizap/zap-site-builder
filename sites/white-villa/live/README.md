@@ -43,10 +43,14 @@ as nothing again unless `zap-site` is active.
 | `zap-form` | Elementor **Pro** `form` → `shimon@ashrh.co.il`, with a privacy-consent field |
 | `zap-group-logo` | **removed** — no native equivalent; restore from the backup if it is wanted |
 
-A core `html` widget holding a `<style>` block sits in the header. It keeps the phone
-header to one scrollable row (197px → 77px at 375px wide). Elementor's
-`.elementor-inline-items` sets `flex-wrap:wrap` at a specificity that needs the explicit
-override that block carries.
+A core `html` widget sits in the header holding a `<style>` block and a native
+`<details>` disclosure used as the phone menu — no JavaScript, no Pro widget.
+
+On phones the inline nav is hidden and the disclosure shows instead: a 44x44 round
+burger beside the 96px-to-52px logo and the phone button, which is forced back to a
+true 44x44 circle (it rendered 44x54, a visible oval). The header went 197px -> 69px
+at 375px wide. An earlier attempt kept the inline list and let it scroll sideways; it
+showed 134px of 439px and clipped a word mid-way, so it was replaced.
 
 ## Not verified
 
