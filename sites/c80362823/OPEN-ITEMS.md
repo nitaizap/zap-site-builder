@@ -90,16 +90,40 @@ removed, `privacy_confirmed` untouched.
 - **`BRIEF-CHECK.md` holds nothing else that can be closed without the client.** Everything still marked
   there is a fact or an asset only the client or the account manager can supply.
 
-### One thing a person should know, not fixed here
+### The 1440 px clearance: reported, then fixed in the theme (PR #88, `main` at `6a9a262`)
 
-- **At 1440 px the header's call button clears the accessibility toggle by 0.5 px, where at 768-1280 it
-  clears it by 39-40.** Measured on the home page: the toggle occupies 0-52 px and the button's box starts
-  at 52.5 px, so the two abut with no visible gap. It is clearance, not an overlap, and no gate fails, but
-  it reads as a mistake at the commonest desktop width. The cause is in the shared
-  theme, not in this site: the reserve added in `main` is computed from `100vw`, which includes the
-  scrollbar, while the page is laid out in the narrower client width. On a kit whose `--wrap` is 1320 px
-  (this one), at a 1440 px window the formula believes the side margin is 60 px when it is really 52.5 px,
-  and reserves nothing. The fix belongs in `wp/theme/zap-base/assets/standards.css` (measure from the layout
-  width rather than `100vw`, or raise the 60 px constant to 68 px), and this pass was told not to touch the
-  theme. Deliberately **not** patched per client: a per-client rule here is exactly the kind that stacks
-  on the theme's own reserve and breaks 768-1280, which is what items 23 and 25 were about.
+I found that at 1440 px the header's call button cleared the accessibility toggle by **0.5 px**, against
+39-40 px at 768-1280, and reported it instead of patching it per client. It is now fixed in the shared
+theme and this site has been rebuilt on that theme.
+
+The cause was the one named in the report: the reserve was computed from `100vw`, which includes the
+classic scrollbar, so the formula over-stated the page's side margin by half the scrollbar and reserved
+nothing wherever that pushed it just past 60 px. It measures from `100%` (the row's own containing block,
+i.e. the layout width) now. It turned out broader than this site: the default 1200 px wrap hit the same
+0.5 px at 1280, and a separate fault in the same family left the top strip with no reserve at all,
+running under the toggle from 1025 px to about 1366 px on kits that show one. One formula now covers both
+rows.
+
+Re-measured here after the merge, **with a real 15 px scrollbar in every case** (this matters: Playwright
+hides scrollbars by default, which conceals the fault completely and is why the earlier sweep scored it
+clear):
+
+| viewport | scrollbar | toggle | call button starts | gap |
+|---|---|---|---|---|
+| 768 | 15 px | 0-52 px | 105.9 px | **53.9 px** |
+| 1024 | 15 px | 0-52 px | 107.2 px | **55.2 px** |
+| 1280 | 15 px | 0-52 px | 92.0 px | **40.0 px** |
+| 1440 | 15 px | 0-52 px | 60.0 px | **8.0 px** |
+
+So the 0.5 px is a real 8 px gap, which is the intended value, and nothing regressed at the other three
+widths. This site has **no top strip**, so the second fault does not arise here and was not verified on it.
+
+### `design.custom_css` was not truncated
+
+`main` also stopped running `design.custom_css` through `wp_strip_all_tags`, which had been silently
+deleting any rule containing a `<` and everything after it up to the next `>`, with no error and a clean
+QA score. **Nothing of this site's CSS was affected:** the whole `custom_css` string is 3,668 characters
+and contains no `<` at all, so there was nothing for the filter to cut. Confirmed from the other end as
+well, by reading the rendered page: the home-hero block, the brand wordmark block and the inner-hero block
+added in this pass are all present in the served CSS, including the `clamp(32px, 4vw, 64px)` gap and the
+`56ch` lead measure.
