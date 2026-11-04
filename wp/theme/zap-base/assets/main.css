@@ -1378,7 +1378,10 @@ body .e-con.zs-car__slide > .zs-car__cap { position: absolute; inset: auto 16px 
 .zs-car__btn:disabled { opacity: .28; cursor: default; pointer-events: none; }
 .zs-car__btn:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); transform: scale(1.06); }
 .zs-car__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
-.zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); }
+/* "2 / 8" is two number runs with a neutral between them: in an RTL paragraph the bidi algorithm orders the runs
+   right to left and the counter reads "8 / 2" on every Hebrew page. Isolate it and lay it out LTR, the same way
+   the theme already treats phone numbers. */
+.zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); direction: ltr; unicode-bidi: isolate; }
 .zs-bg-dark .zs-car__btn, .zs-bg-primary .zs-car__btn { color: var(--c-dark-ink); }
 .zs-bg-dark .zs-car__count, .zs-bg-primary .zs-car__count { color: var(--c-dark-ink); }
 .zs-carousel .zs-pause { position: absolute; inset-block-start: 16px; inset-inline-end: 16px; }
