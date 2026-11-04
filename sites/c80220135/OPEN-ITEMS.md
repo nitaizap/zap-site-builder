@@ -329,7 +329,7 @@ cheapest remaining lever if it tightens again is the lead band's ground (moving 
 about four points on its own). Turning the top strip off is **not** a lever here: it makes this site more
 like `c80386843`, not less (item 14).
 
-## 18 · Engine bug, written up and not fixed: the prose column is never centred
+## 18 · Theme bug: the prose column was never centred (resolved on `main`, 04/11)
 
 `wp/theme/zap-base/assets/main.css:317` sets `body .e-con.zs-prose { max-width: 760px; }` with no
 `margin-inline: auto`. Only `.zs-p-signature` adds one (`main.css:738`). Every other template therefore pins
@@ -337,11 +337,13 @@ the 760px column to the start edge of its 1200px container, which in an RTL site
 against the right and leaves roughly **440px of dead ground on the left**. Measured on this site at 1440 on
 04/11: the prose container on `/מכונאות-רכב/` has `left: 560px, width: 760px` inside a 1200px inner.
 
-It is on every page the engine builds with a `prose` section, not just this client, which is exactly why it
-was **not** fixed here: theme and engine are out of scope for a client session and other clients were being
-built in parallel. This client works around it in its own `design.custom_css`
-(`body .e-con.zs-prose { max-width: 820px; margin-inline: auto; }`). The real fix is one declaration in
-`main.css:317`, and it should go in on its own branch with a look at every template that uses `zs-prose`.
+It was on every page the engine builds with a `prose` section, not just this client, which is why it was not
+fixed from this session. **Fixed on `main` in PR #86** (`1aa7aa2`): `.zs-prose` now carries
+`margin-inline: auto` in `main.css`. The per-client workaround
+(`body .e-con.zs-prose { max-width: 820px; margin-inline: auto; }`) **was deleted on 04/11** so the two rules
+do not stack. Re-measured at 1440 after deleting it: the column sits at `left 333px / right 348px` on אודות
+and on all six service pages, the 15px difference being the scrollbar. The site keeps the theme's 760px
+measure rather than the 820px the workaround had set.
 
 ## 19 · The brief's `.docx` carries three images the `brief.md` export dropped (resolved, see item 5)
 
@@ -351,7 +353,7 @@ drops embedded images **without leaving a marker**. This brief's `.docx` holds t
 should be opened as a zip and `word/media/` listed before the text export is trusted. Checked here on
 04/11: there is **no business logo** among them, so item 3's finding stands on the file itself.
 
-## 20 · Plugin bug, written up and not fixed: the map widget renders nothing, so the brief's מפה is missing
+## 20 · Plugin bug: the map widget rendered nothing (resolved on `main`, 04/11)
 
 The spec's `צרו קשר` line asks for "טופס לידים, טלפון, כתובת ומפה". The page is built with
 `contact` + `map: true`, the engine emits the `zap-map` part widget, and on the pushed site that widget
@@ -376,15 +378,49 @@ the code prevents. `business.address` is set on this site (`קיבוץ יד מר
 **Every site that uses the map widget without someone typing an address into Elementor by hand has an
 invisible map.** The legacy `[zap_map]` shortcode is unaffected, which is why older sites still show one.
 
-**Not fixed here.** The plugin is out of scope for a client session, other clients were being built in
-parallel, and the plugin is already flagged for separate SMTP work. The one-line fix is to skip empty
-optional values when building `$atts` (or to use `array_filter` with `strlen`), and it belongs on its own
-branch with a look at every part widget that has a text control.
+**Fixed on `main` in PR #86** (`1aa7aa2`), and generally rather than for `q` alone: a blank control is no
+longer passed to the shortcode at all, so each shortcode's own default wins (the map gets `business.address`,
+the form gets id `main` and the site's button text, the post lists get their counts).
 
-**What this site does instead:** `design.custom_css` hides a `.zs-contact__map` that has no element
-children (`:empty` does not match it: Elementor leaves whitespace inside the container) and sets the contact
-row to one centred column, so the page reads as a tidy single column instead of showing 570px of blank
-ground beside the form. Making the collapse conditional with `:has()` on the row was tried and dropped:
-`:has()` may not be nested inside `:has()`, so the selector was invalid and never matched. One column is
-the right layout either way, because when the plugin is fixed the map appears full width under the contact
-details, which is how a contact page reads anyway. Nothing needs editing on this client at that point.
+**What this site did in the meantime, and no longer does.** `design.custom_css` used to hide a
+`.zs-contact__map` with no element children and collapse the contact row to a single centred column. After
+the merge that workaround would have fought the real map, so it **was deleted on 04/11**. Verified after
+rebuilding: the contact page serves
+`<iframe src="https://www.google.com/maps?q=קיבוץ יד מרדכי&output=embed&hl=iw" title="מפת הגעה: מרכז שירות יד מרדכי">`,
+the address coming from `business.address` with nothing typed into Elementor by hand.
+
+One thing did have to be added in its place. The details column carries the NAP list **and** the lead form
+and runs far taller than a 4:3 map, so the map stopped halfway and left roughly 450px of bare page beside
+the form. The contact grid now stretches its rows and the map fills its column
+(`align-items: stretch` + `height: 100%` down the widget chain, `min-height: 560px`). Measured at 1440:
+map and form both end at 1599px. Below 900px the theme already stacks the two columns and the map's own
+aspect ratio takes over, so the rule is wrapped in `@media (min-width: 901px)`.
+
+## 21 · Second quality pass, 04/11 (what changed, and what is still open)
+
+Run after merging `main` at `1aa7aa2`. `zs qa` 0 errors / 0 warnings, `zs seo` 0 FAIL, `zs pool` no warning
+(highest measured likeness 33%, limit 40%).
+
+**Deleted** (both were workarounds for faults `main` has now fixed, and both would have fought the fix):
+the `.zs-prose` centring rule (item 18) and the empty-map collapse (item 20).
+
+**Added or changed:**
+
+1. The contact grid stretches so the map fills its column beside the form (item 20).
+2. The top strip reserves 56px of inline-end room between 1025 and 1439px. The accessibility toggle is
+   fixed in the viewport's left corner and is 52×52; the strip is only 38px tall, so the toggle covered its
+   left-hand item entirely. Measured before: leftmost content at 0px (1100), 8px (1280), 51px (1366).
+   After: 56px or more at every width. `main`'s own fix covers the header row below the strip, not the strip.
+3. The six service pages no longer say the same sentence twice at the top. The hero keeps the spec's own
+   wording and the first prose paragraph was rewritten to add something. On פחחות וצבע and
+   מערכות מיזוג אוויר the spec's punchier line moved into the hero instead. Three paragraphs further down
+   those pages lost a clause that the new opening had made repetitive. No new business facts.
+4. The service pages' FAQ is now `faq:aside`: a `שאלות נפוצות` heading and the questions beside a tall
+   photograph, so a service page reads hero → text → image band → form. Before this, six of the nine pages
+   had no picture at all below the hero and the questions stretched the full 1440px.
+
+**Still open after this pass:** items 1, 3, 6, 7, 8, 9, 12, 15, 16 are unchanged, and the two that need the
+client are item 16 (service-page depth: one twenty-minute call with ערן שטרנברג) and the gallery gap
+recorded in `BRIEF-CHECK.md` (new photographs at 1600px or wider, of work actually being done). Neither can
+be closed from here, and neither is closed by the client's own Facebook or Instagram: both were read on
+04/11 and give a logged-out reader nothing beyond the profile name and a grid of thumbnails.

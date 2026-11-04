@@ -66,7 +66,7 @@
       "heading": "IBM Plex Sans Hebrew",
       "body": "Heebo"
     },
-    "custom_css": "/* \"מורשים מטעם היבואן\" band. DOM order: 1 = the המחלקה הראשונה badge, 2-5 = Mazda, Ford, Dongfeng, Voyah.\n   Desktop (RTL, column 1 = rightmost): badge | text | 2x2 of the four marques (Mazda Ford / Dongfeng Voyah read\n   left to right, the order the spec asks for). The row wrapper melts away so the chips sit on the band's own grid.\n   The logo files are cropped to their visible area, so the marks fill their chips instead of floating in padding. */\n.elementor .e-con.zs-logos.zs-v-band .zs-logos__band, .zs-logos.zs-v-band .e-con.zs-logos__band { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr) repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; align-items: center; gap: 20px clamp(20px, 2.5vw, 36px); }\nbody .elementor .zs-logos.zs-v-band .e-con.zs-logos__row { display: contents; }\nbody .zs-logos.zs-v-band .zs-logos__head { grid-column: 2; grid-row: 1 / span 2; }\nbody .zs-logos.zs-v-band .zs-logos__img { display: flex; align-items: center; justify-content: center; box-sizing: border-box; background: #fff; border-radius: var(--r); width: 100%; height: 124px; padding: 22px 28px; margin: 0; }\nbody .zs-logos.zs-v-band .zs-logos__img img { display: block; width: 100%; height: 100%; max-height: none; padding: 0; background: none; border-radius: 0; object-fit: contain; filter: none; opacity: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; height: 150px; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(2) { grid-column: 4; grid-row: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(3) { grid-column: 3; grid-row: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(4) { grid-column: 4; grid-row: 2; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(5) { grid-column: 3; grid-row: 2; }\n@media (max-width: 900px) {\n  /* phones: text, the badge, then the 2x2 (same left-to-right order); two columns, chips never narrower than ~150px */\n  .elementor .e-con.zs-logos.zs-v-band .zs-logos__band, .zs-logos.zs-v-band .e-con.zs-logos__band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }\n  body .zs-logos.zs-v-band .zs-logos__head { grid-column: 1 / -1; grid-row: 1; }\n  body .zs-logos.zs-v-band .zs-logos__img { height: 92px; padding: 14px 16px; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { grid-column: 1 / -1; grid-row: 2; justify-self: center; width: min(100%, 260px); height: 110px; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(2) { grid-column: 2; grid-row: 3; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(3) { grid-column: 1; grid-row: 3; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(4) { grid-column: 2; grid-row: 4; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(5) { grid-column: 1; grid-row: 4; } }\n\n/* Prose column. The theme caps .e-con.zs-prose at 760px but does not centre it\n   (main.css:317; only .zs-p-signature does), so in RTL the column pins to the right edge of\n   the container and leaves ~440px of dead ground on the left of אודות and all six service\n   pages. Centre it and give Hebrew a slightly longer measure. */\nbody .e-con.zs-prose { max-width: 820px; margin-inline: auto; }\n\n/* Importer band: the המחלקה הראשונה badge is one chip among five, not a bigger one.\n   Matching its height to the marque chips lets the band read as a single tidy set. */\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { height: 124px; }\n@media (max-width: 900px) {\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { height: 92px; } }\n\n/* Contact page: the map container comes back EMPTY on this build, so the two-column\n   contact grid was showing ~570px of blank page beside the form. Cause is in the plugin,\n   not in this site: zap-site's Elementor part widget always passes its `q` control to the\n   `zap_map` shortcode, including when it is blank, so `shortcode_atts` never falls back to\n   business.address and the shortcode returns '' (inc/elementor-widgets.php render(),\n   inc/shortcodes.php zap_map). Out of scope to fix here, written up in OPEN-ITEMS 20.\n   Until it is fixed, do not show a void: the empty container is hidden (`:empty` is wrong here, Elementor\n   leaves whitespace inside it, so the test is \"has no element children\") and the contact grid is one\n   centred column instead of two. A conditional `:has()` on the row was tried and dropped: `:has()` may not\n   be nested inside `:has()`, so the rule never matched. One column is the right layout either way - when\n   the plugin is fixed the map simply appears full width under the details, which is how a contact page\n   reads anyway, with no edit needed here. */\nbody .zs-contact__map:not(:has(*)) { display: none; }\nbody .elementor .e-con.zs-contact > .e-con-inner { grid-template-columns: minmax(0, 1fr); max-width: 880px; margin-inline: auto; }\nbody .zs-contact__map { width: 100%; }\nbody .zs-contact__map .zs-map iframe { width: 100%; min-height: 340px; }\n"
+    "custom_css": "/* \"מורשים מטעם היבואן\" band. DOM order: 1 = the המחלקה הראשונה badge, 2-5 = Mazda, Ford, Dongfeng, Voyah.\n   Desktop (RTL, column 1 = rightmost): badge | text | 2x2 of the four marques (Mazda Ford / Dongfeng Voyah read\n   left to right, the order the spec asks for). The row wrapper melts away so the chips sit on the band's own grid.\n   The logo files are cropped to their visible area, so the marks fill their chips instead of floating in padding. */\n.elementor .e-con.zs-logos.zs-v-band .zs-logos__band, .zs-logos.zs-v-band .e-con.zs-logos__band { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr) repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; align-items: center; gap: 20px clamp(20px, 2.5vw, 36px); }\nbody .elementor .zs-logos.zs-v-band .e-con.zs-logos__row { display: contents; }\nbody .zs-logos.zs-v-band .zs-logos__head { grid-column: 2; grid-row: 1 / span 2; }\nbody .zs-logos.zs-v-band .zs-logos__img { display: flex; align-items: center; justify-content: center; box-sizing: border-box; background: #fff; border-radius: var(--r); width: 100%; height: 124px; padding: 22px 28px; margin: 0; }\nbody .zs-logos.zs-v-band .zs-logos__img img { display: block; width: 100%; height: 100%; max-height: none; padding: 0; background: none; border-radius: 0; object-fit: contain; filter: none; opacity: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; height: 150px; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(2) { grid-column: 4; grid-row: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(3) { grid-column: 3; grid-row: 1; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(4) { grid-column: 4; grid-row: 2; }\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(5) { grid-column: 3; grid-row: 2; }\n@media (max-width: 900px) {\n  /* phones: text, the badge, then the 2x2 (same left-to-right order); two columns, chips never narrower than ~150px */\n  .elementor .e-con.zs-logos.zs-v-band .zs-logos__band, .zs-logos.zs-v-band .e-con.zs-logos__band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }\n  body .zs-logos.zs-v-band .zs-logos__head { grid-column: 1 / -1; grid-row: 1; }\n  body .zs-logos.zs-v-band .zs-logos__img { height: 92px; padding: 14px 16px; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { grid-column: 1 / -1; grid-row: 2; justify-self: center; width: min(100%, 260px); height: 110px; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(2) { grid-column: 2; grid-row: 3; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(3) { grid-column: 1; grid-row: 3; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(4) { grid-column: 2; grid-row: 4; }\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(5) { grid-column: 1; grid-row: 4; } }\n\n/* Importer band: the המחלקה הראשונה badge is one chip among five, not a bigger one.\n   Matching its height to the marque chips lets the band read as a single tidy set. */\nbody .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { height: 124px; }\n@media (max-width: 900px) {\n  body .zs-logos.zs-v-band .zs-logos__img:nth-child(1) { height: 92px; } }\n\n/* Contact page: the details column carries the NAP list and the form and runs much taller\n   than a 4:3 map, so the map used to stop halfway and leave ~450px of bare page beside the\n   form. Let the map column stretch to the row and fill it. Below 900px the theme already\n   stacks the two columns, so the aspect ratio takes over again there. */\n@media (min-width: 901px) {\n  body .elementor .e-con.zs-contact > .e-con-inner { align-items: stretch; }\n  body .e-con.zs-contact__map { height: 100%; }\n  body .e-con.zs-contact__map > .elementor-widget { flex: 1 1 auto; min-height: 0; }\n  body .zs-contact__map .elementor-widget-container, body .zs-contact__map .zs-part--map, body .zs-contact__map .zs-map { height: 100%; }\n  body .zs-contact__map .zs-map iframe { height: 100%; min-height: 560px; aspect-ratio: auto; } }\n\n/* Top bar vs the accessibility toggle. The toggle is fixed in the viewport's left corner and is\n   52x52; the top bar is only 38px tall and shows from 1025px up, so between 1025 and 1439 its\n   left-hand item (the email and the hours) ran underneath it and was clipped. Measured leftmost\n   content: 0px at 1100, 8px at 1280, 51px at 1366. The theme's own fix reserves room in the\n   header row below; the bar above it still needs its own. Reserve 56px there, and leave the\n   wider widths alone, where the container's margin already clears the toggle. */\n@media (min-width: 1025px) and (max-width: 1439px) {\n  body .elementor .e-con.zs-topbar__in { padding-inline-end: 56px; } }\n"
   },
   "form": {
     "title": "השאירו פרטים ונחזור אליכם",
@@ -500,7 +500,7 @@
         },
         {
           "type": "prose",
-          "html": "<p>מכונאות רכב באשקלון והסביבה במרכז שירות יד מרדכי כוללת את כל טיפולי המכונאות עבור רכבי מאזדה, פורד, דונגפנג ווויה. המרכז מטפל אך ורק בארבעת המותגים האלה, ולכן הצוות מכיר את הדגמים עד רמת הרכיב.</p><h2>מה כוללים טיפולי המכונאות</h2><p>הטיפול השוטף לרכב נקבע לפי ספר הרכב של היצרן, ומבוצע במרכז השירות בהתאם להנחיות היבואן. לצד הטיפולים התקופתיים מטפל המרכז בתקלות מכניות שמתגלות בדרך, ובכל מה שעולה מהאבחון.</p><ul><li>טיפולים תקופתיים לפי ספר הרכב</li><li>מערכת ההיגוי והמתלים</li><li>מערכת הבלימה</li><li>רצועות, משאבות ומערכת הקירור</li><li>תיבת הילוכים ומצמד</li><li>טיפול בתקלות מנוע שעלו באבחון</li></ul><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב, ואף לקבל את הרכב או להוציא אותו מעבר לשעות העבודה הרגילות. בכניסה מלווה אתכם יועץ שירות צמוד לכל אורך הטיפול, והוא מוסר לכם הצעת מחיר לפני שמתחילים בעבודה. במהלך הטיפול אתם מקבלים עדכונים על מצב הרכב, ובמידת הצורך גם טרמפ הביתה.</p><h2>הכול במקום אחד</h2><p>מרכז השירות שם לו למטרה לספק את כל השירותים עבור הרכב במקום אחד, כך שלא תצטרכו לעבור בין כמה מוסכים לצורך הטיפולים השונים. אם האבחון מעלה תקלת חשמל היא מטופלת באותו מקום, וכך גם מערכת המיזוג, הצמיגים ועבודות הפחחות והצבע. המרכז מורשה גם לטיפול ברכבים מסחריים בתוכנית המחלקה הראשונה למסחריות של היבואן.</p><h2>מתי כדאי לפנות</h2><p>כשהגיע מועד הטיפול לפי ספר הרכב, כששמעתם רעש חדש, כשהרכב מושך לצד אחד, כשיש רעידות בהגה או בדוושה, או כשנדלקה נורית אזהרה בלוח המחוונים. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>מכונאות רכב באשקלון והסביבה נעשית במרכז שירות יד מרדכי בקיבוץ יד מרדכי, מוסך מורשה מטעם היבואן שצוותו מונה כ-13 עובדים. הרכב נכנס פעם אחת ויוצא מטופל: הטיפול התקופתי, התקלה שהתגלתה בדרך וכל מה שעלה מהאבחון מטופלים באותה כניסה.</p><h2>מה כוללים טיפולי המכונאות</h2><p>הטיפול השוטף לרכב נקבע לפי ספר הרכב של היצרן, ומבוצע במרכז השירות בהתאם להנחיות היבואן. לצד הטיפולים התקופתיים מטפל המרכז בתקלות מכניות שמתגלות בדרך, ובכל מה שעולה מהאבחון.</p><ul><li>טיפולים תקופתיים לפי ספר הרכב</li><li>מערכת ההיגוי והמתלים</li><li>מערכת הבלימה</li><li>רצועות, משאבות ומערכת הקירור</li><li>תיבת הילוכים ומצמד</li><li>טיפול בתקלות מנוע שעלו באבחון</li></ul><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב, ואף לקבל את הרכב או להוציא אותו מעבר לשעות העבודה הרגילות. בכניסה מלווה אתכם יועץ שירות צמוד לכל אורך הטיפול, והוא מוסר לכם הצעת מחיר לפני שמתחילים בעבודה. במהלך הטיפול אתם מקבלים עדכונים על מצב הרכב, ובמידת הצורך גם טרמפ הביתה.</p><h2>הכול במקום אחד</h2><p>מרכז השירות שם לו למטרה לספק את כל השירותים עבור הרכב במקום אחד, כך שלא תצטרכו לעבור בין כמה מוסכים לצורך הטיפולים השונים. אם האבחון מעלה תקלת חשמל היא מטופלת באותו מקום, וכך גם מערכת המיזוג, הצמיגים ועבודות הפחחות והצבע. המרכז מורשה גם לטיפול ברכבים מסחריים בתוכנית המחלקה הראשונה למסחריות של היבואן.</p><h2>מתי כדאי לפנות</h2><p>כשהגיע מועד הטיפול לפי ספר הרכב, כששמעתם רעש חדש, כשהרכב מושך לצד אחד, כשיש רעידות בהגה או בדוושה, או כשנדלקה נורית אזהרה בלוח המחוונים. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -517,7 +517,10 @@
               "q": "אפשר להשאיר את הרכב מחוץ לשעות הפעילות?",
               "a": "כן. ניתן לתאם מראש את כניסת הרכב, ואף לקבל את הרכב או להוציא אותו מעבר לשעות העבודה הרגילות."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "pylon"
         }
       ],
       "seo": {
@@ -537,11 +540,11 @@
           "type": "hero",
           "image": "facade-side",
           "title": "פחחות וצבע",
-          "lead": "פחחות וצבע באשקלון והסביבה לרכבי מאזדה, פורד, דונגפנג ווויה, ללא שום הבדלי גוון."
+          "lead": "עברתם תאונה? הרכב ניזוק? תיקוני פחחות וצבע מקצועיים ללא שום הבדלי גוון, ממש כמו חדש."
         },
         {
           "type": "prose",
-          "html": "<p>עברתם תאונה? הרכב ניזוק? פחחות וצבע באשקלון והסביבה במרכז שירות יד מרדכי כוללת תיקוני פחחות וצבע מקצועיים, תוצאות מוכחות ואלפי לקוחות מרוצים, ללא שום הבדלי גוון, ממש כמו חדש.</p><h2>מה כוללת עבודת הפחחות</h2><p>עבודת הפחחות מחזירה את מבנה הרכב ואת פחי המרכב למצבם, ועבודת הצבע משלימה אותה כך שהגוון יתאים לשאר הרכב. העבודה מבוצעת במרכז השירות עצמו, לצד שאר הטיפולים לרכב.</p><ul><li>תיקון מכות ושקעים בפחי המרכב</li><li>יישור וחידוש חלקי מרכב</li><li>צביעה והתאמת גוון לשאר הרכב</li><li>תיקוני שריטות</li><li>טיפול בנזקי תאונה</li></ul><h2>בלי הבדלי גוון</h2><p>החלק המורכב בעבודת צבע הוא ההתאמה לגוון הקיים של הרכב, שמשתנה עם הזמן ועם החשיפה לשמש. במרכז השירות העבודה נעשית כך שהתוצאה לא תיראה כתיקון מקומי, אלא כחלק מהרכב.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב למרכז השירות. בכניסה מלווה אתכם יועץ שירות צמוד לכל אורך הטיפול, והוא מוסר לכם הצעת מחיר לפני העבודה ומעדכן אתכם על מצב הרכב. במידת הצורך גם אפשר לקיחת הרכב והחזרתו לבית הלקוח בתום הטיפול.</p><h2>מתי כדאי לפנות</h2><p>אחרי תאונה, קטנה כגדולה, אחרי מכה בחניה, כששריטה חושפת את הפח, או כשהצבע התחיל להתקלף. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>פחחות וצבע באשקלון והסביבה: מרכז שירות יד מרדכי מטפל בנזקי תאונה, במכות חניה ובשריטות לרכבי מאזדה, פורד, דונגפנג ווויה, עם תוצאות מוכחות ואלפי לקוחות מרוצים. העבודה נעשית במרכז השירות עצמו ולא מועברת למוסך פחחות אחר.</p><h2>מה כוללת עבודת הפחחות</h2><p>עבודת הפחחות מחזירה את מבנה הרכב ואת פחי המרכב למצבם, ועבודת הצבע משלימה אותה כך שהגוון יתאים לשאר הרכב.</p><ul><li>תיקון מכות ושקעים בפחי המרכב</li><li>יישור וחידוש חלקי מרכב</li><li>צביעה והתאמת גוון לשאר הרכב</li><li>תיקוני שריטות</li><li>טיפול בנזקי תאונה</li></ul><h2>בלי הבדלי גוון</h2><p>החלק המורכב בעבודת צבע הוא ההתאמה לגוון הקיים של הרכב, שמשתנה עם הזמן ועם החשיפה לשמש. במרכז השירות העבודה נעשית כך שהתוצאה לא תיראה כתיקון מקומי, אלא כחלק מהרכב.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב למרכז השירות. בכניסה מלווה אתכם יועץ שירות צמוד לכל אורך הטיפול, והוא מוסר לכם הצעת מחיר לפני העבודה ומעדכן אתכם על מצב הרכב. במידת הצורך גם אפשר לקיחת הרכב והחזרתו לבית הלקוח בתום הטיפול.</p><h2>מתי כדאי לפנות</h2><p>אחרי תאונה, קטנה כגדולה, אחרי מכה בחניה, כששריטה חושפת את הפח, או כשהצבע התחיל להתקלף. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -558,7 +561,10 @@
               "q": "אפשר לבצע במקביל גם טיפולים אחרים לרכב?",
               "a": "כן. מרכז השירות מספק את כל השירותים עבור הרכב במקום אחד, כך שלא תצטרכו לעבור בין כמה מוסכים לצורך הטיפולים השונים."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "workshop"
         }
       ],
       "seo": {
@@ -582,7 +588,7 @@
         },
         {
           "type": "prose",
-          "html": "<p>דיאגנוסטיקה לרכב באשקלון והסביבה במרכז שירות יד מרדכי היא אבחון מקיף ומקצועי של תקלות מכל סוג בכלי הרכב. האבחון מדויק ואמין, כולל בדיקות ממוחשבות וייעוץ מלא לגבי דרכי הטיפול השונות.</p><h2>מה זה אבחון ממוחשב</h2><p>מערכות הרכב מדווחות על תקלות דרך מחשב הרכב. חיבור לציוד האבחון מוציא את קודי התקלה ואת נתוני החיישנים, ומאפשר לראות מה המערכת מדווחת בפועל במקום לנחש. קוד תקלה הוא נקודת פתיחה, לא תשובה סופית, ולכן הוא נבדק מול הרכב עצמו.</p><h2>מה נבדק באבחון</h2><ul><li>קריאת קודי תקלה ממחשב הרכב</li><li>נתוני חיישנים בזמן אמת</li><li>מערכת ההצתה והדלק</li><li>מערכות הבטיחות והבלימה</li><li>מערכת החשמל והטעינה</li><li>בדיקה מול מצב הרכב בפועל</li></ul><h2>ייעוץ מלא לגבי דרכי הטיפול</h2><p>בסיום האבחון יועץ השירות שמלווה אתכם מסביר מה נמצא, מה דרכי הטיפול האפשריות, ומוסר לכם הצעת מחיר לפני שמתחילים בעבודה. מכיוון שמרכז השירות מטפל אך ורק ברכבי מאזדה, פורד, דונגפנג ווויה, האבחון נעשה מתוך היכרות עם הדגמים עד רמת הרכיב.</p><h2>מתי כדאי לפנות</h2><p>כשנדלקה נורית אזהרה בלוח המחוונים, כשהמנוע מגמגם או מאבד כוח, כשצריכת הדלק עלתה בלי סיבה, כשיש רעש או ריח חדש, או כשמערכת ברכב מפסיקה לעבוד. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>דיאגנוסטיקה לרכב באשקלון והסביבה מתחילה במרכז שירות יד מרדכי בשאלה מה הרכב עצמו מדווח. מכיוון שהמרכז מטפל אך ורק ברכבי מאזדה, פורד, דונגפנג ווויה, האבחון נשען על היכרות עם הדגמים ולא רק על קוד תקלה שנקרא מהמחשב.</p><h2>מה זה אבחון ממוחשב</h2><p>מערכות הרכב מדווחות על תקלות דרך מחשב הרכב. חיבור לציוד האבחון מוציא את קודי התקלה ואת נתוני החיישנים, ומאפשר לראות מה המערכת מדווחת בפועל במקום לנחש. קוד תקלה הוא נקודת פתיחה, לא תשובה סופית, ולכן הוא נבדק מול הרכב עצמו.</p><h2>מה נבדק באבחון</h2><ul><li>קריאת קודי תקלה ממחשב הרכב</li><li>נתוני חיישנים בזמן אמת</li><li>מערכת ההצתה והדלק</li><li>מערכות הבטיחות והבלימה</li><li>מערכת החשמל והטעינה</li><li>בדיקה מול מצב הרכב בפועל</li></ul><h2>ייעוץ מלא לגבי דרכי הטיפול</h2><p>בסיום האבחון יועץ השירות שמלווה אתכם מסביר מה נמצא, מה דרכי הטיפול האפשריות, ומוסר לכם הצעת מחיר לפני שמתחילים בעבודה. כך אתם מחליטים מה לעשות על בסיס ממצא, ולא על בסיס השערה.</p><h2>מתי כדאי לפנות</h2><p>כשנדלקה נורית אזהרה בלוח המחוונים, כשהמנוע מגמגם או מאבד כוח, כשצריכת הדלק עלתה בלי סיבה, כשיש רעש או ריח חדש, או כשמערכת ברכב מפסיקה לעבוד. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -599,7 +605,10 @@
               "q": "אפשר לטפל בתקלה באותו מקום?",
               "a": "כן. מרכז השירות מספק את כל השירותים עבור הרכב במקום אחד, כולל מכונאות, חשמל רכב, מיזוג אוויר, צמיגים ופחחות וצבע."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "pylon"
         }
       ],
       "seo": {
@@ -623,7 +632,7 @@
         },
         {
           "type": "prose",
-          "html": "<p>חשמלאי רכב באשקלון והסביבה במרכז שירות יד מרדכי פותר תקלות מגוונות הקשורות למערכת החשמל, החל מרכיבי תאורה ועד לפתרונות ממוחשבים של חלקי התנעה ועוד.</p><h2>מה כולל הטיפול בחשמל הרכב</h2><p>מערכת החשמל ברכב מודרני מחברת בין המצבר, מערכת הטעינה, ההתנעה, התאורה ובין מחשבי הרכב. תקלה באחד מהם מתבטאת לא פעם במקום אחר לגמרי, ולכן הטיפול מתחיל באבחון.</p><ul><li>מצבר, אלטרנטור ומערכת הטעינה</li><li>מערכת ההתנעה וחלקי התנעה ממוחשבים</li><li>רכיבי תאורה פנימית וחיצונית</li><li>חיווט, מגענים ונתיכים</li><li>חיישנים ומערכות עזר לנהג</li></ul><h2>אבחון לפני תיקון</h2><p>מכיוון שחלק גדול מרכיבי החשמל מנוהלים על ידי מחשב הרכב, הטיפול נשען על הדיאגנוסטיקה שמבוצעת במרכז השירות: קריאת קודי התקלה ונתוני החיישנים, ובדיקה מול הרכב עצמו. כך מחליפים את הרכיב שבאמת תקול.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב. יועץ שירות צמוד מלווה אתכם לכל אורך הטיפול, מוסר הצעת מחיר לפני העבודה ומעדכן אתכם על מצב הרכב. הטיפול מבוצע לרכבי מאזדה, פורד, דונגפנג ווויה.</p><h2>מתי כדאי לפנות</h2><p>כשהרכב מתקשה להתניע או לא מתניע, כשהתאורה חלשה או מהבהבת, כשנורית במערכת נדלקת ונכבית, כשחלון או מראה חשמליים מפסיקים לעבוד, או כשהמצבר מתרוקן שוב ושוב. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>חשמלאי רכב באשקלון והסביבה במרכז שירות יד מרדכי מטפל במערכת החשמל של רכבי מאזדה, פורד, דונגפנג ווויה, מהמצבר והתאורה ועד הרכיבים שמנוהלים על ידי מחשב הרכב. הטיפול נעשה באותה כניסה שבה הרכב מטופל ממילא, בלי להעביר אותו לחשמלאי חיצוני.</p><h2>מה כולל הטיפול בחשמל הרכב</h2><p>מערכת החשמל ברכב מודרני מחברת בין המצבר, מערכת הטעינה, ההתנעה, התאורה ובין מחשבי הרכב. תקלה באחד מהם מתבטאת לא פעם במקום אחר לגמרי, ולכן הטיפול מתחיל באבחון.</p><ul><li>מצבר, אלטרנטור ומערכת הטעינה</li><li>מערכת ההתנעה וחלקי התנעה ממוחשבים</li><li>רכיבי תאורה פנימית וחיצונית</li><li>חיווט, מגענים ונתיכים</li><li>חיישנים ומערכות עזר לנהג</li></ul><h2>אבחון לפני תיקון</h2><p>מכיוון שחלק גדול מרכיבי החשמל מנוהלים על ידי מחשב הרכב, הטיפול נשען על הדיאגנוסטיקה שמבוצעת במרכז השירות: קריאת קודי התקלה ונתוני החיישנים, ובדיקה מול הרכב עצמו. כך מחליפים את הרכיב שבאמת תקול.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב. יועץ שירות צמוד מלווה אתכם לכל אורך הטיפול, מוסר הצעת מחיר לפני העבודה ומעדכן אתכם על מצב הרכב. הטיפול מבוצע לרכבי מאזדה, פורד, דונגפנג ווויה.</p><h2>מתי כדאי לפנות</h2><p>כשהרכב מתקשה להתניע או לא מתניע, כשהתאורה חלשה או מהבהבת, כשנורית במערכת נדלקת ונכבית, כשחלון או מראה חשמליים מפסיקים לעבוד, או כשהמצבר מתרוקן שוב ושוב. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -640,7 +649,10 @@
               "q": "לאילו רכבים מיועד השירות?",
               "a": "לרכבי מאזדה, פורד, דונגפנג ווויה. מרכז השירות מטפל אך ורק בארבעת המותגים האלה ומכיר את הדגמים עד רמת הרכיב."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "workshop"
         }
       ],
       "seo": {
@@ -660,11 +672,11 @@
           "type": "hero",
           "image": "facade",
           "title": "מערכות מיזוג אוויר",
-          "lead": "תיקון מזגן לרכב באשקלון והסביבה: החלפות ותיקוני מדחסים, מילוי גז וטיפול במערכת המיזוג."
+          "lead": "בקיץ הישראלי זה הכרחי: החלפות ותיקוני מדחסים, מילוי גז וטיפול במערכת המיזוג של הרכב."
         },
         {
           "type": "prose",
-          "html": "<p>תיקון מזגן לרכב באשקלון והסביבה במרכז שירות יד מרדכי כולל החלפות ותיקוני מדחסים, מילוי גז ועוד. בקיץ הישראלי זה הכרחי.</p><h2>מה כולל הטיפול במערכת המיזוג</h2><p>מערכת המיזוג ברכב עובדת במעגל סגור: המדחס דוחס את הגז, המעבה מקרר אותו, והמאייד מקרר את האוויר שנכנס לתא הנוסעים. ירידה בקירור מצביעה כמעט תמיד על אחד מהרכיבים האלה או על אובדן גז מהמערכת.</p><ul><li>בדיקת לחצים ומצב המערכת</li><li>מילוי גז</li><li>תיקון והחלפת מדחסים</li><li>טיפול במעבה ובמאייד</li><li>החלפת מסנן אוויר לתא הנוסעים</li></ul><h2>למה לא מספיק רק למלא גז</h2><p>המערכת סגורה, ולכן גז לא אמור להיגמר מעצמו. כשהקירור נחלש שוב ושוב אחרי מילוי, הסיבה היא בדרך כלל דליפה או רכיב תקול. במרכז השירות המערכת נבדקת לפני המילוי, כך שהטיפול פותר את הסיבה ולא רק את הסימפטום.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב, ויועץ שירות צמוד מלווה אתכם לכל אורך הטיפול ומוסר הצעת מחיר לפני העבודה. אפשר לשלב את הטיפול במיזוג עם הטיפול התקופתי לרכב, באותה כניסה.</p><h2>מתי כדאי לפנות</h2><p>כשהמיזוג מקרר פחות מפעם, כשיוצא אוויר לא נעים מהפתחים, כשנשמע רעש בהפעלת המיזוג, או לקראת הקיץ כבדיקה יזומה. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>תיקון מזגן לרכב באשקלון והסביבה נעשה במרכז שירות יד מרדכי לרכבי מאזדה, פורד, דונגפנג ווויה, ואפשר לבצע אותו באותה כניסה של הטיפול התקופתי, בלי להעביר את הרכב למוסך מיזוג נפרד.</p><h2>מה כולל הטיפול במערכת המיזוג</h2><p>מערכת המיזוג ברכב עובדת במעגל סגור: המדחס דוחס את הגז, המעבה מקרר אותו, והמאייד מקרר את האוויר שנכנס לתא הנוסעים. ירידה בקירור מצביעה כמעט תמיד על אחד מהרכיבים האלה או על אובדן גז מהמערכת.</p><ul><li>בדיקת לחצים ומצב המערכת</li><li>מילוי גז</li><li>תיקון והחלפת מדחסים</li><li>טיפול במעבה ובמאייד</li><li>החלפת מסנן אוויר לתא הנוסעים</li></ul><h2>למה לא מספיק רק למלא גז</h2><p>המערכת סגורה, ולכן גז לא אמור להיגמר מעצמו. כשהקירור נחלש שוב ושוב אחרי מילוי, הסיבה היא בדרך כלל דליפה או רכיב תקול. במרכז השירות המערכת נבדקת לפני המילוי, כך שהטיפול פותר את הסיבה ולא רק את הסימפטום.</p><h2>איך מתנהל הטיפול</h2><p>אפשר לתאם מראש את כניסת הרכב, ויועץ שירות צמוד מלווה אתכם לכל אורך הטיפול, מוסר הצעת מחיר לפני העבודה ומעדכן אתכם על מצב הרכב.</p><h2>מתי כדאי לפנות</h2><p>כשהמיזוג מקרר פחות מפעם, כשיוצא אוויר לא נעים מהפתחים, כשנשמע רעש בהפעלת המיזוג, או לקראת הקיץ כבדיקה יזומה. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -681,7 +693,10 @@
               "q": "אפשר לשלב עם הטיפול התקופתי?",
               "a": "כן. מרכז השירות מספק את כל השירותים עבור הרכב במקום אחד, כך שאפשר לטפל במיזוג באותה כניסה של הטיפול."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "waiting"
         }
       ],
       "seo": {
@@ -705,7 +720,7 @@
         },
         {
           "type": "prose",
-          "html": "<p>צמיגים באשקלון והסביבה במרכז שירות יד מרדכי: תיקון צמיגים והחלפת צמיגים. אל תתפשרו על הבטיחות שלכם.</p><h2>למה הצמיגים הם רכיב בטיחות</h2><p>הצמיגים הם המגע היחיד בין הרכב לכביש. מצב הסוליה, לחץ האוויר והבלאי קובעים את מרחק הבלימה, את האחיזה בפנייה ואת ההתנהגות של הרכב על כביש רטוב. לכן זה רכיב שלא כדאי לדחות.</p><h2>מה כולל השירות</h2><ul><li>תיקון צמיגים</li><li>החלפת צמיגים</li><li>בדיקת מצב הסוליה והבלאי</li><li>בדיקת לחץ אוויר</li><li>טיפול בצמיג שאיבד אוויר</li></ul><h2>בלאי לא אחיד הוא סימן</h2><p>כשצמיג נשחק יותר בצד אחד, או כשההגה רועד במהירות, הסיבה היא לא תמיד הצמיג עצמו אלא ההיגוי, המתלים או האיזון. מכיוון שמרכז השירות מטפל גם במכונאות, אפשר לבדוק את זה באותה כניסה במקום לעבור בין כמה מוסכים.</p><h2>מתי כדאי לפנות</h2><p>כשהסוליה נשחקה, כשצמיג מאבד אוויר שוב ושוב, אחרי פנצ'ר, כשיש בליטה או סדק בדופן הצמיג, או כשהרכב מושך לצד אחד. לתיאום התקשרו ל-08-6720513.</p>"
+          "html": "<p>צמיגים באשקלון והסביבה: מרכז שירות יד מרדכי מטפל בצמיגים של רכבי מאזדה, פורד, דונגפנג ווויה כחלק מהטיפול הכולל ברכב ולא כשירות נפרד. לכן בדיקת הצמיג נעשית לצד בדיקה של מה שגרם לו להישחק.</p><h2>למה הצמיגים הם רכיב בטיחות</h2><p>הצמיגים הם המגע היחיד בין הרכב לכביש. מצב הסוליה, לחץ האוויר והבלאי קובעים את מרחק הבלימה, את האחיזה בפנייה ואת ההתנהגות של הרכב על כביש רטוב. לכן זה רכיב שלא כדאי לדחות.</p><h2>מה כולל השירות</h2><ul><li>תיקון צמיגים</li><li>החלפת צמיגים</li><li>בדיקת מצב הסוליה והבלאי</li><li>בדיקת לחץ אוויר</li><li>טיפול בצמיג שאיבד אוויר</li></ul><h2>בלאי לא אחיד הוא סימן</h2><p>כשצמיג נשחק יותר בצד אחד, או כשההגה רועד במהירות, הסיבה היא לא תמיד הצמיג עצמו אלא ההיגוי, המתלים או האיזון. מכיוון שמרכז השירות מטפל גם במכונאות, אפשר לבדוק את זה באותה כניסה במקום לעבור בין כמה מוסכים.</p><h2>מתי כדאי לפנות</h2><p>כשהסוליה נשחקה, כשצמיג מאבד אוויר שוב ושוב, אחרי פנצ'ר, כשיש בליטה או סדק בדופן הצמיג, או כשהרכב מושך לצד אחד. לתיאום התקשרו ל-08-6720513.</p>"
         },
         {
           "type": "faq",
@@ -722,7 +737,10 @@
               "q": "אפשר להגיע בלי תיאום?",
               "a": "כדאי לתאם מראש את כניסת הרכב בטלפון 08-6720513, כך שהטיפול יתבצע בזמן שמתאים לכם."
             }
-          ]
+          ],
+          "variant": "aside",
+          "title": "שאלות נפוצות",
+          "image": "workshop"
         }
       ],
       "seo": {
