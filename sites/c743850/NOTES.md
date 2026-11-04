@@ -206,3 +206,68 @@ The grouping is a flat menu of 17 items in which the 4 group labels carry no lin
 the theme renders the footer menu at `depth => 1`, so a nested one loses all 13 children (checked, it
 did). The CSS keys off "an item with no link", not off positions, so it survives an edit to the menu.
 
+## Third round, 04/11/2026: `main` merged (PR 88) and the video frame reserved
+
+**`main` at `6a9a262` merged in.** Four of the theme defects written up here are fixed upstream, so the
+per-client workarounds came out. What was deleted, and what the theme now does on its own:
+
+| written up as | state | this client's CSS |
+|---|---|---|
+| filmstrip divides the page width by the photo count | **fixed** in `editorial.css` | the `height: clamp(200px,24vh,250px)` override and the 4vh stagger **deleted**. Frames are now 240x320 from 768 to 1024 and 290x386 at 1440 |
+| stacked split hero keeps its portrait photo | **fixed** in `finish.css` (16/10 up to 900px) | the 768-1024 cap **deleted**. Measured 860 / 897 / 956 px at 768 / 820 / 900 |
+| footer logo chosen by `design.tone`, not by the footer ground | **fixed**: `footer_is_light()` now asks the kit, and `gallery` is in `LIGHT_FOOTER_KITS` | `logo_light` points back at `assets/logo-light.png`, the `assets/logo-footer.png` workaround **deleted** |
+| RTL carousel counter read "8 / 2" | **fixed** in `main.css` | nothing was ever done per-client |
+| footer menu rendered at `depth => 1` | **still open** | the group-label CSS stays |
+| inner-page `split` photo boxed 4 / 4.4 | **still open** (`finish.css:137`) | the 4/3.1 rule stays |
+| hero row has no column gap | **still open** | the `clamp(36px,3.4vw,72px)` stays |
+
+**One breakpoint moved.** The theme stacks the split hero at **900px**, not 1024. Both of this client's
+two-column rules (the hero photo ratio and the inner-page split ratio) started at 1025px, which left
+901-1024 as a two-column hero still getting the 4:4.6 portrait: at 1024 the hero measured **642px** right
+after the merge. Moving them to `min-width: 901px` (and the stacked media block to `max-width: 900px`)
+brings 1024 to **450px**. Measured after, with real scrollbars:
+
+| width | two columns? | photo ratio | hero height | gap |
+|---|---|---|---|---|
+| 1440 | yes | 4 / 3.2 | 539 px | 49 px |
+| 1280 | yes | 4 / 3.2 | 534 px | 44 px |
+| 1024 | yes | 4 / 3.2 | **450 px** | 36 px |
+| 900 | no | 16 / 10 (theme) | 956 px | stacked |
+| 820 | no | 16 / 10 (theme) | 897 px | stacked |
+| 768 | no | 16 / 10 (theme) | 860 px | stacked |
+| 390 | no | auto | 530 px | stacked |
+
+**`custom_css` was not truncated.** `wp_strip_all_tags` would have eaten any rule containing a `<` and
+everything up to the next `>`; this client's CSS contains **no `<` at all** (checked character by character),
+and the rendered inline block matches `site.json` exactly. Nothing had been lost.
+
+**No horizontal scroll.** Re-measured with real scrollbars
+(`ignore_default_args=["--hide-scrollbars"]`): `innerHeight == clientHeight` at 1440 and at 390, so no
+horizontal scrollbar exists. `scrollWidth` runs 8px over `clientWidth` at every width, but that is the Ally
+toolbar panel and the closed mobile menu parked off-canvas, both clipped.
+
+**The filmstrip stays at four photographs.** With the theme fixed, four frames fill the row exactly and do
+not scroll on desktop: at 1440 the strip is 1425px wide and 1425px of content, at 1280 it is 1265 and 1265.
+Six would be ~1800px and would make the strip swipe at every desktop width, with a slide cut at the edge.
+The two that came out in the second round were also the two whose captions no longer matched their
+photographs after the image swaps, and both of those categories (משאיות, מראות לאיפור) are already carried
+by the carousel below. So four is the answer on layout and on content.
+
+### The reserved video frame (the brief: "להקצות אזור וידאו (פריים) לסרטון שיופק ללקוח")
+
+A full-width band sits between the company story and the lead form, as section 5 of the home page: the film
+the client is producing belongs with "who we are", and the lead band then separates it from the photo strip
+so no two photo-led sections touch.
+
+It is **composed, not reserved-looking**. There is no empty container and nothing that could render blank:
+the band is an `overlay` section, which always draws a photograph and a text card. The still is the
+client's own CIMG0045 from the F: archive, 3648x2736, cropped to 16:9 and resized to 1920x1080, and it is
+held at **16:9 by this client's CSS** (the theme's overlay band is 88vh), so the band is the same shape
+before and after the clip replaces it: 1440x810 at 1440, 1280x720 at 1280. The copy is the brief's own
+home-page sentence, which had no home until now: "מראות לעולם הרכב: רכבים פרטיים, משאיות, אוטובוסים,
+אופנועים, מכונות כבדות, קרוונים ורכבי אספנות, ופנסים לכל סוגי הרכב". **Nothing promises a date** and the
+word "בקרוב" appears nowhere.
+
+Dropping the clip in is one paste and one rebuild; the exact JSON and the two optional tidy-ups are in
+OPEN-ITEMS 1.
+

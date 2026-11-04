@@ -41,7 +41,7 @@ A ✅ means it was seen on the rendered page (screenshot or page HTML), never "i
 | + פנסים לכל סוגי הרכב (עמוד חדש) | ✅ | own page, in the menu, in the home card grid, in the footer |
 | + מראות לרכבי אספנות (עמוד חדש) | ✅ | own page, in the menu, in the home card grid, in the footer |
 | דף הבית: להציג את סוגי המראות (קטגוריות המוצרים) | ✅ | the 13-card "סוגי המראות" grid, each card its own photo |
-| דף הבית: אזור וידאו (פריים) לסרטון שיופק | ⏳ | no clip exists yet (OPEN-ITEMS 1) |
+| דף הבית: אזור וידאו (פריים) לסרטון שיופק | ✅ | **the frame is reserved and composed**, between the company story and the lead form: a full-width band at the 16:9 the player will use (measured 1440x810 at 1440, 1280x720 at 1280), holding a still from the client's own photography. Seen on the rendered page at 1440, 1280 and 390. The clip itself has not been produced; the exact JSON to paste when it arrives is in OPEN-ITEMS 1 (one paste, one rebuild) |
 | סלוגן "ייצור ותיקון מראות לכל סוגי הרכב" | ✅ | hero lead and the top bar, 3 occurrences on the home |
 | להדגיש: יבואני ויצרני מראות לכל סוגי הרכבים | ✅ | hero lead and the footer, 5 occurrences on the home |
 | להדגיש בתפריט: פנסים, מראות לרכבי אספנות | ✅ | both under "תחומי פעילות" in the main menu and in the footer list |

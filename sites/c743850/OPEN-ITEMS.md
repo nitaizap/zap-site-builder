@@ -5,11 +5,33 @@ below is a decision made on the best safe default, or something that needs a per
 
 ## Needs an answer
 
-1. **The video frame on the home page.** The brief asks to set aside a video frame on the home page for a
-   clip that will be produced for the client ("להקצות אזור וידאו (פריים) לסרטון שיופק ללקוח"). No clip
-   exists yet, and the engine will not render an empty video block. The home carries a `filmstrip` and a
-   `carousel` of the client's own photographs in that part of the page instead. **Send the clip (or a
-   YouTube link) and a `video` section goes in where the carousel is.**
+1. **The video frame on the home page: the space is reserved and composed; it needs the clip.**
+   The brief asks to set aside a video frame on the home page for a clip that will be produced
+   ("להקצות אזור וידאו (פריים) לסרטון שיופק ללקוח"). Since 04/11/2026 the home page carries that band, between the
+   company story and the lead form, as a full-width 16:9 frame (1440x810 at 1440, 1280x720 at 1280) holding a
+   still from the client's own photography. It is a composed element, not an empty container: nothing on the
+   page says a clip is coming and no date is promised.
+
+   **To drop the clip in: one paste, one rebuild.** In `sites/c743850/site.json`, in the home page's
+   `sections` array, replace the single object whose `"anchor": "video"` is (it is the `overlay` between the
+   `split` and the `leadbar`) with:
+
+   ```json
+   {
+     "type": "video",
+     "anchor": "video",
+     "title": "מראות לעולם הרכב",
+     "youtube_url": "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+   }
+   ```
+
+   Then `bin/zs build c743850 && bin/zs qa c743850 && bin/zs seo c743850 && bin/zs pool c743850`, and
+   `bin/zs push c743850 --site https://743850hercules.ussl.co.il`. Nothing else has to change: the heading
+   stays, the position stays, and the band is already the ratio the player will use. Two tidy-ups once the
+   clip is in, neither of them blocking: delete the `"video-poster"` entry from `images` and
+   `assets/video-poster.jpg` (nothing else uses them), and the `.zs-anchor-video` rule in
+   `design.custom_css` (it only sizes the overlay's photo, so it is inert on a `video` section).
+
 2. **Customer reviews.** The brief says to show "4.2 מתוך 15 חוות דעת בדפי זהב". The validator blocks a
    hard-coded rating or review count, so the page uses the live Dapei Zahav reviews widget with
    `dpz_customer_id: 743850`. The widget only renders on the pushed site, so the block has not been seen
@@ -120,4 +142,26 @@ below is a decision made on the best safe default, or something that needs a per
 22. **Between 768px and 1024px the hero was 1238px to 1401px tall**, because it stacks there but keeps the
     4:4.6 portrait photo. Same root cause as `hero-space.md`. Capped in this client's CSS (16:9 in that
     band): 826px at 768, 913px at 900.
+
+## Closed by main, 04/11/2026 (PR 88, `6a9a262`)
+
+Four of the write-ups above are fixed in the shared theme and engine, and the per-client workarounds were
+deleted when `main` was merged in:
+
+- **19 (footer menu depth)** is still open: the footer menu is still rendered at `depth => 1`
+  (`functions.php:381`), so the four group labels stay items in the flat list. The CSS that styles them is
+  unchanged and still needed.
+- **20 (footer logo)** is fixed: `footer_is_light()` now asks the kit as well as the tone, and `gallery` is in
+  `LIGHT_FOOTER_KITS`, so the engine picks the dark logo for this footer by itself. `logo_light` points back
+  at `assets/logo-light.png` and `assets/logo-footer.png` is deleted.
+- **21 (hero column gap)** is still open: the theme's hero row still has no column gap, so this client's
+  `clamp(36px, 3.4vw, 72px)` stays. Its breakpoint moved from 1025px to 901px, because the theme stacks the
+  split hero at 900px and 901-1024 is a two-column hero that was still getting the portrait photo.
+- **22 (stacked hero height)** is fixed: `finish.css` now caps the stacked split hero at 16/10 up to 900px.
+  This client's 768-1024 cap is deleted; measured 860 / 897 / 956 px at 768 / 820 / 900.
+- **The filmstrip** no longer divides the page width by the photo count: frames are 240x320 at 768 to 1024 and
+  290x386 at 1440. This client's height override is deleted.
+- **The carousel counter** now reads "2 / 8" in RTL; nothing was ever done per-client for it.
+- The inner-page `split` photo is **still** boxed `4 / 4.4` (`finish.css:137`), so this client's 4/3.1 rule
+  stays, with its breakpoint moved to 901px for the same reason as the hero.
 
