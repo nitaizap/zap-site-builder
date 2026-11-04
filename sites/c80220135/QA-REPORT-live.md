@@ -27,9 +27,9 @@
 | desktop | /אודות/ | 0 | 0 | 408 | h1:59 h2:57.5/29.5 | Heebo/IBM Plex Sans Hebrew |  |
 | desktop | / | 0 | 2 | 603 | h1:57.5 h2:57.5 h3:23 | Heebo/IBM Plex Sans Hebrew | console: Access to fetch at 'https://api.zap360.co.il/api/zap-widgets/reviews' from origin 'https://80220135y; console: Failed to load resource: net::ERR_FAILED |
 | desktop | /בלוג/נדלקה-נורית-אזהרה-ברכב/ | 0 | 0 | 430 | h1:59 h2:30/29.5 | Heebo/IBM Plex Sans Hebrew |  |
-| desktop | /בלוג/חלק-מקורי-או-חליפי/ | 0 | 0 | 439 | h1:59 h2:30/29.5 | Heebo/IBM Plex Sans Hebrew |  |
-| desktop | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 434 | h1:59 h2:30/29.5 | Heebo/IBM Plex Sans Hebrew |  |
-| desktop | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 478 | h1:59 h2:23 | Heebo/IBM Plex Sans Hebrew |  |
+| desktop | /בלוג/חלק-מקורי-או-חליפי/ | 0 | 0 | 441 | h1:59 h2:30/29.5 | Heebo/IBM Plex Sans Hebrew |  |
+| desktop | /בלוג/כל-כמה-זמן-טיפול-לרכב/ | 0 | 0 | 432 | h1:59 h2:30/29.5 | Heebo/IBM Plex Sans Hebrew |  |
+| desktop | /בלוג/טיפול-ותחזוקת-רכב/ | 0 | 0 | 480 | h1:59 h2:23 | Heebo/IBM Plex Sans Hebrew |  |
 | mobile | /הצהרת-נגישות/ | 0 | 0 | 479 | h1:33.5 h2:22.5 | Heebo/IBM Plex Sans Hebrew |  |
 | mobile | /מדיניות-פרטיות/ | 0 | 0 | 459 | h1:33.5 h2:22.5 | Heebo/IBM Plex Sans Hebrew |  |
 | mobile | /צרו-קשר/ | 0 | 0 | 338 | h1:33.5 | Heebo/IBM Plex Sans Hebrew |  |
