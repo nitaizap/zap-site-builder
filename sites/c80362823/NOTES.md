@@ -143,3 +143,19 @@ company called "car service" that reads as vehicle repair. Reworded.
   (16 : 10 below 901 px), text centred against it, bigger H1 and lead, points in one row, a real column gap, tighter
   hero padding, and on phones the photo clipped to its own box. Home hero is 496 px tall at 1440 (was 851).
 
+## Quality pass 04/11/2026
+
+Design only. Brief re-verified from the `.docx` itself, not the text export: `word/media/` holds exactly one
+file and `word/document.xml` exactly one drawing, so the logo cell's image is the only thing the export
+dropped, and `word/_rels/document.xml.rels` has **zero** `TargetMode="External"` entries, so the empty
+אתרים שאהבתם field really is empty. Nothing else was hidden in the document.
+
+Seven changes, all recorded in OPEN-ITEMS.md #11 and #18-#24: the logo removed in favour of a typographic
+wordmark, the favicon recoloured to the palette primary, the clipped orange marquee deleted, the home H1
+scaled back, the duplicated hero photograph replaced in the `split` section, the 768 px accessibility/phone
+overlap cleared, and the long prose column centred. The last two are theme-level and were fixed in this
+client's own CSS and reported, not changed in the theme.
+
+Home order is now: hero `split` → the eight service cards → fleet `gallery` → `features:aside` → `split`
+→ `prose` → `posts` → `cta` → `faq`. Gates after the pass: `qa` 0 errors, `seo` 0 FAIL, pool worst case
+38% (unchanged).

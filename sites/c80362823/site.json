@@ -81,7 +81,7 @@
     },
     "radius": 2,
     "motion": "subtle",
-    "custom_css": "/* Home hero (split). The photo sets the hero's height; the text is centred against it and fills its column. */\nhtml body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }\n@media (min-width: 901px) { html body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 11; } }\nbody.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { align-items: center; }\nbody.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; }\n@media (min-width: 768px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-top: clamp(28px, 1rem + 1.6vw, 52px); --padding-bottom: clamp(32px, 1.2rem + 1.8vw, 60px); }\n}\n@media (min-width: 768px) and (max-width: 900px) {\n  body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { row-gap: 24px; }\n}\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); }\n  body.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { --row-gap: 24px; }\n  body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(3.6rem, 1.8rem + 4.6vw, 6.4rem); line-height: 1; }\n  body.zs-hv-split .zs-hero--home .zs-hero__lead { font-size: clamp(1.2rem, 1rem + .45vw, 1.4rem); max-width: none; }\n  body.zs-hv-split .zs-hero--home .zs-hero__points .zs-checks { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 4px; }\n}\n@media (max-width: 767px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-bottom: 24px; }\n  body.zs-hv-split .zs-hero--home .e-con.zs-hero__media { overflow: hidden; border-radius: var(--r-lg); }\n  body.zs-hv-split .zs-hero--home .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }\n}\n/* Logo: the only file supplied is a 102x34 px raster, so it is shown near its pixel size (not the theme's 96px). Delete these four rules when a hi-res original arrives. */\nhtml body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 52px; max-width: 220px; }\n@media (min-width: 768px) and (max-width: 1024px) { html body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 48px; } }\n@media (max-width: 767px) { html body :is(.zs-tpl, .elementor-location-header) .zs-brand img, html body .zs-brand .zs-brand__logo { height: 44px; max-width: 160px; } }\nhtml body .zs-footer__logo img { max-height: 52px; height: 52px; }"
+    "custom_css": "/* Home hero (split). The photo sets the hero's height; the text is centred against it and fills its column. */\nhtml body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }\n@media (min-width: 901px) { html body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 11; } }\nbody.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { align-items: center; }\nbody.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; }\n@media (min-width: 768px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-top: clamp(28px, 1rem + 1.6vw, 52px); --padding-bottom: clamp(32px, 1.2rem + 1.8vw, 60px); }\n}\n@media (min-width: 768px) and (max-width: 900px) {\n  body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { row-gap: 24px; }\n}\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); }\n  body.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { --row-gap: 24px; }\n  body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(2.9rem, 1.6rem + 2.7vw, 4.4rem); line-height: 1.02; letter-spacing: -.015em; }\n  body.zs-hv-split .zs-hero--home .zs-hero__lead { font-size: clamp(1.2rem, 1rem + .45vw, 1.4rem); max-width: none; }\n  body.zs-hv-split .zs-hero--home .zs-hero__points .zs-checks { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 4px; }\n}\n@media (max-width: 767px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-bottom: 24px; }\n  body.zs-hv-split .zs-hero--home .e-con.zs-hero__media { overflow: hidden; border-radius: var(--r-lg); }\n  body.zs-hv-split .zs-hero--home .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }\n}\n/* Brand wordmark. No logo artwork exists: the only file the client supplied is a 97x28 px raster of the\n   business name typed in a generic condensed italic, which cannot be shown at header size without blurring.\n   The header therefore carries the name set in the site's own heading face, matching the footer wordmark. */\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) {\n  font-family: var(--f-head); font-weight: 800; font-size: 1.85rem; line-height: 1;\n  letter-spacing: -.02em; color: var(--c-ink); text-decoration: none;\n}\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a):hover { color: var(--c-primary); }\n@media (min-width: 768px) and (max-width: 1024px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.6rem; } }\n@media (max-width: 767px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.35rem; } }\n\n/* Tablet header: the accessibility toggle is fixed at the viewport's inline-start and is 52 px wide, but\n   between 768 and 1024 px the header's own inline-start padding drops to 31 px, so the toggle sat on top of\n   the phone button. Clear it. (Theme-level: it affects any site with a header CTA at the inline-start.) */\n@media (min-width: 768px) and (max-width: 1024px) {\n  html body .e-con.zs-header__in { padding-left: 68px; }\n}\n\n/* Long-form prose: the kit gives it a 760 px measure but leaves it flush to the inline-start, so on a 1320 px\n   container the home and service pages ran a tall column of text against 560 px of empty page. Centre it.\n   (Theme-level: .zs-prose is the only child of its container on every page.) */\n@media (min-width: 1025px) {\n  html body .e-con-inner > .e-con.zs-prose { margin-inline: auto; }\n}\n"
   },
   "form": {
     "title": "נשמח לתכנן אתכם את ההסעה",
@@ -324,24 +324,13 @@
           ]
         },
         {
-          "type": "marquee",
-          "items": [
-            "הסעות עובדים",
-            "טיולים מאורגנים",
-            "הסעות לנמל התעופה",
-            "הסעות לאירועים",
-            "הסעות ילדים",
-            "הסעות יוקרה"
-          ]
-        },
-        {
           "type": "gallery",
           "title": "מרכב קטן לקבוצה אחת ועד אוטובוס מלא",
           "intro": "גודל הרכב נקבע לפי מספר הנוסעים, אורך המסלול וכמות הציוד, כך שלא משלמים על מקומות ריקים ולא נדחסים.",
           "columns": 4,
           "images": [
             "interior",
-            "depot",
+            "hero",
             "terminal",
             "executive"
           ]
@@ -383,7 +372,7 @@
             "פיקוח קצין בטיחות מורשה",
             "נסיעות לכל חלקי הארץ"
           ],
-          "image": "hero",
+          "image": "depot",
           "image_side": "end",
           "cta": {
             "label": "עוד עלינו",
@@ -1411,6 +1400,5 @@
       ]
     }
   ],
-  "favicon": "assets/favicon.png",
-  "logo": "assets/logo.png"
+  "favicon": "assets/favicon.png"
 }

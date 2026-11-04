@@ -75,7 +75,7 @@ built, with the reason. ⏳ = open, see OPEN-ITEMS.md.
 
 | line | state | where |
 |---|---|---|
-| לוגו | ⏳ | a 102×34 px wordmark is in the spec sheet's logo cell; wired at 52 px, provisional until the client sends a hi-res original; placeholder favicon (OPEN-ITEMS #11) |
+| לוגו | ➖ | the cell holds one embedded image and nothing else was lost in the text export (the .docx was opened as a zip on 04/11/2026: one file in `word/media/`, one drawing in `document.xml`). It is the business name typed in a generic condensed italic, 97×28 px of ink, not a mark. Not used. The header and footer carry the name set in the site's own heading face; favicon is a letterform mark in the palette primary (OPEN-ITEMS #11, #18, #19) |
 | צבעי מותג | ⏳ | none given; aubergine + burnt orange chosen (OPEN-ITEMS #2) |
 | יד חופשית למעצב | ✅ | taken: direction chosen in automatic mode (OPEN-ITEMS #1) |
 | אתרים שאהבתם | ➖ | none given |
