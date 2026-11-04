@@ -314,27 +314,75 @@ def preview(site):
     return out / "PREVIEW.md"
 
 
+# The link check used to open 8 connections at once with a flat 20s timeout. The dev server is PHP's built-in
+# one with 4 workers and it serialises under contention, so 8 in flight is already a queue: pages that answer in
+# 1.4-4.4s on their own took 7-19s while other builds ran on the same box, and the check reported the machine's
+# load as a page of site errors. Three agents hit that in one day; one nearly accepted a false 11-error run.
+# Hence: fewer connections than the server has workers, a timeout derived from how slow this box is right now,
+# and a report that never calls "did not answer" an error status.
+LINK_WORKERS = 3            # < the server's 4 workers: the check queues behind itself otherwise
+LINK_TIMEOUT_MIN = 20       # never stricter than the old flat timeout
+LINK_TIMEOUT_MAX = 180
+
+
+def _probe(url):
+    """Seconds for one page, fetched alone, best of two. None if it cannot be fetched at all."""
+    best = None
+    for _ in range(2):
+        t0 = time.monotonic()
+        try:
+            urllib.request.build_opener(NoRedirect).open(urllib.request.Request(url, method="GET"), timeout=LINK_TIMEOUT_MAX)
+        except urllib.error.HTTPError:
+            pass                                    # a 404 still tells us how fast the box is
+        except Exception:
+            continue
+        d = time.monotonic() - t0
+        best = d if best is None else min(best, d)
+    return best
+
+
+def _timed_out(e):
+    return isinstance(e, TimeoutError) or isinstance(getattr(e, "reason", None), TimeoutError) or "timed out" in str(e).lower()
+
+
 def check_links(links):
+    """-> [(url, status, kind)] for every link that did not answer 200.
+
+    `kind` is "status" when the server answered with something other than 200 (a real finding) or "timeout" when
+    it did not answer in time (almost always this machine, not the site). The caller must not add the second to
+    the error count."""
     from concurrent.futures import ThreadPoolExecutor
+    links = sorted(links)
+    if not links:
+        return []
+    # How slow is this box right now? A quiet machine probes at ~1s and keeps the old 20s; a loaded one probes at
+    # 15s and gets a budget that matches, instead of a page of invented errors.
+    probe = _probe(links[0])
+    budget = LINK_TIMEOUT_MIN if probe is None else min(LINK_TIMEOUT_MAX, max(LINK_TIMEOUT_MIN, probe * LINK_WORKERS * 4))
+    if budget > LINK_TIMEOUT_MIN:
+        print(f"note: this machine answers a page in {probe:.1f}s right now, so the link check allows "
+              f"{budget:.0f}s per request instead of {LINK_TIMEOUT_MIN}s (load, not the site)")
 
     def one(u):
-        code = None
-        for attempt in range(3):   # retries for dropped connections (remote hosts / proxies)
+        code, kind = None, "timeout"
+        for attempt in range(3):   # retries for dropped connections (remote hosts / proxies) and for load
             if attempt:
                 time.sleep(2 * attempt)
             try:
-                code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"), timeout=20).status
+                code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"),
+                                                                    timeout=budget * (1 + attempt)).status
+                kind = "status"
                 break
             except urllib.error.HTTPError as e:
-                code = e.code
+                code, kind = e.code, "status"
                 break
-            except Exception as e:
-                code = str(e)[:40]
-        return u, code
+            except Exception as e:                  # a slow box gets more room on the next try, not another failure
+                code, kind = (f"no answer in {budget * (1 + attempt):.0f}s", "timeout") if _timed_out(e) else (str(e)[:40], "timeout")
+        return u, code, kind
 
-    with ThreadPoolExecutor(8) as ex:
-        res = list(ex.map(one, sorted(links)))
-    return [(urllib.parse.unquote(u), c) for u, c in res if c != 200]
+    with ThreadPoolExecutor(LINK_WORKERS) as ex:
+        res = list(ex.map(one, links))
+    return [(urllib.parse.unquote(u), c, k) for u, c, k in res if not (k == "status" and c == 200)]
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -499,12 +547,16 @@ def run_qa(site):
             if not shown:
                 errors += 1
 
-    bad_links = check_links(links)
+    checked = check_links(links)
+    bad_links = [(u, c) for u, c, k in checked if k == "status"]       # the server answered, and not with 200
+    no_answer = [(u, c) for u, c, k in checked if k == "timeout"]      # it did not answer: this box, not the site
     errors += len(bad_links)
+    warns += len(no_answer)
 
     lines = [f"# QA report — {data['business']['name']}", "",
              f"- Pages × viewports checked: **{len(rows)}** ({len(urls)} URLs × {len(VIEWPORTS)})",
-             f"- Internal links tested: **{len(links)}**, not 200: **{len(bad_links)}**",
+             f"- Internal links tested: **{len(links)}**, answered with a non-200 status: **{len(bad_links)}**, "
+             f"did not answer in time: **{len(no_answer)}**",
              f"- Errors: **{errors}** · Warnings: **{warns}**", ""]
     for name, ok in extra:
         lines.append(f"- {'✅' if ok else '❌'} {name}")
@@ -513,7 +565,12 @@ def run_qa(site):
         det = "; ".join(m["err"] + m["warn"])[:300].replace("|", "/")
         lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | {det} |")
     if bad_links:
-        lines += ["", "## Links that are not 200", ""] + [f"- {c} {u}" for u, c in bad_links]
+        lines += ["", "## Links the server answered with a non-200 status", ""] + [f"- {c} {u}" for u, c in bad_links]
+    if no_answer:
+        lines += ["", "## Links that did not answer (timed out or refused the connection) - NOT an error status", "",
+                  "These are almost always this machine, not the site: the dev server serialises, and another build "
+                  "running beside this one pushes a 1.4s page past the timeout. Rerun the QA in a quiet window "
+                  "before treating any of them as a finding.", ""] + [f"- {c} {u}" for u, c in no_answer]
     (site.src / getattr(site, "qa_report", "QA-REPORT.md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines[:9 + len(extra)]))
     for vp, path, m in rows:

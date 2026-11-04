@@ -160,8 +160,14 @@ body .e-con.zs-film__head { --flex-direction: column !important; flex-direction:
 .zs-film__head .zs-sec__title .elementor-heading-title, .zs-film__intro, .zs-film__intro p { text-align: center; }
 .zs-film__intro { margin-inline: auto; }
 @media (min-width: 768px) {
-  body .e-con.zs-film__strip { justify-content: center; overflow: visible; padding-inline: max(var(--gutter), calc((100% - var(--wrap)) / 2)); }
-  .zs-film .elementor-widget-image.zs-film__img { flex: 1 1 0 !important; width: auto !important; min-width: 0; }
+  body .e-con.zs-film__strip { justify-content: safe center; overflow-x: auto; padding-inline: max(var(--gutter), calc((100% - var(--wrap)) / 2)); }
+  /* `flex: 1 1 0` with no floor divided the page width by the number of photos: six photos in a 1200 wrap came
+     out 188px wide while the fixed height stayed, giving 188x306 portrait slivers that cut a landscape product
+     shot in half. Share the width, but never below a width a photo survives, and let the height follow the
+     width instead of standing still, so the strip's proportion is the same whatever the count. Past the floor
+     the strip goes back to being swipeable rather than shrinking further. */
+  .zs-film .elementor-widget-image.zs-film__img { flex: 1 1 auto !important; width: auto !important; min-width: 240px; max-width: clamp(240px, 26vw, 420px); }
+  .zs-film .zs-film__img img { height: auto !important; aspect-ratio: 3 / 4; max-height: clamp(320px, 56vh, 600px); }
 }
 
 /* collage, default: the main photo fills the frame and the second sits inside its lower corner, framed in the page

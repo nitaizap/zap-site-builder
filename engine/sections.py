@@ -895,10 +895,21 @@ def archive_template(ctx):
     return [hero, body]
 
 
+# Kits whose footer is painted light whatever the tone (kits.css: the "furniture" block, `.zs-footer` gets
+# `background: var(--c-bg)` for exactly this list). Asking `tone == "light"` instead missed all six: a white
+# logo was measured at 1.21:1 against the light grey footer ground of a `gallery` site on the default tone.
+LIGHT_FOOTER_KITS = {"atelier", "gallery", "quiet", "panels", "frame", "shade"}
+
+
+def footer_is_light(ctx):
+    """Is the footer ground light? The light logo is for a dark footer only; on a light one it vanishes, and a
+    dark logo there needs no white chip behind it. Both the tone and the kit can light the footer."""
+    des = ctx.site.get("design", {})
+    return des.get("tone") == "light" or (des.get("kit") or "") in LIGHT_FOOTER_KITS
+
+
 def footer_template_logo_key(ctx):
-    # the light logo is for a dark footer only; the light tone has a light footer, where it would vanish
-    light_footer = ctx.site.get("design", {}).get("tone") == "light"
-    return "__logo_light" if "__logo_light" in ctx.media and not light_footer else "__logo"
+    return "__logo_light" if "__logo_light" in ctx.media and not footer_is_light(ctx) else "__logo"
 
 
 def footer_logo(ctx):
@@ -907,7 +918,7 @@ def footer_logo(ctx):
     lg = ctx.media.get(k)
     if not lg:
         return heading(ctx, b["name"], "p", "zs-footer__name", link="page:")
-    chip = " zs-footer__logo--chip" if k == "__logo" and ctx.site.get("design", {}).get("tone") != "light" else " zs-footer__logo--light"
+    chip = " zs-footer__logo--chip" if k == "__logo" and not footer_is_light(ctx) else " zs-footer__logo--light"
     # global logo widget (Site Identity); the light version only where the footer is dark
     return Z(ctx, "logo", {"where": "footer-dark" if k == "__logo_light" else "footer"}, "zs-footer__logo" + chip)
 

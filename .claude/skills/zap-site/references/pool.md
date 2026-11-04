@@ -11,6 +11,31 @@ The same variant under another preset looks like a different site, so the pool m
 comes from tokens and presets, and the variants only change arrangement; every variant passes `zs qa` under
 every preset.
 
+
+## What the gate is for, and what it is not
+
+`zs pool` is a **backstop against Zap's own sites resembling each other**. It is not a design
+authority, and it is not a reason to leave a brief's instruction unanswered.
+
+The order of priority, when they pull against each other:
+
+1. **What the brief asks for in words.** "כפתור חיוג בולט בכל עמוד" is an instruction, not a
+   suggestion. A site that passes every gate while ignoring a written ask has failed.
+2. **The sites the client listed under `אתרים שאהבתם`.** That row is the only direct statement of
+   taste a client gives. The pool measures similarity **to other Zap clients** — the reference
+   sites are not in it, so answering them costs nothing on this gate. A design that leaves a
+   client's stated preference unrecognisable has not done its job, however distinct it measures.
+3. **The client's own material** — their existing site, listing and photographs, for identity.
+4. **The pool number.**
+
+If a genuinely better answer to 1 or 2 moves the number, **report the number and the trade-off**.
+Say what you would have to give up to bring it down, and let a person decide. Never quietly dilute
+a design so the gate stays comfortable: that converts a safety net into the thing shaping the work,
+and it produces sites that are distinct from each other and wrong for their client.
+
+The 40% stop still stands. It is a stop, not a target, and nothing above is licence to copy another
+Zap client — only licence to answer the brief first and measure afterwards.
+
 ## Packages
 
 | `tier` | pages (privacy/blog not counted) | allowed | use it for |

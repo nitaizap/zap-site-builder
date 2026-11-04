@@ -100,6 +100,14 @@ body:not(.zs-p-signature) {
   & .zs-hero__lead { font-size: clamp(1.1rem, 1rem + .45vw, 1.35rem); max-width: 54ch; }
   & .e-con.zs-hero__text { --row-gap: 22px; }
   &.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 4.6; }
+  /* ...but only while the hero is two columns. Below 900px the split hero stacks (main.css:258) and the photo
+     runs the full content width, so a 4:4.6 portrait adds its own height to the text's instead of balancing it:
+     measured on the sample at 768 / 820 / 900 the home hero was 1268 / 1330 / 1431 px tall. main.css:260 already
+     caps the stacked photo at 16/10, but this block is later and more specific, so it overrode it at every
+     width. Restate the stacked cap here: the same sample then measures 897 / 934 / 992 px. */
+  @media (max-width: 900px) {
+    &.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }
+  }
   &.zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { inset: auto -16px -16px auto; width: 46%; height: 46%; border-radius: var(--r-lg); background: var(--c-accent); opacity: 1; }
 
   /* image hero = cinematic: near full-screen, text anchored low, deep gradient from the text side */

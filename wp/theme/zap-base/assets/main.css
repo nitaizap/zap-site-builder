@@ -314,7 +314,9 @@ body .e-con.zs-split__text { --row-gap: 14px; }
 @media (max-width: 900px) { .elementor .e-con.zs-split > .e-con-inner { grid-template-columns: 1fr; } .zs-split--rev .e-con.zs-split__media { order: 0; } }
 
 /* ---------- prose ---------- */
-body .e-con.zs-prose { max-width: 760px; --row-gap: 0px; }
+/* 760px of text inside a 1200-1320px container: centred, or the page has a dead half beside it
+   (in RTL the column pinned to the inline-start edge and left ~440px of bare ground). */
+body .e-con.zs-prose { max-width: 760px; margin-inline: auto; --row-gap: 0px; }
 .zs-prose__h { margin-top: 1.6em; }
 .zs-prose__h:first-child { margin-top: 0; }
 .zs-prose__h .elementor-heading-title { margin-bottom: .5em; }
@@ -344,7 +346,10 @@ body .e-con.zs-faq { --content-width: min(100%, 880px); }
 /* ---------- CTA band ---------- */
 .elementor .e-con.zs-cta > .e-con-inner { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px 48px; flex-wrap: wrap; }
 body .e-con.zs-cta { --padding-top: clamp(44px, 5vw, 72px); --padding-bottom: clamp(44px, 5vw, 72px); background-image: radial-gradient(600px 240px at 0% 100%, rgb(255 255 255 / .12), transparent 70%); }
-.elementor .e-con.zs-cta__text { flex: 1 1 420px; width: auto; --row-gap: 8px; }
+/* Hardening, not a fix for anything measured: the band's inner has been a column since 2026-10-29, so
+   this basis is inert horizontally today and no kit/preset combination overflowed at 390px. If the row
+   layout ever returns, a flex item will not shrink below its 420px basis without `min-width: 0`. */
+.elementor .e-con.zs-cta__text { flex: 1 1 420px; min-width: 0; max-width: 100%; width: auto; --row-gap: 8px; }
 .elementor .zs-cta .e-con.zs-btns { width: auto; margin: 0; }
 .zs-cta .zs-sec__title { margin: 0; }
 
@@ -735,7 +740,6 @@ body .zs-cards--bento .zs-card--img .e-con.zs-card__body { flex-grow: 0; --paddi
 .zs-p-signature:not(.zs-hv-image) .e-con.zs-hero--img::after { display: none; }
 .zs-p-signature .e-con.zs-hero::after { height: 34%; opacity: .32; }
 /* signature prose: centred reading column, lead paragraph, accent markers */
-.zs-p-signature .e-con.zs-prose { margin-inline: auto; }
 .zs-p-signature .zs-prose > .zs-prose__t:first-child p:first-child { font-size: clamp(1.18rem, 1.05rem + .5vw, 1.45rem); line-height: 1.6; color: var(--c-ink); font-weight: 500; }
 .zs-p-signature .zs-prose__h h2.elementor-heading-title { font-size: clamp(1.55rem, 1.2rem + 1.2vw, 2.2rem); }
 .zs-p-signature .zs-prose__h h2.elementor-heading-title::before { content: ""; display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--c-accent); margin-bottom: 14px; }
@@ -1374,7 +1378,10 @@ body .e-con.zs-car__slide > .zs-car__cap { position: absolute; inset: auto 16px 
 .zs-car__btn:disabled { opacity: .28; cursor: default; pointer-events: none; }
 .zs-car__btn:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); transform: scale(1.06); }
 .zs-car__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
-.zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); }
+/* "2 / 8" is two number runs with a neutral between them: in an RTL paragraph the bidi algorithm orders the runs
+   right to left and the counter reads "8 / 2" on every Hebrew page. Isolate it and lay it out LTR, the same way
+   the theme already treats phone numbers. */
+.zs-car__count { font-family: var(--f-head); font-size: 1.05rem; min-width: 4ch; text-align: center; color: var(--c-text); direction: ltr; unicode-bidi: isolate; }
 .zs-bg-dark .zs-car__btn, .zs-bg-primary .zs-car__btn { color: var(--c-dark-ink); }
 .zs-bg-dark .zs-car__count, .zs-bg-primary .zs-car__count { color: var(--c-dark-ink); }
 .zs-carousel .zs-pause { position: absolute; inset-block-start: 16px; inset-inline-end: 16px; }
