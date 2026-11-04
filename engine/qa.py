@@ -111,7 +111,7 @@ MEASURE_JS = r"""
   // Icons on conversion buttons are a choice, not a rule, so this fires once per page and only when the page
   // uses none at all - the case where nobody decided, rather than the case where somebody decided no.
   const btns = q('.elementor-button').filter(vis);
-  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon')))
+  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon') || /zs-b-(tel|wa)/.test(e.closest('.zs-b')?.className || e.className) || (getComputedStyle(e, '::before').content || 'none') !== 'none'))
     W(`no button on this page carries an icon (${btns.length} buttons)`);
   if (window.innerWidth < 768) {
     const docBox = document.documentElement.getBoundingClientRect();
