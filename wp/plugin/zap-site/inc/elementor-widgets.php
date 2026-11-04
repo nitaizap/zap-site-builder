@@ -33,7 +33,7 @@ add_action('elementor/widgets/register', function ($wm) {
             if (static::spec()[0] === 'form') {   // where the leads go, visible right in the editor (Zap QA)
                 $to = function_exists('zap_opt') ? zap_opt('business.email_leads') : '';
                 $this->add_control('zs_mail_note', ['type' => \Elementor\Controls_Manager::RAW_HTML,
-                    'raw' => 'פניות נשלחות אל: <strong dir="ltr">' . esc_html($to ?: 'לא הוגדר') . '</strong><br>שולח: <span dir="ltr">' . esc_html(function_exists('zap_opt') ? zap_opt('smtp.from', 'zapsites@d.co.il') : 'zapsites@d.co.il') . '</span><br>לשינוי: פניות מהאתר ← הגדרות טפסים.']);
+                    'raw' => 'פניות נשלחות אל: <strong dir="ltr">' . esc_html($to ?: 'לא הוגדר') . '</strong><br>שולח: <span dir="ltr">' . esc_html(function_exists('zap_mail_from_address') ? zap_mail_from_address() : 'zapsites@d.co.il') . '</span><br>לשינוי: פניות מהאתר ← הגדרות טפסים.']);
             }
             foreach ($controls as $key => [$type, $label, $default]) {
                 $c = ['label' => $label, 'default' => $default];
