@@ -81,7 +81,7 @@
     },
     "radius": 2,
     "motion": "subtle",
-    "custom_css": "/* Home hero (split). The photo sets the hero's height; the text is centred against it and fills its column. */\nhtml body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }\n@media (min-width: 901px) { html body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 11; } }\nbody.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { align-items: center; }\nbody.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; }\n@media (min-width: 768px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-top: clamp(28px, 1rem + 1.6vw, 52px); --padding-bottom: clamp(32px, 1.2rem + 1.8vw, 60px); }\n}\n@media (min-width: 768px) and (max-width: 900px) {\n  body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { row-gap: 24px; }\n}\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); }\n  body.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { --row-gap: 24px; }\n  body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(2.9rem, 1.6rem + 2.7vw, 4.4rem); line-height: 1.02; letter-spacing: -.015em; }\n  body.zs-hv-split .zs-hero--home .zs-hero__lead { font-size: clamp(1.2rem, 1rem + .45vw, 1.4rem); max-width: none; }\n  body.zs-hv-split .zs-hero--home .zs-hero__points .zs-checks { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 4px; }\n}\n@media (max-width: 767px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-bottom: 24px; }\n  body.zs-hv-split .zs-hero--home .e-con.zs-hero__media { overflow: hidden; border-radius: var(--r-lg); }\n  body.zs-hv-split .zs-hero--home .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }\n}\n/* Brand wordmark. No logo artwork exists: the only file the client supplied is a 97x28 px raster of the\n   business name typed in a generic condensed italic, which cannot be shown at header size without blurring.\n   The header therefore carries the name set in the site's own heading face, matching the footer wordmark. */\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) {\n  font-family: var(--f-head); font-weight: 800; font-size: 1.85rem; line-height: 1;\n  letter-spacing: -.02em; color: var(--c-ink); text-decoration: none;\n}\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a):hover { color: var(--c-primary); }\n@media (min-width: 768px) and (max-width: 1024px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.6rem; } }\n@media (max-width: 767px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.35rem; } }\n\n/* Tablet header: the accessibility toggle is fixed at the viewport's inline-start and is 52 px wide, but\n   between 768 and 1024 px the header's own inline-start padding drops to 31 px, so the toggle sat on top of\n   the phone button. Clear it. (Theme-level: it affects any site with a header CTA at the inline-start.) */\n@media (min-width: 768px) and (max-width: 1024px) {\n  html body .e-con.zs-header__in { padding-left: 68px; }\n}\n\n/* Long-form prose: the kit gives it a 760 px measure but leaves it flush to the inline-start, so on a 1320 px\n   container the home and service pages ran a tall column of text against 560 px of empty page. Centre it.\n   (Theme-level: .zs-prose is the only child of its container on every page.) */\n@media (min-width: 1025px) {\n  html body .e-con-inner > .e-con.zs-prose { margin-inline: auto; }\n}\n"
+    "custom_css": "/* Home hero (split). The photo sets the hero's height; the text is centred against it and fills its column. */\nhtml body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }\n@media (min-width: 901px) { html body.zs-hv-split .elementor .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 11; } }\nbody.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { align-items: center; }\nbody.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; }\n@media (min-width: 768px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-top: clamp(28px, 1rem + 1.6vw, 52px); --padding-bottom: clamp(32px, 1.2rem + 1.8vw, 60px); }\n}\n@media (min-width: 768px) and (max-width: 900px) {\n  body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { row-gap: 24px; }\n}\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--home.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); }\n  body.zs-hv-split .e-con.zs-hero--home .e-con.zs-hero__text { --row-gap: 24px; }\n  body.zs-hv-split .zs-hero--home .zs-hero__title .elementor-heading-title { font-size: clamp(2.9rem, 1.6rem + 2.7vw, 4.4rem); line-height: 1.02; letter-spacing: -.015em; }\n  body.zs-hv-split .zs-hero--home .zs-hero__lead { font-size: clamp(1.2rem, 1rem + .45vw, 1.4rem); max-width: none; }\n  body.zs-hv-split .zs-hero--home .zs-hero__points .zs-checks { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 4px; }\n}\n@media (max-width: 767px) {\n  body.zs-hv-split .e-con.zs-hero--home { --padding-bottom: 24px; }\n  body.zs-hv-split .zs-hero--home .e-con.zs-hero__media { overflow: hidden; border-radius: var(--r-lg); }\n  body.zs-hv-split .zs-hero--home .zs-hero__media :is(.elementor-widget-image, .elementor-widget-container) { height: 100%; }\n}\n/* Brand wordmark. No logo artwork exists: the only file the client supplied is a 97x28 px raster of the\n   business name typed in a generic condensed italic, which cannot be shown at header size without blurring.\n   The header therefore carries the name set in the site's own heading face, matching the footer wordmark. */\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) {\n  font-family: var(--f-head); font-weight: 800; font-size: 1.85rem; line-height: 1;\n  letter-spacing: -.02em; color: var(--c-ink); text-decoration: none;\n}\nhtml body .zs-brand.zs-brand__name :is(.elementor-heading-title, a):hover { color: var(--c-primary); }\n@media (min-width: 768px) and (max-width: 1024px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.6rem; } }\n@media (max-width: 767px) { html body .zs-brand.zs-brand__name :is(.elementor-heading-title, a) { font-size: 1.35rem; } }\n\n/* Inner-page heroes (service pages + the hub) carry the page's own photograph, so they need the two things\n   the home hero already has: a gutter between the photo and the text, and the text centred against the\n   photo instead of stacked at the top of an equal-height column. Measured at 1440: the columns were both\n   176-568 px tall, the text content filled only the top 215 px of its column, and the column gap was 0, so\n   the lead ran flush into the edge of the photo. */\n@media (min-width: 901px) {\n  html body.zs-hv-split .zs-hero--page.zs-hero--img > .e-con-inner { column-gap: clamp(32px, 4vw, 64px); align-items: center; }\n  body.zs-hv-split .e-con.zs-hero--page.zs-hero--img .e-con.zs-hero__text { align-self: center; justify-content: center; --justify-content: center; --row-gap: 18px; }\n  body.zs-hv-split .zs-hero--page.zs-hero--img .zs-hero__lead { max-width: 56ch; }\n}\n"
   },
   "form": {
     "title": "נשמח לתכנן אתכם את ההסעה",
@@ -115,11 +115,6 @@
     "depot": {
       "src": "assets/depot.webp",
       "alt": "אוטובוסים חונים בחניון מסודר בשעת ערב",
-      "ai": true
-    },
-    "hills": {
-      "src": "assets/hills.webp",
-      "alt": "אוטובוס תיירים בכביש מתפתל בין גבעות ירוקות",
       "ai": true
     },
     "terminal": {
@@ -327,9 +322,8 @@
           "type": "gallery",
           "title": "מרכב קטן לקבוצה אחת ועד אוטובוס מלא",
           "intro": "גודל הרכב נקבע לפי מספר הנוסעים, אורך המסלול וכמות הציוד, כך שלא משלמים על מקומות ריקים ולא נדחסים.",
-          "columns": 4,
+          "columns": 3,
           "images": [
-            "interior",
             "hero",
             "terminal",
             "executive"
@@ -359,9 +353,24 @@
               "title": "נהגים ללא הרשעות קודמות",
               "text": "הנהגים שלנו עוברים בדיקה, ונוסעים ללא הרשעות קודמות.",
               "icon": "user"
+            },
+            {
+              "title": "נסיעות לכל חלקי הארץ",
+              "text": "מהמרכז, מהשרון ומהשפלה לכל יעד בארץ, כולל נסיעות ארוכות וימים שלמים.",
+              "icon": "globe"
+            },
+            {
+              "title": "הסדרים עם ועדי עובדים",
+              "text": "קווים קבועים וחשבון מסודר מול ועד העובדים או מול מחלקת הרווחה.",
+              "icon": "users"
+            },
+            {
+              "title": "לקוחות פרטיים, מוסדות ומפעלים",
+              "text": "אותה רמת תכנון למשפחה אחת, למוסד ציבורי ולמפעל עם מאות עובדים.",
+              "icon": "building"
             }
           ],
-          "image": "hills"
+          "image": "interior"
         },
         {
           "type": "split",
@@ -446,7 +455,8 @@
         {
           "type": "hero",
           "title": "שירותי הסעות",
-          "lead": "שירותי הסעות לכל סוג נסיעה, מקו עובדים שחוזר כל בוקר ועד טיול שיוצא פעם אחת. בחרו את השירות שמתאים לכם ונתאים לו רכב, נהג ולוח זמנים."
+          "lead": "שירותי הסעות לכל סוג נסיעה, מקו עובדים שחוזר כל בוקר ועד טיול שיוצא פעם אחת. בחרו את השירות שמתאים לכם ונתאים לו רכב, נהג ולוח זמנים.",
+          "image": "depot"
         },
         {
           "type": "cards",
@@ -553,7 +563,8 @@
         {
           "type": "hero",
           "title": "הסעות עובדים",
-          "lead": "הסעות עובדים קבועות לחברות, למפעלים ולמוסדות: קו שיוצא באותה שעה כל בוקר, רכב ממוזג לפי גודל המשמרת, ונהג שמכיר את נקודות האיסוף."
+          "lead": "הסעות עובדים קבועות לחברות, למפעלים ולמוסדות: קו שיוצא באותה שעה כל בוקר, רכב ממוזג לפי גודל המשמרת, ונהג שמכיר את נקודות האיסוף.",
+          "image": "depot"
         },
         {
           "type": "prose",
@@ -631,7 +642,7 @@
       "title": "הסעות תיירים",
       "order": 3,
       "excerpt": "הסעות תיירים בין אתרים, בתי מלון ונמל התעופה, ברכב מרווח לקבוצות.",
-      "featured_image": "hills",
+      "featured_image": "hero",
       "seo": {
         "title": "car service | הסעות תיירים",
         "description": "הסעות תיירים לקבוצות בכל חלקי הארץ: מעבר בין אתרים ובתי מלון, איסוף מנמל התעופה, רכב ממוזג עם מקום למזוודות ונהג מנוסה שנשאר צמוד לקבוצה. 052-7980029 להצעה",
@@ -641,7 +652,8 @@
         {
           "type": "hero",
           "title": "הסעות תיירים",
-          "lead": "הסעות תיירים לקבוצות בכל חלקי הארץ: איסוף מנמל התעופה, מעבר בין אתרים ובתי מלון, ורכב ממוזג עם מקום למזוודות ולציוד של כל הקבוצה."
+          "lead": "הסעות תיירים לקבוצות בכל חלקי הארץ: איסוף מנמל התעופה, מעבר בין אתרים ובתי מלון, ורכב ממוזג עם מקום למזוודות ולציוד של כל הקבוצה.",
+          "image": "hero"
         },
         {
           "type": "prose",
@@ -715,7 +727,8 @@
         {
           "type": "hero",
           "title": "הסעות לאירועים",
-          "lead": "הסעות לאירועים שמוציאות את הלחץ מהערב: איסוף מרוכז מכמה נקודות, הגעה מסודרת לאולם, ופיזור בסוף האירוע בלי שאף אחד נשאר בחניון."
+          "lead": "הסעות לאירועים שמוציאות את הלחץ מהערב: איסוף מרוכז מכמה נקודות, הגעה מסודרת לאולם, ופיזור בסוף האירוע בלי שאף אחד נשאר בחניון.",
+          "image": "executive"
         },
         {
           "type": "prose",
@@ -794,7 +807,8 @@
         {
           "type": "hero",
           "title": "הסעות לנמל התעופה",
-          "lead": "הסעות לנתב״ג ובחזרה לקבוצות, למשפחות ולעובדים: יציאה שמחושבת לפי שעת הטיסה, רכב עם מקום לכל המזוודות, ונהג שמכיר את מסופי הנמל."
+          "lead": "הסעות לנתב״ג ובחזרה לקבוצות, למשפחות ולעובדים: יציאה שמחושבת לפי שעת הטיסה, רכב עם מקום לכל המזוודות, ונהג שמכיר את מסופי הנמל.",
+          "image": "terminal"
         },
         {
           "type": "prose",
@@ -872,7 +886,7 @@
       "title": "טיולים מאורגנים",
       "order": 6,
       "excerpt": "טיולי קבוצות, ימי כיף ונסיעות לקברי צדיקים, עם מסלול שנסגר מראש.",
-      "featured_image": "hills",
+      "featured_image": "interior",
       "seo": {
         "title": "car service | טיולים מאורגנים",
         "description": "טיולים מאורגנים לקבוצות בכל חלקי הארץ: ימי כיף, טיולי מחלקה ונסיעות לקברי צדיקים, עם מסלול, עצירות ולוח זמנים שנסגרים מראש. חייגו 052-7980029 להצעה לתיאום מראש",
@@ -882,7 +896,8 @@
         {
           "type": "hero",
           "title": "טיולים מאורגנים",
-          "lead": "טיולים מאורגנים לקבוצות בכל חלקי הארץ, מימי כיף של צוות ועד נסיעות לקברי צדיקים, עם מסלול, עצירות ולוח זמנים שנסגרים לפני שיוצאים לדרך."
+          "lead": "טיולים מאורגנים לקבוצות בכל חלקי הארץ, מימי כיף של צוות ועד נסיעות לקברי צדיקים, עם מסלול, עצירות ולוח זמנים שנסגרים לפני שיוצאים לדרך.",
+          "image": "interior"
         },
         {
           "type": "prose",
@@ -956,7 +971,8 @@
         {
           "type": "hero",
           "title": "הסעות יוקרה",
-          "lead": "הסעות VIP לאורחים, להנהלה, לאמנים וללהקות: רכב מפואר וממוזג, נהג מנוסה שמכיר את הלוח, ושירות דיסקרטי מהאיסוף ועד ההגעה."
+          "lead": "הסעות VIP לאורחים, להנהלה, לאמנים וללהקות: רכב מפואר וממוזג, נהג מנוסה שמכיר את הלוח, ושירות דיסקרטי מהאיסוף ועד ההגעה.",
+          "image": "executive"
         },
         {
           "type": "prose",
@@ -1044,7 +1060,8 @@
         {
           "type": "hero",
           "title": "הסעות לגיל הזהב",
-          "lead": "הסעות לגיל הזהב למועדוני ותיקים, לפעילויות ולטיולים: נסיעה במקצב נוח, עצירות לפי הצורך, ונהג שלא ממהר כשעולים ויורדים מהרכב."
+          "lead": "הסעות לגיל הזהב למועדוני ותיקים, לפעילויות ולטיולים: נסיעה במקצב נוח, עצירות לפי הצורך, ונהג שלא ממהר כשעולים ויורדים מהרכב.",
+          "image": "interior"
         },
         {
           "type": "prose",
@@ -1123,7 +1140,8 @@
         {
           "type": "hero",
           "title": "הסעות ילדים ותלמידים",
-          "lead": "הסעות ילדים ותלמידים לגנים, לבתי ספר ולקייטנות, כולל הסעות לילדים עם מוגבלויות: אותו נהג, אותן נקודות ואותן שעות, כל יום מחדש."
+          "lead": "הסעות ילדים ותלמידים לגנים, לבתי ספר ולקייטנות, כולל הסעות לילדים עם מוגבלויות: אותו נהג, אותן נקודות ואותן שעות, כל יום מחדש.",
+          "image": "interior"
         },
         {
           "type": "prose",
@@ -1221,7 +1239,7 @@
           "type": "features",
           "variant": "aside",
           "title": "מה מאפיין את העבודה שלנו",
-          "image": "interior",
+          "image": "depot",
           "items": [
             {
               "title": "צי כלי רכב משלנו",
@@ -1374,7 +1392,7 @@
       "slug": "לוח-זמנים-להסעת-קבוצה",
       "title": "איך בונים לוח זמנים להסעת קבוצה",
       "category": "מדריכי-הסעות",
-      "image": "hills",
+      "image": "terminal",
       "date": "2026-10-28",
       "related_page": "שירותי-הסעות/טיולים-מאורגנים",
       "excerpt": "למה טיול שנראה הגיוני על המפה מתפוצץ בשטח, ואיך מתכננים יום שבאמת עובד.",

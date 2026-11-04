@@ -66,16 +66,16 @@ built, with the reason. ⏳ = open, see OPEN-ITEMS.md.
 | למה אנחנו: כלי רכב עם מערכות GPS | ✅ | `features:aside`, service pages, blog post on safety |
 | למה אנחנו: פיקוח קצין בטיחות מורשה | ✅ | `features:aside`, every service page, FAQ, blog post |
 | למה אנחנו: נהגים ללא הרשעות קודמות | ✅ | `features:aside`, הסעות ילדים, blog post |
-| למה אנחנו: נסיעות לכל הארץ | ✅ | hero lead, `features:aside`, home `prose`, FAQ |
-| למה אנחנו: הסדרים עם ועדי עובדים | ✅ | home cards, הסעות עובדים (own H2 + FAQ) |
-| למה אנחנו: שירות ללקוחות פרטיים, מוסדות ומפעלים | ✅ | home `prose` ("מי נוסע אתנו"), about page |
+| למה אנחנו: נסיעות לכל הארץ | ✅ | hero lead, **its own row in the home `features:aside`** (added 04/11), home `prose`, FAQ |
+| למה אנחנו: הסדרים עם ועדי עובדים | ✅ | **its own row in the home `features:aside`** (added 04/11), home cards, הסעות עובדים (own H2 + FAQ) |
+| למה אנחנו: שירות ללקוחות פרטיים, מוסדות ומפעלים | ✅ | **its own row in the home `features:aside`** (added 04/11), home `prose` ("מי נוסע אתנו"), about page |
 | מאמרים: (empty) | ✅ | 3 posts written from the brief only, no invented facts (OPEN-ITEMS #15) |
 
 ## 6. עיצוב ומותג
 
 | line | state | where |
 |---|---|---|
-| לוגו | ➖ | the cell holds one embedded image and nothing else was lost in the text export (the .docx was opened as a zip on 04/11/2026: one file in `word/media/`, one drawing in `document.xml`). It is the business name typed in a generic condensed italic, 97×28 px of ink, not a mark. Not used. The header and footer carry the name set in the site's own heading face; favicon is a letterform mark in the palette primary (OPEN-ITEMS #11, #18, #19) |
+| לוגו | ➖ | the cell holds one embedded image and nothing else was lost in the text export (the .docx was opened as a zip on 04/11/2026: one file in `word/media/`, one drawing in `document.xml`). It is the business name typed in a generic condensed italic, 97×28 px of ink, not a mark. Not used. The header and footer carry the name set in the site's own heading face; favicon is a letterform mark in the palette primary, redrawn on 04/11 so it fills the tile and stays legible at 16 px (OPEN-ITEMS #11, #18, #19, #32). **Settled: the favicon ships as it is; only real logo artwork still needs the client** |
 | צבעי מותג | ⏳ | none given; aubergine + burnt orange chosen (OPEN-ITEMS #2) |
 | יד חופשית למעצב | ✅ | taken: direction chosen in automatic mode (OPEN-ITEMS #1) |
 | אתרים שאהבתם | ➖ | none given |
@@ -85,7 +85,7 @@ built, with the reason. ⏳ = open, see OPEN-ITEMS.md.
 | line | state | where |
 |---|---|---|
 | תמונת בעלים | ➖ | none supplied. No AI portrait was generated: a generated "owner" would misrepresent a real person |
-| גלריה | ⏳ | the client supplied no photographs at all. `F:\SiteContent\80362823` holds 11 files, every one of them a Zap internal campaign or intake template document, no image among them. 6 AI atmosphere images were generated instead, all recorded in IMAGE-SOURCES.md and marked `ai: true`, and none is presented as this client's own vehicles or premises |
+| גלריה | ⏳ | the client supplied no photographs at all. `F:\SiteContent\80362823` holds 11 files, every one of them a Zap internal campaign or intake template document, no image among them. 6 AI atmosphere images were generated instead, all recorded in IMAGE-SOURCES.md and marked `ai: true`; **5 are in use** since `hills` was withdrawn on 04/11 (OPEN-ITEMS #27), and none is presented as this client's own vehicles or premises |
 
 ## 8. כתבת תדמית
 

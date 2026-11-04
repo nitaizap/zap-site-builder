@@ -46,8 +46,8 @@ A design-only pass. No copy was rewritten, no fact changed, no page added or rem
 | 20 | **The `marquee` band is gone from the home page.** | a full-bleed burnt-orange band of giant outlined Hebrew, clipped at the top and bottom of the band so the letters were cut off. It also only repeated six of the eight service names from the card grid immediately above it. Nothing was lost; uniqueness did not move (38% before and after) |
 | 21 | **Home H1 scaled back** from `clamp(3.6rem … 6.4rem)` to `clamp(2.9rem … 4.4rem)`. | 102 px of lowercase Latin was a billboard, and it repeated the header wordmark 200 px above it. Now it leads the hero instead of shouting over it |
 | 22 | **The `split` section no longer reuses the hero photograph**; it uses `depot` (coaches at a lit depot at dusk) and the gallery takes `hero` in depot's place. | the same coastal shot appeared twice at large size, once in the hero and again halfway down. `depot` also suits "קרוב לשני עשורים על הכביש" better than one coach on a coast road. The hero shot now appears only as one small tile in the four-tile fleet strip, which reads as the fleet rather than as a repeat |
-| 23 | **Tablet header overlap fixed** (the known open item): at 768-1024 px the accessibility toggle (fixed, 52 px wide at the inline-start) sat on top of the header phone button, which started at x=31. `padding-left: 68px` on `.zs-header__in` in that range. Measured after: toggle 0-52, button 68-142. | **This is theme-level.** It will hit any site whose header has a CTA at the inline-start, because the theme's tablet header padding (31 px) is smaller than the a11y toggle (52 px). Not fixed in the theme, per instruction; fixed here in `design.custom_css` and reported |
-| 24 | **Long-form prose centred.** `.zs-prose` is 760 px inside a 1320 px container and the kit left it flush to the inline-start, so the home page and every service page ran a tall column of text against 560 px of empty page. `margin-inline: auto` above 1025 px. | **Also theme-level**, and the same on every page: `.zs-prose` is the only child of its container everywhere. Fixed here, reported rather than changed in the theme |
+| 23 | ~~**Tablet header overlap fixed**~~ **(reverted 04/11, second pass: the theme now does this)** (the known open item): at 768-1024 px the accessibility toggle (fixed, 52 px wide at the inline-start) sat on top of the header phone button, which started at x=31. `padding-left: 68px` on `.zs-header__in` in that range. Measured after: toggle 0-52, button 68-142. | **This is theme-level.** It will hit any site whose header has a CTA at the inline-start, because the theme's tablet header padding (31 px) is smaller than the a11y toggle (52 px). Not fixed in the theme, per instruction; fixed here in `design.custom_css` and reported |
+| 24 | ~~**Long-form prose centred.**~~ **(reverted 04/11, second pass: the theme now does this)** `.zs-prose` is 760 px inside a 1320 px container and the kit left it flush to the inline-start, so the home page and every service page ran a tall column of text against 560 px of empty page. `margin-inline: auto` above 1025 px. | **Also theme-level**, and the same on every page: `.zs-prose` is the only child of its container everywhere. Fixed here, reported rather than changed in the theme |
 
 ### Looked at and deliberately left alone
 
@@ -55,3 +55,51 @@ A design-only pass. No copy was rewritten, no fact changed, no page added or rem
 - **The palette, kit, fonts and page order.** The brief gives no colours, no reference sites and no brand. The direction already clears the pool with room (38% worst case) and nothing about it is wrong, only the execution needed tightening.
 - **The copy, the page set and the keyword map.** Verified against the brief again (BRIEF-CHECK.md); nothing to change.
 - **The hero ratio work** from 03/11, which is correct and documented in `references/hero-space.md`.
+
+
+## Second quality pass, 04/11/2026
+
+Merged `main` at `6bf9eba` first. Again design only: no copy rewritten, no fact changed, no page added or
+removed, `privacy_confirmed` untouched.
+
+### Both per-client workarounds deleted
+
+| # | change | measured after |
+|---|---|---|
+| 25 | **`padding-left: 68px` on `.zs-header__in` (item 23) deleted.** `main` now reserves the accessibility toggle's width in the theme, derived from `--wrap`, so the per-client rule would have stacked on top of it and pushed the header CTA too far. | Re-measured on the home page at the three widths the theme fix names. The toggle occupies 0-52 px in every case; the header CTA starts at **91 px (768)**, **92 px (1024)** and **92 px (1280)**, so it clears by 39-40 px at all three with no rule of ours in play. Before the theme fix this overlapped on 40 of 45 kit/preset combinations at 768 and 1024 and 30 of 45 at 1280. |
+| 26 | **The `.zs-prose` centring rule (item 24) deleted.** `margin-inline: auto` is now on the theme's `.zs-prose`. | At 1280 the home prose column measures 253-1013 px inside a 1265 px layout width: centred, 252 px of margin each side. |
+
+### Design changes
+
+| # | change | why |
+|---|---|---|
+| 27 | **`hills` withdrawn from the site** and its four uses reassigned (home `features:aside` to `interior`, הסעות תיירים to `hero`, טיולים מאורגנים to `interior`, the group-timetable post to `terminal`). | Judged again in context and it does undercut the page. Rows of columnar cypresses above a hilltop village with terracotta roofs read Tuscan, and it was the one picture on the site that implied where this operator drives. Nothing was lost: `hero` (a coach on a coast road against a city skyline) already carries intercity travel, and `interior` argues the claim it now sits beside. No image generated, no Weave credit spent; the file stays in `assets/` so the call is reversible. |
+| 28 | **The home `features:aside` band now carries all seven of the brief's `למה אנחנו` lines, not four.** Added נסיעות לכל חלקי הארץ, הסדרים עם ועדי עובדים, and לקוחות פרטיים/מוסדות/מפעלים (icons `globe`, `users`, `building`). | Two reasons that point the same way. The brief's written list is the client's own answer to the heading above this band, and three of its seven lines were scattered to other sections instead. Visually, the four rows filled only the top 420 px of a 650 px column beside a 650 px photograph, so the band ended in roughly 190 px of empty aubergine. Seven rows now end level with the photograph. |
+| 29 | **Home gallery: four tiles to three** (`hero`, `terminal`, `executive`; `interior` moved up into the `features:aside` band). | The three that remain are three visibly different vehicle classes, which is what the heading מרכב קטן לקבוצה אחת ועד אוטובוס מלא actually promises. At four, one tile was the cabin interior, which answers comfort rather than size. |
+| 30 | **The nine inner pages that had no picture above the fold now carry one**: the eight service pages and the hub put their own `featured_image` into the hero. | This was the weakest thing on the site. A service page opened with a flat grey band of breadcrumb, H1 and lead, and then ran roughly 1,250 px of centred prose under six H2s before the first image appeared. The photograph was already chosen and already recorded for each page, and was being used only as a thumbnail on the hub and in the OG tag. |
+| 31 | **One new block in `design.custom_css` for the inner hero** (above 901 px): a `clamp(32px, 4vw, 64px)` column gap, the text centred against the photograph, and a 56ch measure on the lead. | Needed by change 30, and measured, not guessed: with the photograph in place the theme gave the inner hero a column gap of **0 px**, so the lead ran flush into the edge of the photo, and the text sat at the top of an equal-height column (content filled 215 px of 392 px). After: gap 58 px at 1440, text block centred on the photograph's centre line to the pixel. This one is ordinary per-client design tuning of this site's hero, not a workaround for a theme fault. |
+| 32 | **Favicon redrawn** (same mark, same colour): the `cs` monogram filled 42% of the tile's width and 25% of its height, so at the 16 px a browser tab actually shows it the letters were about 4 px tall. It now fills 78%. | Execution, not a design question. Checked by rendering it at 16, 24 and 48 px: legible at all three. |
+
+### Settled, and no longer open
+
+- **The favicon ships as it is.** A letterform mark on the brand colour is the right answer for a business
+  with no logo, and it is what a browser tab needs: at 16 px a symbol would be mud anyway. This does not
+  need the client. What still needs the client is real logo artwork (item 11), and if it arrives the
+  favicon should be remade from its symbol.
+- **The `hills` question (raised in the first pass) is closed:** withdrawn, see item 27.
+- **`BRIEF-CHECK.md` holds nothing else that can be closed without the client.** Everything still marked
+  there is a fact or an asset only the client or the account manager can supply.
+
+### One thing a person should know, not fixed here
+
+- **At 1440 px the header's call button clears the accessibility toggle by 0.5 px, where at 768-1280 it
+  clears it by 39-40.** Measured on the home page: the toggle occupies 0-52 px and the button's box starts
+  at 52.5 px, so the two abut with no visible gap. It is clearance, not an overlap, and no gate fails, but
+  it reads as a mistake at the commonest desktop width. The cause is in the shared
+  theme, not in this site: the reserve added in `main` is computed from `100vw`, which includes the
+  scrollbar, while the page is laid out in the narrower client width. On a kit whose `--wrap` is 1320 px
+  (this one), at a 1440 px window the formula believes the side margin is 60 px when it is really 52.5 px,
+  and reserves nothing. The fix belongs in `wp/theme/zap-base/assets/standards.css` (measure from the layout
+  width rather than `100vw`, or raise the 60 px constant to 68 px), and this pass was told not to touch the
+  theme. Deliberately **not** patched per client: a per-client rule here is exactly the kind that stacks
+  on the theme's own reserve and breaks 768-1280, which is what items 23 and 25 were about.
