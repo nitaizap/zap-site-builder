@@ -138,6 +138,11 @@ body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .z
 body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .zs-k-shade) :is(.zs-topbar, .e-con.zs-topbar) { background: var(--c-bg); color: var(--zs-text); border-bottom: 1px solid var(--zs-line); }
 /* the light kits drop the utility bar: the header already carries the phone */
 body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-topbar, .e-con.zs-topbar) { display: none; }
+/* ...and so the sticky header must not keep the -38px offset main.css gives a header that has a topbar (the slide-away
+   that hides the bar). With the bar display:none that offset pushed the whole header 38px above the viewport on
+   scroll and clipped the logo (96px tall) at the top. Same kit list as the rule above, so the two cannot drift. */
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-tpl-header, .elementor-location-header):has(.zs-topbar) { top: 0; }
+.admin-bar:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-tpl-header, .elementor-location-header):has(.zs-topbar) { top: 32px; }
 
 /* atelier: the form band stacks centred under its title; FAQ as hairline rows; icons bare, no chip */
 body.zs-k-atelier .elementor .e-con.zs-leadband__in { grid-template-columns: 1fr; justify-items: center; text-align: center; max-width: 760px; margin-inline: auto; }
