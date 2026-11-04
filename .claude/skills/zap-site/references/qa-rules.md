@@ -122,9 +122,19 @@ your judgement.
    Then the hero on its own: run `py tools/hero-space.py <url> --out <file>`, open the 1440x900 shot beside it and answer the
    four questions in `hero-space.md` (height earned, text fills or balances its column, content or air, first button in view).
    `zs qa` cannot see this one; the user has rejected heroes that passed it with 0 errors.
-3. Read every heading once for punctuation, and every menu label against its page's H1.
-4. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
-5. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
+3. **The brief pass — read the brief again with the finished site open beside it.** Walk `BRIEF-CHECK.md` row by
+   row against the live pages: every service page the spec sheet lists, the slogan where it gave one, the call
+   button on every page where it asked for one, the fleet or service list in full. A site that passes every gate
+   can still answer a different brief from the one that arrived. Where the spec sheet named sites under
+   `אתרים שאהבתם`, open them again now and ask honestly whether this site answers what the client liked.
+4. **The polish pass — look at it as a stranger, not as its builder.** Ask whether it reads as finished or merely
+   as correct: consistent rhythm between sections, one alignment per band, type that fills the space it is given,
+   images sharp at the size they are shown, no placeholder left standing, nothing that looks like the default. The
+   gates measure none of this. Every design complaint this project has had came off a site passing QA at 0 errors
+   and SEO at 0 FAIL, so budget real time here rather than treating it as a last glance.
+5. Read every heading once for punctuation, and every menu label against its page's H1.
+6. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
+7. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
 
 ## Round 3 (פטוצ'ינה, 01/11/2026)
 
