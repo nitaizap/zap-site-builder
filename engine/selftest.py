@@ -90,6 +90,10 @@ def selftest(fresh=False, strict_uniqueness=False, keep_going=False, slug=SAMPLE
             return FAIL, f"exit {rc}, QA report has {errors} error(s)"
         return status, note
 
+    # 0. the launch check proves itself offline, in both directions (healthy markup passes, the plugin-less one fails)
+    if stage("launch-check selftest", ["launch-check", "--selftest"]) == FAIL and not keep_going:
+        return _summary(stages, False)
+
     # 1. new (only when the local WordPress for the sample is not there yet, or --fresh)
     if fresh or not Site(slug).exists():
         argv = ["new", slug, SAMPLE_NAME, "--from", SAMPLE_FROM]

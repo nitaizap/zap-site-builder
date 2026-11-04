@@ -41,6 +41,14 @@ hides the GitHub link. Delivery branches are never force-pushed; a second delive
 The GitHub link needs a GitHub login with access to the repo. If the server person has none, the
 SharePoint route (or the user forwarding the file) is the way.
 
+## Before handover: the launch sheet
+
+Zap does not launch the site; whoever deploys it needs to know what must travel and what to redo. On the staging site run
+`bin/zs launch-check https://<slug>.zapsites.co.il --slug <slug>` (public html, no login): it FAILs loudly when the `zap-site` plugin
+would not be proven (no `zap-*` widgets, no menu, no form), staging mode is not in force, or QA is not clean on desktop and mobile, and
+writes `sites/<slug>/LAUNCH-SHEET.md`: attach it to the final message. The zip ships theme and plugin together, but a person re-deploying
+with another tool can leave the plugin out, so the sheet says so first.
+
 ## The final message
 
 ```

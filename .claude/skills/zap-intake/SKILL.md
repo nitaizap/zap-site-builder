@@ -34,6 +34,16 @@ Full detail, and the UTF-8 console trap when calling `py engine/zs.py` instead o
 The user types the last two themselves in their own terminal; never ask for, echo or store the password.
 Reopen the terminal after `setx`.
 
+**A reset that reports `הסיסמה אופסה` and then will not log in means the stored
+`ZS_WP_PASSWORD` is wrong.** Re-run `setx` before suspecting the site, the account or the
+reset flow. The site's own error names the e-mail address ("הסיסמה או כתובת האימייל ...
+אינה נכונה"), which reads as if the account did not exist and is a very good way to lose an
+afternoon.
+
+`ZS_WP_USER` is the e-mail address and WordPress accepts it. `zs staging` also tries the local
+part (`nitaiz@d.co.il` -> `nitaiz`) purely as a fallback; the reset mail states the real username
+under `שם משתמש:`. Set `ZS_WP_LOGIN` only when the username is unrelated to the address.
+
 ## 1. Find new mail
 
 Desktop Outlook on this PC (the Microsoft 365 connector is blocked by the company's sign-in policy):
