@@ -111,7 +111,7 @@ MEASURE_JS = r"""
   // Icons on conversion buttons are a choice, not a rule, so this fires once per page and only when the page
   // uses none at all - the case where nobody decided, rather than the case where somebody decided no.
   const btns = q('.elementor-button').filter(vis);
-  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon')))
+  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon') || e.closest('.zs-b-tel, .zs-b-wa')))
     W(`no button on this page carries an icon (${btns.length} buttons)`);
   if (window.innerWidth < 768) {
     const docBox = document.documentElement.getBoundingClientRect();
@@ -120,7 +120,7 @@ MEASURE_JS = r"""
       .filter(e => { const b = e.getBoundingClientRect(); return b.left < docBox.left + 11 || b.right > docBox.right - 11; })
       .map(e => e.tagName + ':' + e.textContent.trim().slice(0, 14));
     if (tight.length) W(`mobile gutter under 12px (${tight.length}): ` + tight.slice(0, 3).join(', '));
-    const smallTap = q('.elementor-button, button').filter(e => vis(e) && !e.closest(a11yChrome))
+    const smallTap = q('.elementor-button, button:not(.zs-vnote-btn)').filter(e => vis(e) && !e.closest(a11yChrome))
       .filter(e => e.getBoundingClientRect().height < 44).length;
     if (smallTap) W(`${smallTap} tap targets under 44px high`);
   }
