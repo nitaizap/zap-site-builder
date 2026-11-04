@@ -152,7 +152,9 @@ function zap_handle_lead() {
  *      one won depended on plugin load order: the same site could deliver or not deliver after an unrelated
  *      plugin update;
  *   3. every message left as zapsites@d.co.il, a domain the client's site has no SPF/DKIM alignment with, so
- *      mail that did go out landed in spam.
+ *      mail that did go out landed in spam;
+ *   4. it disabled TLS outright on the strength of a comment that says the relay cannot do it. relay.d.co.il
+ *      does: see zap_mail_relay().
  *
  * Now: another mailer always wins (we stand down completely and say so in wp-admin), the relay and the sender
  * filters are attached around our own send only and removed again afterwards, and the sender is an address on
@@ -250,7 +252,9 @@ function zap_mail_relay_state() {
     if (!zap_opt('smtp.enabled', true)) {
         return [false, 'ממסר הדואר של זאפ כבוי בהגדרות (smtp.enabled). המיילים נשלחים בדרך הרגילה של ההוסטינג.', 'WordPress (wp_mail)'];
     }
-    return [true, 'ממסר זאפ פעיל, ורק עבור מיילים של טופס הפניות: ' . zap_opt('smtp.host', 'relay.d.co.il') . ':' . (int) zap_opt('smtp.port', 25) . '.', 'Zap Site'];
+    $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+    $sec = $mode === 'none' ? 'ללא הצפנה' : ($mode === 'tls' || $mode === 'ssl' ? 'הצפנה נדרשת (' . $mode . ')' : 'הצפנה (STARTTLS) כשהשרת תומך');
+    return [true, 'ממסר זאפ פעיל, ורק עבור מיילים של טופס הפניות: ' . zap_opt('smtp.host', 'relay.d.co.il') . ':' . (int) zap_opt('smtp.port', 25) . ', ' . $sec . '.', 'Zap Site'];
 }
 
 /** Record the decision where an admin can read it (settings screen) and a log reader can find it. */
@@ -272,10 +276,42 @@ function zap_mail_relay($m) {
     $m->isSMTP();
     $m->Host = zap_opt('smtp.host', 'relay.d.co.il');
     $m->Port = (int) zap_opt('smtp.port', 25);
+    // No authentication: relay.d.co.il advertises no AUTH mechanism at all in its EHLO reply (checked 04/11/2026),
+    // so it is allowlisted by sender IP and SMTPAuth must stay false. This is a measurement, not an assumption.
     $m->SMTPAuth = false;
-    $m->SMTPSecure = '';      // relay offers no TLS; forcing it fails every send
-    $m->SMTPAutoTLS = false;
     $m->Timeout = 10;
+    // Transport security. This file used to hardcode SMTPSecure='' + SMTPAutoTLS=false under the comment
+    // "relay offers no TLS; forcing it fails every send". That claim carried no date and was wrong by 04/11/2026.
+    // What was actually measured that day, from a Zap workstation:
+    //   - relay.d.co.il:25 EHLO advertises STARTTLS (Microsoft ESMTP, 31.168.35.139);
+    //   - the handshake completes at TLSv1.2 (ECDHE-RSA-AES256-GCM-SHA384) and PASSES default peer verification:
+    //     a DigiCert/GeoTrust certificate for *.d.co.il, SAN d.co.il, valid to 02/04/2027;
+    //   - a live client site (thewhite-villa.co.il) sends through this relay via WP Mail SMTP with encryption
+    //     'tls' on port 25, and the mail is delivered, not merely accepted.
+    // Re-measure before trusting the above; it is true of this relay on that date, not a law of nature.
+    // We therefore no longer force an unencrypted hop for every client's lead mail.
+    //   'auto' (default) - PHPMailer's own opportunistic STARTTLS: encrypt when the server offers it, plain when
+    //                      it does not. If the handshake itself fails, zap_send_plugin_mail() retries once in the
+    //                      clear, so a relay with an expired certificate degrades instead of losing the lead.
+    //   'tls' / 'ssl'    - require it (a send fails rather than going out unencrypted)
+    //   'none'           - the old behaviour, for a relay that genuinely cannot do TLS
+    $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+    if (!empty($GLOBALS['zap_mail_plain_retry'])) $mode = 'none';
+    if ($mode === 'none') {
+        $m->SMTPSecure = '';
+        $m->SMTPAutoTLS = false;
+    } elseif ($mode === 'tls' || $mode === 'ssl') {
+        $m->SMTPSecure = $mode;
+        $m->SMTPAutoTLS = true;
+    } else {
+        $m->SMTPSecure = '';      // no fixed scheme...
+        $m->SMTPAutoTLS = true;   // ...but take STARTTLS whenever the relay offers it
+    }
+}
+
+/** Does this PHPMailer failure look like the TLS handshake rather than the message? */
+function zap_mail_error_is_tls($msg) {
+    return (bool) preg_match('~STARTTLS|SSL|TLS|certificate|cipher|handshake~i', (string) $msg);
 }
 // late, so a mailer that registers after us is already visible when we decide whether to stand down
 add_action('phpmailer_init', 'zap_mail_relay', 1000);
@@ -286,15 +322,38 @@ function zap_mail_from_name_filter() { return zap_opt('business.name', get_blogi
 /** Send one message as the plugin: the sender filters and the relay apply here and nowhere else. */
 function zap_send_plugin_mail($to, $subject, $body, $headers = []) {
     $GLOBALS['zap_sending_lead'] = true;
+    $GLOBALS['zap_mail_last_error'] = '';
     add_filter('wp_mail_from', 'zap_mail_from_filter', 1000);
     add_filter('wp_mail_from_name', 'zap_mail_from_name_filter', 1000);
+    add_action('wp_mail_failed', 'zap_mail_capture_error');
     try {
-        return wp_mail($to, $subject, $body, $headers);
+        $ok = wp_mail($to, $subject, $body, $headers);
+        // Opportunistic STARTTLS that fails at the handshake loses the lead, and PHPMailer gives up before DATA,
+        // so nothing was delivered and one retry in the clear cannot duplicate the message. Only then, and only once.
+        $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+        if (!$ok && in_array($mode, ['auto', ''], true) && zap_mail_error_is_tls($GLOBALS['zap_mail_last_error'])) {
+            zap_mail_log_decision(true, 'שליחה מוצפנת (STARTTLS) נכשלה מול ' . zap_opt('smtp.host', 'relay.d.co.il')
+                . ' - נשלח שוב ללא הצפנה. שגיאה: ' . $GLOBALS['zap_mail_last_error']);
+            $GLOBALS['zap_mail_plain_retry'] = true;
+            try {
+                $ok = wp_mail($to, $subject, $body, $headers);
+            } finally {
+                unset($GLOBALS['zap_mail_plain_retry']);
+            }
+        }
+        return $ok;
     } finally {
+        remove_action('wp_mail_failed', 'zap_mail_capture_error');
         remove_filter('wp_mail_from', 'zap_mail_from_filter', 1000);
         remove_filter('wp_mail_from_name', 'zap_mail_from_name_filter', 1000);
         unset($GLOBALS['zap_sending_lead']);
     }
+}
+
+/** Remember why our own send failed, so the retry can tell a TLS problem from a bad address. */
+function zap_mail_capture_error($err) {
+    $GLOBALS['zap_mail_last_error'] = is_object($err) && method_exists($err, 'get_error_message')
+        ? $err->get_error_message() : (string) $err;
 }
 
 /** The decision, recomputed on an admin screen so the settings page is never stale. */
