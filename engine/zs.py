@@ -94,7 +94,7 @@ def cmd_preview(a):
     lines = check_measured(a.slug, fps)
     if lines:
         print("\n".join(lines))
-    if getattr(s, "_preview_close", None) or any(x.startswith("ERROR") for x in lines):
+    if getattr(s, "_preview_close", None) or getattr(s, "_preview_thin", None) or any(x.startswith("ERROR") for x in lines):
         sys.exit(2)
 
 
