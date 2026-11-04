@@ -138,22 +138,38 @@ patoccina and mehirut-haor, which are both light) and a `split` hero (it crops t
 portrait box and loses the building, which is the one thing worth showing). A dark header was also tried and
 dropped: it only moved the number, and it is not a choice worth defending to this client.
 
-## Home composition (11 sections, archetype `proof`)
+## Home composition (10 sections, archetype `proof`)
 
 1. `hero` `cover` — facade 2022, H1 = the client's name, keyword opens the lead
-2. `logos` `band` — Mazda, Ford, המחלקה הראשונה למסחריות, at a uniform size
+2. `logos` `band` — the badge beside the text, Mazda / Ford / Dongfeng / Voyah in a 2x2, all chips one height
 3. `facts` — licence years and team size, with the page's first call to action
 4. `reviews` — the Dapei Zahav widget (customer id 80220135); renders only on a pushed site
 5. `cards` — the six service pages, one meaningful icon each
 6. `split` `frame` — "מגוון רחב של שירותים במקום אחד", workshop photo
 7. `steps` `cards` — how a visit runs, taken from the brief's own description
-8. `features` `checks` — what the customer gets
-9. `split` — "הלקוח בראש סדר העדיפויות", waiting room photo
-10. `cta` — the original-parts offer the spec asks for
-11. `faq` `outline` — six questions, each answered from a spec fact
+8. `split` (`bg: plain`) — "הלקוח בראש סדר העדיפויות", waiting room photo
+9. `cta` — the original-parts offer the spec asks for
+10. `faq` `outline` — six questions, each answered from a spec fact
 
-No two neighbours share a type or a shape; the two brand-colour bands (2 and 7) are four sections apart.
-The page does not end on a `cta`, so the footer lead form is the last action.
+### What changed on 04/11, and why
+
+- **`features` `checks` removed.** It listed six labels — יועץ שירות צמוד, הצעת מחיר לפני העבודה,
+  חדר המתנה ממוזג, תיאום כניסה מראש, איסוף והחזרת הרכב, העברת טסט במכון רישוי — and every one of them is
+  already said by the `steps` block immediately above it or by the hero bullets. Six identical check icons
+  on a dark ground restating the previous section is padding, not evidence, and it was the least finished
+  looking block on the page. `qa-rules.md` lists "a row of identical ticks" as a reviewer rejection in its
+  own right, so this was a rule the page was already on the wrong side of, not only a taste call.
+- **The waiting-room `split` moved to the plain ground.** `features`, that `split` and `cta` were all on
+  brand petrol: 1,658 px of unbroken dark at the foot of the page. Removing one and lightening another
+  restores an alternating rhythm, and the waiting-room photo reads better on white.
+
+- **Prose column centred, and the contact map's empty column collapsed.** Both are worked around in this
+  client's own `design.custom_css` and both are defects outside this site: the theme never centres
+  `.e-con.zs-prose` (OPEN-ITEMS 18) and the plugin's map widget renders nothing (OPEN-ITEMS 20). Neither was
+  fixed at source from a client session.
+
+No two neighbours share a type or a shape. The page does not end on a `cta`, so the footer lead form is the
+last action.
 
 ## Images
 

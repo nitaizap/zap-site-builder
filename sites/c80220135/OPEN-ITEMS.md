@@ -101,34 +101,32 @@ Two things to know:
 - no score or review count is written anywhere in the copy, and none ever should be: the widget draws its
   own, and the validator blocks typed ratings.
 
-## 5 · All four marque logos are now shown (resolved), with one sign-off outstanding
+## 5 · All four marque logos are shown, and the Mazda one was wrong until 04/11 (resolved)
 
 The spec asks for the marque logos together, at a uniform size and equal spacing, in the order
-**מאזדה | פורד | דונגפנג | וויה** reading left to right. That is now what the band does, on desktop and on
-phones, with the המחלקה הראשונה למסחריות badge after them.
+**מאזדה | פורד | דונגפנג | וויה** reading left to right. That is what the band does, on desktop and on phones,
+with the המחלקה הראשונה למסחריות badge beside them.
 
-Mazda and Ford came from the client's own files. דונגפנג and וויה were not in them and were taken from
-**dongfeng.co.il**, the Israeli importer's own site (both it and voyah.co.il carry Delek Motors' logo, and the
-spec names דלק מוטורס as the importer that authorises this centre). Full provenance is in `IMAGE-SOURCES.md`.
+**The correction.** The spec sheet attaches its own logo files, and the `brief.md` text export silently drops
+embedded images, so the first pass worked from the text alone. Opening
+`brief/איפיון אתר - מרכז שירות יד מרדכי - 80220135_1.docx` as a zip shows three PNGs in `word/media/`: the
+current **Mazda** lockup, **Dongfeng** and **Voyah**, sitting in the document right under the line
+"להשתמש רק בלוגו המעודכן של מאזדה (המצורף), ולא בלוגו הישן". The band had been built with
+`Logo_FullColor_Horizontal.png` from the `F:` folder, which is the **old** chrome-and-gradient Mazda
+wordmark — the exact logo that line forbids. All three marks now come from the client's own attachments;
+Ford still comes from the existing site, which is what the spec asks for. The previous open question, "which
+file is the updated Mazda logo", is answered: neither of the `F:` candidates, it was attached to the spec.
 
-All five were re-cut onto one shared canvas and scaled to **equal optical area** rather than a shared bounding
-box: the source files run from 7:1 (Dongfeng) to 1.8:1 (Voyah), so fitting them into one box made the wide
-wordmarks look tiny next to the round marks.
+**Sign-off, no longer outstanding in substance.** Marque logos are trademarks, so the question is permitted
+use rather than a photographer's copyright. An authorised centre showing its own marques is ordinary
+practice, the client's existing site already does it for Mazda and Ford, and the client supplied Dongfeng and
+Voyah itself inside the spec sheet, which is the client instructing the build to use them. Worth a line in
+the handover, not a blocker.
 
-**Outstanding:** marque logos are trademarks, so the question is permitted use rather than a photographer's
-copyright. An authorised centre showing its own marques is ordinary practice and the client's existing site
-already does it for Mazda and Ford, but the importer's sign-off on דונגפנג and וויה is worth having before
-launch.
-
-**A build warning that is a false positive, left as is:** `zs build` prints
-`images 'logo-mazda' and 'logo-voyah' look like the same shot` and the same for `logo-ford` /
-`logo-first-dept`. The near-duplicate detector is comparing five marque marks that were deliberately re-cut
-onto one shared 900×300 transparent canvas, so they share a shape and a lot of empty space. They are five
-different files (different checksums) showing five different marques. Nothing to fix; do not "keep one".
-
-Also still unresolved, and minor: which file is "the updated Mazda logo (המצורף)". Three candidates sit in
-`assets/client` and they show the same artwork; `Logo_FullColor_Horizontal.png` was used, being the
-highest-resolution horizontal one.
+**A build warning that is a false positive, left as is:** `zs build` may print
+`images 'logo-x' and 'logo-y' look like the same shot`. The near-duplicate detector is comparing marque marks
+that are mostly empty transparent canvas, so they share a shape and a lot of blank space. They are different
+files showing different marques. Nothing to fix; do not "keep one".
 
 ## 6 · No blog, because the spec does not ask for one
 
@@ -330,3 +328,63 @@ this one has to move again, and the lever to reach for then is the lead band's g
 cheapest remaining lever if it tightens again is the lead band's ground (moving it off `stack/light` is worth
 about four points on its own). Turning the top strip off is **not** a lever here: it makes this site more
 like `c80386843`, not less (item 14).
+
+## 18 · Engine bug, written up and not fixed: the prose column is never centred
+
+`wp/theme/zap-base/assets/main.css:317` sets `body .e-con.zs-prose { max-width: 760px; }` with no
+`margin-inline: auto`. Only `.zs-p-signature` adds one (`main.css:738`). Every other template therefore pins
+the 760px column to the start edge of its 1200px container, which in an RTL site means the text sits hard
+against the right and leaves roughly **440px of dead ground on the left**. Measured on this site at 1440 on
+04/11: the prose container on `/מכונאות-רכב/` has `left: 560px, width: 760px` inside a 1200px inner.
+
+It is on every page the engine builds with a `prose` section, not just this client, which is exactly why it
+was **not** fixed here: theme and engine are out of scope for a client session and other clients were being
+built in parallel. This client works around it in its own `design.custom_css`
+(`body .e-con.zs-prose { max-width: 820px; margin-inline: auto; }`). The real fix is one declaration in
+`main.css:317`, and it should go in on its own branch with a look at every template that uses `zs-prose`.
+
+## 19 · The brief's `.docx` carries three images the `brief.md` export dropped (resolved, see item 5)
+
+Recording the mechanism, because it is not specific to this client: `brief/brief.md` is a text export and it
+drops embedded images **without leaving a marker**. This brief's `.docx` holds three PNGs in `word/media/`
+(Mazda, Dongfeng, Voyah), and one of them contradicted what the site had been built with. Any future brief
+should be opened as a zip and `word/media/` listed before the text export is trusted. Checked here on
+04/11: there is **no business logo** among them, so item 3's finding stands on the file itself.
+
+## 20 · Plugin bug, written up and not fixed: the map widget renders nothing, so the brief's מפה is missing
+
+The spec's `צרו קשר` line asks for "טופס לידים, טלפון, כתובת ומפה". The page is built with
+`contact` + `map: true`, the engine emits the `zap-map` part widget, and on the pushed site that widget
+produces **an empty `<div class="zs-contact__map">`**: no iframe, height 0. Verified on
+https://80220135yadmordechai.ussl.co.il/צרו-קשר/ on 04/11 (`document.querySelectorAll('iframe')` is empty and
+the container measures 572x0), and in the page's served HTML.
+
+**Cause, and it is not this site.** `wp/plugin/zap-site/inc/elementor-widgets.php`, `render()`, builds its
+shortcode attributes from every control in the widget's spec and casts each to a string:
+
+    $atts[$key] = ... : (string) $v;
+
+so a blank `q` is passed as `q=""` rather than omitted. `inc/shortcodes.php`, `zap_map`, then does
+
+    $a = shortcode_atts(['q' => zap_opt('business.address')], $atts);
+    if (!$a['q']) return '';
+
+`shortcode_atts` treats the explicit `''` as a supplied value, so the default never applies and the shortcode
+returns an empty string. The control's own label says "ריק = כתובת העסק", which is precisely the behaviour
+the code prevents. `business.address` is set on this site (`קיבוץ יד מרדכי`), so the fallback would work.
+
+**Every site that uses the map widget without someone typing an address into Elementor by hand has an
+invisible map.** The legacy `[zap_map]` shortcode is unaffected, which is why older sites still show one.
+
+**Not fixed here.** The plugin is out of scope for a client session, other clients were being built in
+parallel, and the plugin is already flagged for separate SMTP work. The one-line fix is to skip empty
+optional values when building `$atts` (or to use `array_filter` with `strlen`), and it belongs on its own
+branch with a look at every part widget that has a text control.
+
+**What this site does instead:** `design.custom_css` hides a `.zs-contact__map` that has no element
+children (`:empty` does not match it: Elementor leaves whitespace inside the container) and sets the contact
+row to one centred column, so the page reads as a tidy single column instead of showing 570px of blank
+ground beside the form. Making the collapse conditional with `:has()` on the row was tried and dropped:
+`:has()` may not be nested inside `:has()`, so the selector was invalid and never matched. One column is
+the right layout either way, because when the plugin is fixed the map appears full width under the contact
+details, which is how a contact page reads anyway. Nothing needs editing on this client at that point.

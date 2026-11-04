@@ -65,7 +65,7 @@ Nothing below rests on "it is in site.json".
 | מערכות מיזוג אוויר | ✅ | own page, same pattern |
 | צמיגים | ✅ | own page, same pattern |
 | מכונאות רכב | ✅ | own page, same pattern |
-| צרו קשר: טופס לידים, טלפון, כתובת ומפה | ✅ | `contact` section with `map: true`, plus the NAP block |
+| צרו קשר: טופס לידים, טלפון, כתובת ומפה | ⚠️ | form, phone and address ✅ (`contact` section + NAP block). **The map is not there.** `map: true` is set and the engine emits the widget, but the `zap-site` plugin's part widget passes a blank `q` to the `zap_map` shortcode, which then returns nothing, so the container renders empty on every page build. Confirmed on the live staging page on 04/11, cause traced, written up and deliberately not fixed from a client session (OPEN-ITEMS 20). The empty column is now collapsed so the page reads cleanly, and the map returns by itself once the plugin is fixed |
 | אזור שירותים, קוביות לכל שירות עם קישור לעמוד | ✅ | `cards` section, six cards, each linking its page, one meaningful icon each |
 | באנר מבצע חלקים מקוריים | ✅ | `cta` `photo` band, the spec's wording including "רכבים מעל 3 שנים, ט.ל.ח" |
 | אזור חוות דעת לקוחות | ✅ | `reviews` section on the home page, Dapei Zahav customer id 80220135, verified against the API payload (its links point at this client's own listing). Renders on the pushed site only, so it is empty in the local screenshots (OPEN-ITEMS 4) |
@@ -74,21 +74,21 @@ Nothing below rests on "it is in site.json".
 | כפתורי חיוג ווואטסאפ צפים | ✅ | seen on the rendered pages: floating WhatsApp button on desktop, call + WhatsApp bar on phones, on every page |
 | מבצע חלקים מקוריים (text) | ✅ | the band plus a home FAQ answer |
 | מגוון רחב של שירותים במקום אחד | ✅ | `split` `frame`, spec text, workshop photo |
-| למה אנחנו, הלקוח בראש סדר העדיפויות | ✅ | `split` `card` + `features` `checks` + `steps` `stack`, all from the spec's own sentences |
+| למה אנחנו, הלקוח בראש סדר העדיפויות | ✅ | `split` + `steps` `cards`, from the spec's own sentences. The `features` `checks` strip was removed on 04/11: all six of its labels were already said by the `steps` block directly above it or by the hero bullets |
 | מאמרים | ⚠️ | empty on the spec, so nothing was promised here. Three posts were nevertheless written from the spec's own material, because `zs seo` fails a site with no blog category (OPEN-ITEMS 6 and 11) |
 
 ## עיצוב ומותג
 
 | line | status | note |
 |---|---|---|
-| לוגו: אין לוגו לעסק | ⏳ | no header or footer logo: the name renders as text. The favicon is a stand-in brand tile so the base install's icon cannot ship. Nothing drawn or traced from the sign (OPEN-ITEMS 3) |
-| לוגואים בגודל אחיד ובמרווחים שווים | ✅ | measured on the rendered page: five chips at exactly 160 px wide, 174 px apart, one row. Each logo was re-cut onto a shared canvas and scaled to equal optical area, because the sources run from 7:1 to 1.8:1 |
-| סדר משמאל לימין: מאזדה, פורד, דונגפנג, וויה | ✅ | measured on the rendered page: מאזדה, פורד, דונגפנג, וויה, then the badge, left to right at 1440 px. On phones the column is reversed so it reads the same top down |
-| רק הלוגו המעודכן של מאזדה, לא הישן | ⚠️ | `Logo_FullColor_Horizontal.png` used. Three files show the same artwork and the spec does not say which is "המצורף" (OPEN-ITEMS 5) |
+| לוגו: אין לוגו לעסק | ⏳ | confirmed against the `.docx` on 04/11: its three embedded images are marque logos, there is no business mark. No header or footer logo: the name renders as text. The favicon is a stand-in brand tile so the base install's icon cannot ship. Nothing drawn or traced from the sign (OPEN-ITEMS 3) |
+| לוגואים בגודל אחיד ובמרווחים שווים | ✅ | five chips on one grid: the badge beside the text, the four marques in a 2x2. All five chips are now the same height (124 px desktop, 92 px phone) and share one gap, and each mark is fitted to its chip, so none floats in padding |
+| סדר משמאל לימין: מאזדה, פורד, דונגפנג, וויה | ✅ | the four marques sit in a 2x2 that reads מאזדה, פורד on the top row and דונגפנג, וויה on the second, left to right, at 1440 px and on phones. The importer's המחלקה הראשונה badge is not one of the four and sits beside the text rather than in the sequence |
+| רק הלוגו המעודכן של מאזדה, לא הישן | ✅ | **corrected 04/11.** "המצורף" is literally attached: the spec's `.docx` carries the updated Mazda lockup in `word/media/`, which the `brief.md` text export drops. The band had been using the old chrome-gradient wordmark from the `F:` folder, the one this line forbids. Now the client's own attachment (OPEN-ITEMS 5, 19) |
 | לוגו פורד מהאתר הקיים | ✅ | the existing site was read; its only Ford artwork is a manufacturer stock composite of unclear licence, so `לוגו-פורד-ללא-רקע.png` from the client's own files was used instead (IMAGE-SOURCES.md) |
 | צבעי מותג | ➖ | none given |
 | יד חופשית למעצב, צבעים לפי החלטת המעצב | ✅ | petrol `#14525e` + bronze `#8a4b0a`, taken from the building as it looks in the 2022 photos. Reasoning and measured contrast in NOTES.md |
-| אתרים שאהבתם | ➖ | empty on the spec |
+| אתרים שאהבתם | ➖ | empty on the spec. Confirmed against the `.docx` itself on 04/11, not only the text export: the row carries no text and no link |
 
 ## תמונות
 
