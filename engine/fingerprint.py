@@ -19,6 +19,7 @@ JS = r"""() => {
   const firstR = (sel) => { const e = document.querySelector(sel); return e ? px(getComputedStyle(e).borderTopLeftRadius) : -1; };
   const bucket = (v, cuts) => v < 0 ? 'n' : String(cuts.filter(c => v >= c).length);
   const h2 = document.querySelector('.zs-sec:not(.zs-hero) .zs-sec__title .elementor-heading-title');
+  // Kept for the button's SHAPE only (page.btn_r). Its colour is not the brand colour: see brandColour below.
   const btn = document.querySelector('.zs-sec:not(.zs-hero) .zs-b-primary .elementor-button') || document.querySelector('.zs-sec .zs-b .elementor-button');
   const hdr = document.querySelector('.zs-header');
   const secEls = [...document.querySelectorAll('.zs-sec:not(.zs-hero)')];
@@ -33,7 +34,31 @@ JS = r"""() => {
   const icon = document.querySelector('.zs-feature__icon .elementor-icon, .zs-feature__icon .zs-svg, .zs-card__icon .elementor-icon');
   const faqItem = document.querySelector('.zs-faq__list .elementor-toggle-item, .zs-faq .elementor-accordion-item, .zs-faq details');
   const chev = document.querySelector('.zs-faq .elementor-accordion-icon, .zs-faq .e-n-accordion-item-title-icon, .zs-faq summary::after');
-  out.palette = { button: rgb(btn, 'backgroundColor'), footer: rgb(foot, 'backgroundColor'), header: rgb(hdr, 'backgroundColor'),
+  // The brand colour carries 60% of the palette score, so sampling the wrong button poisons the whole measure.
+  // Taking "the first .zs-b-primary outside the hero" did exactly that: on a `zs-bg-primary` band the theme
+  // repaints primary buttons in the accent (main.css:166) or, on an `accent-low` palette, in plain white
+  // (main.css:1493), and the old fallback selector `.zs-sec .zs-b .elementor-button` would happily return a
+  // white `.zs-b-tel`. One client's taxi yellow was measured as white and scored .785 against another client's
+  // near-white: 49% alike between a yellow-and-green site and a burnt-orange-and-slate-blue one.
+  // So: sample across the primary buttons, skip every one standing on a colour band or a dark ground (where the
+  // theme has inverted it) and every near-white result, and fall back to the theme's own `--c-primary` token
+  // rather than to whatever button happens to be first.
+  const varColour = (name) => { const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    if (!v) return null; const d = document.createElement('span'); d.style.color = ''; d.style.color = v;
+    if (!d.style.color) return null; document.body.appendChild(d); const c = getComputedStyle(d).color; d.remove();
+    const m = (c || '').match(/[\d.]+/g); return m ? m.slice(0, 3).map(Number) : null; };
+  const brandColour = () => {
+    for (const e of document.querySelectorAll('.zs-sec:not(.zs-hero) .zs-b-primary .elementor-button')) {
+      const g = ground(e);
+      if (g.sat > 60 || g.l < .35) continue;        // a colour band or a dark band: the button is inverted here
+      const c = rgb(e, 'backgroundColor');
+      if (!c) continue;
+      if ((c[0] + c[1] + c[2]) / 765 > .93) continue;   // white-on-colour: an inversion we did not catch above
+      return c;
+    }
+    return varColour('--c-primary');
+  };
+  out.palette = { button: brandColour(), footer: rgb(foot, 'backgroundColor'), header: rgb(hdr, 'backgroundColor'),
                   ink: rgb(h2, 'color') };
   out.chrome = {
     topbar: vis('.zs-topbar'),

@@ -181,9 +181,37 @@ function zs_tokens_css() {
     }
     // Per-site escape hatch for the rare client-specific tweak; the shared theme stays untouched.
     if (!empty($d['custom_css']) && is_string($d['custom_css'])) {
-        $css .= "\n" . wp_strip_all_tags($d['custom_css']);
+        $css .= "\n" . zs_sanitize_css($d['custom_css']);
     }
     return $css;
+}
+
+/**
+ * Sanitise a site's `design.custom_css`.
+ *
+ * This used to be `wp_strip_all_tags`, which deletes everything from any `<` to the next `>`. CSS legitimately
+ * contains both: a comment such as "<=760px", a `content: "<"`, a selector written with a stray angle bracket.
+ * The strip therefore ate the rest of that rule and, because the next `>` was usually inside a later rule, the
+ * rules after it as well. Nothing said so: `zs build` printed nothing, `zs qa` scored 0 errors, and a hero that
+ * had been capped in its own CSS silently went back to 863px. One agent lost a round to it.
+ *
+ * This output is printed inside a `<style>` element, so the only real escape is that element's own end tag; the
+ * rest of what can execute from inside CSS is `expression()` and a javascript:/vbscript: URL. Those are what
+ * gets removed. Angle brackets are left alone. Anything removed is logged and marked in the CSS, because what
+ * this bug cost was its silence (`zs build` also refuses these at build time, engine/validate.py).
+ */
+function zs_sanitize_css($css) {
+    $css = (string) $css;
+    // replacements stay syntactically inert so what is left is still parseable CSS
+    $out = preg_replace('#<\s*/\s*style#i', 'zs-removed-style-end-tag', $css);
+    $out = preg_replace('#expression\s*\(#i', 'zs-removed-expression(', $out);
+    $out = preg_replace('#(url\s*\(\s*["\']?\s*)(?:javascript|vbscript)\s*:#i', '$1about:blank#removed-', $out);
+    if ($out !== $css) {
+        $msg = 'zap: unsafe construct(s) removed from design.custom_css (style end tag / expression() / script URL)';
+        error_log($msg);
+        $out = "/* " . $msg . " */\n" . $out;
+    }
+    return $out;
 }
 
 function zs_lum($hex) {
