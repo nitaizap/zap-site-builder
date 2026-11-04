@@ -271,3 +271,23 @@ unchanged. All of it is still inside `@media (min-width:1025px)`.
 **Process note.** Three rounds were spent adjusting a layout against my own taste while the user
 kept saying it was wrong. Offering three concrete shapes and letting them choose settled it in one.
 When a design is rejected twice, stop tuning and present alternatives.
+
+### Reverted to the original layout with even spacing
+
+The brand-row and two-column-menu experiments are gone. The style block was rebuilt from scratch
+rather than patched again, so what ships is one readable set of rules instead of four layers of
+overrides.
+
+What remains is the original shape plus the genuine fixes:
+
+- **Three equal 368px columns**, single-list menu, all three starting at the same y.
+- **One rhythm**: every list item 12px apart, in both the menu and the contact column; headings
+  16px above their list; 48px gutters.
+- **One alignment**: all three columns `text-align: start`, the logo and group mark with their auto
+  margins removed. This was the actual bug — the brand column had been centred between two
+  start-aligned ones.
+- **The `tel:` bidi fix**: the anchor stays RTL so the flex item sits on the start edge, and only
+  the digits are LTR.
+
+Column heights differ (160 / 325 / 165) because a seven-item menu is simply taller than three
+contact lines. That is inherent to the layout and is what was asked for.
