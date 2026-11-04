@@ -8,4 +8,5 @@ the user corrected.
 
 | site | industry | package | handed over | entry |
 |---|---|---|---|---|
-| c80220135 מרכז שירות יד מרדכי | car service centre | standard | not yet (privacy parked) | [gallery/c80220135](c80220135/README.md) |
+| [מוניות כפר סבא](c2910210/README.md) | taxi | standard | staging 03/11/2026 | yellow + green flat fields, phone-first |
+| [מרכז שירות יד מרדכי](c80220135/README.md) | car service centre | standard | staging 04/11/2026 | privacy parked |
