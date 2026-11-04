@@ -84,3 +84,30 @@ record on the site. **Only the recipient can confirm arrival.**
 Two test e-mails were sent to `shimon@ashrh.co.il`, both clearly marked as tests
 ("בדיקת מערכת - Zap" and "בדיקה 2 - Zap"). Only the second is stored, since the first
 predates the save-to-database fix.
+
+## Mail on this site — what is actually configured, and what was verified
+
+`WP Mail SMTP` on `thewhite-villa.co.il` is set to:
+
+| setting | value |
+|---|---|
+| mailer | `smtp` |
+| host | `relay.d.co.il` |
+| port | `25` |
+| encryption | **`tls`** |
+| from | `zapsites@d.co.il` |
+
+That is **the same relay `zap-site` hardcodes**, with the same sender — but with TLS **on**,
+where `inc/leads.php` forces it off and comments "relay offers no TLS; forcing it fails every
+send". On a site where both run, the two configure the same host and port with opposite
+transport security, and whichever hook wins decides whether mail sends at all. That is a
+sharper description of the reported "בעיות SMTP" than an ordering race alone.
+
+**Verified 04/11/2026:** a WP Mail SMTP test message sent from this site to the operator's own
+address, over `relay.d.co.il:25` with `tls`, was **received**. So the relay does offer
+STARTTLS and mail over it is delivered. The plugin comment is wrong, or long out of date, and
+our hardcoded `SMTPSecure=''` / `SMTPAutoTLS=false` has been downgrading client lead mail to
+an unencrypted hop. Passed to the open mail PR (#85).
+
+The sender misalignment (`zapsites@d.co.il` on a client domain) also lives in **WP Mail SMTP's
+own settings** here, not only in our plugin, so fixing the plugin's sender does not reach it.
