@@ -110,8 +110,22 @@ MEASURE_JS = r"""
   else if (fams.size === 3) W(`3 font families: ${[...fams].join(', ')} (want 2: headings + body)`);
   // Icons on conversion buttons are a choice, not a rule, so this fires once per page and only when the page
   // uses none at all - the case where nobody decided, rather than the case where somebody decided no.
+  // An icon is not always an element: the theme draws some with a ::before glyph or a background image,
+  // and counting only child nodes reported "no icons" on a site whose buttons all had one (c80362823, 04/11).
+  const drawsIcon = el => {
+    for (const pseudo of ['::before', '::after']) {
+      const s = getComputedStyle(el, pseudo);
+      if (!s) continue;
+      const c = s.content;
+      if (c && c !== 'none' && c !== 'normal' && c !== '""' && c !== "''") return true;
+      if (s.backgroundImage && s.backgroundImage !== 'none') return true;
+    }
+    return false;
+  };
+  const hasIcon = e => !!e.querySelector('svg, i, .elementor-button-icon') || drawsIcon(e)
+    || [...e.children].some(drawsIcon);
   const btns = q('.elementor-button').filter(vis);
-  if (btns.length >= 3 && !btns.some(e => e.querySelector('svg, i, .elementor-button-icon')))
+  if (btns.length >= 3 && !btns.some(hasIcon))
     W(`no button on this page carries an icon (${btns.length} buttons)`);
   if (window.innerWidth < 768) {
     const docBox = document.documentElement.getBoundingClientRect();
