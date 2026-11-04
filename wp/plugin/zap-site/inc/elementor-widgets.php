@@ -57,7 +57,16 @@ add_action('elementor/widgets/register', function ($wm) {
             $atts = [];
             foreach (array_keys(static::spec()[4] ?? []) as $key) {
                 $v = $this->get_settings_for_display($key);
-                $atts[$key] = static::spec()[4][$key][0] === 'switch' ? ($v === 'yes' ? 'yes' : 'no') : (string) $v;
+                if (static::spec()[4][$key][0] === 'switch') {
+                    $atts[$key] = $v === 'yes' ? 'yes' : 'no';
+                    continue;
+                }
+                $v = is_scalar($v) ? trim((string) $v) : '';
+                // An empty control means "use the default", and the defaults live in the shortcode
+                // (map: the business address; form: id "main" and the site's button text; posts: the
+                // count). shortcode_atts() treats an explicitly passed '' as a real value and would
+                // defeat every one of them, so a blank control is simply not passed.
+                if ($v !== '') $atts[$key] = $v;
             }
             $out = (string) call_user_func($cb, $atts, '', $tag);
             if ($out !== '') echo '<div class="zs-part zs-part--' . esc_attr(static::spec()[0]) . '">' . $out . '</div>';
