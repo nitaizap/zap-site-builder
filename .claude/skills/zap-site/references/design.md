@@ -123,7 +123,8 @@ cut-out); a type-led hero; one unusual grid (`tiles`, `stagger`, `mosaic`); one 
 of animation everywhere.
 
 **6 · Boldness never touches the heading scale.** One H1, H2 and H3 size per site; impact comes from weight,
-composition and the bold element.
+composition and the bold element. `zs qa` prints the sizes it found in the `type scale`
+column of `QA-REPORT.md`, and warns when one level renders at three or more.
 
 **7 · Density and imagery.** 9–13 sections on the home page; real images (client, old site, GMB, AI) in every
 image slot, consistent in light and colour (Weave prompt: one look per site, brand colours as subtle accents,
