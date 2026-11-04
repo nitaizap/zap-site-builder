@@ -291,3 +291,44 @@ What remains is the original shape plus the genuine fixes:
 
 Column heights differ (160 / 325 / 165) because a seven-item menu is simply taller than three
 contact lines. That is inherent to the layout and is what was asked for.
+
+## The plugin is active after all — and it was installed the whole time
+
+On 04/11, after PR #85 (mail stand-down) and PR #88 (map, and ten other shared fixes) merged, the
+plugin was built from `main` and uploaded through wp-admin. WordPress answered:
+
+> הספרייה כבר קיימת … תוסף זה כבר מותקן
+
+**`zap-site` had been installed on this site all along — it was simply never activated.** That is
+why every `zap-*` widget rendered as nothing and why the dynamic tags fell back to the literal
+`__ZS_TITLE__`. The installed copy was the old code, carrying both the SMTP collision and the map
+bug, so it was replaced with the build from `main` and then activated.
+
+### What the mail fix does here, in its own words
+
+The plugin's settings screen now reads:
+
+> **מי מנהל את הדואר באתר: WP Mail SMTP**
+> מערכת דואר אחרת מנהלת את השליחה באתר: WP Mail SMTP. ממסר זאפ מושבת אוטומטית והשליחה נשארת שלה.
+> תוסף הדואר שמותקן באתר מנצח תמיד. זאפ לא נוגעת בהגדרות השליחה שלו.
+
+So the relay that prompted "עדיף שלא ישים אותו קלוד קוד" disables itself here, and the sender is
+`no-reply@thewhite-villa.co.il` — the site's own domain, for SPF/DMARC — with Reply-To going back
+to the enquirer.
+
+### What activating regained
+
+Schema the native rebuild had lost, now emitted on the home page: **`LodgingBusiness`, `FAQPage`,
+`Answer`, `BreadcrumbList`, `ListItem`, `Organization`, `ImageObject`, `EntryPoint`**. Plus the
+hardening and reviews the plugin carries.
+
+**Breadcrumbs are back** on the service template, the blog archive, the single post and the contact
+page — the four places they had to be dropped. Verified rendering live on three of them.
+
+Everything else stays native: the header, the footer, the phone menu, the active-nav marking and
+the Elementor Pro form are unchanged, because they work and the user has signed them off.
+
+### Verified after activation
+
+All pages 200, correct `<h1>` on each, **no fatal errors**, and the public site is unchanged apart
+from the additions above.
