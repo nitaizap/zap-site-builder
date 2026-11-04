@@ -331,6 +331,19 @@ def validate(d, site_dir, _dir=None):
     for where, dz in [("design", d.get("design", {}))] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
         if dz.get("kit") and dz["kit"] not in KITS:
             E(f"{where}.kit '{dz['kit']}' is not a style kit: {', '.join(KITS)}")
+    # custom_css is printed inside a <style> element. The theme (zs_sanitize_css) removes the few constructs that
+    # can escape it, but it removes them silently at render time, which is how the previous sanitiser (a blanket
+    # wp_strip_all_tags, which ate everything between any `<` and the next `>`) cost an agent a whole round.
+    # Refuse them here instead, where the build can say so: nothing should reach the theme that it has to strip.
+    for where, dz in [("design", d.get("design", {}))] + [(f"directions.{k}", v) for k, v in (d.get("directions") or {}).items() if isinstance(v, dict)]:
+        css = dz.get("custom_css")
+        if not isinstance(css, str):
+            continue
+        for label, rx in (("a </style> end tag", r"<\s*/\s*style"), ("expression()", r"expression\s*\("),
+                          ("a javascript:/vbscript: URL", r"url\s*\(\s*[\"']?\s*(?:javascript|vbscript)\s*:")):
+            if re.search(rx, css, re.I):
+                E(f"{where}.custom_css contains {label}: the theme strips it, so the rule would not do what it says. "
+                  f"Remove it. (Plain '<' and '>' in CSS, in a comment or a selector, are fine and are kept.)")
     # Gate directions with their own home page: the same checks as the real home, on a copy that uses it.
     if _dir is None:
         seen = set(out)
