@@ -94,3 +94,30 @@ below is a decision made on the best safe default, or something that needs a per
       tell of a generated site; a category grid is not a sequence. Left alone (theme-wide).
     - The carousel counter renders "2 / 8" as "8 / 2" in an RTL page: a bidi issue in the counter markup,
       visible on every RTL site that uses a carousel. Left alone (theme-wide).
+
+## Added in the second feedback round, 04/11/2026
+
+19. **The footer's group labels are menu items without a link.** The theme renders the footer menu with
+    `depth => 1` (`wp/theme/zap-base/functions.php:353`), so a nested footer menu loses its children
+    completely: built that way, the footer showed four group names and none of the 13 categories. The
+    grouping is therefore a flat menu of 17 items in which four carry no `href`; this client's CSS styles
+    "a link-less item" as a group label, which is robust (it keys off what the item is, not its position).
+    **A `depth => 2` footer menu in the theme would let this be a real nested list.** Not changed here:
+    shared code, and another agent is in `wp/theme` right now.
+
+20. **The footer logo was the white one on a light grey footer.** `engine/sections.py`
+    `footer_template_logo_key()` picks the light logo unless `design.tone == "light"`. It asks the tone but
+    not the kit, and the `gallery` kit paints the footer from `--c-bg`: here that is
+    `rgb(231, 234, 236)`, so a white logo sat invisibly on light grey (measured contrast 1.17:1).
+    Worked around by pointing `logo_light` at `assets/logo-footer.png`, which is the dark lockup
+    (contrast now 17.2:1). **The generic fix is for that function to ask whether the footer ground is
+    light, not only whether the tone is.** Not changed here: shared code.
+
+21. **The home hero's row had no column gap at all.** Measured on the live page: the photograph ended at
+    x 683 and the text block began at x 683 at 1440, and the same at 1280 and at 1024. Fixed in this
+    client's CSS (`clamp(36px, 3.4vw, 72px)`), which is where the car service site's identical defect was
+    fixed too. **The gap belongs in the theme's hero container, where it would fix every `split` hero.**
+22. **Between 768px and 1024px the hero was 1238px to 1401px tall**, because it stacks there but keeps the
+    4:4.6 portrait photo. Same root cause as `hero-space.md`. Capped in this client's CSS (16:9 in that
+    band): 826px at 768, 913px at 900.
+

@@ -163,3 +163,46 @@ what "יצרן ויבואן" and "הפצה בינלאומית" mean on this site
 the section order (they carry the 38% pool number); the `01 /` counters on overlay cards and the RTL carousel
 counter (theme-wide, written up in OPEN-ITEMS 18); the `zap-site` plugin and anything to do with mail.
 
+## Second feedback round, 04/11/2026
+
+Three notes from the user on the live site, each measured before and after rather than eyeballed.
+
+**1. The hero photo and the hero text were touching.** Not nearly: the theme's hero row has a column gap
+of `0px`, so at 1440 the photograph ended at x 683 and the text began at x 683. The same at 1280 and at
+1024. A gap of `clamp(36px, 3.4vw, 72px)` now sits between them, in this client's own CSS.
+
+| width | gap before | gap after | hero height before → after |
+|---|---|---|---|
+| 1440 | **0 px** | 49 px | 558 → 539 px |
+| 1280 | **0 px** | 44 px | 551 → 534 px |
+| 1024 | **0 px** | 36 px | 670 → 483 px |
+| 390 (stacked) | 14 px row gap, nothing to fix | 14 px | 526 → 530 px |
+
+Checking 1024 turned up a second fault in the same family: from 768 to 1024 the hero stacks but keeps the
+4:4.6 portrait photo, so it ran **1238 px (768), 1301 px (820), 1401 px (900)** tall. A 16:9 cap in that
+band brings it to 826, 859 and 913 px. Both are theme-level defects and both are written up
+(OPEN-ITEMS 21, 22); the theme was not touched.
+
+**2. The footer logo was the white version on a light footer.** The footer ground is
+`rgb(231, 234, 236)`: this kit paints the footer from `--c-bg`. It was serving `logo-light.webp`, white
+on light grey, measured contrast **1.17:1**. It now serves `assets/logo-footer.png`, the same dark
+lockup as the header, measured contrast **17.2:1** against that ground, which is the same register as the
+`zap-group-blue.svg` beside it. The engine's own rule only asks `design.tone`, never the kit
+(OPEN-ITEMS 20).
+
+**3. The footer's 13 categories are grouped, in the client's own words.**
+
+| group | categories | where the heading comes from |
+|---|---|---|
+| **מראות חיצוניות לרכב** | עזר לכיסוי שטחים מתים · לרכבים פרטיים · למשאיות · לאוטובוסים · לאופנועים · לרכבי אספנות | the brief: "מראות **חיצוניות** ופנימיות בכל גודל ובכל כמות... לכל סוגי הרכב" |
+| **מראות פנים ואביזרים** | פנימיות · לתינוק · זרועות למראות | the brief's "מראות פנימיות", and the company's own legal name, "ייצור מראות **ואביזרים** לרכב" |
+| **מראות לכל מטרה** | קמורות לאיתור גניבות · בטיחות · לאיפור | the brief's closing line, "לפתרונות מושלמים לכל רכב **ולכל מטרה**". These are the three that are not fitted to a vehicle: shops, junctions and car parks; security scanning; home and barber |
+| **פנסים** | פנסים לכל סוגי הרכב | lamps, not mirrors. The brief asks for them to be emphasised, and a heading of their own does that |
+
+Every one of the 13 keeps its wording, its link and its place; nothing was renamed. The column title
+changed from "המראות שלנו" to "הקטלוג שלנו", because the column no longer holds only mirrors.
+
+The grouping is a flat menu of 17 items in which the 4 group labels carry no link, not a nested menu:
+the theme renders the footer menu at `depth => 1`, so a nested one loses all 13 children (checked, it
+did). The CSS keys off "an item with no link", not off positions, so it survives an edit to the menu.
+
