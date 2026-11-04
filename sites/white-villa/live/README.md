@@ -57,3 +57,30 @@ showed 134px of 439px and clipped a word mid-way, so it was replaced.
 **No lead has actually been submitted through the new form.** It renders with ten fields
 and delivery is configured, but whether mail leaves the server is untested — and mail is
 exactly the thing that is known to be fragile on this site.
+
+## Later in the same session
+
+**The zap group logo is back.** It was first restored as an `image` widget pointing at
+`logo-zap-group-1.svg` (media id 755), but that file's wordmark is `#011c32` — near-black on
+the dark footer, so only the blue mark read. SVG upload is refused on this site
+(`rest_upload_sideload_error`), so a recoloured copy could not be added to the media library.
+The widget is now an `html` widget holding the **SVG inline**, with `#011c32` swapped for
+`#ffffff` at build time. The blue mark (`#052b7a`) is untouched, as asked. It links to
+zapgroup.co.il with `rel="noopener nofollow"`.
+
+**The form now stores its leads.** It was first configured with
+`submit_actions: ["email"]` only, which meant a lead existed solely as an outbound e-mail:
+if mail failed, it was gone. A test submission confirmed it — nothing was recorded. It is now
+`["email","save-to-database"]`, matching the "saved + emailed" standard, and a second test
+appears as submission id 2 under "לידים — הוילה הלבנה ינוב" in איסוף לידים.
+
+### What the two test submissions prove, and what they do not
+
+Both reported `הטופס נשלח בהצלחה`, and Elementor records the e-mail action as succeeded.
+That means `wp_mail()` accepted the message, **not** that it reached the inbox. WP Mail SMTP's
+e-mail log is a Pro feature and is not available here, so there is no independent delivery
+record on the site. **Only the recipient can confirm arrival.**
+
+Two test e-mails were sent to `shimon@ashrh.co.il`, both clearly marked as tests
+("בדיקת מערכת - Zap" and "בדיקה 2 - Zap"). Only the second is stored, since the first
+predates the save-to-database fix.
