@@ -98,3 +98,18 @@ needed from the client" above is unchanged and still correct.
 the engine was generating a white silhouette of this same badge for the footer and the kit paints
 the footer white, so the footer's logo was invisible. Naming the real file makes the footer show
 the badge already recorded above. Nothing about the image's source changes.
+
+### `sparks.webp` gains a second use, 04/11/2026
+
+`assets/sparks.webp` (already in the table above: AI, Figma Weave, GPT Image 2.5, 2026-11-02, 2 credits) is
+now also the still on the home page's `overlay` band, the band held for the client's promo video. No new
+image and no new source: the same file, used twice. It shows a cut-off saw throwing sparks, that is
+**process, not a finished product and not the client's premises**, so nothing on that band claims anything
+about this business, and the footer's AI line covers it as it covers the rest. No credits were spent in
+this pass; the Weave total stays **16 of 100**.
+
+### The footer logo workaround was retired, 04/11/2026
+
+The `logo_light` entry added earlier the same day is gone from `site.json`. The theme now decides the
+footer logo from whether the footer ground is light, so it picks the real badge on its own. Nothing about
+any image's source changes, and no file was added or removed.

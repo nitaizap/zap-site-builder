@@ -197,3 +197,58 @@ Item 4's remaining part, written so it can be sent as it stands:
 That is the whole of what is missing on the logo: provenance was settled on 04/11 (the same badge
 is embedded in the brief's own `.docx`), and 140x140 is the largest copy that exists anywhere we
 can reach, the directory and the brief both.
+
+---
+
+## 04/11: the home page now holds the space for the video (item 6, rewritten)
+
+**This supersedes item 6 above.** The space itself is reserved, not only the instructions.
+
+The user asked for room on the home page for the promo clip being produced for this client. **The brief
+does not ask for it** (re-checked in the `.docx`: unlike הרקולס, whose spec says `וידאו (פריים) לסרטון
+שיופק ללקוח`, this one does not mention a video anywhere), so it is the user's instruction and is treated
+as one, not as something the brief implies. Nothing on the page claims a clip exists or names a date.
+
+**What is on the page now.** A real `overlay` band at **home-page `sections` index 6**, straight after
+`cards:framed` and before `collage`: a full-bleed still with the process line on a card cut into its lower
+edge. It is finished as it stands, and it is where the clip earns its place in the argument, after the
+three things you can order are named and before the material chapter.
+
+```json
+{ "type": "overlay", "eyebrow": "התהליך",
+  "title": "חיתוך, ריתוך והרכבה במקום אחד",
+  "text": "כל עבודה עוברת את אותם שלבים: מדידה באתר, תכנון, ייצור בבית המלאכה בנווה ימין ומסירה במועד שנקבע מול הלקוח.",
+  "image": "sparks" }
+```
+
+The still is `assets/sparks.webp`, the cut-off saw throwing sparks, already recorded in
+`IMAGE-SOURCES.md`. It was chosen over the workshop interiors because it is the only one of the eight that
+shows a moment rather than a still life, which is what a frame held for a clip has to carry. **It shows
+process, not a finished product and not the client's premises**, so it claims nothing, and the footer's AI
+line covers it as it covers the rest.
+
+The band is pinned to **16/9 at every width in `design.custom_css`**, which is the ratio the finished clip
+will use, so the box is already the right shape and the page does not move when the clip lands. On a phone
+the card's pull-up is reduced, because `editorial.css` pulls it 12vh and against a 16/9 strip that leaves a
+white card with a sliver of picture behind it.
+
+**When the URL arrives: replace that one object with this one, at the same index, and rebuild.**
+
+```json
+{ "type": "video", "title": "הסרטון של מסגרית Dream from Steel",
+  "youtube_url": "<the URL>" }
+```
+
+```bash
+bin/zs build c80386843 && bin/zs qa c80386843 && bin/zs seo c80386843
+bin/zs push c80386843 --site https://80386843dreamfromsteel.ussl.co.il
+```
+
+`tier` is already `standard`, which allows the `video` section (the basic package does not: a second reason
+item 2 matters). The three `.zs-overlay` rules in `design.custom_css` stop matching on their own once the
+section type changes; they do not need removing, though they can be. If the file is an mp4 rather than a
+YouTube or Vimeo link, it can instead become the hero's own loop (`videos` + `hero.video`, under 6 MB,
+4-8 s, no audio), in which case this band stays as it is.
+
+**What is not promised:** no date, anywhere on the site or in the copy above. If the clip never arrives the
+band is a finished part of the page and nobody has to do anything.

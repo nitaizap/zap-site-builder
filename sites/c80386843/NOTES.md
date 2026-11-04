@@ -337,6 +337,94 @@ shape, and that is what the prose change above addresses. `/אודות/` argues 
 the material (`split:frame`, `features:rows`). `/צור-קשר/` does not argue it and should not: it is
 two columns of facts and a form. The blog archive carries it in the three post titles.
 
-**Pool:** 38% / 36% / 36% before the pass and after it. Nothing in this pass touched a measured
+**Pool:** 38% / 36% / 36% before the pass and after it. **(Superseded: that 38% came from the old brand-colour sampling. Under the corrected measure that landed with main at 6a9a262 the same build measured 40.1%; see the third-round section below.)** Nothing in this pass touched a measured
 lever (palette, kit, archetype, heading font, section order, base template); it is all alignment,
 spacing and type inside sections that already existed.
+
+### Theme-fix collection and the video band, 04/11 (third round)
+
+Merged `main` at `6a9a262` (PR #88). Both defects reported in the pass above are fixed in the theme, and
+both were worse than reported.
+
+**1. `custom_css` no longer goes through `wp_strip_all_tags`.** `zs_sanitize_css` removes a `</style`,
+`expression(` and script URLs, leaves angle brackets alone, and logs and marks anything it removes.
+Re-checked this site's whole `design.custom_css` through the new path: it arrives **byte-identical**, the
+sanitiser removed nothing and emitted no warning. Nothing was being truncated at the moment of the merge
+either, because the one offending character had already been taken out by hand, so the un-truncated path
+**changed nothing on this site**. Re-measured rather than assumed: hero **487 / 507 / 518 px** at 1440x900,
+1280x720 and 390x844, both buttons above the fold at all three and also at 768, 900 and 1024, and no
+horizontal scroll anywhere.
+
+I then hit the same class of silent failure a second time, self-inflicted: an edit left a stray comment
+terminator in the middle of a comment, which closed it early and turned the two following comment lines
+into garbage that swallowed the rule after them. The rule was present in the page's `style` text and absent
+from `document.styleSheets`. Reading the CSS does not catch this. **There is now a check that does**: it
+parses every selector out of `design.custom_css` and asserts each one comes back as a real parsed rule in
+the rendered page. It ran after every build in this session and reports 41 of 41. Worth having wherever
+client CSS is written.
+
+**2. The footer logo is chosen by whether the footer ground is light** (`footer_is_light()`, which asks the
+tone *and* the kit, with the six light-footer kits named). The `logo_light` workaround is therefore no
+longer needed: it was **removed from `site.json`** and the theme picks `__logo` on its own. Verified on the
+built page and live: the footer image is the real badge, 140x140, decoded, with no white chip, and no image
+on the home page fails to decode.
+
+Also taken from `main` and checked here, with **real scrollbars**
+(`ignore_default_args=["--hide-scrollbars"]`; Playwright hides them by default and that is what hid the
+header-reserve fault): the header reserve now measures from the row's own containing block rather than the
+viewport, and at 768 / 900 / 1024 / 1280 / 1440 nothing in the header or the top strip sits under the
+accessibility toggle. The stacked-split-hero ratio fix does not apply here (this hero is `curve`), and the
+filmstrip and carousel fixes touch sections this site does not use.
+
+### The band held for the client's video
+
+The user asked for room on the home page for the promo clip. **The brief does not ask for it** (re-checked
+in the `.docx`), so it is the user's instruction and is recorded as one. What is reserved is space on the
+page, not a note in a file: an `overlay` band at home `sections` index 6, straight after the services row
+and before the material chapter, pinned to 16/9 at every width. It is finished as it stands and promises
+nothing: no date, and nothing claimed about the business. The exact replacement JSON and the two commands
+are in `OPEN-ITEMS.md`. The still is `assets/sparks.webp`, the only one of the eight that shows a moment
+rather than a still life, and process rather than a finished product.
+
+### The pool, and what it cost to come back under the line
+
+**The 38% recorded in the pass above is superseded.** `main` rewrote the measure: the brand colour is now
+sampled across the primary buttons, skipping any standing on a colour or dark band, with `--c-primary` as
+the fallback. Before, one wrongly-sampled button could carry 60% of the palette score. Under the honest
+measure this home came out **40.1% like `mehirut-haor`**, an ERROR, not 38%. (`zs pool` also now measures
+the local build instead of reading a possibly stale `fingerprint.json`, and errors rather than warns when
+it cannot measure at all.)
+
+The 0.401 broke down as palette .102, **furniture .167**, then vocabulary, skeleton and frame. Four of the
+six pieces of furniture were identical (lead band, footer, FAQ, floating button) and that was the largest
+single block. Two were worth changing on their own merits; one was not.
+
+| change | why it is right on its own | effect |
+|---|---|---|
+| **the FAQ rows take the site's own corner and a hairline.** `faq:dark` zeroes the radius, which made eight square-cornered rows the only square boxes on a site whose cards, images and buttons are all radius 10; with nothing between them the rows also ran together | consistency and readability. It is what the theme's own light FAQ does, and what the orange marker on the open question already implied | `mehirut-haor` **0.401 to 0.362** |
+| **a warm orange wash on the closing lead band**, so the last call to action stops sharing the `facts` section's surface grey | it read well | **reverted.** A tinted lead band is the commonest piece of furniture in the pool right now: it took `c743850` from 36% to **44%** and `c2910210` to 40%. Reported, not hidden |
+| the brand colour | not changed, and not up for changing | see below |
+
+Final, measured against every client on a `site/*` branch and in `fingerprints/`:
+
+| other client | before this round | after |
+|---|---|---|
+| `kisos-beach-club` | 0.394 | **0.394** |
+| `mehirut-haor` | **0.401 (ERROR)** | 0.362 |
+| `c2910210` | 0.363 | 0.363 |
+| `c743850` | 0.355 | 0.355 |
+| every other client | 0.34 or less | 0.34 or less |
+
+**The number and the trade-off, as `pool.md` asks for them.** Worst case is **39.4% against
+`kisos-beach-club`**, and no arrangement of the furniture moves it. It is held there by the palette, which
+carries 30% of the score with the brand colour as 60% of that, and their primary measures 0.42 close to
+this client's orange. **That orange is sampled from the client's own logo** (deepened from `#d15301` to
+`#b84606` only so white text clears 4.5:1), which `pool.md` ranks third, above the number, and this client
+has no reference sites and almost no other material of their own. Changing it to buy headroom would throw
+away the one thing on this site that is unmistakably theirs. The other lever that moves anything is the
+radius: 10 to 16 takes `c743850` from 0.355 to 0.332 and leaves `kisos-beach-club` at 0.394 regardless, so
+it buys nothing where it is needed and softens every corner on a site about cut steel. Not done.
+
+So: under the line, with 0.6 of a point of margin against one client, held there by that client's own brand
+colour. If `kisos-beach-club` or anything near that orange moves, this site needs a real redesign decision
+rather than another nudge, and a person should take it.

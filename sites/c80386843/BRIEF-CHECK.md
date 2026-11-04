@@ -111,3 +111,9 @@ no rating, review count or stars; no price or ₪; no "להמחשה" label; no e
 | לוגו | ✅ | the footer's copy of it was a white silhouette on a white footer, i.e. invisible on every page. Fixed. Resolution is still the one open part: OPEN-ITEMS 4, with the message to send |
 | אתרים שאהבתם | ➖ | unchanged: genuinely empty in the `.docx`. The one URL in the brief is the client's own Zap listing, which was read again in full on 04/11 and holds no photograph, no review and no wording the site does not already carry. OPEN-ITEMS, 04/11 |
 | תמונת בעלים / גלריה | ⏳ | unchanged, and confirmed unanswerable from the listing. Still needs the client |
+
+## Added 04/11, third pass (a user instruction, not a brief line)
+
+| request | status | where |
+|---|---|---|
+| leave room on the home page for the AI promo video, re-stated by the user 04/11 | ✅ | **space reserved on the page, not only in a file.** An `overlay` band at home `sections` index 6, after the services row and before the material chapter, pinned to 16/9 at every width: a still of the cut-off saw with the process line on a card cut into its lower edge. Finished as it stands, no date promised, nothing claimed about the business. The exact replacement JSON and the two commands are in OPEN-ITEMS.md. **The brief itself does not mention a video** (re-checked in the `.docx`; הרקולס has such a line and this spec does not), so this is the user's instruction and is recorded as one, not as something the brief implies |
