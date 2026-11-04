@@ -165,3 +165,30 @@ deleted when `main` was merged in:
 - The inner-page `split` photo is **still** boxed `4 / 4.4` (`finish.css:137`), so this client's 4/3.1 rule
   stays, with its breakpoint moved to 901px for the same reason as the hero.
 
+
+## Design-quality pass, 04/11/2026 (new `zs qa` checks, UX acceptance, fidelity)
+
+23. **What the new checks found, local build:** 29 errors and 6 warnings. 27 were "image shown larger than its own
+    pixels" (the client's archive photos are 227 to 333px wide and the category pages showed them at 424 to 477px;
+    the home had 17), 1 was the review stars drawn 20px from an 18px file (`object-fit: fill`), 1 was the home's H2 at
+    three sizes (53.5 / 46.5 / 32px). After the pass: 0 errors; 3 sameness warnings (36 / 35 / 39%, under the 40% stop).
+    A second pass caught two more: a 333x500 portrait in the gallery shown at 424px, and the submit button on the lead
+    band at 1.34:1 (red on maroon) once the band lost its photo.
+24. **Fixes (this client only):** home category tiles use 600px and 513px photos instead of 250 and 300px ones; the
+    category and catalogue pages use the classic card (photo above, text below) at the photo's own size instead of the
+    dark overlay tile; split and article photos sit at their own size; the lead band is solid brand colour (its photo
+    was an 800px file under a 1440px band) with a light submit button; the overlay and filmstrip H2 use the site's H2.
+    The video frame is 16:9 at every width now (before: 768px and up), so the clip arrives without moving the layout.
+25. **Fidelity pass: there is no preview to compare with.** The site was built in automatic mode and the direction was
+    chosen in `site.json` directly, so `sites/c743850/preview/` never existed. The pass was done against the brief and
+    the previous build: hero gap 72px at 1440 (measured), dark logo in the footer, footer list grouped in four with
+    labels and readable at 390, reserved video band present, Heebo only (no Alef).
+26. **Left, theme or host, not this site:** (a) the oversized-photo problem is the theme boxing and cropping small
+    photos (cards, split, post hero): a `max natural width` rule in the theme would remove the per-client CSS;
+    (b) overlay/filmstrip variants ship their own H2 clamp, which breaks "one size per level"; (c) the QA's
+    "no button carries an icon" warning does not see icons drawn by CSS (`.zs-b-tel`), so it fires on the home;
+    (d) the review stars file is 18x17 and the widget draws it 20x20; (e) on staging a third font,
+    **Noto Sans Hebrew**, loads on every page: it comes from the Ally accessibility toolbar, a host plugin, not from
+    the site; (f) the footer menu is still depth 1 (item 19).
+27. **The home's lead band lost its photo.** If the client sends photographs of 1440px or more, the `photo` variant
+    can come back. The photo-less band is intentional, not a gap.

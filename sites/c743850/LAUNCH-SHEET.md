@@ -28,7 +28,7 @@ Zap does not launch client sites. This is what whoever launches this one needs. 
 
 | check | status | note |
 |---|---|---|
-| reachable | ✅ PASS | https://743850hercules.ussl.co.il -> HTTP 200, 151 KB / האתר נטען |
+| reachable | ✅ PASS | https://743850hercules.ussl.co.il -> HTTP 200, 154 KB / האתר נטען |
 | zap-widgets | ✅ PASS | 11 zap-* widgets on the home page: zap-call-line, zap-copyright, zap-footer-contact, zap-form, zap-group-logo, zap-legal, zap-logo, zap-menu, zap-nav, zap-reviews, zap-topbar-meta / 11 ווידג'טים של זאפ בדף הבית |
 | template-widgets | ✅ PASS | header: 3 zap widgets; footer: 8 zap widgets / תבניות הכותרת והפוטר מציגות ווידג'טים |
 | raw-shortcodes | ✅ PASS | no unrendered [zap_*] shortcode / אין שורטקוד גולמי |
