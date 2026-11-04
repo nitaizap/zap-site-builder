@@ -22,6 +22,11 @@ body :is(.zs-form, .zs-form input, .zs-form textarea, .zs-form select, .zs-form 
    form label and the consent line: a third font family on the page, and that third one was whatever the
    browser happens to pick for Hebrew. Named here so the site's own body font wins. */
 body .zs-form :is(label, .zs-form__consent, .zs-form__consent a, .elementor-field-label) { font-family: var(--f-body); }
+/* Browsers do not inherit a font on form controls, and Elementor's kit sets its own on button, input,
+   select and textarea. `font: inherit` in our own rules loses to it, which left single controls - the
+   footer's number button on c2910210, for one - rendering in whatever font the browser picks for Hebrew.
+   A class-level rule still wins over this, so themed buttons keep their own family. */
+body :is(button, input, select, textarea) { font-family: var(--f-body); }
 
 /* The lead form's title is a paragraph styled as a heading (it is not a section heading) */
 body .zs-leadband__title .elementor-heading-title, body .zs-contact__title .elementor-heading-title { font-family: var(--f-head); font-size: var(--fs-h2); font-weight: var(--w-head, 700); line-height: var(--lh-head, 1.15); color: var(--c-ink); margin: 0; }
