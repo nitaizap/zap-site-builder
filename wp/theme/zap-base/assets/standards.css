@@ -79,6 +79,17 @@ body .zs-gallery__img a { display: block; cursor: zoom-in; }
   body:has(#pojo-a11y-toolbar) :is(.zs-header__in, .e-con.zs-header__in) { padding-inline-end: calc(var(--gutter, 16px) + 52px) !important; }
 }
 
+/* Above 767px the toolbar is back in its own corner of the viewport, 52px wide, and the header row knows
+   nothing about it: wherever the page's side margin is narrower than that, the header's last item (the call
+   button, physically on the left in RTL) starts underneath the toggle. Measured on the sample at 768, 1024
+   and 1280; only a screen wide enough to clear it on its own was safe. Reserve exactly what is missing, so
+   those wide screens are untouched. */
+@media (min-width: 768px) {
+  body:has(#pojo-a11y-toolbar) :is(.zs-header__in, .e-con.zs-header__in) {
+    padding-inline-end: calc(var(--gutter, 32px) + max(0px, 60px - max(0px, (100vw - var(--wrap, 1200px)) / 2)));
+  }
+}
+
 /* Mobile menu panel is always light (--c-bg): its links take the page ink, even when a kit or a dark header
    paints the desktop header links light (that made them invisible on the panel) */
 @media (max-width: 1024px) {
