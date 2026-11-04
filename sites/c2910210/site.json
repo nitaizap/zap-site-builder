@@ -77,7 +77,7 @@
     },
     "radius": 16,
     "motion": "subtle",
-    "custom_css": "/* ---- first screen -------------------------------------------------------------------------------\n   The brief's two reference sites both lead with a big saturated colour field and a phone number you\n   cannot miss. The hero band carries the client's own taxi yellow (section bg: accent, dark ink), and\n   the rules below make the call button display size and bring the ordering form up into the fold. */\n\n/* The home split hero's photo is forced to a 4:4.6 portrait by the theme (finish.css:102), which made\n   the hero 1045px tall and pushed the lead form ~50px below a 900px fold. This client's hero is\n   landscape, so the text, both buttons and the form card all fit the first screen. Scoped to this\n   site only; the theme-level fix is not approved. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 2.9; }\n/* the theme offsets the photo with a taxi-yellow block, which is invisible on a yellow hero: make it\n   the brand green so the photo keeps its offset corner. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { background: var(--c-primary); }\n\n@media (min-width: 1025px) {\n  /* \"כפתור חיוג בולט\": the hero's call button at display size, not body text. */\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button {\n    font-size: 1.6rem; font-weight: 800; letter-spacing: .01em; padding: .62em 1.15em; gap: .5em;\n  }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button :is(svg, i) { width: 1.1em; height: 1.1em; font-size: 1.1em; }\n  html body .zs-hero--home .zs-btns .zs-b-ghost .elementor-button { font-size: 1.1rem; padding: .85em 1.4em; }\n\n  /* The header phone is a filled taxi-yellow pill inside the green outline the standard already gives\n     it (that outline is what carries the 3:1 control contrast, WCAG 1.4.11: yellow on white is 1.68).\n     At 1024px and below the theme turns the control into the standard plain phone icon (qa-rules). */\n  html body .zs-header__cta .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-primary); font-weight: 700; }\n  html body .zs-header__cta .elementor-button:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); }\n}\n\n/* Phones: Zap QA keeps the two hero buttons side by side, one line each (standards.css), so the call\n   button is given the larger share of the row instead of being stacked. Side by side at equal width\n   the number does not fit 167px and was clipped; at 1.5 of the row it sits on one line and is still\n   the dominant control, which is what \"כפתור חיוג בולט\" has to mean on a phone. */\n@media (max-width: 1024px) {\n  html body .zs-hero--home .zs-btns > .zs-b-tel { flex: 1.5 1 0; }\n  html body .zs-hero--home .zs-btns > .zs-b-ghost { flex: 1 1 0; }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button { font-size: 1.14rem; font-weight: 800; padding-inline: 8px; }\n}\n"
+    "custom_css": "/* ---- first screen -------------------------------------------------------------------------------\n   The brief's two reference sites both lead with a big saturated colour field and a phone number you\n   cannot miss. The hero band carries the client's own taxi yellow (section bg: accent, dark ink), and\n   the rules below make the call button display size and bring the ordering form up into the fold. */\n\n/* The home split hero's photo is forced to a 4:4.6 portrait by the theme (finish.css:102), which made\n   the hero 1045px tall and pushed the lead form ~50px below a 900px fold. This client's hero is\n   landscape, so the text, both buttons and the form card all fit the first screen. Scoped to this\n   site only; the theme-level fix is not approved. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 2.9; }\n/* the theme offsets the photo with a taxi-yellow block, which is invisible on a yellow hero: make it\n   the brand green so the photo keeps its offset corner. */\nhtml body:not(.zs-p-signature).zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { background: var(--c-primary); }\n\n@media (min-width: 1025px) {\n  /* \"כפתור חיוג בולט\": the hero's call button at display size, not body text. */\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button {\n    font-size: 1.6rem; font-weight: 800; letter-spacing: .01em; padding: .62em 1.15em; gap: .5em;\n  }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button :is(svg, i) { width: 1.1em; height: 1.1em; font-size: 1.1em; }\n  html body .zs-hero--home .zs-btns .zs-b-ghost .elementor-button { font-size: 1.1rem; padding: .85em 1.4em; }\n\n  /* The header phone is a filled taxi-yellow pill inside the green outline the standard already gives\n     it (that outline is what carries the 3:1 control contrast, WCAG 1.4.11: yellow on white is 1.68).\n     At 1024px and below the theme turns the control into the standard plain phone icon (qa-rules). */\n  html body .zs-header__cta .elementor-button { background: var(--c-accent); color: var(--c-accent-ink); border-color: var(--c-primary); font-weight: 700; }\n  html body .zs-header__cta .elementor-button:hover { background: var(--c-primary); color: var(--c-primary-ink); border-color: var(--c-primary); }\n}\n\n/* Phones: Zap QA keeps the two hero buttons side by side, one line each (standards.css), so the call\n   button is given the larger share of the row instead of being stacked. Side by side at equal width\n   the number does not fit 167px and was clipped; at 1.5 of the row it sits on one line and is still\n   the dominant control, which is what \"כפתור חיוג בולט\" has to mean on a phone. */\n@media (max-width: 1024px) {\n  html body .zs-hero--home .zs-btns > .zs-b-tel { flex: 1.5 1 0; }\n  html body .zs-hero--home .zs-btns > .zs-b-ghost { flex: 1 1 0; }\n  html body .zs-hero--home .zs-btns .zs-b-tel .elementor-button { font-size: 1.14rem; font-weight: 800; padding-inline: 8px; }\n}\n\n/* ---- the rest of the page carries the reference sites' language (moniot.info, nitzav-taxi.co.il) ----\n   moniot: a yellow field, solid yellow cards, the number on every one. nitzav: flat alternating dark and\n   bright tiles, one short line, one button. The services band is the client's yellow with solid tiles\n   alternating brand green and white, so the home stops being grey cards on white after the first screen. */\nhtml body .zs-cards.zs-bg-accent .e-con.zs-card { border: 0; box-shadow: none; background: #fff; }\nhtml body .zs-cards.zs-bg-accent .e-con.zs-card:nth-child(even) { background: var(--c-dark); }\nhtml body .zs-cards.zs-bg-accent .e-con.zs-card:nth-child(even) :is(.zs-card__title, .zs-card__title a, p, .zs-card__text) { color: #fff; }\nhtml body .zs-cards.zs-bg-accent .e-con.zs-card:nth-child(even) .zs-card__icon :is(.zs-svg, .elementor-icon) { background: var(--c-accent); color: var(--c-accent-ink); }\nhtml body .zs-cards.zs-bg-accent .zs-card__title { font-size: 1.35rem; font-weight: 800; }\nhtml body .zs-cards.zs-bg-accent .zs-card__icon :is(.zs-svg, .elementor-icon) { background: var(--c-accent); color: var(--c-accent-ink); width: 56px; height: 56px; }\n\n/* Dapei Zahav star images are 18px files; the theme draws them at 20 (upscaled, ratio kept by the 20x20 box). Per-site until the theme fix (separate PR) lands. */\nhtml body .zs-reviews zap-reviews :is(.stars, .stars_over) img { width: 18px !important; height: auto !important; }\n"
   },
   "logo": "assets/logo-brief.png",
   "favicon": "assets/favicon.png",
@@ -384,11 +384,12 @@
               "href": "page:שליחויות-אקספרס",
               "icon": "document"
             }
-          ]
+          ],
+          "bg": "accent"
         },
         {
           "type": "cta",
-          "bg": "accent",
+          "bg": "primary",
           "eyebrow": "מוקד 24 שעות",
           "title": "צריכים מונית עכשיו?",
           "text": "המוקד עונה בכל שעה, גם בשישי, בשבת ובמוצאי שבת. חייגו ונשלח אליכם את המונית הפנויה הקרובה.",
@@ -402,12 +403,12 @@
           }
         },
         {
-          "type": "overlay",
-          "image": "taxi-street",
-          "eyebrow": "כפר סבא והשרון",
+          "type": "split",
           "title": "מונית שיוצאת מהשכונה שלכם",
-          "text": "המוניות שלנו עומדות בתחנה ברוטשילד 50 ופרוסות ברחבי כפר סבא והשרון, כך שהסדרן שולח אליכם את הרכב הקרוב ולא את זה שפנוי במקרה.",
-          "chips": [
+          "text": "<p>המוניות שלנו עומדות בתחנה ברוטשילד 50 ופרוסות ברחבי כפר סבא והשרון, כך שהסדרן שולח אליכם את הרכב הקרוב ולא את זה שפנוי במקרה.</p>",
+          "image": "taxi-street",
+          "image_side": "start",
+          "points": [
             "24 שעות ביממה",
             "10 יישובי שירות",
             "נסיעות לכל הארץ"
@@ -1053,7 +1054,7 @@
       "slug": "הסדר-הסעות-עובדים",
       "title": "איך בונים הסדר הסעות עובדים שלא קורס בכל שינוי משמרת",
       "category": "נסיעות-והסעות",
-      "image": "taxi-street",
+      "image": "taxi-side",
       "date": "2026-10-20",
       "related_page": "הסעות-עובדים-לחברות-ומוסדות",
       "excerpt": "מה צריך להגדיר מול חברת המוניות לפני שפותחים הסדר נסיעות קבוע לארגון, ואיך מטפלים בשינויים של הרגע האחרון.",
