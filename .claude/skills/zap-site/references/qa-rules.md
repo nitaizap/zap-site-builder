@@ -134,6 +134,7 @@ your judgement.
    images sharp at the size they are shown, no placeholder left standing, nothing that looks like the default. The
    gates measure none of this. Every design complaint this project has had came off a site passing QA at 0 errors
    and SEO at 0 FAIL, so budget real time here rather than treating it as a last glance.
+   **Then go through "UX acceptance" below, item by item.** It is the same pass with the answers written down.
 5. Read every heading once for punctuation, and every menu label against its page's H1.
 6. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
 7. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
@@ -175,3 +176,75 @@ Before handover, on every site:
 
 `bin/zs launch-check` reports this as the `mailers` row. It reads public html only, so it can name an SMTP plugin
 whose assets the page loads but can never rule one out: the row is always MANUAL and always closed in wp-admin.
+
+## UX acceptance: every site, before handover
+
+Where the rest of this file is a list of things reviewers have rejected, this is the list of things that make a
+site read as finished rather than merely correct. It is the class of defect behind "not a bug, just bad design":
+nothing here fails a gate, and a reviewer sees all of it in five seconds.
+
+Most of these were learnt twice, once per client. Go through them with the site open at 1280 and at 390. The
+measurable ones (heading scale, upscaled images, stretched images, font count, mobile gutter, tap targets,
+buttons without an icon) are now in `zs qa` — read the `type scale` and `fonts` columns of `QA-REPORT.md` as
+well as the error count.
+
+### Clickability
+
+- Anything that looks clickable is clickable, and nothing else looks clickable. A chip, pill or badge that is
+  not a link is flat text, or it gets a link.
+- A card whose title is a link makes the **whole card** the link, never a nested `<a>` inside another.
+- An icon box with a link makes the whole row clickable, not just the icon and the title. The phone number or
+  address under the title is the part people aim at.
+- Conversion buttons carry an icon (phone, WhatsApp, envelope). Decide it once per site rather than per
+  button: `zs qa` warns only when a page uses none at all.
+- Hover never moves an element. A lifted card leaves the cursor on its old edge, un-hovers and flickers. Use
+  colour, shadow, or an image zoom inside a clipped box.
+
+### Type and rhythm
+
+- One size per heading level, per site. Impact comes from weight and space, not from a bigger H2 in one band.
+  `zs qa` errors at three sizes for one level and warns at two.
+- Two font families at most: headings and body. A third is a widget that escaped the kit.
+- Light (300) only at 18px and above, and only where contrast still clears AA.
+- Hebrew body text wants 1.7–1.8 line-height; line length stays under about 80 characters.
+- A "day hours" pair, a phone number or any Latin run inside Hebrew gets a `nowrap` span, so a lone character
+  never ends up alone at the end of a line.
+- Time ranges inside Hebrew text need LTR isolation, or 9:00–13:00 reads backwards.
+
+### Images
+
+- Never show a photo larger than its own pixels. A 900px portrait across a 1400px hero reads as smeared.
+  `zs qa` errors on this now; before that it was caught by eye, twice.
+- Never stretch: a box ratio that differs from the file's ratio distorts faces and logos.
+- A portrait photo in a wide slot is cropped to a sliver. Use several portraits side by side instead.
+- Nothing above the fold is lazy-loaded, and nothing that moves is lazy-loaded.
+
+### Forms
+
+- A label above every field. A placeholder alone is unreadable the moment someone types, and invisible on a
+  dark form.
+- The consent checkbox is 20px, its text is fine print, and its privacy link goes to a real page.
+- Consent and the submit button share one row on desktop (consent wide, button narrow), both full width on
+  mobile, so there is no dead space under the form.
+- Dark forms get their own field border and label colours; the light-form values vanish on dark.
+
+### Floating elements and mobile
+
+- Floating elements never stack. One accessibility button, and on mobile one fixed bar with two actions
+  (call, navigate), flush with the bottom edge with `env(safe-area-inset-bottom)` clearance.
+- No floating call button on desktop: the phone is already in the header.
+- Mobile card grids are one column or a sideways swipe row. Two narrow columns give three words a line.
+- The mobile footer is minimal and centred: logo, contact, hours. Hide the link columns.
+- The logo is **measured** centred on mobile, against the `<html>` box, not `innerWidth / 2` (RTL puts the
+  scrollbar on the left).
+- Conversion buttons are full width in content and centred at their own width in the footer.
+
+### Bands and state
+
+- A hero is never flat white under a white header. Colour, or a photo.
+- FAQ accordions start closed, every item.
+- A section with nothing in it (no reviews yet, no related cards) hides itself; it never shows an empty frame
+  or a placeholder box to the client.
+- Filled and outline buttons side by side are the same height: give the filled one a transparent border of the
+  same width, or it stands 4px shorter.
+- Dark-background links need both a rest colour and a hover colour. The light-theme hover makes them vanish.
