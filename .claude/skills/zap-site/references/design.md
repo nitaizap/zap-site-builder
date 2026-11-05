@@ -126,6 +126,13 @@ of animation everywhere.
 composition and the bold element. `zs qa` prints the sizes it found in the `type scale`
 column of `QA-REPORT.md`, and warns when one level renders at three or more.
 
+The rule is about *drift*: a heading bumped in one band for impact, or a component that hard-coded a rem
+instead of the token. It is not about a **component scale that the design intends** - a bento grid whose
+first tile is deliberately larger, an overlay card, a compact lead bar whose title is deliberately smaller.
+The check cannot tell the two apart, so a warning is a question, not a verdict: find the rule, and if the
+size is a deliberate part of that component, leave it and say so. Flattening הרקולס's bento tiles to one
+size would have removed the hierarchy that makes a bento grid a bento grid (04/11/2026).
+
 **7 · Density and imagery.** 9–13 sections on the home page; real images (client, old site, GMB, AI) in every
 image slot, consistent in light and colour (Weave prompt: one look per site, brand colours as subtle accents,
 no flat midday stock). Icons on every conversion button and contact line (automatic).
