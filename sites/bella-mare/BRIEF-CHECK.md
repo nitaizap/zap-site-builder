@@ -67,7 +67,7 @@ Checked against the rendered pages (local build, page HTML + desktop/mobile shot
 
 ## Not in the brief, by rule
 - Privacy policy + accessibility statement pages (Zap standard) ✅; privacy fields unconfirmed ⏳ (launch blocker)
-- Blog: not in the brief's tree, basic package → none (`zs seo` #5 FAIL by design) ⏳ if Zap wants one
+- Blog: not in the brief's tree; added after Zap QA asked for it (01.11.2026): 3 posts, `zs seo` #5 passes
 - Prohibited words: the brief has none.
 
 ## Re-check 09.11.2026 (after Zap QA 01.11 + engine updates), on the rendered pages, local and https://80392812.ussl.co.il
