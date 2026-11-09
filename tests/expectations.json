@@ -1,0 +1,149 @@
+{
+  "intake": {
+    "איפיון אתר - car service - 80362823_1.docx": {
+      "client_id": "80362823",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "car service",
+      "package": "",
+      "staging_url": ""
+    },
+    "איפיון אתר - הרקולס-גורקביץ ייצור מראות ואביזרים לרכב בעמ - 743850_3.docx": {
+      "error": "no 8-digit client id in file name or text"
+    },
+    "איפיון אתר - מוניות כפר סבא - 2910210_1.docx": {
+      "error": "no 8-digit client id in file name or text"
+    },
+    "איפיון אתר - מסגרית Dream from Steel - 80386843.docx": {
+      "client_id": "80386843",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "מסגרית Dream from Steel",
+      "package": "",
+      "staging_url": ""
+    },
+    "איפיון אתר - מרכז שירות יד מרדכי - 80220135_1.docx": {
+      "client_id": "80220135",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "מרכז שירות יד מרדכי",
+      "package": "",
+      "staging_url": ""
+    },
+    "איפיון אתר - ניק איטום - 80272199.docx": {
+      "client_id": "80272199",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "ניק איטום",
+      "package": "",
+      "staging_url": ""
+    },
+    "בלה מארה 80392812 - בייסיק_2 (1).docx": {
+      "client_id": "80392812",
+      "images_found": true,
+      "missing": [
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "בלה מארה",
+      "package": "בייסיק",
+      "staging_url": ""
+    },
+    "בצל התאנה 80393074 - וויקנד.xlsx": {
+      "client_id": "80393074",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "בצל התאנה",
+      "package": "",
+      "staging_url": ""
+    },
+    "הוילה הלבנה ינוב 80392936 - וויקנד_1.xlsx": {
+      "client_id": "80392936",
+      "images_found": true,
+      "missing": [
+        "package: no package named in the file name or the spec sheet",
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "הוילה הלבנה ינוב",
+      "package": "",
+      "staging_url": ""
+    },
+    "לחם ארז הרצליה 80049225 - בייסיק (1).docx": {
+      "client_id": "80049225",
+      "images_found": true,
+      "missing": [
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "לחם ארז הרצליה",
+      "package": "בייסיק",
+      "staging_url": ""
+    },
+    "פטוצינה 80356988 - בייסיק.docx": {
+      "client_id": "80356988",
+      "images_found": true,
+      "missing": [
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "פטוצ'ינה",
+      "package": "בייסיק",
+      "staging_url": ""
+    },
+    "קיסוס ביץ קלאב אילת 80392210 - בייסיק_2 (1).docx": {
+      "client_id": "80392210",
+      "images_found": true,
+      "missing": [
+        "staging URL (the sites team sends it later)"
+      ],
+      "name": "קיסוס ביץ' קלאב אילת",
+      "package": "בייסיק",
+      "staging_url": ""
+    }
+  },
+  "replies": {
+    "counts": {
+      "new_spec": 8,
+      "other": 7,
+      "staging": 35
+    },
+    "staging_by_client": {
+      "80049225": "https://erezbread80049225.ussl.co.il/",
+      "80240748": "https://mehiruthaor.ussl.co.il/",
+      "80272199": "https://80272199.ussl.co.il/",
+      "80356988": "https://80356988.ussl.co.il/",
+      "80392210": "https://80392210kisos.ussl.co.il/",
+      "80392812": "https://80392812.ussl.co.il/",
+      "80392936": "https://80392936.ussl.co.il/",
+      "80393140": "https://80393140pig.ussl.co.il/"
+    },
+    "unattributed": [
+      "00021B9409EC0000",
+      "00021B940A100000",
+      "00021B940A1A0000",
+      "00021B940A330000",
+      "0002252C0D0D0000",
+      "0002252C0D130000",
+      "000233A04A2E0000",
+      "000233A04A3C0000",
+      "000233A04A400000",
+      "00024525B45C0000",
+      "00024525B46B0000",
+      "0002480B73B70000",
+      "00024C2F3F100000",
+      "00024C2F3F110000"
+    ]
+  }
+}

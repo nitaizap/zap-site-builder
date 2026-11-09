@@ -55,9 +55,7 @@ body .zs-cards--overlay .e-con.zs-card__body { --padding-top: 0px; --padding-bot
 .zs-badge span { font-size: .9rem; color: rgb(255 255 255 / .82); }
 @media (max-width: 900px) { .zs-split__media .elementor-element.zs-badge-w { inset-inline-start: 12px; inset-block-end: 12px; } }
 
-/* gallery: mosaic when there are 5+ images */
-.zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) { grid-column: span 2; grid-row: span 2; }
-.elementor .zs-gallery .zs-grid > .elementor-element:first-child:nth-last-child(n+5) img { aspect-ratio: auto; height: 100%; }
+/* gallery: an even grid, no large first tile (Zap QA: a big first photo left empty cells beside it) */
 
 /* header utility bar (header.topbar, default on) */
 .zs-topbar { background: var(--c-dark); color: color-mix(in srgb, var(--c-dark-ink) 86%, transparent); font-size: .86rem; }
@@ -102,6 +100,14 @@ body:not(.zs-p-signature) {
   & .zs-hero__lead { font-size: clamp(1.1rem, 1rem + .45vw, 1.35rem); max-width: 54ch; }
   & .e-con.zs-hero__text { --row-gap: 22px; }
   &.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 4 / 4.6; }
+  /* ...but only while the hero is two columns. Below 900px the split hero stacks (main.css:258) and the photo
+     runs the full content width, so a 4:4.6 portrait adds its own height to the text's instead of balancing it:
+     measured on the sample at 768 / 820 / 900 the home hero was 1268 / 1330 / 1431 px tall. main.css:260 already
+     caps the stacked photo at 16/10, but this block is later and more specific, so it overrode it at every
+     width. Restate the stacked cap here: the same sample then measures 897 / 934 / 992 px. */
+  @media (max-width: 900px) {
+    &.zs-hv-split .zs-hero--home .zs-hero__media .zs-hero__img img { aspect-ratio: 16 / 10; }
+  }
   &.zs-hv-split .zs-hero--home .e-con.zs-hero__media::before { inset: auto -16px -16px auto; width: 46%; height: 46%; border-radius: var(--r-lg); background: var(--c-accent); opacity: 1; }
 
   /* image hero = cinematic: near full-screen, text anchored low, deep gradient from the text side */
@@ -122,7 +128,7 @@ body:not(.zs-p-signature) {
   /* features & steps: hairlines and numerals instead of floating boxes */
   & .e-con.zs-feature { border-top: 1px solid var(--c-line); padding-top: 22px; }
   & .zs-feature__icon :is(.zs-svg, .elementor-icon) { width: 44px; height: 44px; padding: 9px; border-radius: var(--r-sm); }
-  & .zs-step__title .elementor-heading-title, & .zs-feature__title .elementor-heading-title { font-size: 1.22rem; }
+  & .zs-step__title .elementor-heading-title, & .zs-feature__title .elementor-heading-title { font-size: var(--fs-h3); }
   & .e-con.zs-step { border-top: 1px solid var(--c-line); padding-top: 72px; }
   & .e-con.zs-step::before { top: 22px; width: auto; height: auto; background: none; color: var(--c-primary); font-size: 2.1rem; font-weight: 800; line-height: 1; border-radius: 0; border: 0; content: counter(zs-step, decimal-leading-zero); }
   & .e-con.zs-step::after { display: none; }

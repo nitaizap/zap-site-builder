@@ -63,6 +63,84 @@ MEASURE_JS = r"""
   q('img').forEach(i => { if (!i.hasAttribute('alt')) E(`img without alt: ${i.src.split('/').pop()}`);
     else if (i.alt === '' && !i.closest('[aria-hidden="true"]') && vis(i) && i.width > 120) W(`empty alt on visible image ${i.src.split('/').pop()}`);
     if (i.complete && i.naturalWidth === 0 && vis(i)) E(`broken image ${i.src.split('/').pop()}`); });
+  // --- design conformance: one scale, real pixels, one type system ---------------------
+  // Correctness checks pass on a page that is merely ugly. These are the measurable half of
+  // design.md: they catch drift (a second H2 size), softness (a photo blown past its pixels)
+  // and a type system that grew a third family, none of which any other check can see.
+  const a11yChrome = '[id^="pojo-a11y"], [class*="pojo-a11y"], #ea11y-root';
+  const r2 = n => Math.round(n * 2) / 2;
+  const scale = [];
+  ['h1', 'h2', 'h3'].forEach(tag => {
+    const sizes = new Set(q(tag).filter(vis)
+      .filter(e => e.textContent.trim() && !e.closest(a11yChrome))
+      .map(e => r2(parseFloat(getComputedStyle(e).fontSize))));
+    if (!sizes.size) return;
+    const list = [...sizes].sort((a, b) => b - a);
+    scale.push(tag + ':' + list.join('/'));
+    // design.md: "Boldness never touches the heading scale". A warning, not an error: a card title and a
+    // section title legitimately share a tag, and the theme sizes them fluidly. Four sizes for one level is
+    // drift worth looking at; it is not a reason to stop a handover.
+    if (list.length > 2) W(`${tag} renders at ${list.length} sizes on one page: ${list.join('/')}px (design.md wants one)`);
+  });
+  out.info.scale = scale.join(' ');
+  // An image shown wider than its own pixels is visibly soft; object-fit:fill distorts faces and logos.
+  const upscaled = [], stretched = [];
+  q('img').forEach(i => {
+    if (!vis(i) || !i.naturalWidth || /\.svg($|\?)/i.test(i.currentSrc || i.src)) return;
+    const b = i.getBoundingClientRect(), cs = getComputedStyle(i);
+    if (b.width > i.naturalWidth * 1.02) upscaled.push(`${i.src.split('/').pop()} ${Math.round(b.width)}>${i.naturalWidth}`);
+    const want = i.naturalWidth / i.naturalHeight;
+    if (cs.objectFit === 'fill' && Math.abs(b.width / b.height - want) > want * 0.05) stretched.push(i.src.split('/').pop());
+  });
+  if (upscaled.length) E(`image shown larger than its own pixels (${upscaled.length}): ` + upscaled.slice(0, 3).join(', '));
+  if (stretched.length) E(`image stretched out of ratio (${stretched.length}): ` + stretched.slice(0, 3).join(', '));
+  // One type system: a heading family and a body family. A third is a widget that escaped the kit.
+  const fams = new Set();
+  q('body *').forEach(el => {
+    if (!vis(el) || el.closest(a11yChrome + ', svg, script, style')) return;
+    if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
+    const f = getComputedStyle(el).fontFamily.split(',')[0].replace(/["']/g, '').trim();
+    if (/^(font ?awesome|eicons|icomoon|material)/i.test(f)) return;   // icon fonts are not type
+    fams.add(f);
+  });
+  out.info.fonts = [...fams].join('/');
+  // Two is the design (headings + body). A third is usually a host plugin or a widget that escaped the kit,
+  // which is worth seeing but not always ours to fix; a fourth is the kit not being applied at all.
+  if (fams.size > 3) E(`${fams.size} font families on one page: ${[...fams].join(', ')} (want 2: headings + body)`);
+  else if (fams.size === 3) W(`3 font families: ${[...fams].join(', ')} (want 2: headings + body)`);
+  // Icons on conversion buttons are a choice, not a rule, so this fires once per page and only when the page
+  // uses none at all - the case where nobody decided, rather than the case where somebody decided no.
+  // An icon is not always an element: the theme draws some with a ::before glyph or a background image,
+  // and counting only child nodes reported "no icons" on a site whose buttons all had one (c80362823, 04/11).
+  const drawsIcon = el => {
+    for (const pseudo of ['::before', '::after']) {
+      const s = getComputedStyle(el, pseudo);
+      if (!s) continue;
+      const c = s.content;
+      if (c && c !== 'none' && c !== 'normal' && c !== '""' && c !== "''") return true;
+      if (s.backgroundImage && s.backgroundImage !== 'none') return true;
+    }
+    return false;
+  };
+  const hasIcon = e => !!e.querySelector('svg, i, .elementor-button-icon') || drawsIcon(e)
+    || [...e.children].some(drawsIcon);
+  const btns = q('.elementor-button').filter(vis);
+  // hasIcon covers the general case (child element, ::before/::after content, background image); the
+  // zs-b-tel/zs-b-wa test from #91 stays as a named safety net for the two theme buttons it was written for.
+  const iconic = e => hasIcon(e) || /zs-b-(tel|wa)/.test(e.closest('.zs-b')?.className || e.className);
+  if (btns.length >= 3 && !btns.some(iconic))
+    W(`no button on this page carries an icon (${btns.length} buttons)`);
+  if (window.innerWidth < 768) {
+    const docBox = document.documentElement.getBoundingClientRect();
+    const tight = q('h1,h2,h3,p,li,label,.elementor-button').filter(e => vis(e) && e.textContent.trim()
+        && !e.closest('.zs-nav, .zs-skip, ' + a11yChrome) && getComputedStyle(e).position !== 'fixed')
+      .filter(e => { const b = e.getBoundingClientRect(); return b.left < docBox.left + 11 || b.right > docBox.right - 11; })
+      .map(e => e.tagName + ':' + e.textContent.trim().slice(0, 14));
+    if (tight.length) W(`mobile gutter under 12px (${tight.length}): ` + tight.slice(0, 3).join(', '));
+    const smallTap = q('.elementor-button, button:not(.zs-vnote-btn)').filter(e => vis(e) && !e.closest(a11yChrome))
+      .filter(e => e.getBoundingClientRect().height < 44).length;
+    if (smallTap) W(`${smallTap} tap targets under 44px high`);
+  }
   // phone links must dial what they show
   const dig = s => { let d = s.replace(/\D/g, ''); if (d.startsWith('0')) d = '972' + d.slice(1); return d; };
   q('a[href^="tel:"]').forEach(a => { const shown = a.textContent.replace(/\D/g, ''); if (shown.length >= 7 && dig(a.textContent) !== dig(a.getAttribute('href').slice(4))) E(`tel mismatch: shows ${a.textContent.trim()} dials ${a.getAttribute('href')}`); });
@@ -270,6 +348,26 @@ def screenshots(site, paths, directions=False, mobile_only=False):
     return files
 
 
+def _count_images(node):
+    """Every image a composition asks for, at any depth: `image`, `images`, `bg`, `photo`, `logo`.
+    Counts what was composed rather than what rendered, because a thin direction is fixed in site.json."""
+    n = 0
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if k in ("image", "bg", "photo", "logo") and isinstance(v, str) and v.strip():
+                n += 1
+            elif k in ("image", "bg", "photo", "logo") and isinstance(v, dict) and v:
+                n += 1
+            elif k == "images" and isinstance(v, list):
+                n += len([x for x in v if x])
+            else:
+                n += _count_images(v)
+    elif isinstance(node, list):
+        for v in node:
+            n += _count_images(v)
+    return n
+
+
 def preview(site):
     """Gate material: the real home page under every design direction, desktop + mobile, in one PREVIEW.md.
     Lives in sites/<slug>/preview/ so it renders on GitHub once the site branch is pushed."""
@@ -301,6 +399,22 @@ def preview(site):
              "דמיון בין הכיוונים (מדוד מהדף עצמו): " + ", ".join(f"{a.upper()}–{b.upper()} {v:.0%}" for (a, b), v in sims.items()), ""]
     base = data.get("design", {})
     home = next((p.get("sections", []) for p in data.get("pages", []) if p.get("type") == "home"), [])
+    # The floor a direction has to clear before the user sees it (references/gallery.md). A direction
+    # under it reads as a wireframe and cannot be judged; the user is then choosing between sketches.
+    # Counted from the composition, not the render: it is the composition that has to be fixed.
+    # A BasiX site is a smaller site by design (portfolio.md), so its floor is lower, not waived.
+    basic = data.get("tier") in (None, "basic")
+    min_sections, min_images = (6, 4) if basic else (8, 6)
+    thin = []
+    for k, d in dirs.items():
+        secs = d.get("home") or home
+        imgs = _count_images(secs)
+        if len(secs) < min_sections or imgs < min_images:
+            thin.append((k, len(secs), imgs))
+            print(f"ERROR direction {k} is under the floor: {len(secs)} sections (want {min_sections}+), "
+                  f"{imgs} images (want {min_images}+). Compose more of the page, or say at the gate that the "
+                  f"client's photography cannot carry it (references/gallery.md)")
+    site._preview_thin = thin
     for k, d in dirs.items():
         f = d.get("fonts", base.get("fonts", {}))
         recipe = " → ".join(s.get("type", "") + (":" + s["variant"] if s.get("variant") else "") for s in (d.get("home") or home))
@@ -314,27 +428,75 @@ def preview(site):
     return out / "PREVIEW.md"
 
 
+# The link check used to open 8 connections at once with a flat 20s timeout. The dev server is PHP's built-in
+# one with 4 workers and it serialises under contention, so 8 in flight is already a queue: pages that answer in
+# 1.4-4.4s on their own took 7-19s while other builds ran on the same box, and the check reported the machine's
+# load as a page of site errors. Three agents hit that in one day; one nearly accepted a false 11-error run.
+# Hence: fewer connections than the server has workers, a timeout derived from how slow this box is right now,
+# and a report that never calls "did not answer" an error status.
+LINK_WORKERS = 3            # < the server's 4 workers: the check queues behind itself otherwise
+LINK_TIMEOUT_MIN = 20       # never stricter than the old flat timeout
+LINK_TIMEOUT_MAX = 180
+
+
+def _probe(url):
+    """Seconds for one page, fetched alone, best of two. None if it cannot be fetched at all."""
+    best = None
+    for _ in range(2):
+        t0 = time.monotonic()
+        try:
+            urllib.request.build_opener(NoRedirect).open(urllib.request.Request(url, method="GET"), timeout=LINK_TIMEOUT_MAX)
+        except urllib.error.HTTPError:
+            pass                                    # a 404 still tells us how fast the box is
+        except Exception:
+            continue
+        d = time.monotonic() - t0
+        best = d if best is None else min(best, d)
+    return best
+
+
+def _timed_out(e):
+    return isinstance(e, TimeoutError) or isinstance(getattr(e, "reason", None), TimeoutError) or "timed out" in str(e).lower()
+
+
 def check_links(links):
+    """-> [(url, status, kind)] for every link that did not answer 200.
+
+    `kind` is "status" when the server answered with something other than 200 (a real finding) or "timeout" when
+    it did not answer in time (almost always this machine, not the site). The caller must not add the second to
+    the error count."""
     from concurrent.futures import ThreadPoolExecutor
+    links = sorted(links)
+    if not links:
+        return []
+    # How slow is this box right now? A quiet machine probes at ~1s and keeps the old 20s; a loaded one probes at
+    # 15s and gets a budget that matches, instead of a page of invented errors.
+    probe = _probe(links[0])
+    budget = LINK_TIMEOUT_MIN if probe is None else min(LINK_TIMEOUT_MAX, max(LINK_TIMEOUT_MIN, probe * LINK_WORKERS * 4))
+    if budget > LINK_TIMEOUT_MIN:
+        print(f"note: this machine answers a page in {probe:.1f}s right now, so the link check allows "
+              f"{budget:.0f}s per request instead of {LINK_TIMEOUT_MIN}s (load, not the site)")
 
     def one(u):
-        code = None
-        for attempt in range(3):   # retries for dropped connections (remote hosts / proxies)
+        code, kind = None, "timeout"
+        for attempt in range(3):   # retries for dropped connections (remote hosts / proxies) and for load
             if attempt:
                 time.sleep(2 * attempt)
             try:
-                code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"), timeout=20).status
+                code = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(u, method="GET"),
+                                                                    timeout=budget * (1 + attempt)).status
+                kind = "status"
                 break
             except urllib.error.HTTPError as e:
-                code = e.code
+                code, kind = e.code, "status"
                 break
-            except Exception as e:
-                code = str(e)[:40]
-        return u, code
+            except Exception as e:                  # a slow box gets more room on the next try, not another failure
+                code, kind = (f"no answer in {budget * (1 + attempt):.0f}s", "timeout") if _timed_out(e) else (str(e)[:40], "timeout")
+        return u, code, kind
 
-    with ThreadPoolExecutor(8) as ex:
-        res = list(ex.map(one, sorted(links)))
-    return [(urllib.parse.unquote(u), c) for u, c in res if c != 200]
+    with ThreadPoolExecutor(LINK_WORKERS) as ex:
+        res = list(ex.map(one, links))
+    return [(urllib.parse.unquote(u), c, k) for u, c, k in res if not (k == "status" and c == 200)]
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -343,14 +505,16 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def test_form(page, site):
-    """Submit the footer form like a person (waits > 3s so the time trap passes) and confirm it saved."""
+    """Submit the visible lead form like a person (waits > 3s so the time trap passes) and confirm it saved."""
     before = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
     page.goto(site.url + "/", wait_until="networkidle")
     page.wait_for_timeout(3500)
-    page.fill("#zf-footer-name", "בדיקת QA")
-    page.fill("#zf-footer-phone", "050-0000000")
-    page.check("#zf-footer input[name=zf_consent]")
-    page.click("#zf-footer button[type=submit]")
+    # the footer band is hidden on pages with a contact section (one form per page): submit the form a visitor sees
+    f = "footer" if page.locator("#zf-footer-name").is_visible() else "contact"
+    page.fill(f"#zf-{f}-name", "בדיקת QA")
+    page.fill(f"#zf-{f}-phone", "050-0000000")
+    page.check(f"#zf-{f} input[name=zf_consent]")
+    page.click(f"#zf-{f} button[type=submit]")
     page.wait_for_load_state("networkidle")
     ok_msg = page.locator(".zs-form__ok").count() > 0
     after = int(site.wp("post", "list", "--post_type=zap_lead", "--post_status=private", "--format=count") or 0)
@@ -364,6 +528,9 @@ def run_qa(site):
     from playwright.sync_api import sync_playwright
     data = load_site(site.src)
     urls = urls_for(site, data)
+    # A run that dies half way must not leave the previous run's report behind: a stale file reads exactly like
+    # a pass. Remove it first; it is written again only when the whole sweep completes.
+    (site.src / getattr(site, "qa_report", "QA-REPORT.md")).unlink(missing_ok=True)
     rows, links, errors, warns = [], set(), 0, 0
     extra = []
     def one_viewport(vp, w, h):
@@ -376,7 +543,14 @@ def run_qa(site):
             page.on("console", lambda m: console.append(m.text) if m.type == "error" else None)
             for u in urls:
                 console.clear()
-                resp = page.goto(u, wait_until="networkidle")
+                for _try in range(3):      # the machine sleeping or the network dropping mid-run (net::ERR_NETWORK_IO_SUSPENDED, ERR_NETWORK_CHANGED) is retried, not fatal
+                    try:
+                        resp = page.goto(u, wait_until="networkidle")
+                        break
+                    except Exception as e:
+                        if _try == 2 or "net::ERR_" not in str(e):
+                            raise
+                        page.wait_for_timeout(4000)
                 for _ in range(2):     # a gateway hiccup (proxy / host) is retried, a real error stays
                     if resp is None or resp.status not in (502, 503, 504):
                         break
@@ -497,21 +671,32 @@ def run_qa(site):
             if not shown:
                 errors += 1
 
-    bad_links = check_links(links)
+    checked = check_links(links)
+    bad_links = [(u, c) for u, c, k in checked if k == "status"]       # the server answered, and not with 200
+    no_answer = [(u, c) for u, c, k in checked if k == "timeout"]      # it did not answer: this box, not the site
     errors += len(bad_links)
+    warns += len(no_answer)
 
     lines = [f"# QA report — {data['business']['name']}", "",
              f"- Pages × viewports checked: **{len(rows)}** ({len(urls)} URLs × {len(VIEWPORTS)})",
-             f"- Internal links tested: **{len(links)}**, not 200: **{len(bad_links)}**",
+             f"- Internal links tested: **{len(links)}**, answered with a non-200 status: **{len(bad_links)}**, "
+             f"did not answer in time: **{len(no_answer)}**",
              f"- Errors: **{errors}** · Warnings: **{warns}**", ""]
     for name, ok in extra:
         lines.append(f"- {'✅' if ok else '❌'} {name}")
-    lines += ["", "| viewport | page | errors | warnings | KB | details |", "|---|---|---|---|---|---|"]
+    lines += ["", "| viewport | page | errors | warnings | KB | type scale | fonts | details |",
+              "|---|---|---|---|---|---|---|---|"]
     for vp, path, m in rows:
         det = "; ".join(m["err"] + m["warn"])[:300].replace("|", "/")
-        lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | {det} |")
+        lines.append(f"| {vp} | {path} | {len(m['err'])} | {len(m['warn'])} | {m['info'].get('kb', '')} | "
+                     f"{m['info'].get('scale', '')} | {m['info'].get('fonts', '')} | {det} |")
     if bad_links:
-        lines += ["", "## Links that are not 200", ""] + [f"- {c} {u}" for u, c in bad_links]
+        lines += ["", "## Links the server answered with a non-200 status", ""] + [f"- {c} {u}" for u, c in bad_links]
+    if no_answer:
+        lines += ["", "## Links that did not answer (timed out or refused the connection) - NOT an error status", "",
+                  "These are almost always this machine, not the site: the dev server serialises, and another build "
+                  "running beside this one pushes a 1.4s page past the timeout. Rerun the QA in a quiet window "
+                  "before treating any of them as a finding.", ""] + [f"- {c} {u}" for u, c in no_answer]
     (site.src / getattr(site, "qa_report", "QA-REPORT.md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines[:9 + len(extra)]))
     for vp, path, m in rows:

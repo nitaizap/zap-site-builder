@@ -7,6 +7,24 @@ before the gate and before delivery.
 
 ## Lessons (each is now part of the engine or the skill)
 
+**Design quality (04/11/2026, after the site team's standard was compared with ours)**
+- Passing every gate is not the same as looking finished. Every design complaint this project has had came off
+  a site with `zs qa` 0 errors and `zs seo` 0 FAIL, because the gates measured correctness and nothing measured
+  the design. `zs qa` now also measures the part that can be measured: one size per heading level, images never
+  shown larger than their own pixels or stretched out of ratio, the number of font families, mobile gutters and
+  tap targets, and a page whose buttons carry no icon at all. The report carries a `type scale` and a `fonts`
+  column. The image checks are errors; the taste-adjacent ones warn, so a handover is never blocked by drift.
+- The rest of it is a checklist, not a number: `qa-rules.md` -> "UX acceptance" is the list of things that make a
+  site read as finished (clickability, rhythm, images, forms, floating elements, mobile). Most of its lines were
+  learnt twice, once per client, because they lived only in a finished session's context.
+- Rules did not transfer the level; examples did. `gallery/` holds our own shipped sites with their screenshots
+  and **every correction the user made, in their own words**. Read the nearest 1-2 before composing, write the
+  entry after handover. A direction that cannot clear the floor there (6+ real images, icons on conversion
+  buttons, a 390 frame, 8+ sections) is not shown to the user.
+- A build is checked against what was approved, not only against itself: step 4's fidelity pass opens the chosen
+  direction's preview beside the built page at 1440 and 390. Spacing collapsing to the theme default, a weight
+  falling back to 400, a crop losing its subject and the bold element flattening are invisible to every gate.
+
 **Intake and facts**
 - Facts table in NOTES.md with a source per fact; one numbered message of gaps, so one-line answers map back.
 - Research before asking: the Zap customer id opens every Zap directory (d.co.il, rest.co.il, mishlohim…), the

@@ -126,8 +126,8 @@ function zap_handle_lead() {
     $to = zap_opt('business.email_leads');
     // Never mail the client from a staging build: leads are saved, mail starts on the live site.
     // An internal address can receive test mail meanwhile (zap_site.smtp.test_to).
-    // ... and a site pushed to staging by `zs push` carries zs_staging_lock until launch, whatever its environment type
-    if (wp_get_environment_type() !== 'production' || get_option('zs_staging_lock')) {
+    // staging = the site's address (inc/launch.php), never a database flag that a migration would carry to the live site
+    if (zap_is_staging()) {
         $to = zap_opt('smtp.test_to');
         if (!$to) update_post_meta($id, '_zap_mailed', 'staging-skip');
     }
@@ -135,26 +135,233 @@ function zap_handle_lead() {
         $headers = [];
         if ($email) $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
         $subject = 'פנייה חדשה מהאתר: ' . zap_opt('business.name', get_bloginfo('name'));
-        $ok = wp_mail($to, $subject, $body, $headers);
+        $ok = zap_send_plugin_mail($to, $subject, $body, $headers);
         update_post_meta($id, '_zap_mailed', $ok ? 'yes' : 'no');
     }
     wp_safe_redirect(add_query_arg('zs_sent', $form, $back) . '#zf-' . $form);
     exit;
 }
 
-/* ---------- mail: Zap relay, Zap sender ---------- */
-add_filter('wp_mail_from', fn() => zap_opt('smtp.from', 'zapsites@d.co.il'));
-add_filter('wp_mail_from_name', fn() => zap_opt('business.name', get_bloginfo('name')));
-add_action('phpmailer_init', function ($m) {
-    if (!zap_opt('smtp.enabled', true)) return;
+/* ---------- mail: the Zap relay, used only for the mail THIS plugin sends ----------
+ *
+ * History: this block used to hook `wp_mail_from`, `wp_mail_from_name` and `phpmailer_init` globally, at the
+ * default priority 10, with the relay on by default. Three consequences, all of them reported as "בעיות SMTP":
+ *   1. every wp_mail on the site (password resets, WooCommerce, any other plugin) was forced through
+ *      relay.d.co.il:25, unauthenticated and without TLS;
+ *   2. priority 10 is also where WP Mail SMTP, FluentSMTP, Post SMTP and the rest configure PHPMailer, so which
+ *      one won depended on plugin load order: the same site could deliver or not deliver after an unrelated
+ *      plugin update;
+ *   3. every message left as zapsites@d.co.il, a domain the client's site has no SPF/DKIM alignment with, so
+ *      mail that did go out landed in spam;
+ *   4. it disabled TLS outright on the strength of a comment that says the relay cannot do it. relay.d.co.il
+ *      does: see zap_mail_relay().
+ *
+ * Now: another mailer always wins (we stand down completely and say so in wp-admin), the relay and the sender
+ * filters are attached around our own send only and removed again afterwards, and the sender is an address on
+ * the site's own domain with the enquirer as Reply-To.
+ */
+
+/** Mailer plugins that take wp_mail over. plugin-folder => the name an admin recognises. */
+function zap_known_mailers() {
+    return [
+        'wp-mail-smtp'                       => 'WP Mail SMTP',
+        'wp-mail-smtp-pro'                   => 'WP Mail SMTP Pro',
+        'fluent-smtp'                        => 'FluentSMTP',
+        'post-smtp'                          => 'Post SMTP',
+        'easy-wp-smtp'                       => 'Easy WP SMTP',
+        'wp-ses'                             => 'WP Offload SES',
+        'amazon-ses-for-wordpress'           => 'WP Offload SES',
+        'mailin'                             => 'Brevo (Sendinblue)',
+        'sendinblue-for-woocommerce'         => 'Brevo (Sendinblue)',
+        'sendgrid-email-delivery-simplified' => 'SendGrid',
+        'wp-sendgrid-mailer'                 => 'SendGrid',
+        'mailgun'                            => 'Mailgun',
+        'wp-mailgun-smtp'                    => 'Mailgun',
+        'smtp-mailer'                        => 'SMTP Mailer',
+        'wp-smtp'                            => 'WP SMTP',
+        'gmail-smtp'                         => 'Gmail SMTP',
+        'postman-smtp'                       => 'Postman SMTP',
+    ];
+}
+
+/** Plugin folders active on this site (single site + network). */
+function zap_active_plugin_dirs() {
+    $files = (array) get_option('active_plugins', []);
+    if (is_multisite()) $files = array_merge($files, array_keys((array) get_site_option('active_sitewide_plugins', [])));
+    $dirs = [];
+    foreach ($files as $f) {
+        $f = (string) $f;
+        $d = strtok($f, '/');
+        if ($d && $d !== $f) $dirs[$d] = true;   // "folder/file.php"; a single-file plugin has no folder
+    }
+    return array_keys($dirs);
+}
+
+/** How many callbacks other than ours are attached to phpmailer_init. */
+function zap_other_phpmailer_hooks() {
+    global $wp_filter;
+    if (empty($wp_filter['phpmailer_init'])) return 0;
+    $n = 0;
+    foreach ($wp_filter['phpmailer_init'] as $cbs) {
+        foreach ((array) $cbs as $cb) {
+            $fn = is_array($cb) ? ($cb['function'] ?? null) : null;
+            if (is_string($fn) && $fn === 'zap_mail_relay') continue;
+            $n++;
+        }
+    }
+    return $n;
+}
+
+/**
+ * Who is managing mail on this site, if it is not us.
+ * '' = nobody else, so our relay may run. Otherwise a name to show an admin.
+ * Two independent signals: a known mailer plugin is active, or something other than us is already on phpmailer_init.
+ */
+function zap_foreign_mailer() {
+    $known = zap_known_mailers();
+    $hits = [];
+    foreach (zap_active_plugin_dirs() as $dir) {
+        if (isset($known[$dir])) $hits[$known[$dir]] = true;
+    }
+    if ($hits) return implode(', ', array_keys($hits));
+    // a mailer configured in an mu-plugin, a snippet or a host drop-in leaves no plugin row, but it does leave a hook
+    $n = zap_other_phpmailer_hooks();
+    if ($n) return sprintf('תוסף או קוד אחר (%d חיבורים ל-phpmailer_init)', $n);
+    return '';
+}
+
+/** The address we send AS: the client's own domain, so SPF/DMARC can align. zapsites@d.co.il only as a last resort. */
+function zap_mail_from_address() {
+    $set = zap_opt('smtp.from');            // a site that configured one explicitly keeps it
+    if ($set) return $set;
+    $host = strtolower((string) parse_url(home_url(), PHP_URL_HOST));
+    $host = preg_replace('/^www\./', '', strtok($host, ':'));
+    // a real domain only: never "localhost", an IP, a single label or a staging address
+    if ($host && !filter_var($host, FILTER_VALIDATE_IP) && substr_count($host, '.') >= 1 && !zap_is_staging_host($host)) {
+        return 'no-reply@' . $host;
+    }
+    return 'zapsites@d.co.il';
+}
+
+/** Is our relay going to run at all? [bool active, string reason in Hebrew, string mailer-in-charge]. */
+function zap_mail_relay_state() {
+    $other = zap_foreign_mailer();
+    if ($other) {
+        return [false, 'מערכת דואר אחרת מנהלת את השליחה באתר: ' . $other . '. ממסר זאפ מושבת אוטומטית והשליחה נשארת שלה.', $other];
+    }
+    if (!zap_opt('smtp.enabled', true)) {
+        return [false, 'ממסר הדואר של זאפ כבוי בהגדרות (smtp.enabled). המיילים נשלחים בדרך הרגילה של ההוסטינג.', 'WordPress (wp_mail)'];
+    }
+    $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+    $sec = $mode === 'none' ? 'ללא הצפנה' : ($mode === 'tls' || $mode === 'ssl' ? 'הצפנה נדרשת (' . $mode . ')' : 'הצפנה (STARTTLS) כשהשרת תומך');
+    return [true, 'ממסר זאפ פעיל, ורק עבור מיילים של טופס הפניות: ' . zap_opt('smtp.host', 'relay.d.co.il') . ':' . (int) zap_opt('smtp.port', 25) . ', ' . $sec . '.', 'Zap Site'];
+}
+
+/** Record the decision where an admin can read it (settings screen) and a log reader can find it. */
+function zap_mail_log_decision($active, $why) {
+    $prev = get_option('zap_mail_decision', []);
+    if (($prev['active'] ?? null) === (bool) $active && ($prev['why'] ?? null) === $why) return;
+    update_option('zap_mail_decision', ['t' => current_time('mysql'), 'active' => (bool) $active, 'why' => $why], false);
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[zap-site] mail: ' . ($active ? 'relay active' : 'relay stood down') . ' - ' . $why);
+    }
+}
+
+/** Our PHPMailer configuration. Named (not a closure) so zap_other_phpmailer_hooks can tell it apart. */
+function zap_mail_relay($m) {
+    if (empty($GLOBALS['zap_sending_lead'])) return;      // our own mail only: never the whole site's
+    [$active, $why] = zap_mail_relay_state();
+    zap_mail_log_decision($active, $why);
+    if (!$active) return;                                 // another mailer's configured delivery always wins
     $m->isSMTP();
     $m->Host = zap_opt('smtp.host', 'relay.d.co.il');
     $m->Port = (int) zap_opt('smtp.port', 25);
+    // No authentication: relay.d.co.il advertises no AUTH mechanism at all in its EHLO reply (checked 04/11/2026),
+    // so it is allowlisted by sender IP and SMTPAuth must stay false. This is a measurement, not an assumption.
     $m->SMTPAuth = false;
-    $m->SMTPSecure = '';      // relay offers no TLS; forcing it fails every send
-    $m->SMTPAutoTLS = false;
     $m->Timeout = 10;
-});
+    // Transport security. This file used to hardcode SMTPSecure='' + SMTPAutoTLS=false under the comment
+    // "relay offers no TLS; forcing it fails every send". That claim carried no date and was wrong by 04/11/2026.
+    // What was actually measured that day, from a Zap workstation:
+    //   - relay.d.co.il:25 EHLO advertises STARTTLS (Microsoft ESMTP, 31.168.35.139);
+    //   - the handshake completes at TLSv1.2 (ECDHE-RSA-AES256-GCM-SHA384) and PASSES default peer verification:
+    //     a DigiCert/GeoTrust certificate for *.d.co.il, SAN d.co.il, valid to 02/04/2027;
+    //   - a live client site (thewhite-villa.co.il) sends through this relay via WP Mail SMTP with encryption
+    //     'tls' on port 25, and the mail is delivered, not merely accepted.
+    // Re-measure before trusting the above; it is true of this relay on that date, not a law of nature.
+    // We therefore no longer force an unencrypted hop for every client's lead mail.
+    //   'auto' (default) - PHPMailer's own opportunistic STARTTLS: encrypt when the server offers it, plain when
+    //                      it does not. If the handshake itself fails, zap_send_plugin_mail() retries once in the
+    //                      clear, so a relay with an expired certificate degrades instead of losing the lead.
+    //   'tls' / 'ssl'    - require it (a send fails rather than going out unencrypted)
+    //   'none'           - the old behaviour, for a relay that genuinely cannot do TLS
+    $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+    if (!empty($GLOBALS['zap_mail_plain_retry'])) $mode = 'none';
+    if ($mode === 'none') {
+        $m->SMTPSecure = '';
+        $m->SMTPAutoTLS = false;
+    } elseif ($mode === 'tls' || $mode === 'ssl') {
+        $m->SMTPSecure = $mode;
+        $m->SMTPAutoTLS = true;
+    } else {
+        $m->SMTPSecure = '';      // no fixed scheme...
+        $m->SMTPAutoTLS = true;   // ...but take STARTTLS whenever the relay offers it
+    }
+}
+
+/** Does this PHPMailer failure look like the TLS handshake rather than the message? */
+function zap_mail_error_is_tls($msg) {
+    return (bool) preg_match('~STARTTLS|SSL|TLS|certificate|cipher|handshake~i', (string) $msg);
+}
+// late, so a mailer that registers after us is already visible when we decide whether to stand down
+add_action('phpmailer_init', 'zap_mail_relay', 1000);
+
+function zap_mail_from_filter() { return zap_mail_from_address(); }
+function zap_mail_from_name_filter() { return zap_opt('business.name', get_bloginfo('name')); }
+
+/** Send one message as the plugin: the sender filters and the relay apply here and nowhere else. */
+function zap_send_plugin_mail($to, $subject, $body, $headers = []) {
+    $GLOBALS['zap_sending_lead'] = true;
+    $GLOBALS['zap_mail_last_error'] = '';
+    add_filter('wp_mail_from', 'zap_mail_from_filter', 1000);
+    add_filter('wp_mail_from_name', 'zap_mail_from_name_filter', 1000);
+    add_action('wp_mail_failed', 'zap_mail_capture_error');
+    try {
+        $ok = wp_mail($to, $subject, $body, $headers);
+        // Opportunistic STARTTLS that fails at the handshake loses the lead, and PHPMailer gives up before DATA,
+        // so nothing was delivered and one retry in the clear cannot duplicate the message. Only then, and only once.
+        $mode = strtolower((string) zap_opt('smtp.secure', 'auto'));
+        if (!$ok && in_array($mode, ['auto', ''], true) && zap_mail_error_is_tls($GLOBALS['zap_mail_last_error'])) {
+            zap_mail_log_decision(true, 'שליחה מוצפנת (STARTTLS) נכשלה מול ' . zap_opt('smtp.host', 'relay.d.co.il')
+                . ' - נשלח שוב ללא הצפנה. שגיאה: ' . $GLOBALS['zap_mail_last_error']);
+            $GLOBALS['zap_mail_plain_retry'] = true;
+            try {
+                $ok = wp_mail($to, $subject, $body, $headers);
+            } finally {
+                unset($GLOBALS['zap_mail_plain_retry']);
+            }
+        }
+        return $ok;
+    } finally {
+        remove_action('wp_mail_failed', 'zap_mail_capture_error');
+        remove_filter('wp_mail_from', 'zap_mail_from_filter', 1000);
+        remove_filter('wp_mail_from_name', 'zap_mail_from_name_filter', 1000);
+        unset($GLOBALS['zap_sending_lead']);
+    }
+}
+
+/** Remember why our own send failed, so the retry can tell a TLS problem from a bad address. */
+function zap_mail_capture_error($err) {
+    $GLOBALS['zap_mail_last_error'] = is_object($err) && method_exists($err, 'get_error_message')
+        ? $err->get_error_message() : (string) $err;
+}
+
+/** The decision, recomputed on an admin screen so the settings page is never stale. */
+function zap_mail_status_line() {
+    [$active, $why, $who] = zap_mail_relay_state();
+    zap_mail_log_decision($active, $why);
+    return [$active, $why, $who];
+}
 
 /* ---------- where the leads go: a settings screen under "פניות מהאתר" (Zap QA asked where the form e-mail is set) ---------- */
 add_action('admin_menu', function () {
@@ -163,8 +370,9 @@ add_action('admin_menu', function () {
 
 function zap_form_settings_page() {
     if (!current_user_can('manage_options')) return;
-    $staging = wp_get_environment_type() !== 'production' || get_option('zs_staging_lock');
+    $staging = zap_is_staging();
     $saved = isset($_GET['saved']);
+    [$relay_on, $relay_why, $mailer] = zap_mail_status_line();
     ?>
 <div class="wrap" dir="rtl">
   <h1>הגדרות טפסים</h1>
@@ -177,7 +385,14 @@ function zap_form_settings_page() {
       <tr><th scope="row"><label for="zfs-to">נמען (המייל של הלקוח)</label></th>
           <td><input id="zfs-to" name="email_leads" type="email" class="regular-text" dir="ltr" value="<?php echo esc_attr(zap_opt('business.email_leads')); ?>"></td></tr>
       <tr><th scope="row">שולח</th>
-          <td><code dir="ltr"><?php echo esc_html(zap_opt('smtp.from', 'zapsites@d.co.il')); ?></code> · שם השולח: <?php echo esc_html(zap_opt('business.name', get_bloginfo('name'))); ?></td></tr>
+          <td><code dir="ltr"><?php echo esc_html(zap_mail_from_address()); ?></code> · שם השולח: <?php echo esc_html(zap_opt('business.name', get_bloginfo('name'))); ?>
+          <p class="description">השולח הוא כתובת בדומיין של האתר עצמו, כדי ש-SPF/DMARC יאשרו את המייל ולא יסנן אותו לספאם. התשובה (Reply-To) חוזרת לפונה כשהשאיר אימייל.</p></td></tr>
+      <tr><th scope="row">מי מנהל את הדואר באתר</th>
+          <td><strong><?php echo esc_html($mailer); ?></strong>
+          <p class="description"><?php echo esc_html($relay_why); ?></p>
+          <p class="description"><?php echo $relay_on
+              ? 'ממסר זאפ חל רק על המייל של טופס הפניות. שחזור סיסמה, WooCommerce וכל תוסף אחר נשלחים בדרך הרגילה של האתר.'
+              : 'תוסף הדואר שמותקן באתר מנצח תמיד. זאפ לא נוגעת בהגדרות השליחה שלו.'; ?></p></td></tr>
       <tr><th scope="row"><label for="zfs-test">כתובת לבדיקות (אתר בדיקה בלבד)</label></th>
           <td><input id="zfs-test" name="test_to" type="email" class="regular-text" dir="ltr" value="<?php echo esc_attr(zap_opt('smtp.test_to')); ?>">
           <p class="description">באתר בדיקה לא נשלח מייל ללקוח. פניות נשלחות לכתובת הזו אם מולאה.</p></td></tr>

@@ -18,6 +18,16 @@ body .zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__lead { color: 
 
 /* Forms use the site's fonts, never the browser/plugin default */
 body :is(.zs-form, .zs-form input, .zs-form textarea, .zs-form select, .zs-form button, .search-form input, .search-form button) { font-family: var(--f-body); }
+/* Elementor's kit sets `.elementor-kit-N label` to its own family, which beat the rule above on every
+   form label and the consent line: a third font family on the page, and that third one was whatever the
+   browser happens to pick for Hebrew. Named here so the site's own body font wins. */
+body .zs-form :is(label, .zs-form__consent, .zs-form__consent a, .elementor-field-label) { font-family: var(--f-body); }
+/* Browsers do not inherit a font on form controls, and Elementor's kit sets its own on button, input,
+   select and textarea. `font: inherit` in our own rules loses to it, which left single controls - the
+   footer's number button on c2910210, for one - rendering in whatever font the browser picks for Hebrew.
+   A class-level rule still wins over this, so themed buttons keep their own family. */
+body[class] :is(button, input, select, textarea) { font-family: var(--f-body); }   /* [class] on purpose: Elementor's kit selector is `.elementor-kit-N button` (0,1,1), so a plain
+      `body button` (0,0,2) loses to it. The attribute selector takes this to (0,1,2) and wins. */
 
 /* The lead form's title is a paragraph styled as a heading (it is not a section heading) */
 body .zs-leadband__title .elementor-heading-title, body .zs-contact__title .elementor-heading-title { font-family: var(--f-head); font-size: var(--fs-h2); font-weight: var(--w-head, 700); line-height: var(--lh-head, 1.15); color: var(--c-ink); margin: 0; }
@@ -68,15 +78,43 @@ body .zs-404 :is(.zs-404__links, h2, .zs-404__main) { margin-top: 32px; }
 /* Gallery photos open in a lightbox */
 body .zs-gallery__img a { display: block; cursor: zoom-in; }
 
-/* Accessibility toolbar button on phones: low on the start edge, above the bottom action bar; never in the header
-   (it covered the logo) and never over the hero text. Zap QA, newest round: "התפריט נגישות נמצא בהדר .. לבטל".
-   The toolbar box is ~300px tall with its button at the top, so it is placed by its top; open, it moves up so
-   its panel fits on the screen. */
+/* Accessibility toolbar button on phones: its own slot at the end of the header row (after the menu button),
+   aligned with it; the header row reserves the room so it never sits between the logo and the buttons */
 @media (max-width: 767px) {
-  body #pojo-a11y-toolbar { position: fixed !important; top: calc(100svh - 170px) !important; bottom: auto !important; }
-  body #pojo-a11y-toolbar.pojo-a11y-toolbar-open { top: 80px !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: 0 !important; bottom: auto !important; }
-  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 40px; height: 40px; padding: 8px; font-size: 22px; line-height: 24px; }
+  body #pojo-a11y-toolbar { position: fixed !important; top: 0 !important; bottom: auto !important; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { top: calc((var(--header-h, 72px) - 44px) / 2) !important; bottom: auto !important; }
+  body.admin-bar #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle { margin-top: 46px; }
+  body #pojo-a11y-toolbar .pojo-a11y-toolbar-toggle a { width: 44px; height: 44px; padding: 10px; border-radius: 50%; font-size: 22px; line-height: 24px; }
+  body #pojo-a11y-toolbar.pojo-a11y-toolbar-left .pojo-a11y-toolbar-toggle { left: auto; right: calc(-1 * (var(--gutter, 16px) + 44px)) !important; }
+  body:has(#pojo-a11y-toolbar) :is(.zs-header__in, .e-con.zs-header__in) { padding-inline-end: calc(var(--gutter, 16px) + 52px) !important; }
+}
+
+/* Above 767px the toolbar is back in its own corner of the viewport, 52px wide, and the header row knows
+   nothing about it: wherever the page's side margin is narrower than that, the header's last item (the call
+   button, physically on the left in RTL) starts underneath the toggle. Measured on the sample at 768, 1024
+   and 1280; only a screen wide enough to clear it on its own was safe. Reserve exactly what is missing, so
+   those wide screens are untouched.
+   The side margin is measured from the row's own containing block (`100%` = the header's width = the layout
+   width), NOT from `100vw`: `100vw` includes the classic scrollbar, which the page does not get to use. With
+   `100vw` the formula over-states the margin by half the scrollbar (7.5px of a 15px bar) and reserves nothing
+   wherever that pushes it just past 60px. Measured on the sample at a 15px scrollbar: a 1320 wrap at a 1440
+   window left the call button 0.5px clear of the toggle, and the default 1200 wrap did the same at 1280. With
+   `100%` both land on the intended 8px, and the wide screens are still untouched.
+   The top strip gets the same reservation, not a second rule of its own: it is the same `.zs-wrap` row at the
+   same side of the same page, and its first item was sitting under the toggle at every width from 1025 (where
+   the strip appears) to about 1366. One formula, both rows. */
+@media (min-width: 768px) {
+  body:has(#pojo-a11y-toolbar) :is(.zs-header__in, .e-con.zs-header__in, .zs-topbar__in, .e-con.zs-topbar__in) {
+    padding-inline-end: calc(var(--gutter, 32px) + max(0px, 60px - max(0px, (100% - var(--wrap, 1200px)) / 2)));
+  }
+}
+
+/* Mobile menu panel is always light (--c-bg): its links take the page ink, even when a kit or a dark header
+   paints the desktop header links light (that made them invisible on the panel) */
+@media (max-width: 1024px) {
+  body .zs-header .zs-nav .zs-menu a { color: var(--c-ink) !important; background: none !important; }
+  body .zs-header .zs-nav .zs-menu :is(.current-menu-item, .current-menu-ancestor) > a { color: var(--c-primary) !important; }
+  body .zs-header .zs-nav .zs-menu .sub-menu a { color: var(--c-text) !important; }
 }
 
 /* Header logo: big enough to read (square/stacked logos were tiny at 46px); wide logos stay capped by width */

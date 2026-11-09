@@ -32,11 +32,11 @@ class Site:
         self.pidfile = self.dir / "server.pid"
 
     # ---------- WP-CLI ----------
-    def wp(self, *args, check=True, input=None):
+    def wp(self, *args, check=True, input=None, _rc=False):
         ensure_db()
         argv = wp_cmd() + [f"--path={self.wp_dir}", *map(str, args)]
         r = run(argv, check=check, input=input)
-        return r.stdout.strip()
+        return (r.returncode, r.stdout.strip()) if _rc else r.stdout.strip()
 
     def eval_php(self, code):
         """Run PHP inside WordPress. Code goes through a temp file: no shell quoting games."""
@@ -63,7 +63,9 @@ class Site:
         (self.src / "assets").mkdir(parents=True, exist_ok=True)
         if not (self.wp_dir / "wp-load.php").exists():
             # Hebrew core packs lag behind releases (he_IL stopped at 6.2), so download en_US
-            # core and add whatever language pack exists; the theme forces RTL either way.
+            # core and add the he_IL language pack on top. The pack is not optional: without it
+            # WordPress refuses the WPLANG option and the site comes out en_US / LTR.
+            # assert_locale() below proves it actually took.
             self.wp("core", "download", "--skip-content", "--force")
             (self.wp_dir / "wp-content" / "plugins").mkdir(parents=True, exist_ok=True)
             (self.wp_dir / "wp-content" / "themes").mkdir(parents=True, exist_ok=True)
@@ -89,13 +91,66 @@ class Site:
         self.install_code()
         for p in PLUGINS:
             self.wp("plugin", "install", p, "--activate")
-        self.wp("language", "core", "install", locale, check=False)
+        core_rc, _ = self.wp("language", "core", "install", locale, check=False, _rc=True)
         self.wp("language", "plugin", "install", "--all", locale, check=False)
         self.wp("option", "update", "WPLANG", locale)
         self.ensure_parent_theme()
         self.wp("theme", "activate", "zap-base")
         self.wp("plugin", "activate", "zap-site")
+        self.assert_locale(locale, core_pack_rc=core_rc)
         self.base_settings()
+
+    def assert_locale(self, locale, core_pack_rc=None):
+        """Prove the site really is in `locale` and, for Hebrew, really renders RTL.
+
+        Why the installer's exit code is not enough, measured on a real site: WordPress
+        sanitizes the WPLANG option against get_available_languages(). Ask for a locale whose
+        pack is not installed and `wp option update WPLANG he_IL` prints *Success* and changes
+        nothing. So when `wp language core install he_IL` fails, the site silently stays en_US,
+        get_locale() returns en_US, is_rtl() is false, and the whole page renders left to right.
+        That is the PR #59 incident, and nothing in the exit codes shows it.
+
+        This stops the build rather than warning. Every layout measurement (`zs qa`, the
+        uniqueness fingerprint, the screenshots) on an LTR Hebrew site is meaningless, and the
+        burger lands under the accessibility button. The engine runs unattended in cloud
+        sessions, so a wrong-direction site that builds is worse than a build that stops: a
+        person can ship the first one, and nobody can ship the second.
+
+        A missing translation pack on a site whose locale *did* take is only a warning: the
+        layout is right and just the WordPress chrome stays English.
+        """
+        state = json.loads(self.eval_php(
+            "echo json_encode(['locale' => get_locale(), 'wplang' => (string) get_option('WPLANG'),"
+            " 'rtl' => is_rtl(), 'installed' => array_values(get_available_languages())]);"))
+        want_rtl = locale.startswith(("he", "ar", "fa", "ur"))
+        if state["locale"] != locale or state["wplang"] != locale:
+            cause = (f"`wp language core install {locale}` did not install the pack "
+                     f"(exit {core_pack_rc}), so WordPress discarded the WPLANG option. Usually a "
+                     f"failed or blocked download from downloads.wordpress.org; retry with network "
+                     f"access." if locale not in state["installed"] else
+                     "the pack is installed, so something else is overriding the locale (a WPLANG "
+                     "constant in wp-config.php, or a plugin filtering 'locale').")
+            raise RuntimeError(
+                f"{self.slug}: the site did not come out in {locale} - WordPress reports locale "
+                f"{state['locale']!r} (WPLANG option {state['wplang']!r}, is_rtl {state['rtl']}). "
+                f"{cause} "
+                f"Every layout measurement on this site would be meaningless and a Hebrew "
+                f"site would render left to right end to end, so the build stops here instead of "
+                f"handing over a site in the wrong language.")
+        if want_rtl and not state["rtl"]:
+            raise RuntimeError(
+                f"{self.slug}: locale is {locale} but WordPress still renders left to right "
+                f"(is_rtl() is false). A Hebrew site laid out LTR makes every measurement "
+                f"meaningless and must never be shipped, so the build stops here. Check that the "
+                f"zap-base theme is active and that its init RTL hook still runs.")
+        if locale not in state["installed"]:
+            why = "the download failed" if core_pack_rc else "WordPress.org has no pack for this core version"
+            print(f"WARNING: {self.slug}: no {locale} translation pack is installed ({why}). "
+                  f"The site is {locale} and renders RTL, so layout and measurements are valid, but "
+                  f"WordPress and plugin strings stay in English. Hebrew core packs lag behind "
+                  f"WordPress releases (he_IL stopped at 6.2), so this is expected on a current "
+                  f"core; if it was a network failure, rebuild once the network is back.",
+                  flush=True)
 
     def ensure_parent_theme(self):
         """Zap Base is a child of Hello Elementor (Zap's base theme): the parent must be installed."""
@@ -180,8 +235,9 @@ class Site:
             kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
         else:
             kw["start_new_session"] = True
+        # PHP notices from plugins go to server.log, never into the page (hosts hide them; on the page they break the layout QA)
         env = dict(os.environ, PHP_CLI_SERVER_WORKERS="4")
-        p = subprocess.Popen([php_bin(), "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
+        p = subprocess.Popen([php_bin(), "-d", "display_errors=0", "-d", "log_errors=1", "-S", f"127.0.0.1:{self.port}", "-t", str(self.wp_dir), str(router)],
                              cwd=self.wp_dir, stdout=log, stderr=log, stdin=subprocess.DEVNULL, env=env, **kw)
         self.pidfile.write_text(str(p.pid))
         for _ in range(40):

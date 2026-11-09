@@ -26,6 +26,10 @@ function zs_opt($key = null, $default = '') {
     return $v === null || $v === '' ? $default : $v;
 }
 
+/* Safety net for a site that kept this theme but lost the zap-site plugin (migration): a loud admin notice and a
+   fallback menu. Hooks nothing at all while the plugin is running. */
+require __DIR__ . '/inc/plugin-missing.php';
+
 add_action('after_setup_theme', function () {
     load_theme_textdomain('zap-base');
     add_theme_support('title-tag');
@@ -177,9 +181,37 @@ function zs_tokens_css() {
     }
     // Per-site escape hatch for the rare client-specific tweak; the shared theme stays untouched.
     if (!empty($d['custom_css']) && is_string($d['custom_css'])) {
-        $css .= "\n" . wp_strip_all_tags($d['custom_css']);
+        $css .= "\n" . zs_sanitize_css($d['custom_css']);
     }
     return $css;
+}
+
+/**
+ * Sanitise a site's `design.custom_css`.
+ *
+ * This used to be `wp_strip_all_tags`, which deletes everything from any `<` to the next `>`. CSS legitimately
+ * contains both: a comment such as "<=760px", a `content: "<"`, a selector written with a stray angle bracket.
+ * The strip therefore ate the rest of that rule and, because the next `>` was usually inside a later rule, the
+ * rules after it as well. Nothing said so: `zs build` printed nothing, `zs qa` scored 0 errors, and a hero that
+ * had been capped in its own CSS silently went back to 863px. One agent lost a round to it.
+ *
+ * This output is printed inside a `<style>` element, so the only real escape is that element's own end tag; the
+ * rest of what can execute from inside CSS is `expression()` and a javascript:/vbscript: URL. Those are what
+ * gets removed. Angle brackets are left alone. Anything removed is logged and marked in the CSS, because what
+ * this bug cost was its silence (`zs build` also refuses these at build time, engine/validate.py).
+ */
+function zs_sanitize_css($css) {
+    $css = (string) $css;
+    // replacements stay syntactically inert so what is left is still parseable CSS
+    $out = preg_replace('#<\s*/\s*style#i', 'zs-removed-style-end-tag', $css);
+    $out = preg_replace('#expression\s*\(#i', 'zs-removed-expression(', $out);
+    $out = preg_replace('#(url\s*\(\s*["\']?\s*)(?:javascript|vbscript)\s*:#i', '$1about:blank#removed-', $out);
+    if ($out !== $css) {
+        $msg = 'zap: unsafe construct(s) removed from design.custom_css (style end tag / expression() / script URL)';
+        error_log($msg);
+        $out = "/* " . $msg . " */\n" . $out;
+    }
+    return $out;
 }
 
 function zs_lum($hex) {
@@ -337,7 +369,9 @@ add_filter('nav_menu_link_attributes', function ($atts, $item) {
 function zs_part_nav() {
     $tel = zs_opt('business.phone_e164'); $cta = zs_opt('header.cta_label', '');
     $o = '<nav id="zs-nav" class="zs-nav" aria-label="תפריט ראשי">';
-    $o .= wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'zs-menu', 'depth' => 2, 'fallback_cb' => false, 'echo' => false]) ?: '';
+    $menu = wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'zs-menu', 'depth' => 2, 'fallback_cb' => false, 'echo' => false]) ?: '';
+    if ($menu === '' && zs_plugin_missing()) $menu = zs_fallback_links('zs-menu');   // plugin gone and no menu assigned: never an empty nav
+    $o .= $menu;
     if ($tel) $o .= '<a class="zs-btn zs-btn--primary zs-nav__cta" href="' . esc_attr(zs_tel_href($tel)) . '">' . zs_icon('phone') . '<span>' . esc_html($cta ?: zs_opt('business.phone_display')) . '</span></a>';
     $o .= '</nav><button class="zs-burger" type="button" aria-expanded="false" aria-controls="zs-nav" aria-label="פתיחת תפריט"><span></span><span></span><span></span></button>';
     return $o;
@@ -437,12 +471,24 @@ add_shortcode('zap_menu', fn($a) => zs_part_menu(shortcode_atts(['location' => '
 
 /** Print the Elementor header/footer template for this slot. Elementor Pro Theme Builder first, then our saved template. */
 function zs_render_tpl($slot) {
-    if (function_exists('elementor_theme_do_location') && elementor_theme_do_location($slot)) return true;
+    // zap-site plugin gone: Elementor drops the Zap widgets and the header can come out with no menu at all
+    $net = $slot === 'header' && zs_plugin_missing();
+    if (function_exists('elementor_theme_do_location')) {
+        if ($net) ob_start();
+        $done = elementor_theme_do_location($slot);
+        if ($net) {
+            $out = (string) ob_get_clean();
+            echo $out;
+            if ($done && zs_header_needs_fallback($out)) echo zs_fallback_nav();
+        }
+        if ($done) return true;
+    }
     $id = (int) get_option("zs_tpl_$slot");
     if (!$id || !class_exists('\Elementor\Plugin') || get_post_status($id) !== 'publish') return false;
     $html = \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($id, true);
     if (!$html) return false;
     echo '<div class="zs-tpl zs-tpl-' . esc_attr($slot) . '">' . $html . '</div>';
+    if ($net && zs_header_needs_fallback($html)) echo zs_fallback_nav();
     return true;
 }
 

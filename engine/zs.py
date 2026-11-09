@@ -6,7 +6,8 @@
   zs shots <slug> [paths...]        screenshots desktop + mobile (+ design directions)
   zs preview <slug>                 home page under every design direction -> sites/<slug>/preview/PREVIEW.md
   zs qa <slug>                      measured QA sweep -> sites/<slug>/QA-REPORT.md
-  zs doctor                         check php, wp-cli, mariadb, browser, network, gh
+  zs doctor                         check php, wp-cli, mariadb, browser, network, gh + the pipeline itself
+  zs selftest                       run the documented engine chain (new/build/qa/seo), honest exit code
   zs image <slug> <key> "<prompt>"  AI atmosphere image -> sites/<slug>/assets/<key>.png (needs OPENAI_API_KEY)
   zs grab <slug> <url>              research the client's old site (Wayback fallback) -> sites/<slug>/research/
   zs fetch-image <slug> <key> <url> download a generated asset (Weave output) into sites/<slug>/assets/
@@ -15,6 +16,9 @@
   zs static <slug>                  offline browsable copy (open index.html) -> dist/<slug>-preview.zip
   zs package <slug> --domain https://client.co.il
   zs publish <slug>                 upload the zip as a GitHub release asset (+ SharePoint if set)
+  zs replies [work/inbox]           sites-team replies (staging URL / QA feedback) -> sites/c<id>/inbox/ (dry run)
+  zs intake <specs...> [--images-root F:\\Clients]  sites-team email -> sites/c<id>/ (brief + client images)
+  zs staging <slug> --site https://x  PC: log in (reset via Outlook if needed) + approve the cloud's access code
   zs list                           sites on this machine
   zs seo <slug>                     the Zap SEO QA checklist, row by row -> sites/<slug>/SEO-QA.md
   zs pool <slug>                    this site's measured look vs every other client (stops at 40% alike)
@@ -28,7 +32,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from env import ROOT, die  # noqa: E402
+from env import ROOT, IS_WIN, die  # noqa: E402
 from wpsite import Site  # noqa: E402
 
 
@@ -90,7 +94,7 @@ def cmd_preview(a):
     lines = check_measured(a.slug, fps)
     if lines:
         print("\n".join(lines))
-    if getattr(s, "_preview_close", None) or any(x.startswith("ERROR") for x in lines):
+    if getattr(s, "_preview_close", None) or getattr(s, "_preview_thin", None) or any(x.startswith("ERROR") for x in lines):
         sys.exit(2)
 
 
@@ -116,8 +120,24 @@ def _remote(a):
 
 def cmd_connect(a):
     from remote import connect, NovamiraError
+    say = lambda m: print(m, flush=True)
+    if a.handoff:   # the PC (zs staging) approves: hand it the code through the site branch
+        import re, subprocess, time
+        def say(m):
+            print(m, flush=True)
+            hit = re.search(r"open (\S+) .* code\s+(\S+)", m)
+            if not hit:
+                return
+            d = ROOT / "sites" / a.handoff / "inbox"
+            d.mkdir(parents=True, exist_ok=True)
+            f = d / "connect-request.json"
+            f.write_text(json.dumps({"site": a.site, "verification_uri": hit.group(1), "user_code": hit.group(2),
+                                     "expires_at": time.time() + 840}), encoding="utf-8")
+            g = lambda *c: subprocess.run(["git", "-C", str(ROOT), *c], capture_output=True)
+            g("add", str(f)); g("commit", "-m", f"{a.handoff}: staging access request"); g("push")
+            print("handed to the PC: sites/%s/inbox/connect-request.json pushed; waiting for zs staging there" % a.handoff, flush=True)
     try:
-        f = connect(a.site, say=lambda m: print(m, flush=True))
+        f = connect(a.site, say=say)
     except NovamiraError as e:
         die(str(e))
     print(f"connected: token stored for this machine only ({f.name}, not committed). Next: zs push <slug> --site {a.site}")
@@ -162,8 +182,10 @@ def cmd_push(a):
             r.eval_php("update_option('zs_prev_front', (int) get_option('page_on_front')); echo 1;")
         if not a.no_backup:
             print("backup:", r.backup())
-        # staging lock: leads are saved but never mailed to the real client, search engines stay out
-        r.eval_php(f"update_option('zs_staging_lock', {0 if a.live else 1}); echo 1;")
+        # staging vs live is decided by the address (plugin inc/launch.php); register this host as staging so even a
+        # staging address outside Zap's usual domains keeps leads off the client's inbox until it moves
+        if not a.live:
+            r.eval_php(f"$h = (array) get_option('zap_staging_hosts', []); if (!in_array('{r.host}', $h, true)) {{ $h[] = '{r.host}'; update_option('zap_staging_hosts', $h); }} delete_option('zs_staging_lock'); echo 1;")
         build(r)
         if not other:
             # first push into a fresh base clone: the base's own placeholder pages/posts (not built from site.json)
@@ -215,18 +237,31 @@ def cmd_fetch_image(a):
 
 
 def cmd_doctor(a):
+    """Read-only. Checks the tools, then the pipeline around them (see engine/pipecheck.py)."""
     import shutil
     import subprocess
-    from env import php_bin, wp_cmd, ensure_db, run
+    from env import php_path, wp_cli_phar, wp_cmd, ensure_db, run, TOOLS
     ok = True
     def line(name, good, detail=""):
         nonlocal ok
+        if good is None:                      # not applicable on this platform: reported, not counted
+            print(f"n/a  {name} {detail}")
+            return
         ok &= bool(good)
         print(f"{'OK  ' if good else 'FAIL'} {name} {detail}")
-    r = run([php_bin(), "-r", "echo PHP_VERSION, ' ', implode(',', array_intersect(['mysqli','gd','mbstring','zip','intl','curl'], get_loaded_extensions()));"], check=False)
-    line("php", r.returncode == 0, r.stdout.strip())
-    r = run(wp_cmd() + ["--version"], check=False)
-    line("wp-cli", r.returncode == 0, r.stdout.strip())
+    php = php_path()
+    if not php:
+        line("php", False, f"not found (expected {TOOLS / 'php' / 'php.exe'}); every build, serve and WP-CLI call will stop")
+    else:
+        r = run([php, "-r", "echo PHP_VERSION, ' ', implode(',', array_intersect(['mysqli','gd','mbstring','zip','intl','curl'], get_loaded_extensions()));"], check=False)
+        line("php", r.returncode == 0, r.stdout.strip())
+    if IS_WIN and not wp_cli_phar():
+        line("wp-cli", False, f"not found (expected {TOOLS / 'wp-cli.phar'})")
+    elif not php and IS_WIN:
+        line("wp-cli", False, "cannot run: it needs php")
+    else:
+        r = run(wp_cmd() + ["--version"], check=False)
+        line("wp-cli", r.returncode == 0, r.stdout.strip())
     try:
         ensure_db()
         line("mariadb", True)
@@ -253,6 +288,16 @@ def cmd_doctor(a):
         line("network: wordpress.org", False, f"{e} (set the environment's network access to Full)")
     gh = shutil.which("gh") is not None and subprocess.run(["gh", "auth", "status"], capture_output=True).returncode == 0
     print(f"OK   publish route: {'GitHub release (gh)' if gh else 'delivery branch via git push (no gh needed)'}")
+
+    # The pipeline itself: the things that were broken while every binary above was fine.
+    print("\n-- pipeline --")
+    import pipecheck
+    for name, fn in pipecheck.CHECKS:
+        try:
+            good, detail = fn()
+        except Exception as e:                # a broken check is a FAIL, never a silent pass
+            good, detail = False, f"check raised {type(e).__name__}: {e}"
+        line(name, good, detail)
     sys.exit(0 if ok else 1)
 
 
@@ -317,6 +362,10 @@ def cmd_registry(a):
 
 
 def cmd_pool(a):
+    """Measure the local build NOW, then compare. `zs pool` used to read sites/<slug>/fingerprint.json, which only
+    `zs qa` rewrites, so after any colour or layout change it reported the previous build's number with nothing to
+    say so. It re-measures instead (and says when the stored file has fallen behind); it does not write the file,
+    because the committed number should keep coming from `zs qa`."""
     from build import load_site
     from pool import compare, recipe
     s = Site(a.slug)
@@ -324,7 +373,17 @@ def cmd_pool(a):
     r = recipe(d)
     print("levers:", " · ".join(x or "-" for x in r["levers"]), f"· base template {r['base'] or '-'}")
     print("home:  ", " → ".join(r["home"]))
-    warns = compare(a.slug, d, s.src)
+    fresh = None
+    if not getattr(a, "stored", False):
+        try:
+            from fingerprint import take
+            s.serve()
+            fresh = take({"home": s.url + "/"})["home"]
+            print("measured: the local build (not the stored fingerprint.json)")
+        except Exception as e:                      # no build, no browser: say so, never fall back silently
+            print(f"WARN  could not measure the local build ({type(e).__name__}: {str(e)[:120]}). Falling back to the "
+                  f"stored sites/{a.slug}/fingerprint.json, which may be older than the build")
+    warns = compare(a.slug, d, s.src, home=fresh)
     print("\n".join(warns) if warns else "unique: no other client branch is close (git fetch first for the latest)")
     sys.exit(2 if any(w.startswith("ERROR") for w in warns) else 0)
 
@@ -339,20 +398,26 @@ def main():
     x = sub.add_parser("shots"); x.add_argument("slug"); x.add_argument("paths", nargs="*", help='"/", "/<page>/" or "all"')
     x.add_argument("--directions", action="store_true"); x.add_argument("--mobile", action="store_true"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_shots)
     x = sub.add_parser("qa"); x.add_argument("slug"); x.add_argument("--site"); x.add_argument("--cred-file"); x.set_defaults(f=cmd_qa)
-    x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.set_defaults(f=cmd_connect)
+    x = sub.add_parser("connect"); x.add_argument("--site", required=True); x.add_argument("--handoff", metavar="SLUG", help="push the code to site/<slug> for the PC (zs staging) to approve"); x.set_defaults(f=cmd_connect)
     x = sub.add_parser("push"); x.add_argument("slug"); x.add_argument("--site", required=True); x.add_argument("--cred-file")
     x.add_argument("--live", action="store_true"); x.add_argument("--force", action="store_true"); x.add_argument("--full", action="store_true"); x.add_argument("--no-backup", action="store_true"); x.set_defaults(f=cmd_push)
     x = sub.add_parser("preview"); x.add_argument("slug"); x.set_defaults(f=cmd_preview)
     x = sub.add_parser("doctor"); x.set_defaults(f=cmd_doctor)
+    import selftest; selftest.add_parser(sub)
     x = sub.add_parser("static"); x.add_argument("slug"); x.set_defaults(f=cmd_static)
     x = sub.add_parser("grab"); x.add_argument("slug"); x.add_argument("url"); x.add_argument("--pages", type=int, default=25); x.set_defaults(f=cmd_grab)
     x = sub.add_parser("fetch-image"); x.add_argument("slug"); x.add_argument("key"); x.add_argument("url"); x.add_argument("--ext"); x.set_defaults(f=cmd_fetch_image)
     x = sub.add_parser("image");x.add_argument("slug"); x.add_argument("key"); x.add_argument("prompt"); x.add_argument("--size", default="1536x1024"); x.set_defaults(f=cmd_image)
     x = sub.add_parser("package"); x.add_argument("slug"); x.add_argument("--domain", required=True); x.set_defaults(f=cmd_package)
     x = sub.add_parser("publish"); x.add_argument("slug"); x.set_defaults(f=cmd_publish)
+    import intake; intake.add_parser(sub)
+    import replies; replies.add_parser(sub)
+    import regress; regress.add_parser(sub)
+    import launchcheck; launchcheck.add_parser(sub)
+    import staging; staging.add_parser(sub)
     x = sub.add_parser("list"); x.set_defaults(f=cmd_list)
     x = sub.add_parser("seo"); x.add_argument("slug"); x.set_defaults(f=cmd_seo)
-    x = sub.add_parser("pool"); x.add_argument("slug"); x.set_defaults(f=cmd_pool)
+    x = sub.add_parser("pool"); x.add_argument("slug"); x.add_argument("--stored", action="store_true", help="skip the re-measure and judge the committed fingerprint.json as it stands"); x.set_defaults(f=cmd_pool)
     x = sub.add_parser("registry"); x.add_argument("slug"); x.set_defaults(f=cmd_registry)
     a = p.parse_args()
     a.f(a)

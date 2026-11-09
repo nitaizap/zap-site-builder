@@ -44,6 +44,7 @@ your judgement.
 | **Fonts** | Body text and forms in a readable sans (Assistant, Heebo, Rubik, Noto Sans Hebrew, IBM Plex, Alef); a serif or display face only for headings | validator error (`fonts.body`), forms inherit |
 | **Heroes** | Buttons only in the home hero; inner-page heroes have none | validator error |
 | | Phones: the hero is as tall as its content, logo and text never under the header, buttons in view at 360×640 | theme, `zs qa` fold check |
+| | **Hero space** (user note 03/11/2026 on three sites, "a recurring issue"): the first screen is used, not just filled. Height earned by the photo or by real content, text that fills or balances its column, no bare area that carries nothing. Not measurable yet: six heroes, rejected and not, gave overlapping numbers on every metric | **you**, four questions in `hero-space.md` answered with `py tools/hero-space.py <url>` and the 1440 / 1280 shots. Not enforced by `zs qa`: no honest threshold exists |
 | **Buttons** | Phones: side by side, equal width, one line each (never stacked) | theme |
 | **Calls to action** | A page never ends with a `cta` section: the lead form follows it (two in a row) | validator error |
 | **Phone bar** | No sticky call bar by default; the header's phone button is the call action. A site turns the bar on with `header.mobile_bar` (extra buttons) or `header.call_bar: true` | theme |
@@ -118,8 +119,25 @@ your judgement.
 
 1. `bin/zs qa <slug>` 0 errors, `bin/zs seo <slug>` 0 FAIL, then the same on the pushed site (`--site`).
 2. Look at desktop at 1280px and phones at 390px yourself: logo words readable, no overlaps, no empty bands.
-3. Read every heading once for punctuation, and every menu label against its page's H1.
-4. Write the delivery message with the human-only items (blog source, privacy fields, robots on launch).
+   Then the hero on its own: run `py tools/hero-space.py <url> --out <file>`, open the 1440x900 shot beside it and answer the
+   four questions in `hero-space.md` (height earned, text fills or balances its column, content or air, first button in view).
+   `zs qa` cannot see this one; the user has rejected heroes that passed it with 0 errors.
+3. **The brief pass — read the brief again with the finished site open beside it.** Walk `BRIEF-CHECK.md` row by
+   row against the live pages: every service page the spec sheet lists, the slogan where it gave one, the call
+   button on every page where it asked for one, the fleet or service list in full. A site that passes every gate
+   can still answer a different brief from the one that arrived. Where the spec sheet named sites under
+   `אתרים שאהבתם`, open them again now and ask honestly whether this site answers what the client liked.
+   The brief's written asks and that row outrank the pool number; see `pool.md`. If answering them
+   moves the gate, report the number and the trade-off rather than diluting the design.
+4. **The polish pass — look at it as a stranger, not as its builder.** Ask whether it reads as finished or merely
+   as correct: consistent rhythm between sections, one alignment per band, type that fills the space it is given,
+   images sharp at the size they are shown, no placeholder left standing, nothing that looks like the default. The
+   gates measure none of this. Every design complaint this project has had came off a site passing QA at 0 errors
+   and SEO at 0 FAIL, so budget real time here rather than treating it as a last glance.
+   **Then go through "UX acceptance" below, item by item.** It is the same pass with the answers written down.
+5. Read every heading once for punctuation, and every menu label against its page's H1.
+6. Before handover, on staging: `bin/zs launch-check https://<client>.ussl.co.il --slug <slug>` (0 FAIL; writes `LAUNCH-SHEET.md`). Zap does not launch: the site must be launch-ready, i.e. the staging → live move changes nothing. It catches a `zap-site` plugin that a migration tool would leave behind (no menu, no form, no legal line, still HTTP 200), staging mode not in force, addresses a launch cannot rewrite, and QA not clean on both desktop and mobile.
+7. Write the delivery message with the human-only items (blog source, privacy fields). Indexing, robots and lead mail switch on by themselves on the client's domain: never ask the launch manager to change settings.
 
 ## Round 3 (פטוצ'ינה, 01/11/2026)
 
@@ -137,3 +155,96 @@ your judgement.
 | "Where is the form e-mail set?" | wp-admin → פניות מהאתר → הגדרות טפסים (recipient, sender, test address, staging state); also shown in the form widget's panel. A rebuild takes `business.email_leads` from site.json, so change it there too |
 | Breadcrumbs on every site (user decision 01/11/2026) | default on every inner page; `header.breadcrumbs: false` only when a client asks to hide them |
 
+
+## Mail: check who is sending, before handover (04/11/2026)
+
+Reported from Zap as "האתר יוצר בעיות SMTP". The `zap-site` plugin used to hook `phpmailer_init` at the default
+priority 10 for the whole site, which is exactly where WP Mail SMTP, FluentSMTP, Post SMTP and the rest sit: on a
+site that has one of those, whichever loaded last won, so delivery depended on plugin load order and changed under
+an unrelated update. It also sent every message on the site as `zapsites@d.co.il`, a domain the client's site has
+no SPF alignment with. The plugin now stands down completely when another mailer is active, applies the Zap relay
+only to the lead form's own mail, and sends from `no-reply@<the site's own domain>` with the enquirer as Reply-To.
+
+Before handover, on every site:
+
+| check | how |
+|---|---|
+| Who is sending the site's mail | wp-admin → פניות מהאתר → הגדרות טפסים, the row **"מי מנהל את הדואר באתר"**. It says either `Zap Site` (our relay, lead mail only) or the name of the SMTP plugin that took over. Anything else is a bug, not a setting to change |
+| Two mailers, one site | if an SMTP plugin is installed, the row must name **it**, not Zap Site. Never configure both: another plugin's delivery always wins, and Zap's relay is only the default for a site that has none |
+| The sender is on the client's domain | the "שולח" row must read `no-reply@<client domain>`, never `zapsites@d.co.il` on a live client domain (that is what lands leads in spam) |
+| A lead actually arrives | send one test lead on the live address and open the client's inbox. Nothing else on the site (password resets, WooCommerce) goes near the Zap relay any more |
+
+`bin/zs launch-check` reports this as the `mailers` row. It reads public html only, so it can name an SMTP plugin
+whose assets the page loads but can never rule one out: the row is always MANUAL and always closed in wp-admin.
+
+## UX acceptance: every site, before handover
+
+Where the rest of this file is a list of things reviewers have rejected, this is the list of things that make a
+site read as finished rather than merely correct. It is the class of defect behind "not a bug, just bad design":
+nothing here fails a gate, and a reviewer sees all of it in five seconds.
+
+Most of these were learnt twice, once per client. Go through them with the site open at 1280 and at 390. The
+measurable ones (heading scale, upscaled images, stretched images, font count, mobile gutter, tap targets,
+buttons without an icon) are now in `zs qa` — read the `type scale` and `fonts` columns of `QA-REPORT.md` as
+well as the error count.
+
+### Clickability
+
+- Anything that looks clickable is clickable, and nothing else looks clickable. A chip, pill or badge that is
+  not a link is flat text, or it gets a link.
+- A card whose title is a link makes the **whole card** the link, never a nested `<a>` inside another.
+- An icon box with a link makes the whole row clickable, not just the icon and the title. The phone number or
+  address under the title is the part people aim at.
+- Conversion buttons carry an icon (phone, WhatsApp, envelope). Decide it once per site rather than per
+  button: `zs qa` warns only when a page uses none at all.
+- Hover never moves an element. A lifted card leaves the cursor on its old edge, un-hovers and flickers. Use
+  colour, shadow, or an image zoom inside a clipped box.
+
+### Type and rhythm
+
+- One size per heading level, per site. Impact comes from weight and space, not from a bigger H2 in one band.
+  `zs qa` errors at three sizes for one level and warns at two.
+- Two font families at most: headings and body. A third is a widget that escaped the kit.
+- Light (300) only at 18px and above, and only where contrast still clears AA.
+- Hebrew body text wants 1.7–1.8 line-height; line length stays under about 80 characters.
+- A "day hours" pair, a phone number or any Latin run inside Hebrew gets a `nowrap` span, so a lone character
+  never ends up alone at the end of a line.
+- Time ranges inside Hebrew text need LTR isolation, or 9:00–13:00 reads backwards.
+
+### Images
+
+- Never show a photo larger than its own pixels. A 900px portrait across a 1400px hero reads as smeared.
+  `zs qa` errors on this now; before that it was caught by eye, twice.
+- Never stretch: a box ratio that differs from the file's ratio distorts faces and logos.
+- A portrait photo in a wide slot is cropped to a sliver. Use several portraits side by side instead.
+- Nothing above the fold is lazy-loaded, and nothing that moves is lazy-loaded.
+
+### Forms
+
+- A label above every field. A placeholder alone is unreadable the moment someone types, and invisible on a
+  dark form.
+- The consent checkbox is 20px, its text is fine print, and its privacy link goes to a real page.
+- Consent and the submit button share one row on desktop (consent wide, button narrow), both full width on
+  mobile, so there is no dead space under the form.
+- Dark forms get their own field border and label colours; the light-form values vanish on dark.
+
+### Floating elements and mobile
+
+- Floating elements never stack. One accessibility button, and on mobile one fixed bar with two actions
+  (call, navigate), flush with the bottom edge with `env(safe-area-inset-bottom)` clearance.
+- No floating call button on desktop: the phone is already in the header.
+- Mobile card grids are one column or a sideways swipe row. Two narrow columns give three words a line.
+- The mobile footer is minimal and centred: logo, contact, hours. Hide the link columns.
+- The logo is **measured** centred on mobile, against the `<html>` box, not `innerWidth / 2` (RTL puts the
+  scrollbar on the left).
+- Conversion buttons are full width in content and centred at their own width in the footer.
+
+### Bands and state
+
+- A hero is never flat white under a white header. Colour, or a photo.
+- FAQ accordions start closed, every item.
+- A section with nothing in it (no reviews yet, no related cards) hides itself; it never shows an empty frame
+  or a placeholder box to the client.
+- Filled and outline buttons side by side are the same height: give the filled one a transparent border of the
+  same width, or it stands 4px shorter.
+- Dark-background links need both a rest colour and a hover colour. The light-theme hover makes them vanish.

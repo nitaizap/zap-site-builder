@@ -59,6 +59,10 @@ body.zs-k-sidebar .zs-card { box-shadow: none; border: 1px solid var(--c-line); 
   /* the tint shows only between the panels of an Elementor page; every section keeps its own ground */
   body.zs-k-panels.zs-built { background: var(--c-surface); }
   body.zs-k-panels.zs-built .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent, .zs-trust, .zs-cta, .zs-marquee, .zs-hero, .zs-tiles, .zs-leadbar, .zs-road) { background-color: var(--c-bg); }
+  /* a preset that darkens a whole section (e.g. `bold` on `steps`) must not keep its light-on-dark text once the
+     rule above has repainted that section white: restore the page's own ink/text/muted/line on those panels */
+  body.zs-k-panels.zs-built .e-con.zs-sec:not(.zs-bg-dark, .zs-bg-primary, .zs-bg-accent, .zs-trust, .zs-cta, .zs-marquee, .zs-hero, .zs-tiles, .zs-leadbar, .zs-road) {
+    --c-ink: var(--zs-ink); --c-text: var(--zs-text); --c-muted: var(--zs-muted); --c-line: var(--zs-line); }
   body.zs-k-panels .e-con.zs-sec:not(.zs-hero) { width: calc(100% - 48px); max-width: 1400px; margin: 0 auto 18px; border-radius: var(--r-lg); overflow: hidden; }
   body.zs-k-panels .e-con.zs-sec.zs-hero { width: calc(100% - 48px); max-width: 1400px; margin: 18px auto; border-radius: var(--r-lg); overflow: hidden; }
   body.zs-k-panels .zs-header { width: calc(100% - 48px); max-width: 1400px; margin: 14px auto 0; border-radius: 999px; background: var(--c-bg); box-shadow: 0 10px 30px -22px rgb(0 0 0 / .45); }
@@ -134,6 +138,11 @@ body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .z
 body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-panels, .zs-k-frame, .zs-k-shade) :is(.zs-topbar, .e-con.zs-topbar) { background: var(--c-bg); color: var(--zs-text); border-bottom: 1px solid var(--zs-line); }
 /* the light kits drop the utility bar: the header already carries the phone */
 body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-topbar, .e-con.zs-topbar) { display: none; }
+/* ...and so the sticky header must not keep the -38px offset main.css gives a header that has a topbar (the slide-away
+   that hides the bar). With the bar display:none that offset pushed the whole header 38px above the viewport on
+   scroll and clipped the logo (96px tall) at the top. Same kit list as the rule above, so the two cannot drift. */
+body:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-tpl-header, .elementor-location-header):has(.zs-topbar) { top: 0; }
+.admin-bar:is(.zs-k-atelier, .zs-k-gallery, .zs-k-quiet, .zs-k-shade) :is(.zs-tpl-header, .elementor-location-header):has(.zs-topbar) { top: 32px; }
 
 /* atelier: the form band stacks centred under its title; FAQ as hairline rows; icons bare, no chip */
 body.zs-k-atelier .elementor .e-con.zs-leadband__in { grid-template-columns: 1fr; justify-items: center; text-align: center; max-width: 760px; margin-inline: auto; }

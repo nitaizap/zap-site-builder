@@ -5,9 +5,29 @@
 Usually one of: a pasted Hebrew brief, a spec board (image/PDF) with the page list and palette, a logo, a
 few photos, the client's old site URL, a Google Business link. Sometimes only a name and a phone number.
 
+## From the sites team (zap-intake)
+
+A branch `site/c<id>` pushed by the local `zap-intake` skill already holds `intake.json` (id, name, package,
+sender, links, staging URL, `missing`), `brief/brief.md` (the Word spec as text + the email body), the
+original spec sheet (.docx or .xlsx), and `assets/client/` (images from the F: drive). Start from those; the slug stays `c<id>`.
+Later replies (staging URL, feedback) land in `sites/c<id>/inbox/`: `git pull` and read them first.
+
 ## Extract — open every file
 
 Open every image and PDF before describing it. Filenames lie; a mislabelled image once shipped into a header.
+
+**`brief.md` is a text export, and it silently drops anything embedded in the Word file.** Two clients in one
+batch had a logo sitting in the spec sheet's `לוגו` cell that the export rendered as an empty field, and both
+were built as though no logo existed. Open the `.docx` itself — it is a zip: list `word/media/`, read
+`word/document.xml` to see which cell each image sits in, and check `word/_rels/document.xml.rels` for external
+links. Do this before writing "no logo" or "no references" anywhere, including in `OPEN-ITEMS.md`.
+
+**Record what the client said they liked.** The spec sheet's `אתרים שאהבתם` row is the only direct statement of
+taste you will get from this client. Open each site listed, write down what it actually does — layout, density,
+how hard it leads with the phone — and note in `BRIEF-CHECK.md` what you took from it. It is a signal, not a
+template: the uniqueness gate will stop a copy, and the client asked for their own site. An empty row is worth
+recording too, but check the `.docx` before you call it empty.
+
 Build `sites/<slug>/NOTES.md`:
 
 ```markdown

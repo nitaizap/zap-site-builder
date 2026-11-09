@@ -106,7 +106,12 @@ body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .e-con.zs-hero__te
 body .e-con.zs-split.zs-v-overlap .e-con.zs-split__text { position: relative; z-index: 2; margin-inline-end: -14%; background: var(--c-dark);
   --c-ink: #fff; --c-text: var(--c-dark-ink); --c-muted: color-mix(in srgb, var(--c-dark-ink) 75%, transparent); color: var(--c-dark-ink);
   padding: clamp(28px, 4vw, 56px); text-align: center; align-items: center; border-radius: var(--r-sm, 4px); }
-.zs-split.zs-v-overlap .zs-sec__title .elementor-heading-title { color: var(--c-accent); }
+/* The card's ground is always --c-dark (the rule above), so its title is white, like every other title on a
+   dark ground. It used to take --c-accent, which is the pattern Zap QA rejects ("red titles on navy passed
+   WCAG's 3:1 and were rejected", qa-rules.md); it cleared the measured 4.5:1 floor only by luck of the
+   palette, so zs qa never flagged it. The accent marks a title with a rule or a chip, not by colouring the
+   words. */
+.zs-split.zs-v-overlap .zs-sec__title .elementor-heading-title { color: var(--c-dark-ink); }
 .zs-split.zs-v-overlap .zs-split__img img { aspect-ratio: 4 / 3; border-radius: var(--r-sm, 4px); box-shadow: none; }
 @media (max-width: 900px) { .elementor .e-con.zs-split.zs-v-overlap > .e-con-inner { grid-template-columns: 1fr; } body .e-con.zs-split.zs-v-overlap .e-con.zs-split__text { margin: -48px 16px 0; order: 2; } .zs-split.zs-v-overlap .e-con.zs-split__media { order: 1; } }
 
@@ -202,7 +207,10 @@ body .e-con.zs-faq.zs-v-dark > .e-con-inner { background-color: var(--c-dark); b
 body .e-con.zs-faq.zs-v-dark { --content-width: min(100%, var(--wrap)); }
 .zs-faq.zs-v-dark .zs-head { text-align: center; justify-content: center; }
 .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-toggle-item { background: transparent; border-color: rgb(255 255 255 / .28); }
-.zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title { color: var(--c-accent); }
+/* The question is primary text on the dark plate, so it takes the plate's ink, like the answer below it
+   and like the split:overlap title fixed in PR #74. As the accent it measured 4.56:1 on one client:
+   over the 4.5 floor by luck, so the gate passed while the questions read as disabled text. */
+.zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-title { color: var(--c-dark-ink); }
 .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-tab-content { color: var(--c-dark-ink); }
 .zs-faq.zs-v-dark .zs-faq__list .elementor-toggle .elementor-toggle-icon { background: rgb(255 255 255 / .1); color: #fff; }
 
@@ -434,7 +442,12 @@ html body .e-con.zs-hero:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inne
 /* short laptop screens (1280×620): the home cover hero's logo, H1, lead and both buttons fit above the fold
    (the 560px floor + the 115px hero logo pushed the buttons just below it) */
 @media (min-width: 768px) and (max-height: 760px) {
-  html body .e-con.zs-hero.zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: min(calc(100svh - 120px), 820px) !important; }
+  /* The floor has to be !important to beat Elementor's own inline min-height, so no per-client rule can
+     reach past it: Dream from Steel's hero was reported fixed "at about 480px" and was still 690px at
+     1280x620, because the check was run at one width only. The number itself is now a variable, so a
+     client that needs a shorter first screen sets --zs-hero-floor in design.custom_css (on :root or
+     body) instead of fighting this rule. */
+  html body .e-con.zs-hero.zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) { min-height: min(calc(100svh - 120px), var(--zs-hero-floor, 820px)) !important; }
   html body .e-con.zs-hero.zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) > .e-con-inner { padding-block: 20px !important; }
   html body .zs-hero--home:is(.zs-v-cover, .zs-v-inset, .zs-v-curve) .zs-hero__logo img { max-height: 84px; width: auto; }
 }
