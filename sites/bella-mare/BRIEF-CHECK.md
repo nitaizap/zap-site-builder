@@ -69,3 +69,15 @@ Checked against the rendered pages (local build, page HTML + desktop/mobile shot
 - Privacy policy + accessibility statement pages (Zap standard) ✅; privacy fields unconfirmed ⏳ (launch blocker)
 - Blog: not in the brief's tree, basic package → none (`zs seo` #5 FAIL by design) ⏳ if Zap wants one
 - Prohibited words: the brief has none.
+
+## Re-check 09.11.2026 (after Zap QA 01.11 + engine updates), on the rendered pages, local and https://80392812.ussl.co.il
+- Every text line of the brief found on its page (script check of the page HTML). Two deliberate differences: the
+  brief's dashes are commas (no-dash rule), and the menu lead opens with the page keyword "משלוח פיצה בנהריה:" before
+  the brief's sentence.
+- Buttons "להזמנת משלוח" / "להזמנת שולחן" in the home hero only (Zap QA round 2: no buttons in inner-page heroes);
+  both stay in the phone action bar, the menu page CTA and the footer menu (new tab).
+- Blog added (Zap QA #10): 1 category, 3 posts from the brief and the client's menu; not in the brief's tree.
+- Email / WhatsApp: still empty in the brief (re-read incl. tables and comments) and on every readable source → none shown.
+- Fonts: one family (Noto Sans Hebrew). Text black on light grounds (incl. tile, FAQ, card and menu titles).
+- Photos: wide crops for the three hero slots so nothing is shown larger than its pixels (QA check).
+- zs qa 0 errors local and live (11 pages, 42 links); zs seo 0 FAIL.

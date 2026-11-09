@@ -127,6 +127,18 @@
   "tiramisu": {
    "src": "assets/img/tiramisu.jpg",
    "alt": "טירמיסו מגירה"
+  },
+  "hero-home": {
+   "src": "assets/img/hero-home.jpg",
+   "alt": "שולחן עגול ערוך במגוון מנות איטלקיות, פיצות ופסטות בבלה מארה, צילום מלמעלה"
+  },
+  "hero-menu": {
+   "src": "assets/img/hero-menu.jpg",
+   "alt": "פיצה ארטישוק מהטאבון של בלה מארה"
+  },
+  "hero-gallery": {
+   "src": "assets/img/hero-gallery.jpg",
+   "alt": "שולחן אירוח עם מבחר מנות איטלקיות בבלה מארה"
   }
  },
  "content": {
@@ -180,7 +192,7 @@
    "primary": "#1d3349",
    "primary_ink": "#ffffff",
    "accent": "#dcc7a1",
-   "accent_ink": "#14202e",
+   "accent_ink": "#111111",
    "ink": "#111111",
    "text": "#111111",
    "muted": "#3a3a3a",
@@ -191,7 +203,7 @@
    "dark_ink": "#faf6ee"
   },
   "base_template": 2,
-  "custom_css": ""
+  "custom_css": "/* Zap QA (01.11.2026): text black on light grounds; the brand navy stays on buttons, links and dark bands */\nhtml body :is(.zs-feature__title, .zs-card__title, .zs-prices__gt, .zs-faq__list) :is(h2, h3, p, a, .elementor-heading-title, .elementor-tab-title),\nhtml body :is(.zs-prices__gt, .zs-faq__list h3) { color: #111111 !important; }"
  },
  "form": {
   "title": "שולחן, משלוח או אירוע?",
@@ -308,7 +320,7 @@
       "label": "להזמנת שולחן",
       "href": "https://tabitisrael.co.il/site/bellamare"
      },
-     "image": "table-top"
+     "image": "hero-home"
     },
     {
      "type": "split",
@@ -367,7 +379,7 @@
       {
        "title": "פיצה מהטאבון",
        "text": "מרגריטה, מרינרה אנשובי, ארטישוק, ביאנקה פטריות, בצל קלמטה ועוד, אפויות בטאבון.",
-       "image": "pizza-close",
+       "image": "pizza-artichoke",
        "cta": {
         "label": "לתפריט",
         "href": "page:תפריט-ומשלוחים"
@@ -550,8 +562,8 @@
      "type": "hero",
      "variant": "cover",
      "title": "תפריט ומשלוחים",
-     "lead": "משלוח פיצה בנהריה, פסטות, מנות פתיחה וקינוחים מהמטבח האיטלקי. הזמינו אונליין: במשלוח עד הבית או באיסוף עצמי.",
-     "image": "pizza-close"
+     "lead": "משלוח פיצה בנהריה: פיצות, פסטות, מנות פתיחה וקינוחים מהמטבח האיטלקי. הזמינו אונליין: במשלוח עד הבית או באיסוף עצמי.",
+     "image": "hero-menu"
     },
     {
      "type": "cards",
@@ -751,7 +763,7 @@
      "variant": "inset",
      "title": "גלריה",
      "lead": "גלריה בלה מארה: המנות והאווירה, פיצות, פסטות וקינוחים איטלקיים.",
-     "image": "table-wine"
+     "image": "hero-gallery"
     },
     {
      "type": "gallery",
