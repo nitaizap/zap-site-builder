@@ -387,6 +387,8 @@ function zs_part_footer_contact() {
     $o = '<ul class="zs-footer__contact">';
     if ($tel) $o .= '<li>' . zs_icon('phone') . '<a href="' . esc_attr(zs_tel_href($tel)) . '">' . esc_html(zs_opt('business.phone_display')) . '</a>' . zs_vnote_btn() . '</li>';
     if ($wa)  $o .= '<li>' . zs_icon('whatsapp') . '<a href="' . esc_url(zs_wa_href($wa, $wa_text)) . '" target="_blank" rel="noopener">שלחו הודעת וואטסאפ</a></li>';
+    // the public e-mail, beside phone and address (Zap QA: e-mail in the contact area and the footer)
+    if ($em = zs_opt('business.email_public')) $o .= '<li>' . zs_icon('mail') . '<a href="mailto:' . esc_attr($em) . '" dir="ltr">' . esc_html($em) . '</a></li>';
     if ($a = zs_opt('business.address')) $o .= '<li>' . zs_icon('pin') . '<a href="' . esc_url(zs_waze_href()) . '" target="_blank" rel="noopener">' . esc_html($a) . '<span class="zs-sr"> (ניווט בוויז, נפתח בחלון חדש)</span></a></li>';
     foreach ((array) zs_opt('business.hours', []) as $h) $o .= '<li>' . zs_icon('clock') . '<span>' . esc_html($h) . '</span></li>';
     return $o . zs_social_rows() . '</ul>';
