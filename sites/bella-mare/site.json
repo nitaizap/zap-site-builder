@@ -5,7 +5,8 @@
   "tagline": "מטבח איטלקי כשר"
  },
  "standards": {
-  "privacy_url": ""
+  "privacy_url": "",
+  "privacy_email": "bellamare2027@gmail.com"
  },
  "images": {
   "table-top": {
@@ -150,7 +151,7 @@
   "schema_type": "Restaurant",
   "phone_display": "055-4309548",
   "phone_e164": "+972554309548",
-  "email_leads": "",
+  "email_leads": "bellamare2027@gmail.com",
   "address": "השקד 47, נהריה",
   "street": "השקד 47",
   "city": "נהריה",
@@ -174,7 +175,8 @@
   "dpz_customer_id": "80392812",
   "author_name": "בלה מארה",
   "phone_is_virtual": true,
-  "phone_regular": "04-8122220"
+  "phone_regular": "04-8122220",
+  "email_public": "bellamare2027@gmail.com"
  },
  "design": {
   "preset": "editorial",
@@ -207,7 +209,8 @@
  },
  "form": {
   "title": "שולחן, משלוח או אירוע?",
-  "text": "התקשרו אלינו, ונשמח לעזור."
+  "text": "השאירו שם וטלפון ונחזור אליכם, או התקשרו אלינו.",
+  "button": "שליחה"
  },
  "footer": {
   "about": "בלה מארה, מסעדה איטלקית ופיצרייה כשרה בנהריה. משלוחים, טייק אווי, הזמנת שולחן ואירועים עד 70 איש.",

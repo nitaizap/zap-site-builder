@@ -69,3 +69,7 @@ Not built: blog (not in the brief's tree; basic package) → zs seo #5 stays FAI
 ## Delivery
 - 29/10/2026 pushed to https://80392812.ussl.co.il (Novamira, device code approved by the user). Backup kept locally in work/. Live QA 0 errors, 37 links OK.
 - Server page 1229 is not ours and was left untouched (REST closed, could not identify it): check it in wp-admin.
+
+## 09.11.2026
+- Lead e-mail received: bellamare2027@gmail.com (user). Calls-only mode off: lead form in the footer band and the home contact section; e-mail shown in the contact section and the footer.
+- IMAGE-SOURCES.md (all client photos from the brief Drive folder + logo from rest.co.il), OPEN-ITEMS.md, LAUNCH-SHEET.md (launch-check 0 FAIL).

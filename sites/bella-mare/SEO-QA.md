@@ -1,6 +1,6 @@
 # SEO QA — בלה מארה
 
-Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 29 pass, 0 fail, 5 manual
+Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 30 pass, 0 fail, 5 manual
 
 | # | קטגוריה | בדיקה | סטטוס | הערות |
 |---|---|---|---|---|
@@ -19,7 +19,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 29 pass, 0 fa
 | 15 | SEO טכני - URLs | סלאגים בעברית ולפי ה-H1 | ✅ PASS |  |
 | 16 | SEO טכני - URLs | הסרת /category/ מכתובות קטגוריות | ✅ PASS | category base removed |
 | 17 | SEO טכני - URLs | פרמלינק פוסטים /blog/%postname%/ | ✅ PASS | posts live under /בלוג/ |
-| 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 0 forms |
+| 18 | SEO טכני - URLs | וי מדיניות פרטיות בטפסים + slug תקין | ✅ PASS | 12 forms |
 | 19 | שגיאות 301 ו-404 | בדיקת כל שגיאות ה-404 באתר | ✅ PASS | 13 internal links, all < 400 |
 | 20 | שגיאות 301 ו-404 | תיקון כל ה-404 (עמוד / 301) | ✅ PASS | redesign: map the old site's URLs to new ones (301) before launch |
 | 21 | שגיאות 301 ו-404 | קישורים פנימיים לא מפנים לכתובות ישנות | ✅ PASS |  |
@@ -32,7 +32,7 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 29 pass, 0 fa
 | 28 | עמוד 404 | שורת חיפוש בעמוד 404 | ✅ PASS |  |
 | 29 | עמוד 404 | קישורים פופולריים / קטגוריות | ✅ PASS |  |
 | 30 | תבניות | טמפלט תוצאות חיפוש עם רשימת פוסטים | ✅ PASS | HTTP 200 |
-| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 055-4309548, , השקד 47, נהריה; compare with the spec |
+| +1 | כללי | טלפון, מייל וכתובת תואמים לאפיון | 👁 MANUAL | site shows 055-4309548, bellamare2027@gmail.com, השקד 47, נהריה; compare with the spec |
 | +2 | כללי | לוגו זאפ בפוטר + קישור לאתר זאפ | ✅ PASS |  |
 | +3 | כללי | H1 בדף הבית = שם הלקוח בלבד | ✅ PASS | בלה מארה |
 | +7 | כללי | פורמט Title: "<לקוח> | <עמוד>" | ✅ PASS | all titles start with the client name |
@@ -40,6 +40,6 @@ Checklist: Zap SEO sheet · site http://127.0.0.1:8345 · 39 rows: 29 pass, 0 fa
 | +5 | כללי | מדיניות פרטיות + נגישות: טייטל ודיסקריפשן עם שם הלקוח | ✅ PASS | privacy title: בלה מארה / מדיניות פרטיות; accessibility title: בלה מארה / הצהרת נגישות |
 | +6 | כללי | נראות במובייל ובמחשב נייד 1280 | 👁 MANUAL | zs qa measures 1440 + 390 and the hero at 1280×620; look at 1280 once by eye |
 | +7 | כללי | שם הלקוח הנכון במדיניות הפרטיות ובהצהרת הנגישות | ✅ PASS | legal name: בלה מארה |
-| +8 | כללי | מייל הטפסים ושם האתר מוגדרים נכון | — N/A | leads → ; subject carries the site name; staging never mails the client |
+| +8 | כללי | מייל הטפסים ושם האתר מוגדרים נכון | ✅ PASS | leads → bellamare2027@gmail.com; subject carries the site name; staging never mails the client |
 | +9 | כללי | סדר היררכי של כותרות, בלי H2 בטפסים | ✅ PASS |  |
 | +10 | כללי | כפתור נגישות (Ally) מוצג באתר | ✅ PASS | visible |
